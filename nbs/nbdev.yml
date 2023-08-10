@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: ""
+  site-url: "https://alzhazen.github.io/"
+  description: "A generative AI model for scientific knowledge-based tasks."
+  repo-branch: main
+  repo-url: "https://github.com/alzhazen/"
