@@ -2,8 +2,8 @@ project:
   output-dir: _docs
 
 website:
-  title: ""
-  site-url: "https://alzhazen.github.io/"
-  description: "A generative AI model for scientific knowledge-based tasks."
+  title: "alhazen"
+  site-url: "https://chanzuckerberg.github.io/alhazen"
+  description: "A generative AI for scientific knowledge."
   repo-branch: main
-  repo-url: "https://github.com/alzhazen/"
+  repo-url: "https://github.com/chanzuckerberg/alhazen"
