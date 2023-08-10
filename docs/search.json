@@ -1,0 +1,30 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Background",
+    "section": "",
+    "text": "One thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning—an early pioneer in the scientific method five centuries before Renaissance scientists (Website, Wikipedia, Tbakhi & Amir 2007).\nWe use the latinized form of his name (‘Alhazen’) as the name of this project to honor his contribution (which goes largely unrecognized from within non-Islamic communities).\nFamously, he was quoted as saying:\nHere, we seek to develop an AI capable of applying scientific knowledge engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s critical view of published knowledge by creating a AI-powered system for scientific discovery."
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "Background",
+    "section": "Install",
+    "text": "Install\nThis tool depends on the MLC.AI project (https://mlc.ai/) and primarily functions by executing a local LLM on the user’s machine - and then call that system via a REST API.\n\nInstalling Llama2 locally\nInstructions: https://mlc.ai/mlc-llm/docs/\n\nDownload and install pre-built pip wheels for mlc-ai and mlc-llm from https://mlc.ai/package/\nFor Metal installation on Mac, run this command:\npip install --pre --force-reinstall mlc-ai-nightly mlc-chat-nightly -f https://mlc.ai/wheels/\nVerify installation\npython -m mlc_chat.rest --help\nThis should print help information for the REST API.\nDownload the quantized Llama2 model from github and place it in the dist/prebuilt directory.\nmkdir -p dist/prebuilt\ngit clone https://github.com/mlc-ai/binary-mlc-llm-libs.git dist/prebuilt/lib\ncd dist/prebuilt\ngit clone https://huggingface.co/mlc-ai/mlc-chat-Llama-2-70b-chat-hf-q4f16_1\nRun the REST API\npython -m mlc_chat.rest --device-name metal  --model Llama-2-70b-chat-hf  --quantization q4f16_1\nThis should print output from the server that should end with:\nINFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)"
+  },
+  {
+    "objectID": "index.html#how-to-use",
+    "href": "index.html#how-to-use",
+    "title": "Background",
+    "section": "How to use",
+    "text": "How to use\nAt this stage, development and use of Alhazen will be performed via local Jupyter notebooks.\n\n1+1\n\n2"
+  },
+  {
+    "objectID": "core.html",
+    "href": "core.html",
+    "title": "core",
+    "section": "",
+    "text": "source\n\nfoo\n\n foo ()"
+  }
+]
