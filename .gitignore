@@ -149,5 +149,6 @@ checklink/cookies.txt
 # Quarto
 .quarto
 
-# Built files:
+# Built + LLM libraries
+dist/
 alhazen
