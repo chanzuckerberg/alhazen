@@ -3,7 +3,7 @@ project:
 
 website:
   title: "alhazen"
-  site-url: "https://chanzuckerberg.github.io/alhazen"
+  site-url: "https://chanzuckerberg.github.io/alhazen//"
   description: "A generative AI for scientific knowledge."
   repo-branch: main
   repo-url: "https://github.com/chanzuckerberg/alhazen"
