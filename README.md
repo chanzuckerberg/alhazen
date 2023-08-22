@@ -31,11 +31,17 @@ scientific discovery.
 
 ## Install
 
-This tool depends on the MLC.AI project (<https://mlc.ai/>) and
+This library uses either the MLC.AI project (<https://mlc.ai/>) or Ollama (<https://ollama.ai/>) and
 primarily functions by executing a local LLM on the user’s machine - and
 then call that system via a REST API.
 
-### Installing Llama2 locally
+### Installing Llama2 locally with Ollama (RECOMMENDED)
+
+Instructions: <https://ollama.ai/download>
+
+1.  Very simple download and install. Just follow the instructions.
+
+### Installing Llama2 locally with MLC.AI
 
 Instructions: <https://mlc.ai/mlc-llm/docs/>
 
