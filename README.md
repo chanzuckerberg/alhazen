@@ -77,10 +77,4 @@ Instructions: <https://mlc.ai/mlc-llm/docs/>
 ## How to use
 
 At this stage, development and use of Alhazen will be performed via
-local Jupyter notebooks.
-
-``` python
-1+1
-```
-
-    2
+local Jupyter notebooks and the (https://nbdev.fast.ai/)[nbdev] framework. 
