@@ -153,3 +153,4 @@ checklink/cookies.txt
 dist/
 alhazen
 .databricks
+.git.bfg-report
