@@ -19,6 +19,21 @@ cd alhazen
 pip install -e .
 ```
 
+## Other dependencies
+
+You will need to download quantized model files from HuggingFace and
+place them in a temporary location on disk (`/tmp/alhazen/` is the
+default):
+
+- [Llama-2-70B](https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF)
+  (recommended
+  [file](https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF/blob/main/llama-2-70b-chat.Q5_K_M.gguf),
+  requires 51.25 GB)
+- [Llama-2-13B](https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF)
+  (recommended
+  [file](https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF/blob/main/llama-2-13b-chat.Q5_K_M.gguf),
+  requires 11.73 GB)
+
 ## How to use
 
 We use the fire library to create a modular command line interface (CLI)
