@@ -31,9 +31,10 @@ scientific discovery.
 
 ## Install
 
-This library uses either the MLC.AI project (<https://mlc.ai/>) or Ollama (<https://ollama.ai/>) and
-primarily functions by executing a local LLM on the user’s machine - and
-then call that system via a REST API.
+This library uses either the MLC.AI project (<https://mlc.ai/>) or
+Ollama (<https://ollama.ai/>) and primarily functions by executing a
+local LLM on the user’s machine - and then call that system via a REST
+API.
 
 ### Installing Llama2 locally with Ollama (RECOMMENDED)
 
@@ -77,4 +78,5 @@ Instructions: <https://mlc.ai/mlc-llm/docs/>
 ## How to use
 
 At this stage, development and use of Alhazen will be performed via
-local Jupyter notebooks and the (https://nbdev.fast.ai/)[nbdev] framework. 
+local Jupyter notebooks and the (https://nbdev.fast.ai/)\[nbdev\]
+framework.

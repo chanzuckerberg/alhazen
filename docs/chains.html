@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Chains are workflows that execute LLM based functionality for agents (or as part of the infrastructure generally).">
 
-<title>alhazen - Background</title>
+<title>alhazen - Chains</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -62,11 +63,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Background">
-<meta property="og:description" content="">
+<meta property="og:title" content="alhazen - Chains">
+<meta property="og:description" content="Chains are workflows that execute LLM based functionality for agents (or as part of the infrastructure generally).">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Background">
-<meta name="twitter:description" content="">
+<meta name="twitter:title" content="alhazen - Chains">
+<meta name="twitter:description" content="Chains are workflows that execute LLM based functionality for agents (or as part of the infrastructure generally).">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -91,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Background</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./chains.html">Chains</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -105,7 +106,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Background</span></a>
   </div>
 </li>
@@ -123,7 +124,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./chains.html" class="sidebar-item-text sidebar-link">
+  <a href="./chains.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Chains</span></a>
   </div>
 </li>
@@ -167,12 +168,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#install" id="toc-install" class="nav-link active" data-scroll-target="#install">Install</a>
-  <ul class="collapse">
-  <li><a href="#installing-llama2-locally-with-ollama-recommended" id="toc-installing-llama2-locally-with-ollama-recommended" class="nav-link" data-scroll-target="#installing-llama2-locally-with-ollama-recommended">Installing Llama2 locally with Ollama (RECOMMENDED)</a></li>
-  <li><a href="#installing-llama2-locally-with-mlc.ai" id="toc-installing-llama2-locally-with-mlc.ai" class="nav-link" data-scroll-target="#installing-llama2-locally-with-mlc.ai">Installing Llama2 locally with MLC.AI</a></li>
-  </ul></li>
-  <li><a href="#how-to-use" id="toc-how-to-use" class="nav-link" data-scroll-target="#how-to-use">How to use</a></li>
+  <li><a href="#taskinstructionregistry" id="toc-taskinstructionregistry" class="nav-link active" data-scroll-target="#taskinstructionregistry">TaskInstructionRegistry</a></li>
+  <li><a href="#taskinstruction" id="toc-taskinstruction" class="nav-link" data-scroll-target="#taskinstruction">TaskInstruction</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -181,9 +178,14 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Background</h1>
+<h1 class="title">Chains</h1>
 </div>
 
+<div>
+  <div class="description">
+    Chains are workflows that execute LLM based functionality for agents (or as part of the infrastructure generally).
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -197,48 +199,24 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<p>One thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning—an early pioneer in the scientific method <em>five centuries</em> before Renaissance scientists (<a href="https://www.ibnalhaytham.com/">Website</a>, <a href="https://en.wikipedia.org/wiki/Ibn_al-Haytham">Wikipedia</a>, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6074172/">Tbakhi &amp; Amir 2007</a>).</p>
-<p>We use the latinized form of his name (‘Alhazen’) as the name of this project to honor his contribution (which goes largely unrecognized from within non-Islamic communities).</p>
-<p>Famously, he was quoted as saying:</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/chains.py#L52" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="taskinstructionregistry" class="level3">
+<h3 class="anchored" data-anchor-id="taskinstructionregistry">TaskInstructionRegistry</h3>
 <blockquote class="blockquote">
-<p>The duty of the man who investigates the writings of scientists, if learning the truth is his goal, is to make himself an enemy of all that he reads, and, applying his mind to the core and margins of its content, attack it from every side. He should also suspect himself as he performs his critical examination of it, so that he may avoid falling into either prejudice or leniency.</p>
+<pre><code> TaskInstructionRegistry ()</code></pre>
 </blockquote>
-<p>Here, we seek to develop an AI capable of applying scientific knowledge engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s critical view of published knowledge by creating a AI-powered system for scientific discovery.</p>
-<section id="install" class="level2">
-<h2 class="anchored" data-anchor-id="install">Install</h2>
-<p>This library uses either the MLC.AI project (<a href="https://mlc.ai/" class="uri">https://mlc.ai/</a>) or Ollama (<a href="https://ollama.ai/" class="uri">https://ollama.ai/</a>) and primarily functions by executing a local LLM on the user’s machine - and then call that system via a REST API.</p>
-<section id="installing-llama2-locally-with-ollama-recommended" class="level3">
-<h3 class="anchored" data-anchor-id="installing-llama2-locally-with-ollama-recommended">Installing Llama2 locally with Ollama (RECOMMENDED)</h3>
-<p>Instructions: <a href="https://ollama.ai/download" class="uri">https://ollama.ai/download</a></p>
-<ol type="1">
-<li>Very simple download and install. Just follow the instructions.</li>
-</ol>
+<p>A class that stores all PromptTemplates available in the system.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/chains.py#L19" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
-<section id="installing-llama2-locally-with-mlc.ai" class="level3">
-<h3 class="anchored" data-anchor-id="installing-llama2-locally-with-mlc.ai">Installing Llama2 locally with MLC.AI</h3>
-<p>Instructions: <a href="https://mlc.ai/mlc-llm/docs/" class="uri">https://mlc.ai/mlc-llm/docs/</a></p>
-<ol type="1">
-<li><p>Download and install pre-built pip wheels for mlc-ai and mlc-llm from <a href="https://mlc.ai/package/" class="uri">https://mlc.ai/package/</a></p>
-<p>For Metal installation on Mac, run this command:</p>
-<p><code>pip install --pre --force-reinstall mlc-ai-nightly mlc-chat-nightly -f https://mlc.ai/wheels/</code></p></li>
-<li><p>Verify installation</p>
-<p><code>python -m mlc_chat.rest --help</code></p>
-<p>This should print help information for the REST API.</p></li>
-<li><p>Download the quantized Llama2 model from github and place it in the dist/prebuilt directory.</p>
-<pre><code>mkdir -p dist/prebuilt
-git clone https://github.com/mlc-ai/binary-mlc-llm-libs.git dist/prebuilt/lib
-cd dist/prebuilt
-git clone https://huggingface.co/mlc-ai/mlc-chat-Llama-2-70b-chat-hf-q4f16_1</code></pre></li>
-<li><p>Run the REST API</p>
-<p><code>python -m mlc_chat.rest --device-name metal  --model Llama-2-70b-chat-hf  --quantization q4f16_1</code></p>
-<p>This should print output from the server that should end with:</p>
-<p><code>INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)</code></p></li>
-</ol>
-</section>
-</section>
-<section id="how-to-use" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
-<p>At this stage, development and use of Alhazen will be performed via local Jupyter notebooks and the (https://nbdev.fast.ai/)[nbdev] framework.</p>
+<section id="taskinstruction" class="level3">
+<h3 class="anchored" data-anchor-id="taskinstruction">TaskInstruction</h3>
+<blockquote class="blockquote">
+<pre><code> TaskInstruction (name:str, instruction_type:str, system:str,
+                  instruction:str, input_variables:List[str]=&lt;factory&gt;)</code></pre>
+</blockquote>
+<p>A class that provides structure for task instructions (to be converted to LangChain PromptTemplates).</p>
 
 
 </section>

@@ -1,1 +1,1 @@
-Sitemap: https://chanzuckerberg.github.io/alhazen//sitemap.xml
+Sitemap: https://chanzuckerberg.github.io/alhazen/sitemap.xml
