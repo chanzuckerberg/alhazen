@@ -8,7 +8,7 @@
 
 <meta name="description" content="Building a simple chatbot to allow the user to ask questions about a single paper.">
 
-<title>alhazen - Gradio</title>
+<title>alhazen - QA on a single research article</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -97,10 +97,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Gradio">
+<meta property="og:title" content="alhazen - QA on a single research article">
 <meta property="og:description" content="Building a simple chatbot to allow the user to ask questions about a single paper.">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Gradio">
+<meta name="twitter:title" content="alhazen - QA on a single research article">
 <meta name="twitter:description" content="Building a simple chatbot to allow the user to ask questions about a single paper.">
 <meta name="twitter:card" content="summary">
 </head>
@@ -126,7 +126,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./single_paper_qa.html">Gradio</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./single_paper_qa.html">QA on a single research article</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -141,55 +141,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Background</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./app.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Alhazen FastAPI App</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./agent.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Alhazen LangChain Agent</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./chains.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Chains</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Models</span></a>
+ <span class="menu-text">Alhazen</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./single_paper_qa.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Gradio</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./11_ms_nlp_utils.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">11_ms_nlp_utils.html</span></a>
+ <span class="menu-text">QA on a single research article</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./jats_text_extractor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">JATS Text Extractor Utility</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pdf_text_extractor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PDF Text Extractor Utility</span></a>
   </div>
 </li>
     </ul>
@@ -205,7 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#singleopenaccessarticlechatbot" id="toc-singleopenaccessarticlechatbot" class="nav-link active" data-scroll-target="#singleopenaccessarticlechatbot">SingleOpenAccessArticleChatBot</a></li>
   <li><a href="#how-to-create-a-chatbot." id="toc-how-to-create-a-chatbot." class="nav-link" data-scroll-target="#how-to-create-a-chatbot.">How to create a chatbot.</a>
   <ul class="collapse">
-  <li><a href="#single_oa_article_chatbot" id="toc-single_oa_article_chatbot" class="nav-link" data-scroll-target="#single_oa_article_chatbot">single_oa_article_chatbot</a></li>
+  <li><a href="#chatbot" id="toc-chatbot" class="nav-link" data-scroll-target="#chatbot">chatbot</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -215,7 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Gradio</h1>
+<h1 class="title">QA on a single research article</h1>
 </div>
 
 <div>
@@ -237,7 +201,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/gradio.py#L35" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/single_paper_qa.py#L35" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="singleopenaccessarticlechatbot" class="level3">
 <h3 class="anchored" data-anchor-id="singleopenaccessarticlechatbot">SingleOpenAccessArticleChatBot</h3>
 <blockquote class="blockquote">
@@ -269,11 +233,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>This should load a page with instructions that you can follow.</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/gradio.py#L161" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="single_oa_article_chatbot" class="level3">
-<h3 class="anchored" data-anchor-id="single_oa_article_chatbot">single_oa_article_chatbot</h3>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/single_paper_qa.py#L162" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="chatbot" class="level3">
+<h3 class="anchored" data-anchor-id="chatbot">chatbot</h3>
 <blockquote class="blockquote">
-<pre><code> single_oa_article_chatbot (temp_dir='/tmp/alhazen')</code></pre>
+<pre><code> chatbot (temp_dir='/tmp/alhazen')</code></pre>
 </blockquote>
 
 
