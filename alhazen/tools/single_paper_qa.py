@@ -133,10 +133,11 @@ class SingleOpenAccessArticleChatBot:
                     if row.TAG != 'p' and row.PLAIN_TEXT[-1:]!='.':
                         row.PLAIN_TEXT += '.'
                 text_list = df_text['PLAIN_TEXT'].values.tolist()
+                text_length = sum([len(t) for t in text_list])
                 documents = [Document(text=t) for t in text_list]
                 self.index = VectorStoreIndex.from_documents(documents, service_context=self.service_context)
                 self.query_engine = self.index.as_query_engine()
-                return('Loaded paper: ' + first_author + ' (' + str(year) + ') "' + title)
+                return('Loaded paper: ' + first_author + ' (' + str(year) + ') "' + title + '\n' + str(text_length))
 
             def chat(message, chat_history):
                 bot_message = self.query_engine.query(message)
