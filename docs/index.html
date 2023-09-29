@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literuature, online databases, wikipedia, or any other sources that we can find).">
+<meta name="description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literature, online databases, wikipedia, or any other sources that we can find).">
 
 <title>alhazen - Alhazen</title>
 <style>
@@ -98,10 +98,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="alhazen - Alhazen">
-<meta property="og:description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literuature, online databases, wikipedia, or any other sources that we can find).">
+<meta property="og:description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literature, online databases, wikipedia, or any other sources that we can find).">
 <meta property="og:site-name" content="alhazen">
 <meta name="twitter:title" content="alhazen - Alhazen">
-<meta name="twitter:description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literuature, online databases, wikipedia, or any other sources that we can find).">
+<meta name="twitter:description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literature, online databases, wikipedia, or any other sources that we can find).">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -170,6 +170,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#install-from-source" id="toc-install-from-source" class="nav-link" data-scroll-target="#install-from-source">Install from source</a></li>
   </ul></li>
+  <li><a href="#other-dependencies" id="toc-other-dependencies" class="nav-link" data-scroll-target="#other-dependencies">Other dependencies</a></li>
   <li><a href="#how-to-use" id="toc-how-to-use" class="nav-link" data-scroll-target="#how-to-use">How to use</a></li>
   <li><a href="#code-status-and-capabilities" id="toc-code-status-and-capabilities" class="nav-link" data-scroll-target="#code-status-and-capabilities">Code Status and Capabilities</a></li>
   <li><a href="#where-does-the-name-alhazen-come-from" id="toc-where-does-the-name-alhazen-come-from" class="nav-link" data-scroll-target="#where-does-the-name-alhazen-come-from">Where does the Name ‘Alhazen’ come from?</a></li>
@@ -186,7 +187,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literuature, online databases, wikipedia, or any other sources that we can find).
+    An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literature, online databases, wikipedia, or any other sources that we can find).
   </div>
 </div>
 
@@ -213,6 +214,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> alhazen</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+</section>
+<section id="other-dependencies" class="level2">
+<h2 class="anchored" data-anchor-id="other-dependencies">Other dependencies</h2>
+<p>You will need to download quantized model files from HuggingFace and place them in a temporary location on disk (<code>/tmp/alhazen/</code> is the default):</p>
+<ul>
+<li><a href="https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF">Llama-2-70B</a> (recommended <a href="https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF/blob/main/llama-2-70b-chat.Q5_K_M.gguf">file</a>, requires 51.25 GB)</li>
+<li><a href="https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF">Llama-2-13B</a> (recommended <a href="https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF/blob/main/llama-2-13b-chat.Q5_K_M.gguf">file</a>, requires 11.73 GB)</li>
+</ul>
 </section>
 <section id="how-to-use" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
