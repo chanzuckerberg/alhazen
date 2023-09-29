@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literuature, online databases, wikipedia, or any other sources that we can find).">
 
-<title>alhazen - Background</title>
+<title>alhazen - Alhazen</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -62,11 +97,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Background">
-<meta property="og:description" content="">
+<meta property="og:title" content="alhazen - Alhazen">
+<meta property="og:description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literuature, online databases, wikipedia, or any other sources that we can find).">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Background">
-<meta name="twitter:description" content="">
+<meta name="twitter:title" content="alhazen - Alhazen">
+<meta name="twitter:description" content="An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literuature, online databases, wikipedia, or any other sources that we can find).">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -91,7 +126,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Background</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Alhazen</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -106,55 +141,19 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Background</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./app.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Alhazen FastAPI App</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./agent.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Alhazen LangChain Agent</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./chains.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Chains</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Models</span></a>
+ <span class="menu-text">Alhazen</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./single_paper_qa.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Gradio</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./11_ms_nlp_utils.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">11_ms_nlp_utils.html</span></a>
+ <span class="menu-text">QA on a single research article</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./jats_text_extractor.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">JATS Text Extractor Utility</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pdf_text_extractor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PDF Text Extractor Utility</span></a>
   </div>
 </li>
     </ul>
@@ -167,12 +166,13 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#install" id="toc-install" class="nav-link active" data-scroll-target="#install">Install</a>
+  <li><a href="#installation" id="toc-installation" class="nav-link active" data-scroll-target="#installation">Installation</a>
   <ul class="collapse">
-  <li><a href="#installing-llama2-locally-with-ollama-recommended" id="toc-installing-llama2-locally-with-ollama-recommended" class="nav-link" data-scroll-target="#installing-llama2-locally-with-ollama-recommended">Installing Llama2 locally with Ollama (RECOMMENDED)</a></li>
-  <li><a href="#installing-llama2-locally-with-mlc.ai" id="toc-installing-llama2-locally-with-mlc.ai" class="nav-link" data-scroll-target="#installing-llama2-locally-with-mlc.ai">Installing Llama2 locally with MLC.AI</a></li>
+  <li><a href="#install-from-source" id="toc-install-from-source" class="nav-link" data-scroll-target="#install-from-source">Install from source</a></li>
   </ul></li>
   <li><a href="#how-to-use" id="toc-how-to-use" class="nav-link" data-scroll-target="#how-to-use">How to use</a></li>
+  <li><a href="#code-status-and-capabilities" id="toc-code-status-and-capabilities" class="nav-link" data-scroll-target="#code-status-and-capabilities">Code Status and Capabilities</a></li>
+  <li><a href="#where-does-the-name-alhazen-come-from" id="toc-where-does-the-name-alhazen-come-from" class="nav-link" data-scroll-target="#where-does-the-name-alhazen-come-from">Where does the Name ‘Alhazen’ come from?</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -181,9 +181,14 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Background</h1>
+<h1 class="title">Alhazen</h1>
 </div>
 
+<div>
+  <div class="description">
+    An intelligent agent to help read and understand scientific research based on extant knowledge (i.e., what is already known and reported in the scientific literuature, online databases, wikipedia, or any other sources that we can find).
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -197,48 +202,43 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<p>One thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning—an early pioneer in the scientific method <em>five centuries</em> before Renaissance scientists (<a href="https://www.ibnalhaytham.com/">Website</a>, <a href="https://en.wikipedia.org/wiki/Ibn_al-Haytham">Wikipedia</a>, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6074172/">Tbakhi &amp; Amir 2007</a>).</p>
+<p>This is an early proof-of-concept prototype developed within CZI’s Research Science Team (RST). It is intended to be used as a downloadable library that can be run on a high-end local machine (M2 Apple Macbook with 32+GB of memory - no support for Windows or Linux yet).</p>
+<section id="installation" class="level2">
+<h2 class="anchored" data-anchor-id="installation">Installation</h2>
+<section id="install-from-source" class="level3">
+<h3 class="anchored" data-anchor-id="install-from-source">Install from source</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/chanzuckerberg/alzhazen</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> alhazen python=3.8</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate alhazen</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> alhazen</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="how-to-use" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
+<p>We use the fire library to create a modular command line interface (CLI) for Alhazen.</p>
+<p>For example to run the chatbot for the single paper QA task, execute the following command:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen/tools/<span class="op">&lt;</span>tool_name<span class="op">&gt;</span>.py chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>for example, run the following command to chat with the single paper QA chatbot:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen/tools/single_paper_qa.py chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="code-status-and-capabilities" class="level2">
+<h2 class="anchored" data-anchor-id="code-status-and-capabilities">Code Status and Capabilities</h2>
+<p>This project is still very early, but we are attempting to provide access to the full range of capabilities of the project as we develop them. We will provide some access to each capability through <a href="https://gradio.app/">Gradio</a> as we develop them, and will eventually synthesise them into a single agent-driven interface.</p>
+<ul>
+<li><strong>Single Paper QA (SPQA)</strong> - retrieval augmented generation (RAG) question answering about a single paper (implemented through <a href="https://www.llamaindex.ai/">llama-index</a>)</li>
+<li>… more to come</li>
+</ul>
+</section>
+<section id="where-does-the-name-alhazen-come-from" class="level2">
+<h2 class="anchored" data-anchor-id="where-does-the-name-alhazen-come-from">Where does the Name ‘Alhazen’ come from?</h2>
+<p>One thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning — an early pioneer in the scientific method <em>five centuries</em> before Renaissance scientists started following the same paradigm (<a href="https://www.ibnalhaytham.com/">Website</a>, <a href="https://en.wikipedia.org/wiki/Ibn_al-Haytham">Wikipedia</a>, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6074172/">Tbakhi &amp; Amir 2007</a>).</p>
 <p>We use the latinized form of his name (‘Alhazen’) as the name of this project to honor his contribution (which goes largely unrecognized from within non-Islamic communities).</p>
 <p>Famously, he was quoted as saying:</p>
 <blockquote class="blockquote">
 <p>The duty of the man who investigates the writings of scientists, if learning the truth is his goal, is to make himself an enemy of all that he reads, and, applying his mind to the core and margins of its content, attack it from every side. He should also suspect himself as he performs his critical examination of it, so that he may avoid falling into either prejudice or leniency.</p>
 </blockquote>
 <p>Here, we seek to develop an AI capable of applying scientific knowledge engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s critical view of published knowledge by creating a AI-powered system for scientific discovery.</p>
-<section id="install" class="level2">
-<h2 class="anchored" data-anchor-id="install">Install</h2>
-<p>This library uses either the MLC.AI project (<a href="https://mlc.ai/" class="uri">https://mlc.ai/</a>) or Ollama (<a href="https://ollama.ai/" class="uri">https://ollama.ai/</a>) and primarily functions by executing a local LLM on the user’s machine - and then call that system via a REST API.</p>
-<section id="installing-llama2-locally-with-ollama-recommended" class="level3">
-<h3 class="anchored" data-anchor-id="installing-llama2-locally-with-ollama-recommended">Installing Llama2 locally with Ollama (RECOMMENDED)</h3>
-<p>Instructions: <a href="https://ollama.ai/download" class="uri">https://ollama.ai/download</a></p>
-<ol type="1">
-<li>Very simple download and install. Just follow the instructions.</li>
-</ol>
-</section>
-<section id="installing-llama2-locally-with-mlc.ai" class="level3">
-<h3 class="anchored" data-anchor-id="installing-llama2-locally-with-mlc.ai">Installing Llama2 locally with MLC.AI</h3>
-<p>Instructions: <a href="https://mlc.ai/mlc-llm/docs/" class="uri">https://mlc.ai/mlc-llm/docs/</a></p>
-<ol type="1">
-<li><p>Download and install pre-built pip wheels for mlc-ai and mlc-llm from <a href="https://mlc.ai/package/" class="uri">https://mlc.ai/package/</a></p>
-<p>For Metal installation on Mac, run this command:</p>
-<p><code>pip install --pre --force-reinstall mlc-ai-nightly mlc-chat-nightly -f https://mlc.ai/wheels/</code></p></li>
-<li><p>Verify installation</p>
-<p><code>python -m mlc_chat.rest --help</code></p>
-<p>This should print help information for the REST API.</p></li>
-<li><p>Download the quantized Llama2 model from github and place it in the dist/prebuilt directory.</p>
-<pre><code>mkdir -p dist/prebuilt
-git clone https://github.com/mlc-ai/binary-mlc-llm-libs.git dist/prebuilt/lib
-cd dist/prebuilt
-git clone https://huggingface.co/mlc-ai/mlc-chat-Llama-2-70b-chat-hf-q4f16_1</code></pre></li>
-<li><p>Run the REST API</p>
-<p><code>python -m mlc_chat.rest --device-name metal  --model Llama-2-70b-chat-hf  --quantization q4f16_1</code></p>
-<p>This should print output from the server that should end with:</p>
-<p><code>INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)</code></p></li>
-</ol>
-</section>
-</section>
-<section id="how-to-use" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
-<p>At this stage, development and use of Alhazen will be performed via local Jupyter notebooks and the (https://nbdev.fast.ai/)[nbdev] framework.</p>
 
 
 </section>
