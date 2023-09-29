@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Fill in a module description here">
 
-<title>alhazen - core</title>
+<title>alhazen – ms_nlp_utils</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,12 +62,6 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - core">
-<meta property="og:description" content="Fill in a module description here">
-<meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - core">
-<meta name="twitter:description" content="Fill in a module description here">
-<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-sidebar floating nav-fixed">
@@ -92,7 +85,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./core.html">core</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./11_ms_nlp_utils.html">11_ms_nlp_utils.html</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -112,8 +105,50 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./core.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">core</span></a>
+  <a href="./app.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Alhazen FastAPI App</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./agent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Alhazen LangChain Agent</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chains.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Chains</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Models</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./single_paper_qa.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Gradio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11_ms_nlp_utils.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">11_ms_nlp_utils.html</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jats_text_extractor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">JATS Text Extractor Utility</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pdf_text_extractor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDF Text Extractor Utility</span></a>
   </div>
 </li>
     </ul>
@@ -126,42 +161,78 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#foo" id="toc-foo" class="nav-link active" data-scroll-target="#foo">foo</a></li>
+  <li><a href="#get_conv_template" id="toc-get_conv_template" class="nav-link active" data-scroll-target="#get_conv_template">get_conv_template</a></li>
+  <li><a href="#register_conv_template" id="toc-register_conv_template" class="nav-link" data-scroll-target="#register_conv_template">register_conv_template</a></li>
+  <li><a href="#conversation" id="toc-conversation" class="nav-link" data-scroll-target="#conversation">Conversation</a></li>
+  <li><a href="#separatorstyle" id="toc-separatorstyle" class="nav-link" data-scroll-target="#separatorstyle">SeparatorStyle</a></li>
+  <li><a href="#get_response" id="toc-get_response" class="nav-link" data-scroll-target="#get_response">get_response</a></li>
+  <li><a href="#preprocess_instance" id="toc-preprocess_instance" class="nav-link" data-scroll-target="#preprocess_instance">preprocess_instance</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">core</h1>
-</div>
 
-<div>
-  <div class="description">
-    Fill in a module description here
-  </div>
-</div>
-
-
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-</header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/core.py#L7" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="foo" class="level3">
-<h3 class="anchored" data-anchor-id="foo">foo</h3>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ms_nlp.py#L204" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="get_conv_template" class="level3">
+<h3 class="anchored" data-anchor-id="get_conv_template">get_conv_template</h3>
 <blockquote class="blockquote">
-<pre><code> foo ()</code></pre>
+<pre><code> get_conv_template (name:str)</code></pre>
+</blockquote>
+<p>Get a conversation template.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ms_nlp.py#L197" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="register_conv_template" class="level3">
+<h3 class="anchored" data-anchor-id="register_conv_template">register_conv_template</h3>
+<blockquote class="blockquote">
+<pre><code> register_conv_template (template:__main__.Conversation,
+                         override:bool=False)</code></pre>
+</blockquote>
+<p>Register a new conversation template.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ms_nlp.py#L33" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="conversation" class="level3">
+<h3 class="anchored" data-anchor-id="conversation">Conversation</h3>
+<blockquote class="blockquote">
+<pre><code> Conversation (name:str, system:str, roles:List[str],
+               messages:List[List[str]], offset:int,
+               sep_style:__main__.SeparatorStyle, sep:str, sep2:str=None,
+               stop_str:str=None, stop_token_ids:List[int]=None,
+               conv_id:Any=None, skip_next:bool=False,
+               model_name:str=None)</code></pre>
+</blockquote>
+<p>A class that keeps all conversation history.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ms_nlp.py#L19" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="separatorstyle" class="level3">
+<h3 class="anchored" data-anchor-id="separatorstyle">SeparatorStyle</h3>
+<blockquote class="blockquote">
+<pre><code> SeparatorStyle (value, names=None, module=None, qualname=None, type=None,
+                 start=1, boundary=None)</code></pre>
+</blockquote>
+<p>Separator styles.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ms_nlp.py#L473" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_response" class="level3">
+<h3 class="anchored" data-anchor-id="get_response">get_response</h3>
+<blockquote class="blockquote">
+<pre><code> get_response (responses)</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ms_nlp.py#L463" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="preprocess_instance" class="level3">
+<h3 class="anchored" data-anchor-id="preprocess_instance">preprocess_instance</h3>
+<blockquote class="blockquote">
+<pre><code> preprocess_instance (source)</code></pre>
 </blockquote>
 
 
