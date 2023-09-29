@@ -4,10 +4,9 @@ website:
       - index.ipynb
       - 00_app.ipynb
       - 01_agent.ipynb
-      - 02_tools.ipynb
       - 03_chains.ipynb
       - 04_models.ipynb
-      - 05_gradio.ipynb
+      - 05_single_paper_qa.ipynb
       - 11_ms_nlp_utils.ipynb
       - 12_jats_text_extractor.ipynb
       - 13_pdf_text_extractor.ipynb
