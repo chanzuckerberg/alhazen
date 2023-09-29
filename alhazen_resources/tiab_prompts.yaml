@@ -1,0 +1,64 @@
+technology_type method extraction: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  system: _|
+    You are an expert biological scientist trained in imaging and microscopy. 
+    Your knowledge is deep and wide. You are terse and precise in your language._
+  instruction: _|
+    Your job is to read the title and abstract of a scientific paper delimited with triple backticks below. 
+    First, break down the text of the title and abstract into separate sentences.
+    Second, identify which sentences describe 
+      - background information about the work, 
+      - the goals of the paper,
+      - the methods used by the scientists,
+      - the results of the work, and
+      - the conclusions of the work. 
+    Third, using only the goal, method, or results sentences write a description of what the authors did as the main contribution of the paper by 
+    saying 'The authors ...' and then describing what they did in a complete sentence. 
+    Fourth, decide if the contribution of the paper is concerned with developing one of three possible types of biomedical imaging technology:- probes, acquisition hardware, or data analysis.     
+    Be careful about this decision and only include the paper in one of the subtypes if you are confident that the contribution of the paper focuses 
+    on one of the specified types of biomedical imaging methods. 
+    If the main contribution is the development of molecular probes, stains, antibodies, or any other way of generating a visual signal from a biomedical sample, record a value of 'probe' in the 'technology_type' field of the output.
+    If the main contribution is the development of methods to acquire biomedical images from biomedical samples in new ways (such as methods in microscopy, optics, spectroscopy, etc.), record a value of 'acquisition hardware' in the 'technology_type' field of the output.
+    If the main contribution is the development of data analysis methods for imaging data, record a value of 'data analysis' in the 'technology_type' field of the output.
+    If the main contribution is the development of technology but is not any of these types, record a value of 'other' in the 'technology_type' field of the output.
+    If the main contribution is not the development of imaging technology (such as an experiment describing other phenomenon), record a value of 'none' in the 'technology_type' field of the output.
+    Format your response as a JSON object with "main_contribution" and "technology_type" as the keys. Do not include any other response other than the JSON object. 
+    Remember, stop generating text after you finish the JSON object. Do not provide additional explanations of your answer.
+    Article
+    title:- '''{title}'''
+    abstract:- '''{abstract}'''_
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - technology_type
+    - main_contribution
+
+methods papers binary classifier:
+  system: Your job is to read the title and abstract of a scientific paper and perform the task described below.
+  instruction: _|
+    The text of the title and the text of the abstract will be delimited with triple backticks.
+    First, split the text of the title and abstract into separate sentences.
+    Second, classify each sentence as describing
+      - background information about the work,
+      - the goals of the paper,
+      - the methods used by the scientists,
+      - the results of the work, and
+      - the conclusions of the work.
+    Third, using only the goal and method sentences, decide if the work is concerned with
+    (A) developing new technology or methods or
+    (B) investigating how biological systems work. 
+    Be careful about this decision and only answer 'true' if you are confident that the main goal 
+    of the published work was to create or test a new technique or method.  
+    If paper describes the development of a new method, technique or approach, record a true value 
+    in a variable called is_method_paper in the output. 
+    If the goal of the work understanding biological phenomena, record a false value in a variable called is_method_paper in the output. 
+    Format your response as a JSON object with "is_method_paper" as the key.  
+    Briefly explain your reasoning for your decision in one or two sentences.
+    title:- '''{title}''' 
+    abstract:- '''{abstract}'''_
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - is_method_paper
