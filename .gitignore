@@ -151,6 +151,5 @@ checklink/cookies.txt
 
 # Built + LLM libraries
 dist/
-alhazen
 .databricks
 .git.bfg-report
