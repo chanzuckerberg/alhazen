@@ -23,16 +23,16 @@
   {
     "objectID": "single_paper_qa.html",
     "href": "single_paper_qa.html",
-    "title": "Gradio",
+    "title": "QA on a single research article",
     "section": "",
     "text": "source"
   },
   {
     "objectID": "single_paper_qa.html#how-to-create-a-chatbot.",
     "href": "single_paper_qa.html#how-to-create-a-chatbot.",
-    "title": "Gradio",
+    "title": "QA on a single research article",
     "section": "How to create a chatbot.",
-    "text": "How to create a chatbot.\n\nDownload the GGUF file you want the chatbot to use for Llama2 and put it in a temp directory\nSet the environment variable DB_TOKEN to your databricks access token\n\nYou need access to the Databricks SQL warehouse named sci_general_sql (ID: 1c4df94f2f1a6305) on the general czi-prod databricks instance: https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/\n\nExecute the following code:\n\nfrom alhazen.gradio import SingleOpenAccessArticleChatBot\n\nchatbot = SingleOpenAccessArticleChatBot(temp_dir='/Users/gburns/Documents/Coding/ChatGPT_etc/LLMs/')\nchatbot.run_gradio()\n\nNavigate to the URL that is printed out.\n\nThis should load a page with instructions that you can follow.\n\nsource\n\nsingle_oa_article_chatbot\n\n single_oa_article_chatbot (temp_dir='/tmp/alhazen')"
+    "text": "How to create a chatbot.\n\nDownload the GGUF file you want the chatbot to use for Llama2 and put it in a temp directory\nSet the environment variable DB_TOKEN to your databricks access token\n\nYou need access to the Databricks SQL warehouse named sci_general_sql (ID: 1c4df94f2f1a6305) on the general czi-prod databricks instance: https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/\n\nExecute the following code:\n\nfrom alhazen.gradio import SingleOpenAccessArticleChatBot\n\nchatbot = SingleOpenAccessArticleChatBot(temp_dir='/Users/gburns/Documents/Coding/ChatGPT_etc/LLMs/')\nchatbot.run_gradio()\n\nNavigate to the URL that is printed out.\n\nThis should load a page with instructions that you can follow.\n\nsource\n\nchatbot\n\n chatbot (temp_dir='/tmp/alhazen')"
   },
   {
     "objectID": "app.html",
@@ -72,22 +72,36 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Background",
+    "title": "Alhazen",
     "section": "",
-    "text": "One thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning—an early pioneer in the scientific method five centuries before Renaissance scientists (Website, Wikipedia, Tbakhi & Amir 2007).\nWe use the latinized form of his name (‘Alhazen’) as the name of this project to honor his contribution (which goes largely unrecognized from within non-Islamic communities).\nFamously, he was quoted as saying:\nHere, we seek to develop an AI capable of applying scientific knowledge engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s critical view of published knowledge by creating a AI-powered system for scientific discovery."
+    "text": "This is an early proof-of-concept prototype developed within CZI’s Research Science Team (RST). It is intended to be used as a downloadable library that can be run on a high-end local machine (M2 Apple Macbook with 32+GB of memory - no support for Windows or Linux yet)."
   },
   {
-    "objectID": "index.html#install",
-    "href": "index.html#install",
-    "title": "Background",
-    "section": "Install",
-    "text": "Install\nThis library uses either the MLC.AI project (https://mlc.ai/) or Ollama (https://ollama.ai/) and primarily functions by executing a local LLM on the user’s machine - and then call that system via a REST API.\n\nInstalling Llama2 locally with Ollama (RECOMMENDED)\nInstructions: https://ollama.ai/download\n\nVery simple download and install. Just follow the instructions.\n\n\n\nInstalling Llama2 locally with MLC.AI\nInstructions: https://mlc.ai/mlc-llm/docs/\n\nDownload and install pre-built pip wheels for mlc-ai and mlc-llm from https://mlc.ai/package/\nFor Metal installation on Mac, run this command:\npip install --pre --force-reinstall mlc-ai-nightly mlc-chat-nightly -f https://mlc.ai/wheels/\nVerify installation\npython -m mlc_chat.rest --help\nThis should print help information for the REST API.\nDownload the quantized Llama2 model from github and place it in the dist/prebuilt directory.\nmkdir -p dist/prebuilt\ngit clone https://github.com/mlc-ai/binary-mlc-llm-libs.git dist/prebuilt/lib\ncd dist/prebuilt\ngit clone https://huggingface.co/mlc-ai/mlc-chat-Llama-2-70b-chat-hf-q4f16_1\nRun the REST API\npython -m mlc_chat.rest --device-name metal  --model Llama-2-70b-chat-hf  --quantization q4f16_1\nThis should print output from the server that should end with:\nINFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)"
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "Alhazen",
+    "section": "Installation",
+    "text": "Installation\n\nInstall from source\ngit clone https://github.com/chanzuckerberg/alzhazen\nconda create -n alhazen python=3.8\nconda activate alhazen\ncd alhazen\npip install -e ."
   },
   {
     "objectID": "index.html#how-to-use",
     "href": "index.html#how-to-use",
-    "title": "Background",
+    "title": "Alhazen",
     "section": "How to use",
-    "text": "How to use\nAt this stage, development and use of Alhazen will be performed via local Jupyter notebooks and the (https://nbdev.fast.ai/)[nbdev] framework."
+    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot"
+  },
+  {
+    "objectID": "index.html#code-status-and-capabilities",
+    "href": "index.html#code-status-and-capabilities",
+    "title": "Alhazen",
+    "section": "Code Status and Capabilities",
+    "text": "Code Status and Capabilities\nThis project is still very early, but we are attempting to provide access to the full range of capabilities of the project as we develop them. We will provide some access to each capability through Gradio as we develop them, and will eventually synthesise them into a single agent-driven interface.\n\nSingle Paper QA (SPQA) - retrieval augmented generation (RAG) question answering about a single paper (implemented through llama-index)\n… more to come"
+  },
+  {
+    "objectID": "index.html#where-does-the-name-alhazen-come-from",
+    "href": "index.html#where-does-the-name-alhazen-come-from",
+    "title": "Alhazen",
+    "section": "Where does the Name ‘Alhazen’ come from?",
+    "text": "Where does the Name ‘Alhazen’ come from?\nOne thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning — an early pioneer in the scientific method five centuries before Renaissance scientists started following the same paradigm (Website, Wikipedia, Tbakhi & Amir 2007).\nWe use the latinized form of his name (‘Alhazen’) as the name of this project to honor his contribution (which goes largely unrecognized from within non-Islamic communities).\nFamously, he was quoted as saying:\n\nThe duty of the man who investigates the writings of scientists, if learning the truth is his goal, is to make himself an enemy of all that he reads, and, applying his mind to the core and margins of its content, attack it from every side. He should also suspect himself as he performs his critical examination of it, so that he may avoid falling into either prejudice or leniency.\n\nHere, we seek to develop an AI capable of applying scientific knowledge engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s critical view of published knowledge by creating a AI-powered system for scientific discovery."
   }
 ]
