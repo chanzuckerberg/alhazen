@@ -190,7 +190,7 @@ class SingleOpenAccessArticleChatBot:
 
         demo.queue().launch(debug = True) 
 
-# %% ../../nbs/05_single_paper_qa.ipynb 5
+# %% ../../nbs/05_single_paper_qa.ipynb 4
 def chatbot(temp_dir='/tmp/alhazen',
                 embed_model_name="BAAI/bge-small-en-v1.5", 
                 gguf_file_name='llama-2-13b-chat.Q5_K_M.gguf',
