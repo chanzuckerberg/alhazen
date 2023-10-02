@@ -9,6 +9,8 @@ with 32+GB of memory - no support for Windows or Linux yet).
 
 `<<<<<<< HEAD`
 
+`<<<<<<< HEAD`
+
 ## Installation
 
 ### Install from source
@@ -76,6 +78,10 @@ python -m fire alhazen/tools/single_paper_qa.py chatbot
 
 `=======`
 
+`=======`
+
+`>>>>>>> f0eb149cb0d21a5af0429a6b6f58454ce54a54d1`
+
 ## Installation
 
 ### Install from source
@@ -121,6 +127,12 @@ chatbot:
 ``` bash
 python -m fire alhazen/tools/single_paper_qa.py chatbot
 ```
+
+`<<<<<<< HEAD`
+
+`>>>>>>> f0eb149cb0d21a5af0429a6b6f58454ce54a54d1`
+
+`=======`
 
 `>>>>>>> f0eb149cb0d21a5af0429a6b6f58454ce54a54d1`
 
