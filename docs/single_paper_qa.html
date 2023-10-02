@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -167,10 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#singleopenaccessarticlechatbot" id="toc-singleopenaccessarticlechatbot" class="nav-link active" data-scroll-target="#singleopenaccessarticlechatbot">SingleOpenAccessArticleChatBot</a></li>
-  <li><a href="#how-to-create-a-chatbot." id="toc-how-to-create-a-chatbot." class="nav-link" data-scroll-target="#how-to-create-a-chatbot.">How to create a chatbot.</a>
-  <ul class="collapse">
   <li><a href="#chatbot" id="toc-chatbot" class="nav-link" data-scroll-target="#chatbot">chatbot</a></li>
-  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -213,27 +176,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                                  sentence_window_size=3)</code></pre>
 </blockquote>
 <p>Initialize self. See help(type(self)) for accurate signature.</p>
-</section>
-<section id="how-to-create-a-chatbot." class="level2">
-<h2 class="anchored" data-anchor-id="how-to-create-a-chatbot.">How to create a chatbot.</h2>
-<ol type="1">
-<li>Download the GGUF file you want the chatbot to use for Llama2 and put it in a temp directory</li>
-<li>Set the environment variable <code>DB_TOKEN</code> to your databricks access token
-<ol type="1">
-<li>You need access to the Databricks SQL warehouse named <code>sci_general_sql</code> (ID: 1c4df94f2f1a6305) on the general czi-prod databricks instance: <code>https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/</code></li>
-</ol></li>
-<li>Execute the following code:</li>
-</ol>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.gradio <span class="im">import</span> SingleOpenAccessArticleChatBot</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>chatbot <span class="op">=</span> SingleOpenAccessArticleChatBot(temp_dir<span class="op">=</span><span class="st">'/Users/gburns/Documents/Coding/ChatGPT_etc/LLMs/'</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>chatbot.run_gradio()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="4" type="1">
-<li>Navigate to the URL that is printed out.</li>
-</ol>
-<p>This should load a page with instructions that you can follow.</p>
 <hr>
 <p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/single_paper_qa.py#L194" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
 <section id="chatbot" class="level3">
 <h3 class="anchored" data-anchor-id="chatbot">chatbot</h3>
 <blockquote class="blockquote">
@@ -244,7 +189,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->
