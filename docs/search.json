@@ -25,7 +25,7 @@
     "href": "single_paper_qa.html#how-to-create-a-chatbot.",
     "title": "QA on a single research article",
     "section": "How to create a chatbot.",
-    "text": "How to create a chatbot.\n\nDownload the GGUF file you want the chatbot to use for Llama2 and put it in a temp directory\nSet the environment variable DB_TOKEN to your databricks access token\n\nYou need access to the Databricks SQL warehouse named sci_general_sql (ID: 1c4df94f2f1a6305) on the general czi-prod databricks instance: https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/\n\nExecute the following code:\n\nfrom alhazen.gradio import SingleOpenAccessArticleChatBot\n\nchatbot = SingleOpenAccessArticleChatBot(temp_dir='/Users/gburns/Documents/Coding/ChatGPT_etc/LLMs/')\nchatbot.run_gradio()\n\nNavigate to the URL that is printed out.\n\nThis should load a page with instructions that you can follow.\n\nsource\n\nchatbot\n\n chatbot (temp_dir='/tmp/alhazen')"
+    "text": "How to create a chatbot.\n\nDownload the GGUF file you want the chatbot to use for Llama2 and put it in a temp directory\nSet the environment variable DB_TOKEN to your databricks access token\n\nYou need access to the Databricks SQL warehouse named sci_general_sql (ID: 1c4df94f2f1a6305) on the general czi-prod databricks instance: https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/\n\nExecute the following code:\n\nfrom alhazen.gradio import SingleOpenAccessArticleChatBot\n\nchatbot = SingleOpenAccessArticleChatBot(temp_dir='/Users/gburns/Documents/Coding/ChatGPT_etc/LLMs/')\nchatbot.run_gradio()\n\nNavigate to the URL that is printed out.\n\nThis should load a page with instructions that you can follow.\n\nsource\n\nchatbot\n\n chatbot (temp_dir='/tmp/alhazen', embed_model_name='BAAI/bge-small-\n          en-v1.5', gguf_file_name='llama-2-13b-chat.Q5_K_M.gguf',\n          temperature=0.1, max_new_tokens=256, context_window=3900,\n          sentence_window_size=3)"
   },
   {
     "objectID": "app.html",
@@ -74,7 +74,7 @@
     "href": "index.html#other-dependencies",
     "title": "Alhazen",
     "section": "Other dependencies",
-    "text": "Other dependencies\nYou will need to download quantized model files from HuggingFace and place them in a temporary location on disk (/tmp/alhazen/ is the default):\n\nLlama-2-70B (recommended file, requires 51.25 GB)\nLlama-2-13B (recommended file, requires 11.73 GB)"
+    "text": "Other dependencies\n\nDatabricks\nYou will need to run remote queries on CZI’s Databricks general prod instance: https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/\nYou will need to have a Databricks token in your environment variables. You can generate one by following the instructions here: https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-a-token\nSet this token as an environment variable called DB_TOKEN in your shell:\nexport DB_TOKEN=&lt;your token&gt;\n\n\nGGUF Files from HuggingFace (TheBloke)\nThe tool uses quantized model files from HuggingFace and will place them for you into a temporary location on disk (/tmp/alhazen/ is the default):\n\nLlama-2-70B (recommended file, requires 51.25 GB)\nLlama-2-13B (recommended file, requires 11.73 GB)"
   },
   {
     "objectID": "index.html#how-to-use",
