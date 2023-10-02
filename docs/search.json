@@ -18,7 +18,14 @@
     "href": "single_paper_qa.html",
     "title": "QA on a single research article",
     "section": "",
-    "text": "source\n\nSingleOpenAccessArticleChatBot\n\n SingleOpenAccessArticleChatBot (temp_dir='/tmp/alhazen',\n                                 embed_model_name='BAAI/bge-small-\n                                 en-v1.5', gguf_file_name='llama-2-13b-\n                                 chat.Q5_K_M.gguf', temperature=0.1,\n                                 max_new_tokens=256, context_window=3900,\n                                 sentence_window_size=3)\n\nInitialize self. See help(type(self)) for accurate signature.\n\nsource\n\n\nchatbot\n\n chatbot (temp_dir='/tmp/alhazen', embed_model_name='BAAI/bge-small-\n          en-v1.5', gguf_file_name='llama-2-13b-chat.Q5_K_M.gguf',\n          temperature=0.1, max_new_tokens=256, context_window=3900,\n          sentence_window_size=3)"
+    "text": "source"
+  },
+  {
+    "objectID": "single_paper_qa.html#how-to-create-a-chatbot.",
+    "href": "single_paper_qa.html#how-to-create-a-chatbot.",
+    "title": "QA on a single research article",
+    "section": "How to create a chatbot.",
+    "text": "How to create a chatbot.\n\nDownload the GGUF file you want the chatbot to use for Llama2 and put it in a temp directory\nSet the environment variable DB_TOKEN to your databricks access token\n\nYou need access to the Databricks SQL warehouse named sci_general_sql (ID: 1c4df94f2f1a6305) on the general czi-prod databricks instance: https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/\n\nExecute the following code:\n\nfrom alhazen.gradio import SingleOpenAccessArticleChatBot\n\nchatbot = SingleOpenAccessArticleChatBot()\nchatbot.run_gradio()\n\nNavigate to the URL that is printed out.\n\nThis should load a page with instructions that you can follow."
   },
   {
     "objectID": "app.html",
@@ -53,7 +60,7 @@
     "href": "index.html",
     "title": "Alhazen",
     "section": "",
-    "text": "This is an early proof-of-concept prototype developed within CZI’s Research Science Team (RST). It is intended to be used as a downloadable library that can be run on a high-end local machine (M2 Apple Macbook with 32+GB of memory - no support for Windows or Linux yet).\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD"
+    "text": "This is an early proof-of-concept prototype developed within CZI’s Research Science Team (RST). It is intended to be used as a downloadable library that can be run on a high-end local machine (M2 Apple Macbook with 32+GB of memory - no support for Windows or Linux yet).\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD"
   },
   {
     "objectID": "index.html#installation",
@@ -74,7 +81,7 @@
     "href": "index.html#how-to-use",
     "title": "Alhazen",
     "section": "How to use",
-    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot\n======="
+    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot\n=======\n=======\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; f0eb149cb0d21a5af0429a6b6f58454ce54a54d1"
   },
   {
     "objectID": "index.html#installation-1",
@@ -95,7 +102,7 @@
     "href": "index.html#how-to-use-1",
     "title": "Alhazen",
     "section": "How to use",
-    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; f0eb149cb0d21a5af0429a6b6f58454ce54a54d1"
+    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; f0eb149cb0d21a5af0429a6b6f58454ce54a54d1\n=======\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; f0eb149cb0d21a5af0429a6b6f58454ce54a54d1"
   },
   {
     "objectID": "index.html#code-status-and-capabilities",
