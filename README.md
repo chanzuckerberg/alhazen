@@ -21,8 +21,27 @@ pip install -e .
 
 ## Other dependencies
 
-You will need to download quantized model files from HuggingFace and
-place them in a temporary location on disk (`/tmp/alhazen/` is the
+### Databricks
+
+You will need to run remote queries on CZI’s Databricks general prod
+instance:
+<https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/>
+
+You will need to have a Databricks token in your environment variables.
+You can generate one by following the instructions here:
+<https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-a-token>
+
+Set this token as an environment variable called `DB_TOKEN` in your
+shell:
+
+``` bash
+export DB_TOKEN=<your token>
+```
+
+### GGUF Files from HuggingFace (TheBloke)
+
+The tool uses quantized model files from HuggingFace and will place them
+for you into a temporary location on disk (`/tmp/alhazen/` is the
 default):
 
 - [Llama-2-70B](https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF)
