@@ -170,7 +170,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#install-from-source" id="toc-install-from-source" class="nav-link" data-scroll-target="#install-from-source">Install from source</a></li>
   </ul></li>
-  <li><a href="#other-dependencies" id="toc-other-dependencies" class="nav-link" data-scroll-target="#other-dependencies">Other dependencies</a></li>
+  <li><a href="#other-dependencies" id="toc-other-dependencies" class="nav-link" data-scroll-target="#other-dependencies">Other dependencies</a>
+  <ul class="collapse">
+  <li><a href="#databricks" id="toc-databricks" class="nav-link" data-scroll-target="#databricks">Databricks</a></li>
+  <li><a href="#gguf-files-from-huggingface-thebloke" id="toc-gguf-files-from-huggingface-thebloke" class="nav-link" data-scroll-target="#gguf-files-from-huggingface-thebloke">GGUF Files from HuggingFace (TheBloke)</a></li>
+  </ul></li>
   <li><a href="#how-to-use" id="toc-how-to-use" class="nav-link" data-scroll-target="#how-to-use">How to use</a></li>
   <li><a href="#code-status-and-capabilities" id="toc-code-status-and-capabilities" class="nav-link" data-scroll-target="#code-status-and-capabilities">Code Status and Capabilities</a></li>
   <li><a href="#where-does-the-name-alhazen-come-from" id="toc-where-does-the-name-alhazen-come-from" class="nav-link" data-scroll-target="#where-does-the-name-alhazen-come-from">Where does the Name ‘Alhazen’ come from?</a></li>
@@ -217,19 +221,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="other-dependencies" class="level2">
 <h2 class="anchored" data-anchor-id="other-dependencies">Other dependencies</h2>
-<p>You will need to download quantized model files from HuggingFace and place them in a temporary location on disk (<code>/tmp/alhazen/</code> is the default):</p>
+<section id="databricks" class="level3">
+<h3 class="anchored" data-anchor-id="databricks">Databricks</h3>
+<p>You will need to run remote queries on CZI’s Databricks general prod instance: <a href="https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/" class="uri">https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/</a></p>
+<p>You will need to have a Databricks token in your environment variables. You can generate one by following the instructions here: <a href="https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-a-token" class="uri">https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-a-token</a></p>
+<p>Set this token as an environment variable called <code>DB_TOKEN</code> in your shell:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">DB_TOKEN</span><span class="op">=&lt;</span>your token<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="gguf-files-from-huggingface-thebloke" class="level3">
+<h3 class="anchored" data-anchor-id="gguf-files-from-huggingface-thebloke">GGUF Files from HuggingFace (TheBloke)</h3>
+<p>The tool uses quantized model files from HuggingFace and will place them for you into a temporary location on disk (<code>/tmp/alhazen/</code> is the default):</p>
 <ul>
 <li><a href="https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF">Llama-2-70B</a> (recommended <a href="https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF/blob/main/llama-2-70b-chat.Q5_K_M.gguf">file</a>, requires 51.25 GB)</li>
 <li><a href="https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF">Llama-2-13B</a> (recommended <a href="https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF/blob/main/llama-2-13b-chat.Q5_K_M.gguf">file</a>, requires 11.73 GB)</li>
 </ul>
 </section>
+</section>
 <section id="how-to-use" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
 <p>We use the fire library to create a modular command line interface (CLI) for Alhazen.</p>
 <p>For example to run the chatbot for the single paper QA task, execute the following command:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen/tools/<span class="op">&lt;</span>tool_name<span class="op">&gt;</span>.py chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen/tools/<span class="op">&lt;</span>tool_name<span class="op">&gt;</span>.py chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>for example, run the following command to chat with the single paper QA chatbot:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen/tools/single_paper_qa.py chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen/tools/single_paper_qa.py chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="code-status-and-capabilities" class="level2">
 <h2 class="anchored" data-anchor-id="code-status-and-capabilities">Code Status and Capabilities</h2>
