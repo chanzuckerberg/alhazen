@@ -7,10 +7,6 @@ Research Science Team (RST). It is intended to be used as a downloadable
 library that can be run on a high-end local machine (M2 Apple Macbook
 with 32+GB of memory - no support for Windows or Linux yet).
 
-`<<<<<<< HEAD`
-
-`<<<<<<< HEAD`
-
 ## Installation
 
 ### Install from source
@@ -75,66 +71,6 @@ chatbot:
 ``` bash
 python -m fire alhazen/tools/single_paper_qa.py chatbot
 ```
-
-`=======`
-
-`=======`
-
-`>>>>>>> f0eb149cb0d21a5af0429a6b6f58454ce54a54d1`
-
-## Installation
-
-### Install from source
-
-``` bash
-git clone https://github.com/chanzuckerberg/alzhazen
-conda create -n alhazen python=3.8
-conda activate alhazen
-cd alhazen
-pip install -e .
-```
-
-## Other dependencies
-
-You will need to download quantized model files from HuggingFace and
-place them in a temporary location on disk (`/tmp/alhazen/` is the
-default):
-
-- [Llama-2-70B](https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF)
-  (recommended
-  [file](https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF/blob/main/llama-2-70b-chat.Q5_K_M.gguf),
-  requires 51.25 GB)
-- [Llama-2-13B](https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF)
-  (recommended
-  [file](https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF/blob/main/llama-2-13b-chat.Q5_K_M.gguf),
-  requires 11.73 GB)
-
-## How to use
-
-We use the fire library to create a modular command line interface (CLI)
-for Alhazen.
-
-For example to run the chatbot for the single paper QA task, execute the
-following command:
-
-``` bash
-python -m fire alhazen/tools/<tool_name>.py chatbot
-```
-
-for example, run the following command to chat with the single paper QA
-chatbot:
-
-``` bash
-python -m fire alhazen/tools/single_paper_qa.py chatbot
-```
-
-`<<<<<<< HEAD`
-
-`>>>>>>> f0eb149cb0d21a5af0429a6b6f58454ce54a54d1`
-
-`=======`
-
-`>>>>>>> f0eb149cb0d21a5af0429a6b6f58454ce54a54d1`
 
 ## Code Status and Capabilities
 
