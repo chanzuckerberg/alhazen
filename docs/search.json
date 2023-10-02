@@ -60,7 +60,7 @@
     "href": "index.html",
     "title": "Alhazen",
     "section": "",
-    "text": "This is an early proof-of-concept prototype developed within CZI’s Research Science Team (RST). It is intended to be used as a downloadable library that can be run on a high-end local machine (M2 Apple Macbook with 32+GB of memory - no support for Windows or Linux yet).\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD"
+    "text": "This is an early proof-of-concept prototype developed within CZI’s Research Science Team (RST). It is intended to be used as a downloadable library that can be run on a high-end local machine (M2 Apple Macbook with 32+GB of memory - no support for Windows or Linux yet)."
   },
   {
     "objectID": "index.html#installation",
@@ -81,28 +81,7 @@
     "href": "index.html#how-to-use",
     "title": "Alhazen",
     "section": "How to use",
-    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot\n=======\n=======\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; f0eb149cb0d21a5af0429a6b6f58454ce54a54d1"
-  },
-  {
-    "objectID": "index.html#installation-1",
-    "href": "index.html#installation-1",
-    "title": "Alhazen",
-    "section": "Installation",
-    "text": "Installation\n\nInstall from source\ngit clone https://github.com/chanzuckerberg/alzhazen\nconda create -n alhazen python=3.8\nconda activate alhazen\ncd alhazen\npip install -e ."
-  },
-  {
-    "objectID": "index.html#other-dependencies-1",
-    "href": "index.html#other-dependencies-1",
-    "title": "Alhazen",
-    "section": "Other dependencies",
-    "text": "Other dependencies\nYou will need to download quantized model files from HuggingFace and place them in a temporary location on disk (/tmp/alhazen/ is the default):\n\nLlama-2-70B (recommended file, requires 51.25 GB)\nLlama-2-13B (recommended file, requires 11.73 GB)"
-  },
-  {
-    "objectID": "index.html#how-to-use-1",
-    "href": "index.html#how-to-use-1",
-    "title": "Alhazen",
-    "section": "How to use",
-    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; f0eb149cb0d21a5af0429a6b6f58454ce54a54d1\n=======\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; f0eb149cb0d21a5af0429a6b6f58454ce54a54d1"
+    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot"
   },
   {
     "objectID": "index.html#code-status-and-capabilities",
