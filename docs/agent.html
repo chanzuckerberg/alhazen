@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A Scientific Research Assistant powered by LangChain and Served as a FastAPI application.">
+<meta name="description" content="Using an agent to chat with a user in order to distinguish between tasks.">
 
-<title>alhazen - Alhazen LangChain Agent</title>
+<title>alhazen - The Alhazen Agent</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -60,14 +94,17 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Alhazen LangChain Agent">
-<meta property="og:description" content="A Scientific Research Assistant powered by LangChain and Served as a FastAPI application.">
+<meta property="og:title" content="alhazen - The Alhazen Agent">
+<meta property="og:description" content="Using an agent to chat with a user in order to distinguish between tasks.">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Alhazen LangChain Agent">
-<meta name="twitter:description" content="A Scientific Research Assistant powered by LangChain and Served as a FastAPI application.">
+<meta name="twitter:title" content="alhazen - The Alhazen Agent">
+<meta name="twitter:description" content="Using an agent to chat with a user in order to distinguish between tasks.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -92,7 +129,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Alhazen LangChain Agent</li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">The Alhazen Agent</li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -132,7 +169,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#root" id="toc-root" class="nav-link active" data-scroll-target="#root">root</a></li>
+  <li><a href="#alhazenagent" id="toc-alhazenagent" class="nav-link active" data-scroll-target="#alhazenagent">AlhazenAgent</a></li>
+  <li><a href="#ask_alhazen" id="toc-ask_alhazen" class="nav-link" data-scroll-target="#ask_alhazen">ask_alhazen</a></li>
+  <li><a href="#how-to-run-this-chatbot-from-the-command-line" id="toc-how-to-run-this-chatbot-from-the-command-line" class="nav-link" data-scroll-target="#how-to-run-this-chatbot-from-the-command-line">How to run this chatbot from the command line</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -141,12 +180,12 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Alhazen LangChain Agent</h1>
+<h1 class="title">The Alhazen Agent</h1>
 </div>
 
 <div>
   <div class="description">
-    A Scientific Research Assistant powered by LangChain and Served as a FastAPI application.
+    Using an agent to chat with a user in order to distinguish between tasks.
   </div>
 </div>
 
@@ -162,13 +201,1386 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.callbacks.base <span class="im">import</span> BaseCallbackHandler</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.schema <span class="im">import</span> BaseMessage</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> ChatPromptTemplate</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.prompts <span class="im">import</span> MessagesPlaceholder</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.schema <span class="im">import</span> HumanMessage, AIMessage</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.schema <span class="im">import</span> AgentAction, AgentFinish</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.schema.output <span class="im">import</span> LLMResult</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.utils <span class="im">import</span> print_text</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> (</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    Any,</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    Dict,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    List,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    Union,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>    Optional</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> AlhazenCallbackHandler(BaseCallbackHandler):</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, color: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Initialize callback handler."""</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.color <span class="op">=</span> color</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_llm_start(</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, serialized: Dict[<span class="bu">str</span>, Any], prompts: List[<span class="bu">str</span>], <span class="op">**</span>kwargs: Any</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Print out the prompts."""</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> p <span class="kw">in</span> prompts:</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"&gt; Prompt: </span><span class="sc">{</span>p<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_llm_end(<span class="va">self</span>, response: LLMResult, <span class="op">**</span>kwargs: Any) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Do nothing."""</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_llm_new_token(<span class="va">self</span>, token: <span class="bu">str</span>, <span class="op">**</span>kwargs: Any) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Do nothing."""</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_llm_error(</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, error: Union[<span class="pp">Exception</span>, <span class="pp">KeyboardInterrupt</span>], <span class="op">**</span>kwargs: Any</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Do nothing."""</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_chain_start(</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, serialized: Dict[<span class="bu">str</span>, Any], inputs: Dict[<span class="bu">str</span>, Any], <span class="op">**</span>kwargs: Any</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Print out that we are entering a chain."""</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>        class_name <span class="op">=</span> serialized.get(<span class="st">"name"</span>, serialized.get(<span class="st">"id"</span>, [<span class="st">"&lt;unknown&gt;"</span>])[<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n\n\033</span><span class="ss">[1m&gt; Entering new </span><span class="sc">{</span>class_name<span class="sc">}</span><span class="ss"> chain...</span><span class="ch">\033</span><span class="ss">[0m"</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_chain_end(<span class="va">self</span>, outputs: Dict[<span class="bu">str</span>, Any], <span class="op">**</span>kwargs: Any) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Print out that we finished a chain."""</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n\033</span><span class="st">[1m&gt; Finished chain.</span><span class="ch">\033</span><span class="st">[0m"</span>)</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_chain_error(</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, error: Union[<span class="pp">Exception</span>, <span class="pp">KeyboardInterrupt</span>], <span class="op">**</span>kwargs: Any</span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Do nothing."""</span></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_tool_start(</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>        serialized: Dict[<span class="bu">str</span>, Any],</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>        input_str: <span class="bu">str</span>,</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>kwargs: Any,</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Do nothing."""</span></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_agent_action(</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, action: AgentAction, color: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span>, <span class="op">**</span>kwargs: Any</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> Any:</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Run on agent action."""</span></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>        print_text(action.log, color<span class="op">=</span>color <span class="kw">or</span> <span class="va">self</span>.color)</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_tool_end(</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>        output: <span class="bu">str</span>,</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>        color: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>        observation_prefix: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>        llm_prefix: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>kwargs: Any,</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""If not the final action, print out observation."""</span></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> observation_prefix <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>            print_text(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>observation_prefix<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>        print_text(output, color<span class="op">=</span>color <span class="kw">or</span> <span class="va">self</span>.color)</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> llm_prefix <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>            print_text(<span class="ss">f"</span><span class="ch">\n</span><span class="sc">{</span>llm_prefix<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_tool_error(</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, error: Union[<span class="pp">Exception</span>, <span class="pp">KeyboardInterrupt</span>], <span class="op">**</span>kwargs: Any</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Do nothing."""</span></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_text(</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>,</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>        text: <span class="bu">str</span>,</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>        color: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span>,</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>        end: <span class="bu">str</span> <span class="op">=</span> <span class="st">""</span>,</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>kwargs: Any,</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Run when agent ends."""</span></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>        print_text(text, color<span class="op">=</span>color <span class="kw">or</span> <span class="va">self</span>.color, end<span class="op">=</span>end)</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> on_agent_finish(</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, finish: AgentFinish, color: Optional[<span class="bu">str</span>] <span class="op">=</span> <span class="va">None</span>, <span class="op">**</span>kwargs: Any</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Run on agent end."""</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>        print_text(finish.log, color<span class="op">=</span>color <span class="kw">or</span> <span class="va">self</span>.color, end<span class="op">=</span><span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/app.py#L12" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="root" class="level3">
-<h3 class="anchored" data-anchor-id="root">root</h3>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/agent/gradio_chat.py#L109" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="alhazenagent" class="level3">
+<h3 class="anchored" data-anchor-id="alhazenagent">AlhazenAgent</h3>
 <blockquote class="blockquote">
-<pre><code> root ()</code></pre>
+<pre><code> AlhazenAgent (temp_dir='/tmp/alhazen',
+               gguf_file_name='llama-2-13b-chat.Q5_K_M.gguf',
+               temperature=0.1, context_window=4096)</code></pre>
 </blockquote>
+<p>Initialize self. See help(type(self)) for accurate signature.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>alhazen.run_gradio()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Running on local URL:  http://127.0.0.1:7866
+
+To create a public link, set `share=True` in `launch()`.
+
+
+&gt; Entering new AgentExecutor chain...
+
+
+&gt; Entering new AgentExecutor chain...
+
+
+&gt; Entering new LLMChain chain...
+Prompt after formatting:
+System: &lt;&gt;
+Assistant is a expert JSON builder designed to assist with a wide range of tasks.
+
+Assistant is able to respond to the User and use tools using JSON strings that contain "action" and "action_input" parameters.
+
+All of Assistant's communication is performed using this JSON format.
+
+Assistant can also use tools by responding to the user with tool use instructions in the same "action" and "action_input" JSON format. Tools available to Assistant are:
+
+- "Calculator": Useful for when you need to answer questions about math.
+  - To use the calculator tool, Assistant should write like so:
+    ```json
+    {"action": "Calculator",
+      "action_input": "sqrt(4)"}
+    ```
+    
+Here are some previous conversations between the Assistant and User:
+
+User: Hey how are you today?
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "I'm good thanks, how are you?"}
+```
+User: I'm great, what is the square root of 4?
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "sqrt(4)"}
+```
+User: 2.0
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "It looks like the answer is 2!"}
+```
+User: Thanks could you tell me what 4 to the power of 2 is?
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "4**2"}
+```
+User: 16.0
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "It looks like the answer is 16!"}
+```
+
+Here is the latest conversation between Assistant and User.
+&lt;&gt;
+
+
+Human: [INST] Respond to the following in JSON with 'action' and 'action_input' values [/INST]
+User: What is 10000 + 9813740
+
+&gt; Finished chain.
+?
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "10000+9813740"}
+```?
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "10000+9813740"}
+```
+Observation: Answer: 9823740
+Thought:
+
+&gt; Entering new LLMChain chain...
+Prompt after formatting:
+System: &lt;&gt;
+Assistant is a expert JSON builder designed to assist with a wide range of tasks.
+
+Assistant is able to respond to the User and use tools using JSON strings that contain "action" and "action_input" parameters.
+
+All of Assistant's communication is performed using this JSON format.
+
+Assistant can also use tools by responding to the user with tool use instructions in the same "action" and "action_input" JSON format. Tools available to Assistant are:
+
+- "Calculator": Useful for when you need to answer questions about math.
+  - To use the calculator tool, Assistant should write like so:
+    ```json
+    {"action": "Calculator",
+      "action_input": "sqrt(4)"}
+    ```
+    
+Here are some previous conversations between the Assistant and User:
+
+User: Hey how are you today?
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "I'm good thanks, how are you?"}
+```
+User: I'm great, what is the square root of 4?
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "sqrt(4)"}
+```
+User: 2.0
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "It looks like the answer is 2!"}
+```
+User: Thanks could you tell me what 4 to the power of 2 is?
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "4**2"}
+```
+User: 16.0
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "It looks like the answer is 16!"}
+```
+
+Here is the latest conversation between Assistant and User.
+&lt;&gt;
+
+
+Human: [INST] Respond to the following in JSON with 'action' and 'action_input' values [/INST]
+User: What is 10000 + 9813740
+AI: ?
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "10000+9813740"}
+```
+Human: TOOL RESPONSE: 
+---------------------
+Answer: 9823740
+
+USER'S INPUT
+--------------------
+
+Okay, so what is the response to my last comment? If using information obtained from the tools you must mention it explicitly without mentioning the tool names - I have forgotten all TOOL RESPONSES! Remember to respond with a markdown code snippet of a json blob with a single action, and NOTHING else.
+
+&gt; Finished chain.
+
+
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "The answer is 9823740"}
+```
+
+
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "The answer is 9823740"}
+```
+
+&gt; Finished chain.
+
+&gt; Finished chain.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div><iframe src="http://127.0.0.1:7866/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen=""></iframe></div>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+llama_print_timings:        load time = 10856.01 ms
+llama_print_timings:      sample time =    27.69 ms /    39 runs   (    0.71 ms per token,  1408.25 tokens per second)
+llama_print_timings: prompt eval time = 10855.77 ms /   472 tokens (   23.00 ms per token,    43.48 tokens per second)
+llama_print_timings:        eval time =  6210.17 ms /    38 runs   (  163.43 ms per token,     6.12 tokens per second)
+llama_print_timings:       total time = 17142.58 ms
+Llama.generate: prefix-match hit
+
+llama_print_timings:        load time = 10856.01 ms
+llama_print_timings:      sample time =    32.59 ms /    46 runs   (    0.71 ms per token,  1411.65 tokens per second)
+llama_print_timings: prompt eval time =  5257.58 ms /   283 tokens (   18.58 ms per token,    53.83 tokens per second)
+llama_print_timings:        eval time =  7718.45 ms /    45 runs   (  171.52 ms per token,     5.83 tokens per second)
+llama_print_timings:       total time = 13067.62 ms
+Llama.generate: prefix-match hit
+
+llama_print_timings:        load time = 10856.01 ms
+llama_print_timings:      sample time =    26.16 ms /    37 runs   (    0.71 ms per token,  1414.10 tokens per second)
+llama_print_timings: prompt eval time = 12334.48 ms /   620 tokens (   19.89 ms per token,    50.27 tokens per second)
+llama_print_timings:        eval time =  6394.79 ms /    36 runs   (  177.63 ms per token,     5.63 tokens per second)
+llama_print_timings:       total time = 18804.00 ms</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pprint</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>pprint.pprint(alhazen.agent.agent.llm_chain.prompt.__dict__, depth<span class="op">=</span><span class="dv">2</span>, width<span class="op">=</span><span class="dv">60</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'input_variables': ['input',
+                     'chat_history',
+                     'agent_scratchpad'],
+ 'messages': [SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=[], template='&lt;&gt;\nAssistant is a expert JSON builder designed to assist with a wide range of tasks.\n\nAssistant is able to respond to the User and use tools using JSON strings that contain "action" and "action_input" parameters.\n\nAll of Assistant\'s communication is performed using this JSON format.\n\nAssistant can also use tools by responding to the user with tool use instructions in the same "action" and "action_input" JSON format. Tools available to Assistant are:\n\n- "Calculator": Useful for when you need to answer questions about math.\n  - To use the calculator tool, Assistant should write like so:\n    ```json\n    {{"action": "Calculator",\n      "action_input": "sqrt(4)"}}\n    ```\n    \nHere are some previous conversations between the Assistant and User:\n\nUser: Hey how are you today?\nAssistant: ```json\n{{"action": "Final Answer",\n "action_input": "I\'m good thanks, how are you?"}}\n```\nUser: I\'m great, what is the square root of 4?\nAssistant: ```json\n{{"action": "Calculator",\n "action_input": "sqrt(4)"}}\n```\nUser: 2.0\nAssistant: ```json\n{{"action": "Final Answer",\n "action_input": "It looks like the answer is 2!"}}\n```\nUser: Thanks could you tell me what 4 to the power of 2 is?\nAssistant: ```json\n{{"action": "Calculator",\n "action_input": "4**2"}}\n```\nUser: 16.0\nAssistant: ```json\n{{"action": "Final Answer",\n "action_input": "It looks like the answer is 16!"}}\n```\n\nHere is the latest conversation between Assistant and User.\n&lt;&gt;\n\n')),
+              MessagesPlaceholder(variable_name='chat_history'),
+              HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['input'], template="[INST] Respond to the following in JSON with 'action' and 'action_input' values [/INST]\nUser: {input}")),
+              MessagesPlaceholder(variable_name='agent_scratchpad')],
+ 'output_parser': None,
+ 'partial_variables': {}}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>alhazen.agent(<span class="st">'Can you compute the square root of 81?'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+&gt; Entering new AgentExecutor chain...
+
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "sqrt(81)"}
+```
+Assistant: ```json
+{"action": "Calculator",
+ "action_input": "sqrt(81)"}
+``````text
+sqrt(81)
+```
+...numexpr.evaluate("sqrt(81)")...
+
+Observation: Answer: 9.0
+Thought:
+
+AI: 
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "It looks like the answer is 9!"}
+```
+
+AI: 
+Assistant: ```json
+{"action": "Final Answer",
+ "action_input": "It looks like the answer is 9!"}
+```
+
+&gt; Finished chain.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Llama.generate: prefix-match hit
+
+llama_print_timings:        load time = 10620.77 ms
+llama_print_timings:      sample time =    21.77 ms /    30 runs   (    0.73 ms per token,  1378.11 tokens per second)
+llama_print_timings: prompt eval time =  3024.41 ms /    63 tokens (   48.01 ms per token,    20.83 tokens per second)
+llama_print_timings:        eval time =  4722.84 ms /    29 runs   (  162.86 ms per token,     6.14 tokens per second)
+llama_print_timings:       total time =  7817.16 ms
+Llama.generate: prefix-match hit
+
+llama_print_timings:        load time = 10620.77 ms
+llama_print_timings:      sample time =    20.00 ms /    28 runs   (    0.71 ms per token,  1400.21 tokens per second)
+llama_print_timings: prompt eval time =  5160.08 ms /   275 tokens (   18.76 ms per token,    53.29 tokens per second)
+llama_print_timings:        eval time =  4377.82 ms /    27 runs   (  162.14 ms per token,     6.17 tokens per second)
+llama_print_timings:       total time =  9602.01 ms
+Llama.generate: prefix-match hit
+
+llama_print_timings:        load time = 10620.77 ms
+llama_print_timings:      sample time =    27.79 ms /    39 runs   (    0.71 ms per token,  1403.28 tokens per second)
+llama_print_timings: prompt eval time = 12615.09 ms /   625 tokens (   20.18 ms per token,    49.54 tokens per second)
+llama_print_timings:        eval time =  6482.36 ms /    38 runs   (  170.59 ms per token,     5.86 tokens per second)
+llama_print_timings:       total time = 19188.24 ms</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="27">
+<pre><code>{'input': 'Can you compute the square root of 81?', 'chat_history': [HumanMessage(content='Can you compute 1+7?'), AIMessage(content='It looks like the answer is 8!')], 'output': 'It looks like the answer is 9!'}</code></pre>
+</div>
+</div>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/agent/gradio_chat.py#L256" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="ask_alhazen" class="level3">
+<h3 class="anchored" data-anchor-id="ask_alhazen">ask_alhazen</h3>
+<blockquote class="blockquote">
+<pre><code> ask_alhazen (temp_dir='/tmp/alhazen',
+              gguf_file_name='llama-2-70b-chat.Q5_K_M.gguf',
+              temperature=0.1, context_window=4096)</code></pre>
+</blockquote>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ask_alhazen()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>llama_model_loader: loaded meta data with 19 key-value pairs and 363 tensors from /tmp/alhazen/llama-2-13b-chat.Q5_K_M.gguf (version GGUF V2 (latest))
+llama_model_loader: - tensor    0:                token_embd.weight q5_K     [  5120, 32000,     1,     1 ]
+llama_model_loader: - tensor    1:           blk.0.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor    2:            blk.0.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor    3:            blk.0.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor    4:              blk.0.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor    5:            blk.0.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor    6:              blk.0.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor    7:         blk.0.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor    8:              blk.0.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor    9:              blk.0.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   10:           blk.1.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   11:            blk.1.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   12:            blk.1.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   13:              blk.1.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   14:            blk.1.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   15:              blk.1.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   16:         blk.1.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   17:              blk.1.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   18:              blk.1.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   19:          blk.10.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   20:           blk.10.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   21:           blk.10.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   22:             blk.10.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   23:           blk.10.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   24:             blk.10.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   25:        blk.10.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   26:             blk.10.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   27:             blk.10.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   28:          blk.11.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   29:           blk.11.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   30:           blk.11.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   31:             blk.11.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   32:           blk.11.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   33:             blk.11.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   34:        blk.11.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   35:             blk.11.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   36:             blk.11.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   37:          blk.12.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   38:           blk.12.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   39:           blk.12.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   40:             blk.12.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   41:           blk.12.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   42:             blk.12.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   43:        blk.12.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   44:             blk.12.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   45:             blk.12.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   46:          blk.13.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   47:           blk.13.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   48:           blk.13.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   49:             blk.13.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   50:           blk.13.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   51:             blk.13.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   52:        blk.13.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   53:             blk.13.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   54:             blk.13.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   55:          blk.14.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   56:           blk.14.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   57:           blk.14.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   58:             blk.14.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   59:           blk.14.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   60:             blk.14.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   61:        blk.14.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   62:             blk.14.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   63:             blk.14.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   64:             blk.15.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   65:             blk.15.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   66:           blk.2.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   67:            blk.2.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   68:            blk.2.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   69:              blk.2.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   70:            blk.2.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   71:              blk.2.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   72:         blk.2.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   73:              blk.2.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   74:              blk.2.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   75:           blk.3.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   76:            blk.3.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   77:            blk.3.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   78:              blk.3.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   79:            blk.3.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   80:              blk.3.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   81:         blk.3.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   82:              blk.3.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   83:              blk.3.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   84:           blk.4.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   85:            blk.4.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   86:            blk.4.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   87:              blk.4.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   88:            blk.4.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   89:              blk.4.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   90:         blk.4.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   91:              blk.4.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   92:              blk.4.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   93:           blk.5.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   94:            blk.5.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor   95:            blk.5.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   96:              blk.5.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor   97:            blk.5.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor   98:              blk.5.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor   99:         blk.5.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  100:              blk.5.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  101:              blk.5.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  102:           blk.6.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  103:            blk.6.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  104:            blk.6.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  105:              blk.6.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  106:            blk.6.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  107:              blk.6.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  108:         blk.6.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  109:              blk.6.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  110:              blk.6.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  111:           blk.7.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  112:            blk.7.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  113:            blk.7.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  114:              blk.7.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  115:            blk.7.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  116:              blk.7.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  117:         blk.7.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  118:              blk.7.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  119:              blk.7.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  120:           blk.8.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  121:            blk.8.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  122:            blk.8.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  123:              blk.8.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  124:            blk.8.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  125:              blk.8.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  126:         blk.8.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  127:              blk.8.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  128:              blk.8.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  129:           blk.9.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  130:            blk.9.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  131:            blk.9.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  132:              blk.9.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  133:            blk.9.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  134:              blk.9.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  135:         blk.9.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  136:              blk.9.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  137:              blk.9.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  138:          blk.15.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  139:           blk.15.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  140:           blk.15.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  141:             blk.15.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  142:           blk.15.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  143:        blk.15.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  144:             blk.15.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  145:          blk.16.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  146:           blk.16.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  147:           blk.16.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  148:             blk.16.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  149:           blk.16.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  150:             blk.16.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  151:        blk.16.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  152:             blk.16.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  153:             blk.16.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  154:          blk.17.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  155:           blk.17.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  156:           blk.17.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  157:             blk.17.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  158:           blk.17.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  159:             blk.17.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  160:        blk.17.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  161:             blk.17.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  162:             blk.17.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  163:          blk.18.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  164:           blk.18.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  165:           blk.18.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  166:             blk.18.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  167:           blk.18.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  168:             blk.18.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  169:        blk.18.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  170:             blk.18.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  171:             blk.18.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  172:          blk.19.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  173:           blk.19.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  174:           blk.19.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  175:             blk.19.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  176:           blk.19.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  177:             blk.19.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  178:        blk.19.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  179:             blk.19.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  180:             blk.19.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  181:          blk.20.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  182:           blk.20.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  183:           blk.20.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  184:             blk.20.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  185:           blk.20.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  186:             blk.20.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  187:        blk.20.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  188:             blk.20.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  189:             blk.20.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  190:          blk.21.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  191:           blk.21.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  192:           blk.21.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  193:             blk.21.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  194:           blk.21.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  195:             blk.21.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  196:        blk.21.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  197:             blk.21.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  198:             blk.21.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  199:          blk.22.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  200:           blk.22.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  201:           blk.22.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  202:             blk.22.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  203:           blk.22.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  204:             blk.22.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  205:        blk.22.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  206:             blk.22.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  207:             blk.22.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  208:          blk.23.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  209:           blk.23.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  210:           blk.23.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  211:             blk.23.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  212:           blk.23.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  213:             blk.23.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  214:        blk.23.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  215:             blk.23.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  216:             blk.23.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  217:          blk.24.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  218:           blk.24.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  219:           blk.24.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  220:             blk.24.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  221:           blk.24.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  222:             blk.24.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  223:        blk.24.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  224:             blk.24.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  225:             blk.24.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  226:          blk.25.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  227:           blk.25.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  228:           blk.25.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  229:             blk.25.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  230:           blk.25.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  231:             blk.25.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  232:        blk.25.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  233:             blk.25.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  234:             blk.25.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  235:          blk.26.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  236:           blk.26.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  237:           blk.26.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  238:             blk.26.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  239:           blk.26.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  240:             blk.26.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  241:        blk.26.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  242:             blk.26.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  243:             blk.26.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  244:          blk.27.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  245:           blk.27.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  246:           blk.27.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  247:             blk.27.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  248:           blk.27.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  249:             blk.27.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  250:        blk.27.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  251:             blk.27.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  252:             blk.27.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  253:          blk.28.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  254:           blk.28.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  255:           blk.28.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  256:             blk.28.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  257:           blk.28.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  258:             blk.28.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  259:        blk.28.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  260:             blk.28.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  261:             blk.28.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  262:          blk.29.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  263:           blk.29.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  264:           blk.29.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  265:             blk.29.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  266:           blk.29.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  267:             blk.29.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  268:        blk.29.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  269:             blk.29.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  270:             blk.29.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  271:           blk.30.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  272:             blk.30.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  273:             blk.30.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  274:        blk.30.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  275:             blk.30.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  276:             blk.30.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  277:                    output.weight q6_K     [  5120, 32000,     1,     1 ]
+llama_model_loader: - tensor  278:          blk.30.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  279:           blk.30.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  280:           blk.30.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  281:          blk.31.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  282:           blk.31.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  283:           blk.31.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  284:             blk.31.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  285:           blk.31.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  286:             blk.31.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  287:        blk.31.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  288:             blk.31.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  289:             blk.31.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  290:          blk.32.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  291:           blk.32.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  292:           blk.32.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  293:             blk.32.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  294:           blk.32.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  295:             blk.32.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  296:        blk.32.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  297:             blk.32.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  298:             blk.32.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  299:          blk.33.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  300:           blk.33.ffn_down.weight q5_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  301:           blk.33.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  302:             blk.33.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  303:           blk.33.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  304:             blk.33.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  305:        blk.33.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  306:             blk.33.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  307:             blk.33.attn_v.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  308:          blk.34.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  309:           blk.34.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  310:           blk.34.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  311:             blk.34.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  312:           blk.34.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  313:             blk.34.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  314:        blk.34.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  315:             blk.34.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  316:             blk.34.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  317:          blk.35.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  318:           blk.35.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  319:           blk.35.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  320:             blk.35.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  321:           blk.35.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  322:             blk.35.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  323:        blk.35.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  324:             blk.35.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  325:             blk.35.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  326:          blk.36.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  327:           blk.36.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  328:           blk.36.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  329:             blk.36.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  330:           blk.36.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  331:             blk.36.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  332:        blk.36.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  333:             blk.36.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  334:             blk.36.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  335:          blk.37.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  336:           blk.37.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  337:           blk.37.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  338:             blk.37.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  339:           blk.37.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  340:             blk.37.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  341:        blk.37.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  342:             blk.37.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  343:             blk.37.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  344:          blk.38.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  345:           blk.38.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  346:           blk.38.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  347:             blk.38.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  348:           blk.38.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  349:             blk.38.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  350:        blk.38.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  351:             blk.38.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  352:             blk.38.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  353:          blk.39.attn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  354:           blk.39.ffn_down.weight q6_K     [ 13824,  5120,     1,     1 ]
+llama_model_loader: - tensor  355:           blk.39.ffn_gate.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  356:             blk.39.ffn_up.weight q5_K     [  5120, 13824,     1,     1 ]
+llama_model_loader: - tensor  357:           blk.39.ffn_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - tensor  358:             blk.39.attn_k.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  359:        blk.39.attn_output.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  360:             blk.39.attn_q.weight q5_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  361:             blk.39.attn_v.weight q6_K     [  5120,  5120,     1,     1 ]
+llama_model_loader: - tensor  362:               output_norm.weight f32      [  5120,     1,     1,     1 ]
+llama_model_loader: - kv   0:                       general.architecture str     
+llama_model_loader: - kv   1:                               general.name str     
+llama_model_loader: - kv   2:                       llama.context_length u32     
+llama_model_loader: - kv   3:                     llama.embedding_length u32     
+llama_model_loader: - kv   4:                          llama.block_count u32     
+llama_model_loader: - kv   5:                  llama.feed_forward_length u32     
+llama_model_loader: - kv   6:                 llama.rope.dimension_count u32     
+llama_model_loader: - kv   7:                 llama.attention.head_count u32     
+llama_model_loader: - kv   8:              llama.attention.head_count_kv u32     
+llama_model_loader: - kv   9:     llama.attention.layer_norm_rms_epsilon f32     
+llama_model_loader: - kv  10:                          general.file_type u32     
+llama_model_loader: - kv  11:                       tokenizer.ggml.model str     
+llama_model_loader: - kv  12:                      tokenizer.ggml.tokens arr     
+llama_model_loader: - kv  13:                      tokenizer.ggml.scores arr     
+llama_model_loader: - kv  14:                  tokenizer.ggml.token_type arr     
+llama_model_loader: - kv  15:                tokenizer.ggml.bos_token_id u32     
+llama_model_loader: - kv  16:                tokenizer.ggml.eos_token_id u32     
+llama_model_loader: - kv  17:            tokenizer.ggml.unknown_token_id u32     
+llama_model_loader: - kv  18:               general.quantization_version u32     
+llama_model_loader: - type  f32:   81 tensors
+llama_model_loader: - type q5_K:  241 tensors
+llama_model_loader: - type q6_K:   41 tensors
+llm_load_print_meta: format         = GGUF V2 (latest)
+llm_load_print_meta: arch           = llama
+llm_load_print_meta: vocab type     = SPM
+llm_load_print_meta: n_vocab        = 32000
+llm_load_print_meta: n_merges       = 0
+llm_load_print_meta: n_ctx_train    = 4096
+llm_load_print_meta: n_ctx          = 3900
+llm_load_print_meta: n_embd         = 5120
+llm_load_print_meta: n_head         = 40
+llm_load_print_meta: n_head_kv      = 40
+llm_load_print_meta: n_layer        = 40
+llm_load_print_meta: n_rot          = 128
+llm_load_print_meta: n_gqa          = 1
+llm_load_print_meta: f_norm_eps     = 0.0e+00
+llm_load_print_meta: f_norm_rms_eps = 1.0e-05
+llm_load_print_meta: n_ff           = 13824
+llm_load_print_meta: freq_base      = 10000.0
+llm_load_print_meta: freq_scale     = 1
+llm_load_print_meta: model type     = 13B
+llm_load_print_meta: model ftype    = mostly Q5_K - Medium
+llm_load_print_meta: model params   = 13.02 B
+llm_load_print_meta: model size     = 8.60 GiB (5.67 BPW) 
+llm_load_print_meta: general.name   = LLaMA v2
+llm_load_print_meta: BOS token = 1 '&lt;s&gt;'
+llm_load_print_meta: EOS token = 2 '&lt;/s&gt;'
+llm_load_print_meta: UNK token = 0 '&lt;unk&gt;'
+llm_load_print_meta: LF token  = 13 '&lt;0x0A&gt;'
+llm_load_tensors: ggml ctx size =    0.12 MB
+llm_load_tensors: mem required  = 8801.75 MB (+ 3046.88 MB per state)
+...................................................................................................
+llama_new_context_with_model: kv self size  = 3046.88 MB
+ggml_metal_init: allocating
+ggml_metal_init: found device: Apple M2 Max
+ggml_metal_init: picking default device: Apple M2 Max
+ggml_metal_init: loading '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/llama_cpp/ggml-metal.metal'
+ggml_metal_init: loaded kernel_add                            0x1182f0b80 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_add_row                        0x1182f11b0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul                            0x1182f1720 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_row                        0x1182f1c10 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_scale                          0x1182fbfb0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_silu                           0x1182fc330 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_relu                           0x1182fc730 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_gelu                           0x1182fcce0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_soft_max                       0x1182fd420 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_soft_max_4                     0x1182fdb30 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_diag_mask_inf                  0x1182fe1b0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_diag_mask_inf_8                0x1182fe8f0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_f32                   0x1182ff030 | th_max =  896 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_f16                   0x1182ff740 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_0                  0x1182f5d00 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_1                  0x1182f6240 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q8_0                  0x1182f6910 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q2_K                  0x1182f7090 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q3_K                  0x1182f77d0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_K                  0x1182f7f10 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q5_K                  0x1182f8650 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q6_K                  0x1182f8d90 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_rms_norm                       0x1182f94e0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_norm                           0x1182f9c20 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f32_f32                0x1182fa600 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32                0x1182e1960 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32_1row           0x1182d9490 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32_l4             0x1182e4f70 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_0_f32               0x1182d9c00 | th_max =  896 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_1_f32               0x1182dab60 | th_max =  896 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q8_0_f32               0x1182db380 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q2_K_f32               0x28c549960 | th_max =  640 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q3_K_f32               0x28c54a120 | th_max =  576 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_K_f32               0x28c54a9d0 | th_max =  576 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q5_K_f32               0x28c54b210 | th_max =  640 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q6_K_f32               0x28c54ba80 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_f32_f32                 0x28c54c370 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_f16_f32                 0x28c54cc60 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_0_f32                0x28c54d550 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q8_0_f32                0x28c54de40 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_1_f32                0x28c54e6b0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q2_K_f32                0x28c54efa0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q3_K_f32                0x28c54f890 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_K_f32                0x28c550100 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q5_K_f32                0x28c5509f0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q6_K_f32                0x28c5512e0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_rope                           0x28c551860 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_alibi_f32                      0x28c552270 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f32_f16                    0x28c55f3b0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f32_f32                    0x28c55fcb0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f16_f16                    0x28c560620 | th_max = 1024 | th_width =   32
+ggml_metal_init: hasUnifiedMemory              = true
+ggml_metal_init: recommendedMaxWorkingSetSize  = 73728.00 MB
+ggml_metal_init: maxTransferRate               = built-in GPU
+llama_new_context_with_model: compute buffer total size =  356.16 MB
+llama_new_context_with_model: max tensor size =   128.17 MB
+ggml_metal_add_buffer: allocated 'data            ' buffer, size =  8802.34 MB, ( 8802.84 / 73728.00)
+ggml_metal_add_buffer: allocated 'eval            ' buffer, size =     1.48 MB, ( 8804.33 / 73728.00)
+ggml_metal_add_buffer: allocated 'kv              ' buffer, size =  3048.88 MB, (11853.20 / 73728.00)
+AVX = 0 | AVX2 = 0 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 0 | NEON = 1 | ARM_FMA = 1 | F16C = 0 | FP16_VA = 1 | WASM_SIMD = 0 | BLAS = 1 | SSE3 = 0 | SSSE3 = 0 | VSX = 0 | 
+ggml_metal_add_buffer: allocated 'alloc           ' buffer, size =   354.70 MB, (12207.91 / 73728.00)</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>NameError: name '__file__' is not defined</code></pre>
+</div>
+</div>
+</section>
+<section id="how-to-run-this-chatbot-from-the-command-line" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-run-this-chatbot-from-the-command-line">How to run this chatbot from the command line</h2>
+<pre><code>python -m fire alhazen/agent/gradio_chat.py chatbot</code></pre>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sys.path)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['/Users/gburns/miniconda3/envs/alhazen/bin', '/Users/gburns/miniconda3/envs/alhazen/lib/python311.zip', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/lib-dynload', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/mlc_llm-0.1.dev333+g2440594-py3.11.egg', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/safetensors-0.3.2rc1-py3.11-macosx-11.1-arm64.egg', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/regex-2023.6.3-py3.11-macosx-11.1-arm64.egg', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/networkx-3.1-py3.11.egg', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/sympy-1.12-py3.11.egg', '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/mpmath-1.3.0-py3.11.egg', '/Users/gburns/Documents/Coding/ChatGPT_etc/alzhazen']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.base_language <span class="im">import</span> BaseLanguageModel</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools.base <span class="im">import</span> BaseTool</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Any, List, Optional</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain <span class="im">import</span> LLMChain, PromptTemplate</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.base_language <span class="im">import</span> BaseLanguageModel</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.callbacks.manager <span class="im">import</span> Callbacks</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> copy</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> uuid</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Dict, List</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools.base <span class="im">import</span> BaseTool</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> abc <span class="im">import</span> abstractmethod</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Any, Dict, List, Optional, Union</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.base_language <span class="im">import</span> BaseLanguageModel</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.callbacks.manager <span class="im">import</span> Callbacks</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.prompts.chat <span class="im">import</span> (</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    AIMessagePromptTemplate,</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    ChatPromptTemplate,</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    HumanMessagePromptTemplate,</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    SystemMessagePromptTemplate,</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.tools.base <span class="im">import</span> BaseTool</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pydantic <span class="im">import</span> BaseModel</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> HuggingGPT:</span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, llm: BaseLanguageModel, tools: List[BaseTool]):</span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.llm <span class="op">=</span> llm</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tools <span class="op">=</span> tools</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.chat_planner <span class="op">=</span> load_chat_planner(llm)</span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.response_generator <span class="op">=</span> load_response_generator(llm)</span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.task_executor: TaskExecutor</span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run(<span class="va">self</span>, <span class="bu">input</span>: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>        plan <span class="op">=</span> <span class="va">self</span>.chat_planner.plan(inputs<span class="op">=</span>{<span class="st">"input"</span>: <span class="bu">input</span>, <span class="st">"hf_tools"</span>: <span class="va">self</span>.tools})</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.task_executor <span class="op">=</span> TaskExecutor(plan)</span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.task_executor.run()</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>        response <span class="op">=</span> <span class="va">self</span>.response_generator.generate(</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>            {<span class="st">"task_execution"</span>: <span class="va">self</span>.task_executor}</span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> response</span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ResponseGenerationChain(LLMChain):</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Chain to execute tasks."""</span></span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">@classmethod</span></span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> from_llm(cls, llm: BaseLanguageModel, verbose: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span>) <span class="op">-&gt;</span> LLMChain:</span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>        execution_template <span class="op">=</span> (</span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>            <span class="st">"The AI assistant has parsed the user input into several tasks"</span></span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>            <span class="st">"and executed them. The results are as follows:</span><span class="ch">\n</span><span class="st">"</span></span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>            <span class="st">"</span><span class="sc">{task_execution}</span><span class="st">"</span></span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>            <span class="st">"</span><span class="ch">\n</span><span class="st">Please summarize the results and generate a response."</span></span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>        prompt <span class="op">=</span> PromptTemplate(</span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>            template<span class="op">=</span>execution_template,</span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>            input_variables<span class="op">=</span>[<span class="st">"task_execution"</span>],</span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cls(prompt<span class="op">=</span>prompt, llm<span class="op">=</span>llm, verbose<span class="op">=</span>verbose)</span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> ResponseGenerator:</span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, llm_chain: LLMChain, stop: Optional[List] <span class="op">=</span> <span class="va">None</span>):</span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.llm_chain <span class="op">=</span> llm_chain</span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.stop <span class="op">=</span> stop</span>
+<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> generate(<span class="va">self</span>, inputs: <span class="bu">dict</span>, callbacks: Callbacks <span class="op">=</span> <span class="va">None</span>, <span class="op">**</span>kwargs: Any) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Given input, decided what to do."""</span></span>
+<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a>        llm_response <span class="op">=</span> <span class="va">self</span>.llm_chain.run(<span class="op">**</span>inputs, stop<span class="op">=</span><span class="va">self</span>.stop, callbacks<span class="op">=</span>callbacks)</span>
+<span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> llm_response</span>
+<span id="cb19-74"><a href="#cb19-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_response_generator(llm: BaseLanguageModel) <span class="op">-&gt;</span> ResponseGenerator:</span>
+<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a>    llm_chain <span class="op">=</span> ResponseGenerationChain.from_llm(llm)</span>
+<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ResponseGenerator(</span>
+<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a>        llm_chain<span class="op">=</span>llm_chain,</span>
+<span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-80"><a href="#cb19-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-81"><a href="#cb19-81" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TaskPlanningChain(LLMChain):</span>
+<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Chain to execute tasks."""</span></span>
+<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-84"><a href="#cb19-84" aria-hidden="true" tabindex="-1"></a>    <span class="at">@classmethod</span></span>
+<span id="cb19-85"><a href="#cb19-85" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> from_llm(</span>
+<span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a>        cls,</span>
+<span id="cb19-87"><a href="#cb19-87" aria-hidden="true" tabindex="-1"></a>        llm: BaseLanguageModel,</span>
+<span id="cb19-88"><a href="#cb19-88" aria-hidden="true" tabindex="-1"></a>        verbose: <span class="bu">bool</span> <span class="op">=</span> <span class="va">True</span>,</span>
+<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> LLMChain:</span>
+<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Get the response parser."""</span></span>
+<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a>        system_template <span class="op">=</span> <span class="st">""" </span></span>
+<span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a><span class="st">                Your task is to break down a users request into a list of several tasks formatted as JSON: </span></span>
+<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a><span class="st">                [</span><span class="sc">{{</span><span class="st">"task": task, "id": task_id, "dep": dependency_task_id, </span></span>
+<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a><span class="st">                    "args": </span><span class="sc">{{</span><span class="st">"input name": text may contain &lt;resource-dep_id&gt;</span><span class="sc">}}}}</span><span class="st">]. </span></span>
+<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a><span class="st">                The special tag "dep_id" refer to the one generated text/image/audio in the dependency task </span></span>
+<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a><span class="st">                (Please consider whether the dependency task generates resources of this type.) </span></span>
+<span id="cb19-97"><a href="#cb19-97" aria-hidden="true" tabindex="-1"></a><span class="st">                and "dep_id" must be in "dep" list. </span></span>
+<span id="cb19-98"><a href="#cb19-98" aria-hidden="true" tabindex="-1"></a><span class="st">                The "dep" field denotes the ids of the previous prerequisite tasks which </span></span>
+<span id="cb19-99"><a href="#cb19-99" aria-hidden="true" tabindex="-1"></a><span class="st">                generate a new resource that the current task relies on. </span></span>
+<span id="cb19-100"><a href="#cb19-100" aria-hidden="true" tabindex="-1"></a><span class="st">                The task MUST be selected from the following tools </span></span>
+<span id="cb19-101"><a href="#cb19-101" aria-hidden="true" tabindex="-1"></a><span class="st">                (along with tool description, input name and output type): </span></span>
+<span id="cb19-102"><a href="#cb19-102" aria-hidden="true" tabindex="-1"></a><span class="st">                    </span><span class="sc">{tools}</span><span class="st">. </span></span>
+<span id="cb19-103"><a href="#cb19-103" aria-hidden="true" tabindex="-1"></a><span class="st">                There may be multiple tasks of the same type. </span></span>
+<span id="cb19-104"><a href="#cb19-104" aria-hidden="true" tabindex="-1"></a><span class="st">                Take a deep breath and think carefully about the user's request.</span></span>
+<span id="cb19-105"><a href="#cb19-105" aria-hidden="true" tabindex="-1"></a><span class="st">                Then think step by step about all the tasks needed to resolve the user's request. </span></span>
+<span id="cb19-106"><a href="#cb19-106" aria-hidden="true" tabindex="-1"></a><span class="st">                Parse out as few tasks as possible while ensuring that the user request can be resolved. </span></span>
+<span id="cb19-107"><a href="#cb19-107" aria-hidden="true" tabindex="-1"></a><span class="st">                Pay attention to the dependencies and order among tasks. </span></span>
+<span id="cb19-108"><a href="#cb19-108" aria-hidden="true" tabindex="-1"></a><span class="st">                Remember, you must ONLY return a list of tasks formatted as JSON.</span></span>
+<span id="cb19-109"><a href="#cb19-109" aria-hidden="true" tabindex="-1"></a><span class="st">                If the user input can't be parsed, you need to reply empty JSON []."""</span>  <span class="co"># noqa: E501</span></span>
+<span id="cb19-110"><a href="#cb19-110" aria-hidden="true" tabindex="-1"></a>        human_template <span class="op">=</span> <span class="st">"""Now I input: </span><span class="sc">{input}</span><span class="st">."""</span></span>
+<span id="cb19-111"><a href="#cb19-111" aria-hidden="true" tabindex="-1"></a>        system_message_prompt <span class="op">=</span> SystemMessagePromptTemplate.from_template(system_template)</span>
+<span id="cb19-112"><a href="#cb19-112" aria-hidden="true" tabindex="-1"></a>        human_message_prompt <span class="op">=</span> HumanMessagePromptTemplate.from_template(human_template)</span>
+<span id="cb19-113"><a href="#cb19-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-114"><a href="#cb19-114" aria-hidden="true" tabindex="-1"></a>        prompt <span class="op">=</span> ChatPromptTemplate.from_messages(</span>
+<span id="cb19-115"><a href="#cb19-115" aria-hidden="true" tabindex="-1"></a>            [system_message_prompt, human_message_prompt]</span>
+<span id="cb19-116"><a href="#cb19-116" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-117"><a href="#cb19-117" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> cls(prompt<span class="op">=</span>prompt, llm<span class="op">=</span>llm, verbose<span class="op">=</span>verbose)</span>
+<span id="cb19-118"><a href="#cb19-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-119"><a href="#cb19-119" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Step:</span>
+<span id="cb19-120"><a href="#cb19-120" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(</span>
+<span id="cb19-121"><a href="#cb19-121" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, task: <span class="bu">str</span>, <span class="bu">id</span>: <span class="bu">int</span>, dep: List[<span class="bu">int</span>], args: Dict[<span class="bu">str</span>, <span class="bu">str</span>], tool: BaseTool</span>
+<span id="cb19-122"><a href="#cb19-122" aria-hidden="true" tabindex="-1"></a>    ):</span>
+<span id="cb19-123"><a href="#cb19-123" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.task <span class="op">=</span> task</span>
+<span id="cb19-124"><a href="#cb19-124" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.<span class="bu">id</span> <span class="op">=</span> <span class="bu">id</span></span>
+<span id="cb19-125"><a href="#cb19-125" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dep <span class="op">=</span> dep</span>
+<span id="cb19-126"><a href="#cb19-126" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.args <span class="op">=</span> args</span>
+<span id="cb19-127"><a href="#cb19-127" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tool <span class="op">=</span> tool</span>
+<span id="cb19-128"><a href="#cb19-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-129"><a href="#cb19-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-130"><a href="#cb19-130" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Plan:</span>
+<span id="cb19-131"><a href="#cb19-131" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, steps: List[Step]):</span>
+<span id="cb19-132"><a href="#cb19-132" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.steps <span class="op">=</span> steps</span>
+<span id="cb19-133"><a href="#cb19-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-134"><a href="#cb19-134" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-135"><a href="#cb19-135" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">str</span>([<span class="bu">str</span>(step) <span class="cf">for</span> step <span class="kw">in</span> <span class="va">self</span>.steps])</span>
+<span id="cb19-136"><a href="#cb19-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-137"><a href="#cb19-137" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-138"><a href="#cb19-138" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">str</span>(<span class="va">self</span>)</span>
+<span id="cb19-139"><a href="#cb19-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-140"><a href="#cb19-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-141"><a href="#cb19-141" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BasePlanner(BaseModel):</span>
+<span id="cb19-142"><a href="#cb19-142" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb19-143"><a href="#cb19-143" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> plan(<span class="va">self</span>, inputs: <span class="bu">dict</span>, callbacks: Callbacks <span class="op">=</span> <span class="va">None</span>, <span class="op">**</span>kwargs: Any) <span class="op">-&gt;</span> Plan:</span>
+<span id="cb19-144"><a href="#cb19-144" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Given input, decide what to do."""</span></span>
+<span id="cb19-145"><a href="#cb19-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-146"><a href="#cb19-146" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abstractmethod</span></span>
+<span id="cb19-147"><a href="#cb19-147" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> aplan(</span>
+<span id="cb19-148"><a href="#cb19-148" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, inputs: <span class="bu">dict</span>, callbacks: Callbacks <span class="op">=</span> <span class="va">None</span>, <span class="op">**</span>kwargs: Any</span>
+<span id="cb19-149"><a href="#cb19-149" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> Plan:</span>
+<span id="cb19-150"><a href="#cb19-150" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Given input, decide what to do."""</span></span>
+<span id="cb19-151"><a href="#cb19-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-152"><a href="#cb19-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-153"><a href="#cb19-153" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> PlanningOutputParser(BaseModel):</span>
+<span id="cb19-154"><a href="#cb19-154" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> parse(<span class="va">self</span>, text: <span class="bu">str</span>, hf_tools: List[BaseTool]) <span class="op">-&gt;</span> Plan:</span>
+<span id="cb19-155"><a href="#cb19-155" aria-hidden="true" tabindex="-1"></a>        steps <span class="op">=</span> []</span>
+<span id="cb19-156"><a href="#cb19-156" aria-hidden="true" tabindex="-1"></a>        s <span class="op">=</span> text.find(<span class="st">"["</span>)</span>
+<span id="cb19-157"><a href="#cb19-157" aria-hidden="true" tabindex="-1"></a>        e <span class="op">=</span> text.rfind(<span class="st">"]"</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb19-158"><a href="#cb19-158" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> v <span class="kw">in</span> json.loads(text[s:e]):</span>
+<span id="cb19-159"><a href="#cb19-159" aria-hidden="true" tabindex="-1"></a>            choose_tool <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb19-160"><a href="#cb19-160" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> tool <span class="kw">in</span> hf_tools:</span>
+<span id="cb19-161"><a href="#cb19-161" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> tool.name <span class="op">==</span> v[<span class="st">"task"</span>]:</span>
+<span id="cb19-162"><a href="#cb19-162" aria-hidden="true" tabindex="-1"></a>                    choose_tool <span class="op">=</span> tool</span>
+<span id="cb19-163"><a href="#cb19-163" aria-hidden="true" tabindex="-1"></a>                    <span class="cf">break</span></span>
+<span id="cb19-164"><a href="#cb19-164" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> choose_tool:</span>
+<span id="cb19-165"><a href="#cb19-165" aria-hidden="true" tabindex="-1"></a>                steps.append(Step(v[<span class="st">"task"</span>], v[<span class="st">"id"</span>], v[<span class="st">"dep"</span>], v[<span class="st">"args"</span>], tool))</span>
+<span id="cb19-166"><a href="#cb19-166" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> Plan(steps<span class="op">=</span>steps)</span>
+<span id="cb19-167"><a href="#cb19-167" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-168"><a href="#cb19-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-169"><a href="#cb19-169" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TaskPlanner(BasePlanner):</span>
+<span id="cb19-170"><a href="#cb19-170" aria-hidden="true" tabindex="-1"></a>    llm_chain: LLMChain</span>
+<span id="cb19-171"><a href="#cb19-171" aria-hidden="true" tabindex="-1"></a>    output_parser: PlanningOutputParser</span>
+<span id="cb19-172"><a href="#cb19-172" aria-hidden="true" tabindex="-1"></a>    stop: Optional[List] <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb19-173"><a href="#cb19-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-174"><a href="#cb19-174" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> plan(<span class="va">self</span>, inputs: <span class="bu">dict</span>, callbacks: Callbacks <span class="op">=</span> <span class="va">None</span>, <span class="op">**</span>kwargs: Any) <span class="op">-&gt;</span> Plan:</span>
+<span id="cb19-175"><a href="#cb19-175" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Given input, decided what to do."""</span></span>
+<span id="cb19-176"><a href="#cb19-176" aria-hidden="true" tabindex="-1"></a>        inputs[<span class="st">"tools"</span>] <span class="op">=</span> [</span>
+<span id="cb19-177"><a href="#cb19-177" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"</span><span class="sc">{</span>tool<span class="sc">.</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>tool<span class="sc">.</span>description<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> tool <span class="kw">in</span> inputs[<span class="st">"hf_tools"</span>]</span>
+<span id="cb19-178"><a href="#cb19-178" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb19-179"><a href="#cb19-179" aria-hidden="true" tabindex="-1"></a>        llm_response <span class="op">=</span> <span class="va">self</span>.llm_chain.run(<span class="op">**</span>inputs, stop<span class="op">=</span><span class="va">self</span>.stop, callbacks<span class="op">=</span>callbacks)</span>
+<span id="cb19-180"><a href="#cb19-180" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.output_parser.parse(llm_response, inputs[<span class="st">"hf_tools"</span>])</span>
+<span id="cb19-181"><a href="#cb19-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-182"><a href="#cb19-182" aria-hidden="true" tabindex="-1"></a>    <span class="cf">async</span> <span class="kw">def</span> aplan(</span>
+<span id="cb19-183"><a href="#cb19-183" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>, inputs: <span class="bu">dict</span>, callbacks: Callbacks <span class="op">=</span> <span class="va">None</span>, <span class="op">**</span>kwargs: Any</span>
+<span id="cb19-184"><a href="#cb19-184" aria-hidden="true" tabindex="-1"></a>    ) <span class="op">-&gt;</span> Plan:</span>
+<span id="cb19-185"><a href="#cb19-185" aria-hidden="true" tabindex="-1"></a>        <span class="co">"""Given input, decided what to do."""</span></span>
+<span id="cb19-186"><a href="#cb19-186" aria-hidden="true" tabindex="-1"></a>        inputs[<span class="st">"hf_tools"</span>] <span class="op">=</span> [</span>
+<span id="cb19-187"><a href="#cb19-187" aria-hidden="true" tabindex="-1"></a>            <span class="ss">f"</span><span class="sc">{</span>tool<span class="sc">.</span>name<span class="sc">}</span><span class="ss">: </span><span class="sc">{</span>tool<span class="sc">.</span>description<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> tool <span class="kw">in</span> inputs[<span class="st">"hf_tools"</span>]</span>
+<span id="cb19-188"><a href="#cb19-188" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb19-189"><a href="#cb19-189" aria-hidden="true" tabindex="-1"></a>        llm_response <span class="op">=</span> <span class="cf">await</span> <span class="va">self</span>.llm_chain.arun(</span>
+<span id="cb19-190"><a href="#cb19-190" aria-hidden="true" tabindex="-1"></a>            <span class="op">**</span>inputs, stop<span class="op">=</span><span class="va">self</span>.stop, callbacks<span class="op">=</span>callbacks</span>
+<span id="cb19-191"><a href="#cb19-191" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-192"><a href="#cb19-192" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.output_parser.parse(llm_response, inputs[<span class="st">"hf_tools"</span>])</span>
+<span id="cb19-193"><a href="#cb19-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-194"><a href="#cb19-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-195"><a href="#cb19-195" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_chat_planner(llm: BaseLanguageModel) <span class="op">-&gt;</span> TaskPlanner:</span>
+<span id="cb19-196"><a href="#cb19-196" aria-hidden="true" tabindex="-1"></a>    llm_chain <span class="op">=</span> TaskPlanningChain.from_llm(llm)</span>
+<span id="cb19-197"><a href="#cb19-197" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> TaskPlanner(llm_chain<span class="op">=</span>llm_chain, output_parser<span class="op">=</span>PlanningOutputParser())</span>
+<span id="cb19-198"><a href="#cb19-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-199"><a href="#cb19-199" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Task:</span>
+<span id="cb19-200"><a href="#cb19-200" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, task: <span class="bu">str</span>, <span class="bu">id</span>: <span class="bu">int</span>, dep: List[<span class="bu">int</span>], args: Dict, tool: BaseTool):</span>
+<span id="cb19-201"><a href="#cb19-201" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.task <span class="op">=</span> task</span>
+<span id="cb19-202"><a href="#cb19-202" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.<span class="bu">id</span> <span class="op">=</span> <span class="bu">id</span></span>
+<span id="cb19-203"><a href="#cb19-203" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.dep <span class="op">=</span> dep</span>
+<span id="cb19-204"><a href="#cb19-204" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.args <span class="op">=</span> args</span>
+<span id="cb19-205"><a href="#cb19-205" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tool <span class="op">=</span> tool</span>
+<span id="cb19-206"><a href="#cb19-206" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.status <span class="op">=</span> <span class="st">"pending"</span></span>
+<span id="cb19-207"><a href="#cb19-207" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.message <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb19-208"><a href="#cb19-208" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.result <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb19-209"><a href="#cb19-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-210"><a href="#cb19-210" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-211"><a href="#cb19-211" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="ss">f"</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>task<span class="sc">}</span><span class="ss">(</span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>args<span class="sc">}</span><span class="ss">)"</span></span>
+<span id="cb19-212"><a href="#cb19-212" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-213"><a href="#cb19-213" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> save_product(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb19-214"><a href="#cb19-214" aria-hidden="true" tabindex="-1"></a>        <span class="im">import</span> cv2</span>
+<span id="cb19-215"><a href="#cb19-215" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-216"><a href="#cb19-216" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.task <span class="op">==</span> <span class="st">"video_generator"</span>:</span>
+<span id="cb19-217"><a href="#cb19-217" aria-hidden="true" tabindex="-1"></a>            <span class="co"># ndarray to video</span></span>
+<span id="cb19-218"><a href="#cb19-218" aria-hidden="true" tabindex="-1"></a>            product <span class="op">=</span> np.array(<span class="va">self</span>.product)</span>
+<span id="cb19-219"><a href="#cb19-219" aria-hidden="true" tabindex="-1"></a>            nframe, height, width, _ <span class="op">=</span> product.shape</span>
+<span id="cb19-220"><a href="#cb19-220" aria-hidden="true" tabindex="-1"></a>            video_filename <span class="op">=</span> uuid.uuid4().<span class="bu">hex</span>[:<span class="dv">6</span>] <span class="op">+</span> <span class="st">".mp4"</span></span>
+<span id="cb19-221"><a href="#cb19-221" aria-hidden="true" tabindex="-1"></a>            fps <span class="op">=</span> <span class="dv">30</span>  <span class="co"># Frames per second</span></span>
+<span id="cb19-222"><a href="#cb19-222" aria-hidden="true" tabindex="-1"></a>            fourcc <span class="op">=</span> cv2.VideoWriter_fourcc(<span class="op">*</span><span class="st">"mp4v"</span>)  <span class="co"># type: ignore</span></span>
+<span id="cb19-223"><a href="#cb19-223" aria-hidden="true" tabindex="-1"></a>            video_out <span class="op">=</span> cv2.VideoWriter(video_filename, fourcc, fps, (width, height))</span>
+<span id="cb19-224"><a href="#cb19-224" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> frame <span class="kw">in</span> <span class="va">self</span>.product:</span>
+<span id="cb19-225"><a href="#cb19-225" aria-hidden="true" tabindex="-1"></a>                video_out.write(frame)</span>
+<span id="cb19-226"><a href="#cb19-226" aria-hidden="true" tabindex="-1"></a>            video_out.release()</span>
+<span id="cb19-227"><a href="#cb19-227" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.result <span class="op">=</span> video_filename</span>
+<span id="cb19-228"><a href="#cb19-228" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="va">self</span>.task <span class="op">==</span> <span class="st">"image_generator"</span>:</span>
+<span id="cb19-229"><a href="#cb19-229" aria-hidden="true" tabindex="-1"></a>            <span class="co"># PIL.Image to image</span></span>
+<span id="cb19-230"><a href="#cb19-230" aria-hidden="true" tabindex="-1"></a>            filename <span class="op">=</span> uuid.uuid4().<span class="bu">hex</span>[:<span class="dv">6</span>] <span class="op">+</span> <span class="st">".png"</span></span>
+<span id="cb19-231"><a href="#cb19-231" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.product.save(filename)  <span class="co"># type: ignore</span></span>
+<span id="cb19-232"><a href="#cb19-232" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.result <span class="op">=</span> filename</span>
+<span id="cb19-233"><a href="#cb19-233" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb19-234"><a href="#cb19-234" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-235"><a href="#cb19-235" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> completed(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb19-236"><a href="#cb19-236" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.status <span class="op">==</span> <span class="st">"completed"</span></span>
+<span id="cb19-237"><a href="#cb19-237" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-238"><a href="#cb19-238" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> failed(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb19-239"><a href="#cb19-239" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.status <span class="op">==</span> <span class="st">"failed"</span></span>
+<span id="cb19-240"><a href="#cb19-240" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-241"><a href="#cb19-241" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> pending(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb19-242"><a href="#cb19-242" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.status <span class="op">==</span> <span class="st">"pending"</span></span>
+<span id="cb19-243"><a href="#cb19-243" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-244"><a href="#cb19-244" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-245"><a href="#cb19-245" aria-hidden="true" tabindex="-1"></a>        <span class="im">from</span> diffusers.utils <span class="im">import</span> load_image</span>
+<span id="cb19-246"><a href="#cb19-246" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-247"><a href="#cb19-247" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb19-248"><a href="#cb19-248" aria-hidden="true" tabindex="-1"></a>            new_args <span class="op">=</span> copy.deepcopy(<span class="va">self</span>.args)</span>
+<span id="cb19-249"><a href="#cb19-249" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> k, v <span class="kw">in</span> new_args.items():</span>
+<span id="cb19-250"><a href="#cb19-250" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> k <span class="op">==</span> <span class="st">"image"</span>:</span>
+<span id="cb19-251"><a href="#cb19-251" aria-hidden="true" tabindex="-1"></a>                    new_args[<span class="st">"image"</span>] <span class="op">=</span> load_image(v)</span>
+<span id="cb19-252"><a href="#cb19-252" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="va">self</span>.task <span class="kw">in</span> [<span class="st">"video_generator"</span>, <span class="st">"image_generator"</span>, <span class="st">"text_reader"</span>]:</span>
+<span id="cb19-253"><a href="#cb19-253" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.product <span class="op">=</span> <span class="va">self</span>.tool(<span class="op">**</span>new_args)</span>
+<span id="cb19-254"><a href="#cb19-254" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>:</span>
+<span id="cb19-255"><a href="#cb19-255" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.result <span class="op">=</span> <span class="va">self</span>.tool(<span class="op">**</span>new_args)</span>
+<span id="cb19-256"><a href="#cb19-256" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb19-257"><a href="#cb19-257" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.status <span class="op">=</span> <span class="st">"failed"</span></span>
+<span id="cb19-258"><a href="#cb19-258" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.message <span class="op">=</span> <span class="bu">str</span>(e)</span>
+<span id="cb19-259"><a href="#cb19-259" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.status <span class="op">=</span> <span class="st">"completed"</span></span>
+<span id="cb19-260"><a href="#cb19-260" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.save_product()</span>
+<span id="cb19-261"><a href="#cb19-261" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-262"><a href="#cb19-262" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.result</span>
+<span id="cb19-263"><a href="#cb19-263" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-264"><a href="#cb19-264" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> TaskExecutor:</span>
+<span id="cb19-265"><a href="#cb19-265" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Load tools to execute tasks."""</span></span>
+<span id="cb19-266"><a href="#cb19-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-267"><a href="#cb19-267" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, plan: Plan):</span>
+<span id="cb19-268"><a href="#cb19-268" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.plan <span class="op">=</span> plan</span>
+<span id="cb19-269"><a href="#cb19-269" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.tasks <span class="op">=</span> []</span>
+<span id="cb19-270"><a href="#cb19-270" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.id_task_map <span class="op">=</span> {}</span>
+<span id="cb19-271"><a href="#cb19-271" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.status <span class="op">=</span> <span class="st">"pending"</span></span>
+<span id="cb19-272"><a href="#cb19-272" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> step <span class="kw">in</span> <span class="va">self</span>.plan.steps:</span>
+<span id="cb19-273"><a href="#cb19-273" aria-hidden="true" tabindex="-1"></a>            task <span class="op">=</span> Task(step.task, step.<span class="bu">id</span>, step.dep, step.args, step.tool)</span>
+<span id="cb19-274"><a href="#cb19-274" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.tasks.append(task)</span>
+<span id="cb19-275"><a href="#cb19-275" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.id_task_map[step.<span class="bu">id</span>] <span class="op">=</span> task</span>
+<span id="cb19-276"><a href="#cb19-276" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-277"><a href="#cb19-277" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> completed(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb19-278"><a href="#cb19-278" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">all</span>(task.completed() <span class="cf">for</span> task <span class="kw">in</span> <span class="va">self</span>.tasks)</span>
+<span id="cb19-279"><a href="#cb19-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-280"><a href="#cb19-280" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> failed(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb19-281"><a href="#cb19-281" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">any</span>(task.failed() <span class="cf">for</span> task <span class="kw">in</span> <span class="va">self</span>.tasks)</span>
+<span id="cb19-282"><a href="#cb19-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-283"><a href="#cb19-283" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> pending(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb19-284"><a href="#cb19-284" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">any</span>(task.pending() <span class="cf">for</span> task <span class="kw">in</span> <span class="va">self</span>.tasks)</span>
+<span id="cb19-285"><a href="#cb19-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-286"><a href="#cb19-286" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> check_dependency(<span class="va">self</span>, task: Task) <span class="op">-&gt;</span> <span class="bu">bool</span>:</span>
+<span id="cb19-287"><a href="#cb19-287" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> dep_id <span class="kw">in</span> task.dep:</span>
+<span id="cb19-288"><a href="#cb19-288" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> dep_id <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb19-289"><a href="#cb19-289" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb19-290"><a href="#cb19-290" aria-hidden="true" tabindex="-1"></a>            dep_task <span class="op">=</span> <span class="va">self</span>.id_task_map[dep_id]</span>
+<span id="cb19-291"><a href="#cb19-291" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> dep_task.failed() <span class="kw">or</span> dep_task.pending():</span>
+<span id="cb19-292"><a href="#cb19-292" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb19-293"><a href="#cb19-293" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb19-294"><a href="#cb19-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-295"><a href="#cb19-295" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> update_args(<span class="va">self</span>, task: Task) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb19-296"><a href="#cb19-296" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> dep_id <span class="kw">in</span> task.dep:</span>
+<span id="cb19-297"><a href="#cb19-297" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> dep_id <span class="op">==</span> <span class="op">-</span><span class="dv">1</span>:</span>
+<span id="cb19-298"><a href="#cb19-298" aria-hidden="true" tabindex="-1"></a>                <span class="cf">continue</span></span>
+<span id="cb19-299"><a href="#cb19-299" aria-hidden="true" tabindex="-1"></a>            dep_task <span class="op">=</span> <span class="va">self</span>.id_task_map[dep_id]</span>
+<span id="cb19-300"><a href="#cb19-300" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> k, v <span class="kw">in</span> task.args.items():</span>
+<span id="cb19-301"><a href="#cb19-301" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="ss">f"&lt;resource-</span><span class="sc">{</span>dep_id<span class="sc">}</span><span class="ss">&gt;"</span> <span class="kw">in</span> v:</span>
+<span id="cb19-302"><a href="#cb19-302" aria-hidden="true" tabindex="-1"></a>                    task.args[k].replace(<span class="ss">f"&lt;resource-</span><span class="sc">{</span>dep_id<span class="sc">}</span><span class="ss">&gt;"</span>, dep_task.result)</span>
+<span id="cb19-303"><a href="#cb19-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-304"><a href="#cb19-304" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> run(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-305"><a href="#cb19-305" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> task <span class="kw">in</span> <span class="va">self</span>.tasks:</span>
+<span id="cb19-306"><a href="#cb19-306" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"running </span><span class="sc">{</span>task<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb19-307"><a href="#cb19-307" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> task.pending() <span class="kw">and</span> <span class="va">self</span>.check_dependency(task):</span>
+<span id="cb19-308"><a href="#cb19-308" aria-hidden="true" tabindex="-1"></a>                <span class="va">self</span>.update_args(task)</span>
+<span id="cb19-309"><a href="#cb19-309" aria-hidden="true" tabindex="-1"></a>                task.run()</span>
+<span id="cb19-310"><a href="#cb19-310" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="va">self</span>.completed():</span>
+<span id="cb19-311"><a href="#cb19-311" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.status <span class="op">=</span> <span class="st">"completed"</span></span>
+<span id="cb19-312"><a href="#cb19-312" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="va">self</span>.failed():</span>
+<span id="cb19-313"><a href="#cb19-313" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.status <span class="op">=</span> <span class="st">"failed"</span></span>
+<span id="cb19-314"><a href="#cb19-314" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb19-315"><a href="#cb19-315" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.status <span class="op">=</span> <span class="st">"pending"</span></span>
+<span id="cb19-316"><a href="#cb19-316" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.status</span>
+<span id="cb19-317"><a href="#cb19-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-318"><a href="#cb19-318" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__str__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-319"><a href="#cb19-319" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> <span class="st">""</span></span>
+<span id="cb19-320"><a href="#cb19-320" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> task <span class="kw">in</span> <span class="va">self</span>.tasks:</span>
+<span id="cb19-321"><a href="#cb19-321" aria-hidden="true" tabindex="-1"></a>            result <span class="op">+=</span> <span class="ss">f"</span><span class="sc">{</span>task<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb19-322"><a href="#cb19-322" aria-hidden="true" tabindex="-1"></a>            result <span class="op">+=</span> <span class="ss">f"status: </span><span class="sc">{</span>task<span class="sc">.</span>status<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb19-323"><a href="#cb19-323" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> task.failed():</span>
+<span id="cb19-324"><a href="#cb19-324" aria-hidden="true" tabindex="-1"></a>                result <span class="op">+=</span> <span class="ss">f"message: </span><span class="sc">{</span>task<span class="sc">.</span>message<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb19-325"><a href="#cb19-325" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> task.completed():</span>
+<span id="cb19-326"><a href="#cb19-326" aria-hidden="true" tabindex="-1"></a>                result <span class="op">+=</span> <span class="ss">f"result: </span><span class="sc">{</span>task<span class="sc">.</span>result<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span></span>
+<span id="cb19-327"><a href="#cb19-327" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> result</span>
+<span id="cb19-328"><a href="#cb19-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-329"><a href="#cb19-329" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-330"><a href="#cb19-330" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.<span class="fu">__str__</span>()</span>
+<span id="cb19-331"><a href="#cb19-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-332"><a href="#cb19-332" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> describe(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb19-333"><a href="#cb19-333" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.<span class="fu">__str__</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> load_tool</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>hf_tools <span class="op">=</span> [</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    load_tool(tool_name)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tool_name <span class="kw">in</span> [</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">"document-question-answering"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">"image-captioning"</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        <span class="st">"image-question-answering"</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        <span class="st">"image-segmentation"</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>        <span class="st">"summarization"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text-classification"</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>        <span class="st">"text-question-answering"</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        <span class="st">"translation"</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        <span class="st">"huggingface-tools/text-to-image"</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>        <span class="st">"huggingface-tools/text-to-video"</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>        <span class="st">"huggingface-tools/text-download"</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        <span class="st">"huggingface-tools/image-transformation"</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>n_gpu_layers <span class="op">=</span> <span class="dv">1</span>  <span class="co"># Change this value based on your model and your GPU VRAM pool.</span></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>n_batch <span class="op">=</span> <span class="dv">512</span>  <span class="co"># Should be between 1 and n_ctx, consider the amount of VRAM in your GPU.</span></span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> LlamaCpp(model_path<span class="op">=</span><span class="st">'/tmp/alhazen/llama-2-70b-chat.Q5_K_M.gguf'</span>,</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>                n_ctx<span class="op">=</span><span class="dv">4096</span>,</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                n_gpu_layers<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>                temperature<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>                n_batch<span class="op">=</span><span class="dv">512</span>,</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>                verbose<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>agent <span class="op">=</span> HuggingGPT(llm, hf_tools)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>ImageTransformationTool implements a different description in its configuration and class. Using the tool configuration description.
+AVX = 0 | AVX2 = 0 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 0 | NEON = 1 | ARM_FMA = 1 | F16C = 0 | FP16_VA = 1 | WASM_SIMD = 0 | BLAS = 1 | SSE3 = 0 | SSSE3 = 0 | VSX = 0 | </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Sequence</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.schema <span class="im">import</span> BaseMessage, HumanMessage, AIMessage, SystemMessage, FunctionMessage, ChatMessage</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_buffer_string_for_llama(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    messages: Sequence[BaseMessage], human_prefix: <span class="bu">str</span> <span class="op">=</span> <span class="st">"Human"</span>, ai_prefix: <span class="bu">str</span> <span class="op">=</span> <span class="st">"AI"</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Convert sequence of Messages to strings and concatenate them into one string.</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co">        messages: Messages to be converted to strings.</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co">        human_prefix: The prefix to prepend to contents of HumanMessages.</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co">        ai_prefix: THe prefix to prepend to contents of AIMessages.</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a><span class="co">        A single string concatenation of all input messages, </span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co">        formatted for Llama Chat Models with &lt;&lt;SYS&gt;&gt;, &lt;&lt;/SYS&gt;&gt;, [INST], and [/INST] tags.</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a><span class="co">    Example:</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a><span class="co">        .. code-block:: python</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co">            from langchain.schema import AIMessage, HumanMessage</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a><span class="co">            messages = [</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="co">                HumanMessage(content="Hi, how are you?"),</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a><span class="co">                AIMessage(content="Good, how are you?"),</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="co">            ]</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a><span class="co">            get_buffer_string(messages)</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a><span class="co">            "[INST] Hi, how are you?[/INST]</span></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a><span class="co">            Good, how are you?"</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    string_messages <span class="op">=</span> []</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> m <span class="kw">in</span> messages:</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(m, HumanMessage):</span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> <span class="st">'[INST]'</span></span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> <span class="st">'[/INST]'</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(m, AIMessage):</span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(m, SystemMessage):</span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> <span class="st">"&lt;&lt;SYS&gt;&gt;"</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> <span class="st">"&lt;&lt;/SYS&gt;&gt;"</span></span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(m, FunctionMessage):</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="bu">isinstance</span>(m, ChatMessage):</span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>            b <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>            e <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Got unsupported message type: </span><span class="sc">{</span>m<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>        message <span class="op">=</span> <span class="ss">f"</span><span class="sc">{</span>b<span class="sc">}{</span>m<span class="sc">.</span>content<span class="sc">}{</span>e<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(m, AIMessage) <span class="kw">and</span> <span class="st">"function_call"</span> <span class="kw">in</span> m.additional_kwargs:</span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a>            message <span class="op">+=</span> <span class="ss">f"</span><span class="sc">{</span>m<span class="sc">.</span>additional_kwargs[<span class="st">'function_call'</span>]<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a>        string_messages.append(message)</span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>.join(string_messages)</span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ChatPromptValue_to_string(<span class="va">self</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Return prompt as string."""</span></span>
+<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> get_buffer_string_for_llama(<span class="va">self</span>.messages)</span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.prompts.chat <span class="im">import</span> ChatPromptValue</span>
+<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a>ChatPromptValue.to_string <span class="op">=</span> ChatPromptValue_to_string</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>agent.run(<span class="st">"please show me a video and an image of 'a boy is running'"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+
+&gt; Entering new TaskPlanningChain chain...
+Prompt after formatting:
+&lt;&lt;SYS&gt;&gt; 
+                Your task is to break down a users request into a list of several tasks formatted as JSON: 
+                [{"task": task, "id": task_id, "dep": dependency_task_id, 
+                    "args": {"input name": text may contain &lt;resource-dep_id&gt;}}]. 
+                The special tag "dep_id" refer to the one generated text/image/audio in the dependency task 
+                (Please consider whether the dependency task generates resources of this type.) 
+                and "dep_id" must be in "dep" list. 
+                The "dep" field denotes the ids of the previous prerequisite tasks which 
+                generate a new resource that the current task relies on. 
+                The task MUST be selected from the following tools 
+                (along with tool description, input name and output type): 
+                    ['document_qa: This is a tool that answers a question about an document (pdf). It takes an input named `document` which should be the document containing the information, as well as a `question` that is the question about the document. It returns a text that contains the answer to the question.', 'image_captioner: This is a tool that generates a description of an image. It takes an input named `image` which should be the image to caption, and returns a text that contains the description in English.', 'image_qa: This is a tool that answers a question about an image. It takes an input named `image` which should be the image containing the information, as well as a `question` which should be the question in English. It returns a text that is the answer to the question.', 'image_segmenter: This is a tool that creates a segmentation mask of an image according to a label. It cannot create an image.It takes two arguments named `image` which should be the original image, and `label` which should be a text describing the elements what should be identified in the segmentation mask. The tool returns the mask.', 'summarizer: This is a tool that summarizes an English text. It takes an input `text` containing the text to summarize, and returns a summary of the text.', 'text_classifier: This is a tool that classifies an English text using provided labels. It takes two inputs: `text`, which should be the text to classify, and `labels`, which should be the list of labels to use for classification. It returns the most likely label in the list of provided `labels` for the input text.', 'text_qa: This is a tool that answers questions related to a text. It takes two arguments named `text`, which is the text where to find the answer, and `question`, which is the question, and returns the answer to the question.', "translator: This is a tool that translates text from a language to another. It takes three inputs: `text`, which should be the text to translate, `src_lang`, which should be the language of the text to translate and `tgt_lang`, which should be the language for the desired ouput language. Both `src_lang` and `tgt_lang` are written in plain English, such as 'Romanian', or 'Albanian'. It returns the text translated in `tgt_lang`.", 'image_generator: This is a tool that creates an image according to a prompt, which is a text description. It takes an input named `prompt` which contains the image description and outputs an image.', 'video_generator: This is a tool that creates a video according to a text description. It takes an input named `prompt` which contains the image description, as well as an optional input `seconds` which will be the duration of the video. The default is of two seconds. The tool outputs a video object.', 'text_downloader: This is a tool that downloads a file from a `url`. It takes the `url` as input, and returns the text contained in the file.', 'image_transformer: This is a tool that transforms an image according to a prompt. It takes two inputs: `image`, which should be the image to transform, and `prompt`, which should be the prompt to use to change it. The prompt should only contain descriptive adjectives, as if completing the prompt of the original image. It returns the modified image.']. 
+                There may be multiple tasks of the same type. 
+                Take a deep breath and think carefully about the user's request.
+                Then think step by step about all the tasks needed to resolve the user's request. 
+                Parse out as few tasks as possible while ensuring that the user request can be resolved. 
+                Pay attention to the dependencies and order among tasks. 
+                Remember, you must return a list of tasks formatted as JSON.
+                If the user input can't be parsed, you need to reply empty JSON [].&lt;&lt;/SYS&gt;&gt;
+[INST]Now I input: please show me a video and an image of 'a boy is running'.[/INST]
+
+&gt; Finished chain.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Llama.generate: prefix-match hit
+
+llama_print_timings:        load time = 10416.40 ms
+llama_print_timings:      sample time =   188.94 ms /   256 runs   (    0.74 ms per token,  1354.96 tokens per second)
+llama_print_timings: prompt eval time =     0.00 ms /     1 tokens (    0.00 ms per token,      inf tokens per second)
+llama_print_timings:        eval time = 47248.86 ms /   256 runs   (  184.57 ms per token,     5.42 tokens per second)
+llama_print_timings:       total time = 47856.42 ms</code></pre>
+</div>
+</div>
 
 
 </section>
