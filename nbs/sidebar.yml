@@ -2,5 +2,7 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 05_single_paper_qa.ipynb
+      - 01_apps.ipynb
+      - 15_single_document_qa.ipynb
       - 12_jats_text_extractor.ipynb
+      - 13_pdf_text_extractor.ipynb
