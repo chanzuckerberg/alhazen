@@ -1,6 +1,0 @@
-website:
-  sidebar:
-    contents:
-      - index.ipynb
-      - 05_single_paper_qa.ipynb
-      - 12_jats_text_extractor.ipynb
