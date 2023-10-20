@@ -41,7 +41,6 @@ class AGENT_TYPE(Enum):
     LangChain = auto()
     LlamaIndex = auto()
 
-
 # %% ../nbs/00_core.ipynb 5
 @dataclasses.dataclass
 class TaskInstruction:
