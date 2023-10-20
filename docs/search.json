@@ -11,7 +11,7 @@
     "href": "index.html#installation",
     "title": "Alhazen",
     "section": "Installation",
-    "text": "Installation\n\nInstall from source\ngit clone https://github.com/chanzuckerberg/alzhazen\nconda create -n alhazen python=3.8\nconda activate alhazen\ncd alhazen\npip install -e ."
+    "text": "Installation\n\nInstall from source\ngit clone https://github.com/chanzuckerberg/alzhazen\nconda create -n alhazen python=3.11\nconda activate alhazen\ncd alhazen\npip install -e ."
   },
   {
     "objectID": "index.html#other-dependencies",
@@ -25,21 +25,21 @@
     "href": "index.html#how-to-use",
     "title": "Alhazen",
     "section": "How to use",
-    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen/tools/&lt;tool_name&gt;.py chatbot\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen/tools/single_paper_qa.py chatbot"
+    "text": "How to use\nWe use the fire library to create a modular command line interface (CLI) for Alhazen.\nFor example to run the chatbot for the single paper QA task, execute the following command:\npython -m fire alhazen.apps &lt;tool_name&gt; &lt;tool_args&gt;\nfor example, run the following command to chat with the single paper QA chatbot:\npython -m fire alhazen.apps single_paper_chatbot '/path/to/pdf/or/nxml/files/' 'mistral-7b-instruct'`"
   },
   {
     "objectID": "index.html#code-status-and-capabilities",
     "href": "index.html#code-status-and-capabilities",
     "title": "Alhazen",
     "section": "Code Status and Capabilities",
-    "text": "Code Status and Capabilities\nThis project is still very early, but we are attempting to provide access to the full range of capabilities of the project as we develop them. We will provide some access to each capability through Gradio as we develop them, and will eventually synthesise them into a single agent-driven interface.\n\nSingle Paper QA (SPQA) - retrieval augmented generation (RAG) question answering about a single paper (implemented through llama-index)\n… more to come"
+    "text": "Code Status and Capabilities\nThis project is still very early, but we are attempting to provide access to the full range of capabilities of the project as we develop them. We will provide some access to each capability through Gradio as we develop them, and will eventually synthesise them into a single agent-driven interface."
   },
   {
     "objectID": "index.html#where-does-the-name-alhazen-come-from",
     "href": "index.html#where-does-the-name-alhazen-come-from",
     "title": "Alhazen",
     "section": "Where does the Name ‘Alhazen’ come from?",
-    "text": "Where does the Name ‘Alhazen’ come from?\nOne thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning — an early pioneer in the scientific method five centuries before Renaissance scientists started following the same paradigm (Website, Wikipedia, Tbakhi & Amir 2007).\nWe use the latinized form of his name (‘Alhazen’) as the name of this project to honor his contribution (which goes largely unrecognized from within non-Islamic communities).\nFamously, he was quoted as saying:\n\nThe duty of the man who investigates the writings of scientists, if learning the truth is his goal, is to make himself an enemy of all that he reads, and, applying his mind to the core and margins of its content, attack it from every side. He should also suspect himself as he performs his critical examination of it, so that he may avoid falling into either prejudice or leniency.\n\nHere, we seek to develop an AI capable of applying scientific knowledge engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s critical view of published knowledge by creating a AI-powered system for scientific discovery."
+    "text": "Where does the Name ‘Alhazen’ come from?\nOne thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning — an early pioneer in the scientific method five centuries before Renaissance scientists started following the same paradigm (Website, Wikipedia, Tbakhi & Amir 2007).\nWe use the latinized form of his name (‘Alhazen’) to honor his contribution (which goes largely unrecognized from within non-Islamic communities).\nFamously, he was quoted as saying:\n\nThe duty of the man who investigates the writings of scientists, if learning the truth is his goal, is to make himself an enemy of all that he reads, and, applying his mind to the core and margins of its content, attack it from every side. He should also suspect himself as he performs his critical examination of it, so that he may avoid falling into either prejudice or leniency.\n\nHere, we seek to develop an AI capable of applying scientific knowledge engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s critical view of published knowledge by creating a AI-powered system for scientific discovery.\nNote - when describing our agent, we will use non-gendered pronouns (they/them/it) to refer to the agent."
   },
   {
     "objectID": "airtable_utils.html",
@@ -130,6 +130,6 @@
     "href": "apps.html",
     "title": "Apps",
     "section": "",
-    "text": "source\n\nsingle_paper_chatbot\n\n single_paper_chatbot (doc_dir, llm_name,\n                       embed_model_name='hkunlp/instructor-large',\n                       chunk_size=1000, chunk_overlap=100,\n                       section_regex=None)\n\nRun a chatbot on a single paper - useful for testing. Execute this as follows: &gt; # Set environment variable LLMS_TEMP_DIR to a directory where you want to store the temporary files &gt; os.environ[‘LLMS_TEMP_DIR’] = ‘/tmp/alhazen’ &gt; # Run the chatbot &gt; python -m fire alhazen.apps single_paper_chatbot ‘/path/to/pdf/or/nxml/files/’ ‘mistral-7b-instruct’"
+    "text": "source\n\nsingle_paper_chatbot\n\n single_paper_chatbot (doc_dir, llm_name,\n                       embed_model_name='hkunlp/instructor-large',\n                       chunk_size=1000, chunk_overlap=100,\n                       section_regex=None)\n\nRun a chatbot on a single paper - useful for testing. Execute this as follows:\nSet environment variable LLMS_TEMP_DIR to a directory where you want to store the temporary files\nos.environ['LLMS_TEMP_DIR'] = '/tmp/alhazen'\nRun the chatbot\npython -m fire alhazen.apps single_paper_chatbot '/path/to/pdf/or/nxml/files/' 'mistral-7b-instruct'"
   }
 ]
