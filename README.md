@@ -13,7 +13,7 @@ with 32+GB of memory - no support for Windows or Linux yet).
 
 ``` bash
 git clone https://github.com/chanzuckerberg/alzhazen
-conda create -n alhazen python=3.8
+conda create -n alhazen python=3.11
 conda activate alhazen
 cd alhazen
 pip install -e .
@@ -62,14 +62,14 @@ For example to run the chatbot for the single paper QA task, execute the
 following command:
 
 ``` bash
-python -m fire alhazen/tools/<tool_name>.py chatbot
+python -m fire alhazen.apps <tool_name> <tool_args>
 ```
 
 for example, run the following command to chat with the single paper QA
 chatbot:
 
 ``` bash
-python -m fire alhazen/tools/single_paper_qa.py chatbot
+python -m fire alhazen.apps single_paper_chatbot '/path/to/pdf/or/nxml/files/' 'mistral-7b-instruct'`
 ```
 
 ## Code Status and Capabilities
@@ -79,11 +79,6 @@ access to the full range of capabilities of the project as we develop
 them. We will provide some access to each capability through
 [Gradio](https://gradio.app/) as we develop them, and will eventually
 synthesise them into a single agent-driven interface.
-
-- **Single Paper QA (SPQA)** - retrieval augmented generation (RAG)
-  question answering about a single paper (implemented through
-  [llama-index](https://www.llamaindex.ai/))
-- … more to come
 
 ## Where does the Name ‘Alhazen’ come from?
 
@@ -96,9 +91,9 @@ following the same paradigm ([Website](https://www.ibnalhaytham.com/),
 [Wikipedia](https://en.wikipedia.org/wiki/Ibn_al-Haytham), [Tbakhi &
 Amir 2007](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6074172/)).
 
-We use the latinized form of his name (‘Alhazen’) as the name of this
-project to honor his contribution (which goes largely unrecognized from
-within non-Islamic communities).
+We use the latinized form of his name (‘Alhazen’) to honor his
+contribution (which goes largely unrecognized from within non-Islamic
+communities).
 
 Famously, he was quoted as saying:
 
@@ -113,3 +108,6 @@ Here, we seek to develop an AI capable of applying scientific knowledge
 engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s
 critical view of published knowledge by creating a AI-powered system for
 scientific discovery.
+
+Note - when describing our agent, we will use non-gendered pronouns
+(they/them/it) to refer to the agent.
