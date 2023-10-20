@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="LangChain LLMS for use by the Alhazen Research Assistant.">
 
-<title>alhazen - Models</title>
+<title>alhazen - Search Engine Tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -97,11 +62,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Models">
-<meta property="og:description" content="LangChain LLMS for use by the Alhazen Research Assistant.">
+<meta property="og:title" content="alhazen - Search Engine Tools">
+<meta property="og:description" content="">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Models">
-<meta name="twitter:description" content="LangChain LLMS for use by the Alhazen Research Assistant.">
+<meta name="twitter:title" content="alhazen - Search Engine Tools">
+<meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -126,7 +91,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Models</li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Search Engine Tools</li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -146,16 +111,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./single_paper_qa.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">QA on a single research article</span></a>
+  <a href="./apps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Apps</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./jats_text_extractor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">JATS Text Extractor Utility</span></a>
-  </div>
-</li>
+ <span class="menu-text">15_single_document_qa.ipynb</span>
+  </li>
+        <li class="sidebar-item">
+ <span class="menu-text">12_jats_text_extractor.ipynb</span>
+  </li>
+        <li class="sidebar-item">
+ <span class="menu-text">13_pdf_text_extractor.ipynb</span>
+  </li>
     </ul>
     </div>
 </nav>
@@ -166,8 +134,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#get_cached_gguf" id="toc-get_cached_gguf" class="nav-link active" data-scroll-target="#get_cached_gguf">get_cached_gguf</a></li>
-  <li><a href="#instantiate_llms" id="toc-instantiate_llms" class="nav-link" data-scroll-target="#instantiate_llms">instantiate_llms</a></li>
+  <li><a href="#ncbi-tools" id="toc-ncbi-tools" class="nav-link active" data-scroll-target="#ncbi-tools">NCBI Tools</a>
+  <ul class="collapse">
+  <li><a href="#esearchquery" id="toc-esearchquery" class="nav-link" data-scroll-target="#esearchquery">ESearchQuery</a></li>
+  <li><a href="#ncbi_database_type" id="toc-ncbi_database_type" class="nav-link" data-scroll-target="#ncbi_database_type">NCBI_Database_Type</a></li>
+  <li><a href="#efetchquery" id="toc-efetchquery" class="nav-link" data-scroll-target="#efetchquery">EFetchQuery</a></li>
+  </ul></li>
+  <li><a href="#europmcquery" id="toc-europmcquery" class="nav-link" data-scroll-target="#europmcquery">EuroPMCQuery</a>
+  <ul class="collapse">
+  <li><a href="#europmcquery-1" id="toc-europmcquery-1" class="nav-link" data-scroll-target="#europmcquery-1">EuroPMCQuery</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -176,14 +152,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Models</h1>
+<h1 class="title">Search Engine Tools</h1>
 </div>
 
-<div>
-  <div class="description">
-    LangChain LLMS for use by the Alhazen Research Assistant.
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
@@ -197,43 +168,50 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<p>These include the following models:</p>
-<ul>
-<li>Lllama.cpp</li>
-<li>Ollama</li>
-<li>HuggingFace Pipelines</li>
-<li>OpenAI GPT-3.5</li>
-<li>OpenAI GPT-4.0</li>
-</ul>
+<section id="ncbi-tools" class="level2">
+<h2 class="anchored" data-anchor-id="ncbi-tools">NCBI Tools</h2>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/models.py#L18" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="get_cached_gguf" class="level3">
-<h3 class="anchored" data-anchor-id="get_cached_gguf">get_cached_gguf</h3>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L31" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="esearchquery" class="level3">
+<h3 class="anchored" data-anchor-id="esearchquery">ESearchQuery</h3>
 <blockquote class="blockquote">
-<pre><code> get_cached_gguf (url, local_dir)</code></pre>
+<pre><code> ESearchQuery (api_key=None, oa=False, db='pubmed')</code></pre>
 </blockquote>
+<p>Class to provide query interface for ESearch (i.e., query terms in elaborate ways, return a list of ids) Each instance of this class executes queries of a given type</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/models.py#L43" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L24" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
-<section id="instantiate_llms" class="level3">
-<h3 class="anchored" data-anchor-id="instantiate_llms">instantiate_llms</h3>
+<section id="ncbi_database_type" class="level3">
+<h3 class="anchored" data-anchor-id="ncbi_database_type">NCBI_Database_Type</h3>
 <blockquote class="blockquote">
-<pre><code> instantiate_llms (langchain_model, **kwargs)</code></pre>
+<pre><code> NCBI_Database_Type (value, names=None, module=None, qualname=None,
+                     type=None, start=1, boundary=None)</code></pre>
 </blockquote>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">from langchain.prompts import ChatPromptTemplate</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">template = """Based on the table schema below, write a SQL query that would answer the user's question:</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">{schema}</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">Question: {question}</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">SQL Query:"""</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">prompt = ChatPromptTemplate.from_template(template)</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<p>Simple enumeration of the different NCBI databases supported by this tool</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L190" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="efetchquery" class="level3">
+<h3 class="anchored" data-anchor-id="efetchquery">EFetchQuery</h3>
+<blockquote class="blockquote">
+<pre><code> EFetchQuery (api_key=None, db='pubmed')</code></pre>
+</blockquote>
+<p>Class to provide query interface for EFetch (i.e., query based on a list of ids) Each instance of this class executes queries of a given type</p>
+</section>
+</section>
+<section id="europmcquery" class="level2">
+<h2 class="anchored" data-anchor-id="europmcquery">EuroPMCQuery</h2>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L374" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="europmcquery-1" class="level3">
+<h3 class="anchored" data-anchor-id="europmcquery-1">EuroPMCQuery</h3>
+<blockquote class="blockquote">
+<pre><code> EuroPMCQuery (oa=False, db='pubmed')</code></pre>
+</blockquote>
+<p>A class that executes search queries on the European PMC API</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

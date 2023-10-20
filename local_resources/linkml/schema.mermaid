@@ -1,0 +1,147 @@
+```mermaid
+erDiagram
+Entity {
+    string id  
+    string iri  
+    stringList type  
+}
+NamedThing {
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+InformationContentEntity {
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+Work {
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+InformationResource {
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+WorkCollection {
+    string id  
+    string name  
+    string logical_query  
+    date creation_date  
+    string license  
+    string rights  
+    string format  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+WorkFragment {
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+Selector {
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+OffsetTextSelector {
+    integer offset  
+    integer length  
+    string text  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+Person {
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+Author {
+    string orcid  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+Organization {
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+City {
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+Country {
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+
+Work ||--}o WorkFragment : "has part"
+Work ||--}o Author : "authors"
+WorkCollection ||--}o InformationResource : "information sources"
+WorkCollection ||--}o Work : "has part"
+WorkFragment ||--|o Work : "part of"
+WorkFragment ||--|o Selector : "selector"
+Author ||--}o Organization : "affiliations"
+Organization ||--}o City : "city"
+Organization ||--}o Country : "country"
+
+```
+

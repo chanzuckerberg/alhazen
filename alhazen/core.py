@@ -68,13 +68,13 @@ class TaskInstruction:
             template=self.system + '\n' +self.instruction
         )
 
-    def generate_llama2_promp_templatet(self) -> PromptTemplate:
+    def generate_llama2_prompt_template(self) -> PromptTemplate:
         return PromptTemplate(
             input_variables=self.input_variables, 
             template='''<s>[INST]
                 <<SYS>>'''+self.system+'''<</SYS>>
                 '''+self.instruction+'''
-                [/INST]'''
+                [/INST]</s>'''
         )
 
     def generate_simple_instruction(self, input_map) -> str:
