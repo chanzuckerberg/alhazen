@@ -231,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="install-from-source" class="level3">
 <h3 class="anchored" data-anchor-id="install-from-source">Install from source</h3>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/chanzuckerberg/alzhazen</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> alhazen python=3.8</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> alhazen python=3.11</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate alhazen</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> alhazen</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -259,27 +259,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="how-to-use">How to use</h2>
 <p>We use the fire library to create a modular command line interface (CLI) for Alhazen.</p>
 <p>For example to run the chatbot for the single paper QA task, execute the following command:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen/tools/<span class="op">&lt;</span>tool_name<span class="op">&gt;</span>.py chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen.apps <span class="op">&lt;</span>tool_name<span class="op">&gt;</span> <span class="op">&lt;</span>tool_args<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>for example, run the following command to chat with the single paper QA chatbot:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen/tools/single_paper_qa.py chatbot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen.apps single_paper_chatbot <span class="st">'/path/to/pdf/or/nxml/files/'</span> <span class="st">'mistral-7b-instruct'</span><span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="code-status-and-capabilities" class="level2">
 <h2 class="anchored" data-anchor-id="code-status-and-capabilities">Code Status and Capabilities</h2>
 <p>This project is still very early, but we are attempting to provide access to the full range of capabilities of the project as we develop them. We will provide some access to each capability through <a href="https://gradio.app/">Gradio</a> as we develop them, and will eventually synthesise them into a single agent-driven interface.</p>
-<ul>
-<li><strong>Single Paper QA (SPQA)</strong> - retrieval augmented generation (RAG) question answering about a single paper (implemented through <a href="https://www.llamaindex.ai/">llama-index</a>)</li>
-<li>… more to come</li>
-</ul>
 </section>
 <section id="where-does-the-name-alhazen-come-from" class="level2">
 <h2 class="anchored" data-anchor-id="where-does-the-name-alhazen-come-from">Where does the Name ‘Alhazen’ come from?</h2>
 <p>One thousand years ago, Ḥasan Ibn al-Haytham (965-1039 AD) studied optics through experimentation and observation. He advocated that a hypothesis must be supported by experiments based on confirmable procedures or mathematical reasoning — an early pioneer in the scientific method <em>five centuries</em> before Renaissance scientists started following the same paradigm (<a href="https://www.ibnalhaytham.com/">Website</a>, <a href="https://en.wikipedia.org/wiki/Ibn_al-Haytham">Wikipedia</a>, <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6074172/">Tbakhi &amp; Amir 2007</a>).</p>
-<p>We use the latinized form of his name (‘Alhazen’) as the name of this project to honor his contribution (which goes largely unrecognized from within non-Islamic communities).</p>
+<p>We use the latinized form of his name (‘Alhazen’) to honor his contribution (which goes largely unrecognized from within non-Islamic communities).</p>
 <p>Famously, he was quoted as saying:</p>
 <blockquote class="blockquote">
 <p>The duty of the man who investigates the writings of scientists, if learning the truth is his goal, is to make himself an enemy of all that he reads, and, applying his mind to the core and margins of its content, attack it from every side. He should also suspect himself as he performs his critical examination of it, so that he may avoid falling into either prejudice or leniency.</p>
 </blockquote>
 <p>Here, we seek to develop an AI capable of applying scientific knowledge engineering to support CZI’s mission. We seek to honor Ibn al-Haytham’s critical view of published knowledge by creating a AI-powered system for scientific discovery.</p>
+<p>Note - when describing our agent, we will use non-gendered pronouns (they/them/it) to refer to the agent.</p>
 
 
 </section>

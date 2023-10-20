@@ -15,6 +15,17 @@ def single_paper_chatbot(doc_dir,
         chunk_overlap=100,
         section_regex=None):
     
+    """Run a chatbot on a single paper - useful for testing. Execute this as follows:
+
+    Set environment variable LLMS_TEMP_DIR to a directory where you want to store the temporary files
+
+    `os.environ['LLMS_TEMP_DIR'] = '/tmp/alhazen'`
+    
+    Run the chatbot 
+    
+    `python -m fire alhazen.apps single_paper_chatbot '/path/to/pdf/or/nxml/files/' 'mistral-7b-instruct'`
+    """
+    
     chatbot = LocalFileLangChainChatBot(
                 doc_dir, 
                 llm_name,

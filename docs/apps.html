@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Command line applications that can be called.">
+<meta name="description" content="Command line applications that can be called with python -m fire alhazen.apps <app>.">
 
 <title>alhazen - Apps</title>
 <style>
@@ -64,10 +64,10 @@ ul.task-list li input[type="checkbox"] {
 
 <link rel="stylesheet" href="styles.css">
 <meta property="og:title" content="alhazen - Apps">
-<meta property="og:description" content="Command line applications that can be called.">
+<meta property="og:description" content="Command line applications that can be called with python -m fire alhazen.apps <app>.">
 <meta property="og:site-name" content="alhazen">
 <meta name="twitter:title" content="alhazen - Apps">
-<meta name="twitter:description" content="Command line applications that can be called.">
+<meta name="twitter:description" content="Command line applications that can be called with python -m fire alhazen.apps <app>.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -164,7 +164,7 @@ ul.task-list li input[type="checkbox"] {
 
 <div>
   <div class="description">
-    Command line applications that can be called.
+    Command line applications that can be called with <code>python -m fire alhazen.apps &lt;app&gt;</code>.
   </div>
 </div>
 
@@ -190,7 +190,11 @@ ul.task-list li input[type="checkbox"] {
                        chunk_size=1000, chunk_overlap=100,
                        section_regex=None)</code></pre>
 </blockquote>
-<p>Run a chatbot on a single paper - useful for testing. Execute this as follows: &gt; # Set environment variable LLMS_TEMP_DIR to a directory where you want to store the temporary files &gt; os.environ[‘LLMS_TEMP_DIR’] = ‘/tmp/alhazen’ &gt; # Run the chatbot &gt; python -m fire alhazen.apps single_paper_chatbot ‘/path/to/pdf/or/nxml/files/’ ‘mistral-7b-instruct’</p>
+<p>Run a chatbot on a single paper - useful for testing. Execute this as follows:</p>
+<p>Set environment variable LLMS_TEMP_DIR to a directory where you want to store the temporary files</p>
+<p><code>os.environ['LLMS_TEMP_DIR'] = '/tmp/alhazen'</code></p>
+<p>Run the chatbot</p>
+<p><code>python -m fire alhazen.apps single_paper_chatbot '/path/to/pdf/or/nxml/files/' 'mistral-7b-instruct'</code></p>
 
 
 </section>
