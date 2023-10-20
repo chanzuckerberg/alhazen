@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Building a simple chatbot to allow the user to ask questions about a single paper.">
 
-<title>alhazen - QA on a single research article</title>
+<title>alhazen - Query Translation Tools</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,40 +19,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -97,11 +62,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - QA on a single research article">
-<meta property="og:description" content="Building a simple chatbot to allow the user to ask questions about a single paper.">
+<meta property="og:title" content="alhazen - Query Translation Tools">
+<meta property="og:description" content="">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - QA on a single research article">
-<meta name="twitter:description" content="Building a simple chatbot to allow the user to ask questions about a single paper.">
+<meta name="twitter:title" content="alhazen - Query Translation Tools">
+<meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -126,7 +91,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./single_paper_qa.html">QA on a single research article</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Query Translation Tools</li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -146,16 +111,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./single_paper_qa.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">QA on a single research article</span></a>
+  <a href="./apps.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Apps</span></a>
   </div>
 </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./jats_text_extractor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">JATS Text Extractor Utility</span></a>
-  </div>
-</li>
+ <span class="menu-text">15_single_document_qa.ipynb</span>
+  </li>
+        <li class="sidebar-item">
+ <span class="menu-text">12_jats_text_extractor.ipynb</span>
+  </li>
+        <li class="sidebar-item">
+ <span class="menu-text">13_pdf_text_extractor.ipynb</span>
+  </li>
     </ul>
     </div>
 </nav>
@@ -166,9 +134,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#singleopenaccessarticlechatbot" id="toc-singleopenaccessarticlechatbot" class="nav-link active" data-scroll-target="#singleopenaccessarticlechatbot">SingleOpenAccessArticleChatBot</a></li>
-  <li><a href="#chatbot" id="toc-chatbot" class="nav-link" data-scroll-target="#chatbot">chatbot</a></li>
-  <li><a href="#how-to-create-a-chatbot." id="toc-how-to-create-a-chatbot." class="nav-link" data-scroll-target="#how-to-create-a-chatbot.">How to create a chatbot.</a></li>
+  <li><a href="#querytranslator" id="toc-querytranslator" class="nav-link active" data-scroll-target="#querytranslator">QueryTranslator</a></li>
+  <li><a href="#querytype" id="toc-querytype" class="nav-link" data-scroll-target="#querytype">QueryType</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -177,14 +144,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">QA on a single research article</h1>
+<h1 class="title">Query Translation Tools</h1>
 </div>
 
-<div>
-  <div class="description">
-    Building a simple chatbot to allow the user to ask questions about a single paper.
-  </div>
-</div>
 
 
 <div class="quarto-title-meta">
@@ -199,48 +161,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/single_paper_qa.py#L40" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="singleopenaccessarticlechatbot" class="level3">
-<h3 class="anchored" data-anchor-id="singleopenaccessarticlechatbot">SingleOpenAccessArticleChatBot</h3>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/queryTranslator.py#L31" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="querytranslator" class="level3">
+<h3 class="anchored" data-anchor-id="querytranslator">QueryTranslator</h3>
 <blockquote class="blockquote">
-<pre><code> SingleOpenAccessArticleChatBot (temp_dir='/tmp/alhazen',
-                                 embed_model_name='BAAI/bge-small-
-                                 en-v1.5', gguf_file_name='llama-2-13b-
-                                 chat.Q5_K_M.gguf', temperature=0.1,
-                                 max_new_tokens=256, context_window=3900,
-                                 sentence_window_size=3)</code></pre>
+<pre><code> QueryTranslator (df, id_col, query_col)</code></pre>
 </blockquote>
-<p>Initialize self. See help(type(self)) for accurate signature.</p>
+<p>This class allows a user to define a set of logical boolean queries in a Pandas dataframe and then convert them to a variety of formats for use on various online API systems.</p>
+<p>Functionality includes:</p>
+<ul>
+<li>Specify queries as a table using ‘|’ and ‘&amp;’ symbols</li>
+<li>generate search strings to be used in API calls for PMID, SOLR, and European PMC</li>
+</ul>
+<p>Attributes:</p>
+<ul>
+<li>df: The dataframe of queries to be processed (note: this dataframe must have a numerical ID column specified)</li>
+<li>query_col: the column in the data frame where the query is specified</li>
+</ul>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/single_paper_qa.py#L194" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/queryTranslator.py#L18" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
-<section id="chatbot" class="level3">
-<h3 class="anchored" data-anchor-id="chatbot">chatbot</h3>
+<section id="querytype" class="level3">
+<h3 class="anchored" data-anchor-id="querytype">QueryType</h3>
 <blockquote class="blockquote">
-<pre><code> chatbot (temp_dir='/tmp/alhazen', embed_model_name='BAAI/bge-small-
-          en-v1.5', gguf_file_name='llama-2-13b-chat.Q5_K_M.gguf',
-          temperature=0.1, max_new_tokens=256, context_window=3900,
-          sentence_window_size=3)</code></pre>
+<pre><code> QueryType (value, names=None, module=None, qualname=None, type=None,
+            start=1, boundary=None)</code></pre>
 </blockquote>
-</section>
-<section id="how-to-create-a-chatbot." class="level2">
-<h2 class="anchored" data-anchor-id="how-to-create-a-chatbot.">How to create a chatbot.</h2>
-<ol type="1">
-<li>Download the GGUF file you want the chatbot to use for Llama2 and put it in a temp directory</li>
-<li>Set the environment variable <code>DB_TOKEN</code> to your databricks access token
-<ol type="1">
-<li>You need access to the Databricks SQL warehouse named <code>sci_general_sql</code> (ID: 1c4df94f2f1a6305) on the general czi-prod databricks instance: <code>https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/</code></li>
-</ol></li>
-<li>Execute the following code:</li>
-</ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.gradio <span class="im">import</span> SingleOpenAccessArticleChatBot</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>chatbot <span class="op">=</span> SingleOpenAccessArticleChatBot()</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>chatbot.run_gradio()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<ol start="4" type="1">
-<li>Navigate to the URL that is printed out.</li>
-</ol>
-<p>This should load a page with instructions that you can follow.</p>
+<p>An enumeration that permits conversion of complex boolean queries to different formats</p>
 
 
 </section>
