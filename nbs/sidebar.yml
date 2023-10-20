@@ -3,6 +3,7 @@ website:
     contents:
       - index.ipynb
       - 01_apps.ipynb
-      - 15_single_document_qa.ipynb
-      - 12_jats_text_extractor.ipynb
-      - 13_pdf_text_extractor.ipynb
+      - 10_tiab_corpus_qa.ipynb
+      - 11_single_document_qa.ipynb
+      - 21_jats_text_extractor.ipynb
+      - 22_pdf_text_extractor.ipynb
