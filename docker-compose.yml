@@ -1,6 +1,4 @@
----
-version: '3.4'
-services:
+version: "3.3"
   weaviate:
     command:
     - --host
@@ -24,4 +22,3 @@ services:
       CLUSTER_HOSTNAME: 'node1'
 volumes:
   weaviate_data:
-...
