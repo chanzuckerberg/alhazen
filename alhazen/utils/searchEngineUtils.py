@@ -16,6 +16,9 @@ import re
 from tqdm import tqdm
 from bs4 import BeautifulSoup,Tag,Comment,NavigableString
 import pandas as pd
+import alhazen.schema_python as linkml_py
+import alhazen.schema_sqla as linkml_sqla
+
 
 # %% ../../nbs/34_search_engine_eutils.ipynb 5
 PAGE_SIZE = 10000
@@ -392,23 +395,50 @@ class EuroPMCQuery():
         data = json.loads(r.text)
         numFound = data['hitCount']
         print(url + ', ' + str(numFound) + ' European PMC PAPERS FOUND')
-        ids_from_q = []
+        publications = []
         cursorMark = '*'
         for i in tqdm(range(0, numFound, page_size)):
             url = EMPC_API_URL + '&cursorMark=' + cursorMark + '&query=' + q
             r = requests.get(url, timeout=timeout)
             data = json.loads(r.text)
+            date_format = '%Y-%m-%d'
             #print(data)
             if data.get('nextCursorMark'):
                 cursorMark = data['nextCursorMark']
             for d in data['resultList']['result']:
-                if d.get('pubType','') == 'patent':
+                pTypes = [t.lower() for t in d.get('pubTypeList',{}).get('pubType',[])]
+                if d.get('firstPublicationDate'):
+                    date_obj = datetime.datetime.strptime(d.get('firstPublicationDate'), date_format)
+                elif d.get('dateOfCreation'):
+                    date_obj = datetime.strptime(d.get('dateOfCreation'), date_format)
+                else:
+                    date_obj = None
+                if 'patent' in pTypes:
                     continue
-                tup = [d.get('id',-1), d.get('doi','')]
-                for c in extra_columns:
-                    tup.append(d.get(c,'')) 
-                ids_from_q.append(tup)
-        ids_from_q = sorted(list(ids_from_q), key = lambda x: x[0])
-        print(' Returning '+str(len(ids_from_q)))
-        return (numFound, ids_from_q)
-
+                elif 'review' in pTypes:
+                    #p = linkml_sqla.ScientificReviewArticle(
+                    p = linkml_sqla.ScientificPublication(
+                         id=d.get('id',-1), 
+                        doi=d.get('doi',''), 
+                        title=d.get('title',''), 
+                        abstract=d.get('abstractText',''), 
+                        publication_date=date_obj)
+                elif 'preprint' in pTypes:
+                    #p = linkml_sqla.ScientificPrimaryResearchPreprint(
+                    p = linkml_sqla.ScientificPublication(
+                        id=d.get('id',-1), 
+                        doi=d.get('doi',''), 
+                        title=d.get('title',''), 
+                        abstract=d.get('abstractText',''), 
+                        publication_date=date_obj)
+                elif 'journal article' in pTypes or 'research-article' in pTypes:
+                    #p = linkml_sqla.ScientificPrimaryResearchArticle(
+                    p = linkml_sqla.ScientificPublication(
+                        id=d.get('id',-1), 
+                        doi=d.get('doi',''), 
+                        title=d.get('title',''), 
+                        abstract=d.get('abstractText',''), 
+                        publication_date=date_obj)
+                publications.append(p)
+        print(' Returning '+str(len(publications)))
+        return (numFound, publications)
