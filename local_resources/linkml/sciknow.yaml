@@ -42,11 +42,8 @@ slots:
       This is determined by the id using expansion rules.
 
   doi:
-    identifier: true
-    domain: InformationContentEntity
     description: >-
       A digital object identifier (see http://doi.org/).
-    required: true
 
   type:
     slot_uri: rdf:type
@@ -89,10 +86,17 @@ slots:
       - dct:format
 
   creation date:
-    aliases: ['publication date']
     range: date
     description: >-
       date on which an entity was created. This can be applied to nodes or edges
+    exact_mappings:
+      - dct:createdOn
+      - WIKIDATA_PROPERTY:P577
+
+  publication date:
+    range: date
+    description: >-
+      date on which an entity was published (i.e., made available to the public).
     exact_mappings:
       - dct:createdOn
       - WIKIDATA_PROPERTY:P577
@@ -208,8 +212,6 @@ classes:
       - rights
       - format
       - creation date
-    id_prefixes:
-      - doi
     exact_mappings:
       - biolink:information content entity
 
@@ -224,6 +226,7 @@ classes:
       - title
       - abstract
       - full text
+      - publication date
     slot_usage:
       has part:
         multivalued: true
@@ -235,6 +238,8 @@ classes:
 
   ScientificPublication:
     is_a: ScientificKnowledgeExpression
+    slots:
+      - doi
     description: >-
       A published expression of scientific knowledge, 
       such as a paper, book, thesis, conference proceedings, etc.   
@@ -316,6 +321,10 @@ classes:
       databases, and include many access endpoints and user
       interfaces. Information Resources include project-specific resources
       such as a Translator Knowledge Provider, and community knowledgebases like ChemBL, OMIM, or DGIdb.
+    slots:
+      - id
+      - name
+      - xref
 
   ScientificKnowledgeCollection:
     description:
@@ -327,31 +336,19 @@ classes:
       - logical query
       - creation date
       - information sources
-      - has part
-    slot_usage:
-      has part:
-        multivalued: true
-        description: 
-          The expressions that are part of the collection.
-        range: ScientificKnowledgeExpression
 
   ScientificPublicationCollection:
     description:
       A collection of scientific publications. 
     is_a: ScientificKnowledgeCollection 
     slots:
-      - id
-      - name
-      - logical query
-      - creation date
-      - information sources
       - has part
     slot_usage:
       has part:
         multivalued: true
         description: 
           The publications that are part of the collection.
-        range: ScientificKnowledgeExpression
+        range: ScientificPublication
 
   ScientificKnowledgeFragment:
     description:
