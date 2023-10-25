@@ -281,9 +281,7 @@ class LocalFileLangChainChatBot:
                             directories = gr.DataFrame(show_label=False, value=self.folder_df, interactive=False)
                             files = gr.DataFrame(show_label=False, value=self.file_df, interactive=False)
                     doc_text = gr.HTML(label="File Contents")
-                directories.select(select_dir, None, [doc_dir, directories, files], queue=False )   
-                files.select(select_file, None, [doc_text, chatbot], queue=False )
-
+            
             with gr.Tab("Chat"):
                 chatbot = gr.Chatbot(
                     [],
@@ -300,9 +298,11 @@ class LocalFileLangChainChatBot:
                     )
                     clear_btn = gr.Button("Clear")
 
-                txt_msg = txt.submit(add_text, [chatbot, txt], [chatbot, txt], queue=False).then(bot, chatbot, chatbot)
-                txt_msg.then(lambda: gr.Textbox(interactive=True), None, [txt], queue=False)                
-                clear_btn.click(clear_chat, [], [chatbot], queue=False)
+            directories.select(select_dir, None, [doc_dir, directories, files], queue=False )   
+            files.select(select_file, None, [doc_text, chatbot], queue=False )
+            txt_msg = txt.submit(add_text, [chatbot, txt], [chatbot, txt], queue=False).then(bot, chatbot, chatbot)
+            txt_msg.then(lambda: gr.Textbox(interactive=True), None, [txt], queue=False)                
+            clear_btn.click(clear_chat, [], [chatbot], queue=False)
                 
         demo.queue()
         demo.launch()

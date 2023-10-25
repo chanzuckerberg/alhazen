@@ -225,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                             chunk_overlap=100)</code></pre>
 </blockquote>
 <p>Uses a simple prompt to answer questions about a collection of short PDF files.</p>
-<div class="cell" data-execution_count="8">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'LLMS_TEMP_DIR'</span>] <span class="op">=</span> <span class="st">'/tmp/alhazen'</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cb <span class="op">=</span> LocalFileLangChainChatBot(<span class="st">'/Users/gburns/Documents/2023H2/cryoet_portal_rocrates/reading/cryoet_papers/'</span>, </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'llama-2-70b-chat'</span>,</span>
@@ -1014,109 +1014,109 @@ ggml_metal_init: allocating
 ggml_metal_init: found device: Apple M2 Max
 ggml_metal_init: picking default device: Apple M2 Max
 ggml_metal_init: loading '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/llama_cpp/ggml-metal.metal'
-ggml_metal_init: loaded kernel_add                            0x2c2ac1500 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_add_row                        0x2c2ac1b30 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul                            0x2c2ac1d80 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_row                        0x2c2ac1fd0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_scale                          0x2c2ac2220 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_silu                           0x2c2ac2470 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_relu                           0x2c2ac26c0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_gelu                           0x2c2ac2910 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_soft_max                       0x2c2ac2b60 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_soft_max_4                     0x2c2ac2db0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_diag_mask_inf                  0x2c2ac3000 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_diag_mask_inf_8                0x2c2ac3250 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_f32                   0x2c2ac34a0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_f16                   0x2c2ac36f0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q4_0                  0x2c2ac3940 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q4_1                  0x2c2ac3cb0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q8_0                  0x2c2ac3f00 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q2_K                  0x2c2ac4150 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q3_K                  0x2c2ac43a0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q4_K                  0x2c2ac45f0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q5_K                  0x2c2ac4840 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q6_K                  0x2c2ac4a90 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_rms_norm                       0x2c2ac4ce0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_norm                           0x2c2ac4f30 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_f32_f32                0x2c2ac5180 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_f16_f32                0x2c2ac53d0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_f16_f32_1row           0x2c2ac5620 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_f16_f32_l4             0x2c2f8c310 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q4_0_f32               0x2c2f83570 | th_max =  896 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q4_1_f32               0x2c2f8c560 | th_max =  896 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q8_0_f32               0x2c2f8c7b0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q2_K_f32               0x2c2f8ca00 | th_max =  640 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q3_K_f32               0x2c2f8cc50 | th_max =  576 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q4_K_f32               0x2c2f8cea0 | th_max =  576 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q5_K_f32               0x2c2f8d0f0 | th_max =  576 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q6_K_f32               0x2c2f8d470 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_f32_f32                 0x2c2f8ef70 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_f16_f32                 0x2c2f8f1c0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q4_0_f32                0x2c2f8b840 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q8_0_f32                0x2c2f8ba90 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q4_1_f32                0x2c2f8bce0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q2_K_f32                0x2c2f8daa0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q3_K_f32                0x2c2f8fac0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q4_K_f32                0x2c2f8fd10 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q5_K_f32                0x2c2f8ff60 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q6_K_f32                0x2c2f901b0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_rope                           0x2c2f90400 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_alibi_f32                      0x2c2f90650 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_cpy_f32_f16                    0x2c2f908a0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_cpy_f32_f32                    0x2c2f90af0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_cpy_f16_f16                    0x2c2f90d40 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_add                            0x298e2d660 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_add_row                        0x298e31e90 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul                            0x298e320e0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_row                        0x298e33bb0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_scale                          0x298e34e50 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_silu                           0x298e34820 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_relu                           0x298e35e60 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_gelu                           0x298e36640 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_soft_max                       0x298e36c80 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_soft_max_4                     0x298e371f0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_diag_mask_inf                  0x298e37720 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_diag_mask_inf_8                0x298e37e70 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_f32                   0x298e383a0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_f16                   0x298e388a0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_0                  0x298e38eb0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_1                  0x298e393b0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q8_0                  0x298e39950 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q2_K                  0x298e39e50 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q3_K                  0x298e3a3f0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_K                  0x298e3a990 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q5_K                  0x298e3ae90 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q6_K                  0x298e3b4a0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_rms_norm                       0x298e3b7c0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_norm                           0x298e3c2a0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f32_f32                0x298e3c690 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32                0x298e3cc00 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32_1row           0x298e3d220 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32_l4             0x1771501b0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_0_f32               0x137a63bd0 | th_max =  896 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_1_f32               0x177149e60 | th_max =  896 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q8_0_f32               0x17714f9f0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q2_K_f32               0x176bd6e60 | th_max =  640 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q3_K_f32               0x17714ee70 | th_max =  576 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_K_f32               0x17714d500 | th_max =  576 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q5_K_f32               0x17714cf90 | th_max =  576 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q6_K_f32               0x1771530f0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_f32_f32                 0x177153340 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_f16_f32                 0x177153590 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_0_f32                0x1771537e0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q8_0_f32                0x177153a30 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_1_f32                0x177153c80 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q2_K_f32                0x177153ed0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q3_K_f32                0x177154120 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_K_f32                0x177154370 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q5_K_f32                0x1771545c0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q6_K_f32                0x177154810 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_rope                           0x177154a60 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_alibi_f32                      0x177154fc0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f32_f16                    0x177155210 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f32_f32                    0x177155460 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f16_f16                    0x1771556b0 | th_max = 1024 | th_width =   32
 ggml_metal_init: hasUnifiedMemory              = true
 ggml_metal_init: recommendedMaxWorkingSetSize  = 73728.00 MB
 ggml_metal_init: maxTransferRate               = built-in GPU
 llama_new_context_with_model: compute buffer total size =  565.47 MB
 llama_new_context_with_model: max tensor size =   205.08 MB
-ggml_metal_add_buffer: allocated 'data            ' buffer, size = 46495.22 MB, (94838.56 / 73728.00), warning: current allocated size is greater than the recommended max working set size
-ggml_metal_add_buffer: allocated 'eval            ' buffer, size =     1.48 MB, (94840.05 / 73728.00), warning: current allocated size is greater than the recommended max working set size
-ggml_metal_add_buffer: allocated 'kv              ' buffer, size =  1282.00 MB, (96122.05 / 73728.00), warning: current allocated size is greater than the recommended max working set size
+ggml_metal_add_buffer: allocated 'data            ' buffer, size = 46495.22 MB, (46495.84 / 73728.00)
+ggml_metal_add_buffer: allocated 'eval            ' buffer, size =     1.48 MB, (46497.33 / 73728.00)
+ggml_metal_add_buffer: allocated 'kv              ' buffer, size =  1282.00 MB, (47779.33 / 73728.00)
 AVX = 0 | AVX2 = 0 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 0 | NEON = 1 | ARM_FMA = 1 | F16C = 0 | FP16_VA = 1 | WASM_SIMD = 0 | BLAS = 1 | SSE3 = 0 | SSSE3 = 0 | VSX = 0 | 
-ggml_metal_add_buffer: allocated 'alloc           ' buffer, size =   564.02 MB, (96686.06 / 73728.00), warning: current allocated size is greater than the recommended max working set size
-/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py:810: UserWarning: Expected 1 arguments for function &lt;function LocalFileLangChainChatBot.run_gradio.&lt;locals&gt;.clear_chat at 0xf626f7920&gt;, received 0.
+ggml_metal_add_buffer: allocated 'alloc           ' buffer, size =   564.02 MB, (48343.34 / 73728.00)
+/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py:810: UserWarning: Expected 1 arguments for function &lt;function LocalFileLangChainChatBot.run_gradio.&lt;locals&gt;.clear_chat at 0xedf7a87c0&gt;, received 0.
   warnings.warn(
-/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py:814: UserWarning: Expected at least 1 arguments for function &lt;function LocalFileLangChainChatBot.run_gradio.&lt;locals&gt;.clear_chat at 0xf626f7920&gt;, received 0.
+/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py:814: UserWarning: Expected at least 1 arguments for function &lt;function LocalFileLangChainChatBot.run_gradio.&lt;locals&gt;.clear_chat at 0xedf7a87c0&gt;, received 0.
   warnings.warn(
 
-llama_print_timings:        load time = 79402.80 ms
-llama_print_timings:      sample time =    44.34 ms /    31 runs   (    1.43 ms per token,   699.14 tokens per second)
-llama_print_timings: prompt eval time = 99040.73 ms /  1583 tokens (   62.57 ms per token,    15.98 tokens per second)
-llama_print_timings:        eval time =  5509.04 ms /    30 runs   (  183.63 ms per token,     5.45 tokens per second)
-llama_print_timings:       total time = 104698.28 ms
+llama_print_timings:        load time = 11947.42 ms
+llama_print_timings:      sample time =    35.40 ms /    31 runs   (    1.14 ms per token,   875.63 tokens per second)
+llama_print_timings: prompt eval time = 31679.33 ms /  1583 tokens (   20.01 ms per token,    49.97 tokens per second)
+llama_print_timings:        eval time =  5553.08 ms /    30 runs   (  185.10 ms per token,     5.40 tokens per second)
+llama_print_timings:       total time = 37349.97 ms
 Llama.generate: prefix-match hit
 
-llama_print_timings:        load time = 79402.80 ms
-llama_print_timings:      sample time =    66.64 ms /    47 runs   (    1.42 ms per token,   705.25 tokens per second)
-llama_print_timings: prompt eval time = 29417.32 ms /  1372 tokens (   21.44 ms per token,    46.64 tokens per second)
-llama_print_timings:        eval time =  8571.66 ms /    46 runs   (  186.34 ms per token,     5.37 tokens per second)
-llama_print_timings:       total time = 38211.23 ms
+llama_print_timings:        load time = 11947.42 ms
+llama_print_timings:      sample time =    79.00 ms /    47 runs   (    1.68 ms per token,   594.94 tokens per second)
+llama_print_timings: prompt eval time = 29757.92 ms /  1372 tokens (   21.69 ms per token,    46.11 tokens per second)
+llama_print_timings:        eval time =  8549.47 ms /    46 runs   (  185.86 ms per token,     5.38 tokens per second)
+llama_print_timings:       total time = 38589.34 ms
 Llama.generate: prefix-match hit
 
-llama_print_timings:        load time = 79402.80 ms
-llama_print_timings:      sample time =   100.93 ms /    58 runs   (    1.74 ms per token,   574.64 tokens per second)
-llama_print_timings: prompt eval time = 22871.91 ms /   975 tokens (   23.46 ms per token,    42.63 tokens per second)
-llama_print_timings:        eval time = 10637.56 ms /    57 runs   (  186.62 ms per token,     5.36 tokens per second)
-llama_print_timings:       total time = 33902.24 ms</code></pre>
+llama_print_timings:        load time = 11947.42 ms
+llama_print_timings:      sample time =   127.90 ms /    74 runs   (    1.73 ms per token,   578.57 tokens per second)
+llama_print_timings: prompt eval time =  2445.66 ms /    19 tokens (  128.72 ms per token,     7.77 tokens per second)
+llama_print_timings:        eval time = 13414.53 ms /    73 runs   (  183.76 ms per token,     5.44 tokens per second)
+llama_print_timings:       total time = 16326.31 ms</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>load INSTRUCTOR_Transformer
 max_seq_length  512
-Running on local URL:  http://127.0.0.1:7861
+Running on local URL:  http://127.0.0.1:7860
 
 To create a public link, set `share=True` in `launch()`.
 There are 0 in the collection
-  The cells that were vitrified were S. pombe K972 Sp h- wt haploid yeast cells.RESPONSE: {'query': 'What cells were vitrified?', 'result': '  The cells that were vitrified were S. pombe K972 Sp h- wt haploid yeast cells.'}
-WHOLE HISTORY: [['What cells were vitrified?', '  The cells that were vitrified were S. pombe K972 Sp h- wt haploid yeast cells.']]
+  The cells that were vitrified were S. pombe K972 Sp h- wt haploid yeast cells.RESPONSE: {'query': 'What cells were vitrifed?', 'result': '  The cells that were vitrified were S. pombe K972 Sp h- wt haploid yeast cells.'}
+WHOLE HISTORY: [['What cells were vitrifed?', '  The cells that were vitrified were S. pombe K972 Sp h- wt haploid yeast cells.']]
 There are 155 in the collection
-  Based on the information provided in the progress report, the cells that were vitrified were MEFmtGFP cells, which are mouse embryonic fibroblasts with mitochondria labeled GFP.RESPONSE: {'query': 'what cells were vitrified?', 'result': '  Based on the information provided in the progress report, the cells that were vitrified were MEFmtGFP cells, which are mouse embryonic fibroblasts with mitochondria labeled GFP.'}
-WHOLE HISTORY: [['What cells were vitrified?', 'The cells that were vitrified were S. pombe K972 Sp h- wt haploid yeast cells.'], ['what cells were vitrified?', '  Based on the information provided in the progress report, the cells that were vitrified were MEFmtGFP cells, which are mouse embryonic fibroblasts with mitochondria labeled GFP.']]
-  I cannot answer that question based on the provided context. The text mentions MEFmtGFP cells, which are mouse embryonic fibroblast cells, but it does not mention yeast cells. Therefore, I cannot confirm whether yeast cells are being used or not.RESPONSE: {'query': 'Are yeast cells being used?', 'result': '  I cannot answer that question based on the provided context. The text mentions MEFmtGFP cells, which are mouse embryonic fibroblast cells, but it does not mention yeast cells. Therefore, I cannot confirm whether yeast cells are being used or not.'}
-WHOLE HISTORY: [['What cells were vitrified?', 'The cells that were vitrified were S. pombe K972 Sp h- wt haploid yeast cells.'], ['what cells were vitrified?', 'Based on the information provided in the progress report, the cells that were vitrified were MEFmtGFP cells, which are mouse embryonic fibroblasts with mitochondria labeled GFP.'], ['Are yeast cells being used?', '  I cannot answer that question based on the provided context. The text mentions MEFmtGFP cells, which are mouse embryonic fibroblast cells, but it does not mention yeast cells. Therefore, I cannot confirm whether yeast cells are being used or not.']]</code></pre>
+  Based on the information provided in the progress report, the cells that were vitrified were MEFmtGFP cells, which are mouse embryonic fibroblasts with mitochondria labeled GFP.RESPONSE: {'query': 'What cells were vitrified', 'result': '  Based on the information provided in the progress report, the cells that were vitrified were MEFmtGFP cells, which are mouse embryonic fibroblasts with mitochondria labeled GFP.'}
+WHOLE HISTORY: [['What cells were vitrified', '  Based on the information provided in the progress report, the cells that were vitrified were MEFmtGFP cells, which are mouse embryonic fibroblasts with mitochondria labeled GFP.']]
+  I cannot answer that question with a simple "yes" or "no" because the text does not mention yeast cells. The text only mentions mouse embryonic fibroblasts (MEFmtGFP) and their mitochondria labeled with GFP. Therefore, I do not know whether yeast cells were used in this work.RESPONSE: {'query': 'Were yeast cells used in this work?', 'result': '  I cannot answer that question with a simple "yes" or "no" because the text does not mention yeast cells. The text only mentions mouse embryonic fibroblasts (MEFmtGFP) and their mitochondria labeled with GFP. Therefore, I do not know whether yeast cells were used in this work.'}
+WHOLE HISTORY: [['What cells were vitrified', 'Based on the information provided in the progress report, the cells that were vitrified were MEFmtGFP cells, which are mouse embryonic fibroblasts with mitochondria labeled GFP.'], ['Were yeast cells used in this work?', '  I cannot answer that question with a simple "yes" or "no" because the text does not mention yeast cells. The text only mentions mouse embryonic fibroblasts (MEFmtGFP) and their mitochondria labeled with GFP. Therefore, I do not know whether yeast cells were used in this work.']]</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<div><iframe src="http://127.0.0.1:7861/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen=""></iframe></div>
+<div><iframe src="http://127.0.0.1:7860/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen=""></iframe></div>
 </div>
 </div>
 
