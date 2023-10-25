@@ -1,4 +1,3 @@
-```mermaid
 erDiagram
 Entity {
     string id  
@@ -23,11 +22,140 @@ InformationContentEntity {
     string iri  
     stringList type  
 }
-Work {
+ScientificKnowledgeExpression {
     string id  
     string title  
     string abstract  
     string full_text  
+    date publication_date  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificPublication {
+    string doi  
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    date publication_date  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificPrimaryResearchArticle {
+    string doi  
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    date publication_date  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificPrimaryResearchPreprint {
+    string doi  
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    date publication_date  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificReviewArticle {
+    string doi  
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    date publication_date  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificBook {
+    string doi  
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    date publication_date  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificBookChapter {
+    string doi  
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    date publication_date  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificConferenceArticle {
+    string doi  
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    date publication_date  
+    string license  
+    string rights  
+    string format  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificDissertation {
+    string doi  
+    string id  
+    string title  
+    string abstract  
+    string full_text  
+    date publication_date  
     string license  
     string rights  
     string format  
@@ -38,17 +166,17 @@ Work {
     stringList type  
 }
 InformationResource {
+    string id  
+    string name  
+    uriorcurieList xref  
     string license  
     string rights  
     string format  
     date creation_date  
-    string name  
-    uriorcurieList xref  
-    string id  
     string iri  
     stringList type  
 }
-WorkCollection {
+ScientificKnowledgeCollection {
     string id  
     string name  
     string logical_query  
@@ -60,7 +188,19 @@ WorkCollection {
     string iri  
     stringList type  
 }
-WorkFragment {
+ScientificPublicationCollection {
+    string id  
+    string name  
+    string logical_query  
+    date creation_date  
+    string license  
+    string rights  
+    string format  
+    uriorcurieList xref  
+    string iri  
+    stringList type  
+}
+ScientificKnowledgeFragment {
     string license  
     string rights  
     string format  
@@ -133,15 +273,32 @@ Country {
     stringList type  
 }
 
-Work ||--}o WorkFragment : "has part"
-Work ||--}o Author : "authors"
-WorkCollection ||--}o InformationResource : "information sources"
-WorkCollection ||--}o Work : "has part"
-WorkFragment ||--|o Work : "part of"
-WorkFragment ||--|o Selector : "selector"
+ScientificKnowledgeExpression ||--}o ScientificKnowledgeFragment : "has part"
+ScientificKnowledgeExpression ||--}o Author : "authors"
+ScientificPublication ||--}o ScientificKnowledgeFragment : "has part"
+ScientificPublication ||--}o Author : "authors"
+ScientificPrimaryResearchArticle ||--}o ScientificKnowledgeFragment : "has part"
+ScientificPrimaryResearchArticle ||--}o Author : "authors"
+ScientificPrimaryResearchPreprint ||--}o ScientificKnowledgeFragment : "has part"
+ScientificPrimaryResearchPreprint ||--}o Author : "authors"
+ScientificReviewArticle ||--}o ScientificKnowledgeFragment : "has part"
+ScientificReviewArticle ||--}o Author : "authors"
+ScientificBook ||--}o ScientificKnowledgeFragment : "has part"
+ScientificBook ||--}o Author : "authors"
+ScientificBookChapter ||--|o ScientificBook : "part of"
+ScientificBookChapter ||--}o ScientificKnowledgeFragment : "has part"
+ScientificBookChapter ||--}o Author : "authors"
+ScientificConferenceArticle ||--|o ScientificBook : "part of"
+ScientificConferenceArticle ||--}o ScientificKnowledgeFragment : "has part"
+ScientificConferenceArticle ||--}o Author : "authors"
+ScientificDissertation ||--}o ScientificKnowledgeFragment : "has part"
+ScientificDissertation ||--}o Author : "authors"
+ScientificKnowledgeCollection ||--}o InformationResource : "information sources"
+ScientificPublicationCollection ||--}o ScientificPublication : "has part"
+ScientificPublicationCollection ||--}o InformationResource : "information sources"
+ScientificKnowledgeFragment ||--|o ScientificKnowledgeExpression : "part of"
+ScientificKnowledgeFragment ||--|o Selector : "selector"
 Author ||--}o Organization : "affiliations"
 Organization ||--}o City : "city"
 Organization ||--}o Country : "country"
-
-```
 

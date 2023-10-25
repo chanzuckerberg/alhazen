@@ -29,7 +29,7 @@ class QueryType(Enum):
   snowflake = 8
 
 class QueryTranslator(): 
-  def __init__(self, df, id_col, query_col):
+  def __init__(self, df, id_col, query_col, name_col, notes_col=None):
     """This class allows a user to define a set of logical boolean queries in a Pandas dataframe 
     and then convert them to a variety of formats for use on various online API systems.
     
@@ -43,7 +43,12 @@ class QueryTranslator():
       * df: The dataframe of queries to be processed (note: this dataframe must have a numerical ID column specified)
       * query_col: the column in the data frame where the query is specified
     """
-    pp = pprint.PrettyPrinter(indent=4)
+    self.df = df
+    self.id_col = id_col
+    self.query_col = query_col
+    self.name_col = name_col
+    self.notes_col = notes_col
+
     def fix_errors(expr_string):
       q = re.sub('\s+(AND)\s+',' & ',expr_string)
       q = re.sub('\s+(OR)\s+',' | ',q)
