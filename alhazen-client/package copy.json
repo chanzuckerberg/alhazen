@@ -1,12 +1,12 @@
 {
   "name": "alhazen-client",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
-    "ollama-dev": "ollama run llama2:70b",
-    "uvicorn-dev": "uvicorn alhazen.backend:app --reload --port 8080",
+    //"flask-dev": "FLASK_DEBUG=1 pip3 install -e .. && python3 -m flask --app ../backend run -p 5328",//
+    "flask-dev": "python3 -m flask --app ../backend run -p 5328",
     "next-dev": "next dev",
-    "dev": "concurrently \"pnpm run next-dev\" \"pnpm run uvicorn-dev\" \"pnpm run ollama-dev\"",
+    "dev": "concurrently \"pnpm run next-dev\" \"pnpm run flask-dev\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

@@ -29,7 +29,6 @@ ScientificKnowledgeExpression {
     string id  
     string title  
     string abstract  
-    string full_text  
     date publication_date  
     string license  
     string rights  
@@ -43,10 +42,10 @@ ScientificKnowledgeExpression {
 }
 ScientificPublication {
     string doi  
+    ScientificPublicationType type_str  
     string id  
     string title  
     string abstract  
-    string full_text  
     date publication_date  
     string license  
     string rights  
@@ -56,126 +55,6 @@ ScientificPublication {
     uriorcurieList xref  
     string iri  
     stringList type  
-    string type_str  
-}
-ScientificPrimaryResearchArticle {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificPrimaryResearchPreprint {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificReviewArticle {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificBook {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificBookChapter {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificConferenceArticle {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificDissertation {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
 }
 InformationResource {
     string id  
@@ -242,7 +121,6 @@ Selector {
 OffsetTextSelector {
     integer offset  
     integer length  
-    string text  
     string license  
     string rights  
     string format  
@@ -253,6 +131,66 @@ OffsetTextSelector {
     string iri  
     stringList type  
     string type_str  
+}
+Note {
+    string format  
+    NoteType type_str  
+    string license  
+    string rights  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+NameValuePair {
+    string format  
+    string license  
+    string rights  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+    string type_str  
+}
+NoteAboutProvenance {
+    string format  
+    NoteType type_str  
+    string license  
+    string rights  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+NoteAboutPublication {
+    string format  
+    NoteType type_str  
+    string license  
+    string rights  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
+}
+NoteAboutFragment {
+    string format  
+    NoteType type_str  
+    string license  
+    string rights  
+    date creation_date  
+    string name  
+    uriorcurieList xref  
+    string id  
+    string iri  
+    stringList type  
 }
 Person {
     string name  
@@ -296,31 +234,39 @@ Country {
     string type_str  
 }
 
+InformationContentEntity ||--}o NoteAboutProvenance : "provenance"
 ScientificKnowledgeExpression ||--}o ScientificKnowledgeFragment : "has part"
 ScientificKnowledgeExpression ||--}o Author : "authors"
+ScientificKnowledgeExpression ||--}o NoteAboutProvenance : "provenance"
 ScientificPublication ||--}o ScientificKnowledgeFragment : "has part"
 ScientificPublication ||--}o Author : "authors"
-ScientificPrimaryResearchArticle ||--}o ScientificKnowledgeFragment : "has part"
-ScientificPrimaryResearchArticle ||--}o Author : "authors"
-ScientificPrimaryResearchPreprint ||--}o ScientificKnowledgeFragment : "has part"
-ScientificPrimaryResearchPreprint ||--}o Author : "authors"
-ScientificReviewArticle ||--}o ScientificKnowledgeFragment : "has part"
-ScientificReviewArticle ||--}o Author : "authors"
-ScientificBook ||--}o ScientificKnowledgeFragment : "has part"
-ScientificBook ||--}o Author : "authors"
-ScientificBookChapter ||--|o ScientificBook : "part of"
-ScientificBookChapter ||--}o ScientificKnowledgeFragment : "has part"
-ScientificBookChapter ||--}o Author : "authors"
-ScientificConferenceArticle ||--|o ScientificBook : "part of"
-ScientificConferenceArticle ||--}o ScientificKnowledgeFragment : "has part"
-ScientificConferenceArticle ||--}o Author : "authors"
-ScientificDissertation ||--}o ScientificKnowledgeFragment : "has part"
-ScientificDissertation ||--}o Author : "authors"
+ScientificPublication ||--}o NoteAboutProvenance : "provenance"
+InformationResource ||--}o NoteAboutProvenance : "provenance"
 ScientificKnowledgeCollection ||--}o InformationResource : "information sources"
+ScientificKnowledgeCollection ||--}o NoteAboutProvenance : "provenance"
 ScientificPublicationCollection ||--}o ScientificPublication : "has part"
 ScientificPublicationCollection ||--}o InformationResource : "information sources"
+ScientificPublicationCollection ||--}o NoteAboutProvenance : "provenance"
 ScientificKnowledgeFragment ||--|o ScientificKnowledgeExpression : "part of"
 ScientificKnowledgeFragment ||--|o Selector : "selector"
+ScientificKnowledgeFragment ||--}o NoteAboutProvenance : "provenance"
+Selector ||--}o NoteAboutProvenance : "provenance"
+OffsetTextSelector ||--}o NoteAboutProvenance : "provenance"
+Note ||--}o Entity : "is about"
+Note ||--}o Author : "authors"
+Note ||--}o NoteAboutProvenance : "provenance"
+NameValuePair ||--}o Entity : "is about"
+NameValuePair ||--}o Author : "authors"
+NameValuePair ||--}o NoteAboutProvenance : "provenance"
+NoteAboutProvenance ||--}o InformationContentEntity : "is about"
+NoteAboutProvenance ||--}o Author : "authors"
+NoteAboutProvenance ||--}o NoteAboutProvenance : "provenance"
+NoteAboutPublication ||--}o ScientificPublication : "is about"
+NoteAboutPublication ||--}o Author : "authors"
+NoteAboutPublication ||--}o NoteAboutProvenance : "provenance"
+NoteAboutFragment ||--}o ScientificKnowledgeFragment : "is about"
+NoteAboutFragment ||--}o Author : "authors"
+NoteAboutFragment ||--}o NoteAboutProvenance : "provenance"
 Author ||--}o Organization : "affiliations"
 Organization ||--}o City : "city"
 Organization ||--}o Country : "country"
