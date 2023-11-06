@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Run a flask back end for the NextJS Client.">
+<meta name="description" content="Pragmatic tools for constructing databases of scientific works based on queries defined with Boolean Logic.">
 
-<title>alhazen - Flask Backend</title>
+<title>alhazen - Building databases of published works</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -63,11 +97,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Flask Backend">
-<meta property="og:description" content="Run a flask back end for the NextJS Client.">
+<meta property="og:title" content="alhazen - Building databases of published works">
+<meta property="og:description" content="Pragmatic tools for constructing databases of scientific works based on queries defined with Boolean Logic.">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Flask Backend">
-<meta name="twitter:description" content="Run a flask back end for the NextJS Client.">
+<meta name="twitter:title" content="alhazen - Building databases of published works">
+<meta name="twitter:description" content="Pragmatic tools for constructing databases of scientific works based on queries defined with Boolean Logic.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -92,7 +126,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Flask Backend</li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Building databases of published works</li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -147,8 +181,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#list_corpora" id="toc-list_corpora" class="nav-link active" data-scroll-target="#list_corpora">list_corpora</a></li>
-  <li><a href="#count_papers" id="toc-count_papers" class="nav-link" data-scroll-target="#count_papers">count_papers</a></li>
+  <li><a href="#get_pdf_from_pubmed_doi" id="toc-get_pdf_from_pubmed_doi" class="nav-link active" data-scroll-target="#get_pdf_from_pubmed_doi">get_pdf_from_pubmed_doi</a></li>
+  <li><a href="#download_file" id="toc-download_file" class="nav-link" data-scroll-target="#download_file">download_file</a></li>
+  <li><a href="#get_nxml_from_pubmed_doi" id="toc-get_nxml_from_pubmed_doi" class="nav-link" data-scroll-target="#get_nxml_from_pubmed_doi">get_nxml_from_pubmed_doi</a></li>
+  <li><a href="#localliteraturedb" id="toc-localliteraturedb" class="nav-link" data-scroll-target="#localliteraturedb">LocalLiteratureDb</a></li>
+  <li><a href="#queryspec" id="toc-queryspec" class="nav-link" data-scroll-target="#queryspec">QuerySpec</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -157,12 +194,12 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Flask Backend</h1>
+<h1 class="title">Building databases of published works</h1>
 </div>
 
 <div>
   <div class="description">
-    Run a flask back end for the NextJS Client.
+    Pragmatic tools for constructing databases of scientific works based on queries defined with Boolean Logic.
   </div>
 </div>
 
@@ -178,20 +215,138 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<p>Tabulate queries in a spreadsheet and generate a database based on the data from those queries.</p>
+<p><strong>Example</strong>: Define a dataframe with an <code>id</code> column and a <code>query</code> column (expressing a search query in Boolean Logic):</p>
+<table class="table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 53%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>DISEASE NAME</th>
+<th>QUERY</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Adult Polyglucosan Body Disease</td>
+<td>adult polyglucosan body disease | adult polyglucosan body neuropathy</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>AGAT deficiency</td>
+<td>“GATM deficiency” | “AGAT deficiency” | “arginine:glycine amidinotransferase deficiency” | “L-arginine:glycine amidinotransferase deficiency”</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Guanidinoacetate methyltransferase deficiency</td>
+<td>“guanidinoacetate methyltransferase deficiency” | “GAMT deficiency”</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>CLOVES Syndrome</td>
+<td>“CLOVES syndrome | (congenital lipomatous overgrowth) &amp; (vascular malformation epidermal) &amp; (nevi-spinal) &amp; syndrome | (congenital lipomatous overgrowth) &amp; (vascular malformations) &amp; (Epidermal nevi) &amp; ((skeletal|spinal) &amp; abnormalities) | CLOVE syndrome | (congenital lipomatous overgrowth) &amp; (vascular malformation) &amp; (epidermal nevi)</td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Don't export this but leave it in the notebook code for future reference</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> databricks <span class="im">import</span> sql</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Don't export this but leave it in the notebook code for future reference</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_nxml_from_scipubstore_doi(doi, base_file_path):</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.environ.get(<span class="st">'DB_TOKEN'</span>) <span class="kw">is</span> <span class="va">None</span>:  </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        msg <span class="op">=</span> <span class="st">'Error attempting to query Databricks for URL data, did you set the DB_TOKEN environment variable?'</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">Exception</span>(msg)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    get_ft_url_from_doi_sql <span class="op">=</span> <span class="st">'''</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="st">        SELECT DISTINCT p.pmc_id, p.doi, YEAR(p.publication_date) as year, p.title, p.abstract, p.full_text_format, p.full_text_url, a.last_name</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="st">        FROM scipubstore.ingestion.papers as p </span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="st">            JOIN scipubstore.ingestion.authors as a on (p.paper_id=a.paper_id) </span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="st">        WHERE p.doi = '</span><span class="sc">{}</span><span class="st">' and a.author_index=1</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="st">        ORDER BY p.full_text_url DESC</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="st">    '''</span>.<span class="bu">format</span>(doi)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> sql.<span class="ex">connect</span>(server_hostname <span class="op">=</span> <span class="st">'czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com'</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                        http_path <span class="op">=</span> <span class="st">'/sql/1.0/warehouses/1c4df94f2f1a6305'</span>,</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>                        access_token <span class="op">=</span> <span class="st">'databricks-access-token-here'</span>) <span class="im">as</span> connection:</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">with</span> connection.cursor() <span class="im">as</span> cursor:</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>            cursor.execute(get_ft_url_from_doi_sql)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>            result <span class="op">=</span> cursor.fetchall()</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame([row.asDict() <span class="cf">for</span> row <span class="kw">in</span> result])</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> df.shape[<span class="dv">0</span>] <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span>(<span class="st">'No paper found with that DOI'</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    title <span class="op">=</span> df[<span class="st">'title'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    first_author <span class="op">=</span> df[<span class="st">'last_name'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    year <span class="op">=</span> df[<span class="st">'year'</span>].values[<span class="dv">0</span>]  </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    url <span class="op">=</span> df[<span class="st">'full_text_url'</span>].values[<span class="dv">0</span>]</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    xml <span class="op">=</span> requests.get(url).text</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    file_path <span class="op">=</span> Path(base_file_path <span class="op">+</span> <span class="st">'/'</span> <span class="op">+</span> doi <span class="op">+</span> <span class="st">'.nxml'</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    parent_dir <span class="op">=</span> file_path.parent</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> os.path.exists(parent_dir) <span class="kw">is</span> <span class="va">False</span>:</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        os.makedirs(parent_dir)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(file_path, <span class="st">'w'</span>) <span class="im">as</span> f:</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        f.write(xml)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/backend.py#L37" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="list_corpora" class="level3">
-<h3 class="anchored" data-anchor-id="list_corpora">list_corpora</h3>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L84" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="get_pdf_from_pubmed_doi" class="level3">
+<h3 class="anchored" data-anchor-id="get_pdf_from_pubmed_doi">get_pdf_from_pubmed_doi</h3>
 <blockquote class="blockquote">
-<pre><code> list_corpora (prefix)</code></pre>
+<pre><code> get_pdf_from_pubmed_doi (doi, base_file_path)</code></pre>
+</blockquote>
+<p>Executes a query on the target database and returns a count of papers</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L76" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="download_file" class="level3">
+<h3 class="anchored" data-anchor-id="download_file">download_file</h3>
+<blockquote class="blockquote">
+<pre><code> download_file (url, local_filename)</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/backend.py#L29" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L38" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
-<section id="count_papers" class="level3">
-<h3 class="anchored" data-anchor-id="count_papers">count_papers</h3>
+<section id="get_nxml_from_pubmed_doi" class="level3">
+<h3 class="anchored" data-anchor-id="get_nxml_from_pubmed_doi">get_nxml_from_pubmed_doi</h3>
 <blockquote class="blockquote">
-<pre><code> count_papers ()</code></pre>
+<pre><code> get_nxml_from_pubmed_doi (doi, base_file_path)</code></pre>
+</blockquote>
+<p>Executes a query on the target database and returns a count of papers</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L149" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="localliteraturedb" class="level3">
+<h3 class="anchored" data-anchor-id="localliteraturedb">LocalLiteratureDb</h3>
+<blockquote class="blockquote">
+<pre><code> LocalLiteratureDb (loc, name)</code></pre>
+</blockquote>
+<p>This class runs a set of queries on external literature databases to build a local database of linked corpora and papers.</p>
+<p>Functionality includes:</p>
+<ul>
+<li>Define a spreadsheet with a column of queries expressed in boolean logic</li>
+<li>Optional: Define a secondary spreadsheet with a column of subqueries expressed in boolean logic</li>
+<li>Iterate over different sources (Pubmed + European Pubmed) to execute all combinations of queries and subqueries</li>
+</ul>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L129" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="queryspec" class="level3">
+<h3 class="anchored" data-anchor-id="queryspec">QuerySpec</h3>
+<blockquote class="blockquote">
+<pre><code> QuerySpec (name:str, id_col:str, query_col:str, name_col:str,
+            col_map:dict[str,str]=&lt;factory&gt;, sections:list[str]=&lt;factory&gt;)</code></pre>
 </blockquote>
 
 
