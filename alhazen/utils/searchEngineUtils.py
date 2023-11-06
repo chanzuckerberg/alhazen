@@ -418,11 +418,12 @@ class EuroPMCQuery():
                 elif 'review' in pTypes:
                     #p = linkml_sqla.ScientificReviewArticle(
                     p = linkml_sqla.ScientificPublication(
-                         id=d.get('id',-1), 
+                        id=d.get('id',-1), 
                         doi=d.get('doi',''), 
                         title=d.get('title',''), 
                         abstract=d.get('abstractText',''), 
-                        publication_date=date_obj)
+                        publication_date=date_obj, 
+                        type_str='ScientificReviewArticle')
                 elif 'preprint' in pTypes:
                     #p = linkml_sqla.ScientificPrimaryResearchPreprint(
                     p = linkml_sqla.ScientificPublication(
@@ -430,7 +431,8 @@ class EuroPMCQuery():
                         doi=d.get('doi',''), 
                         title=d.get('title',''), 
                         abstract=d.get('abstractText',''), 
-                        publication_date=date_obj)
+                        publication_date=date_obj,
+                        type_str='ScientificPrimaryResearchPreprint')
                 elif 'journal article' in pTypes or 'research-article' in pTypes:
                     #p = linkml_sqla.ScientificPrimaryResearchArticle(
                     p = linkml_sqla.ScientificPublication(
@@ -438,7 +440,8 @@ class EuroPMCQuery():
                         doi=d.get('doi',''), 
                         title=d.get('title',''), 
                         abstract=d.get('abstractText',''), 
-                        publication_date=date_obj)
+                        publication_date=date_obj,
+                        type_str='ScientificPrimaryResearchArticle')
                 publications.append(p)
         print(' Returning '+str(len(publications)))
         return (numFound, publications)

@@ -49,6 +49,11 @@ slots:
     slot_uri: rdf:type
     domain: Entity
     multivalued: true
+  
+  type_str:
+    domain: Entity
+    description: >-
+      A simple textual representation of the entity's type (for polymorphism mechansisms)
 
   name:
     aliases: ['label', 'display name', 'title']
@@ -187,6 +192,7 @@ classes:
       - id
       - iri
       - type    # rdf:type
+      - type_str    
     exact_mappings:
       - biolink:entity
 

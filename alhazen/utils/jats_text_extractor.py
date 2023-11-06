@@ -141,6 +141,21 @@ class NxmlDoc:
             return t.element.get('id','')
         return ''
 
+    def get_sec_tag(self, t):
+        pos = t.start
+        hits = []
+        for s in sorted(self.standoffs, key=lambda x: x.start):
+          if pos>=s.start and pos<s.end and s!=t: 
+            hits.append(s)
+        top_sec = None
+        for t in hits:
+          if t.element.tag == 'sec':      
+            top_sec = t
+        if top_sec is None:
+            return ''
+        else:
+            return top_sec.element.find('title').text
+
     def get_top_level_sec_tag(self, t):
         pos = t.start
         hits = []
@@ -161,10 +176,34 @@ class NxmlDoc:
         for s in sorted(self.standoffs, key=lambda x: x.start):
           if pos>=s.start and pos<s.end and s!=t: 
             hits.append(s)
-        tag_tree = '.'.join(['%s[%s...]'%(t.element.tag,self.text[t.start:t.start+8]) if t.element.tag=='sec' else t.element.tag for t in hits])
+        #tag_tree = '|'.join(['%s[%s...]'%(t.element.tag,self.text[t.start:t.start+8]) if t.element.tag=='sec' else t.element.tag for t in hits])
+        tag_tree = '|'.join([t.element.tag for t in hits])
         tag_tree = tag_tree+'.'+t.element.tag
         return tag_tree
     
+    def list_section_titles(self):
+        secs = [t for t in self.standoffs if t.element.tag=='sec']
+        titles = [t.element.find('title').text.strip() for t in secs]
+        levels = [self.generate_tag_tree(t).count('|') for t in secs]
+        return (titles, levels)
+    
+    def search_section_titles(self, query):
+        standoffs = []
+        for s in self.standoffs:
+            if s.element.tag=='sec':
+                title_tag = s.element.find('title')
+                if (title_tag and query in title_tag.text.lower()) or \
+                        query in s.element.get('sec-type', ''):
+                    standoffs.append(s)
+        return standoffs
+
+    def read_section_text(self, t):
+        hits = []
+        for s in sorted(self.standoffs, key=lambda x: x.start):
+          if s.start>t.start and s.end<t.end and s!=t and (s.element.tag=='p' or s.element.tag=='title'): 
+            hits.append(s)
+        return '\n'.join([re.sub('\s+', ' ', self.text[t.start:t.end]) for t in hits])
+
     def build_simple_document_dataframe(self):
 
         text_tuples = []
@@ -211,12 +250,13 @@ class NxmlDoc:
               
             sent_id = 0
             for local_id, so in enumerate(text_so_list):
-                #tag_tree = generate_tag_tree(so, text, standoffs)
+                #tag_tree = self.generate_tag_tree(so)
+                sec_title = self.get_sec_tag(so) 
                 top_sec_title = self.get_top_level_sec_tag(so) 
                 figure_reference = self.get_figure_reference(so) 
                 so_text = self.text[so.start:so.end]
                                 
-                tuple = (self.ft_id, local_id, so.element.tag, top_sec_title, so.start, (so.end-so.start), figure_reference, so_text)
+                tuple = (self.ft_id, local_id, so.element.tag, top_sec_title, sec_title, so.start, (so.end-so.start), figure_reference, so_text)
                 text_tuples.append(tuple)
               
         except etree.XMLSyntaxError as xmlErr:
@@ -228,7 +268,7 @@ class NxmlDoc:
         #    print("ValueError: {0}".format(valErr))
         #    return None
         
-        text_df = pd.DataFrame(text_tuples, columns=['PMID', 'PARAGRAPH_ID', 'TAG', 'TAG_TREE', 'OFFSET', 'LENGTH', 'FIG_REF', 'PLAIN_TEXT'])
+        text_df = pd.DataFrame(text_tuples, columns=['PMID', 'PARAGRAPH_ID', 'TAG', 'TOP_SECTION', 'SECTION', 'OFFSET', 'LENGTH', 'FIG_REF', 'PLAIN_TEXT'])
         return text_df
 
 
@@ -365,6 +405,10 @@ class NxmlDoc:
     
     def extract_ref_dict_from_nxml(self):
 
+        if os.environ.get('NCBI_API_KEY') is None:
+            raise Exception('Error attempting to query NCBI for URL data, did you set the NCBI_API_KEY environment variable?')
+        pubmed_api_key = os.environ.get('NCBI_API_KEY')
+    
         if self.xml is None:
             return
 
@@ -403,9 +447,7 @@ class NxmlDoc:
                     
             all_ref_dict[ref_dict.get('ref')] = ref_dict
         
-        # Search pubmed for the PMIDs
-        # Need to add this back to the dict but cannot link data from pubmed ids to the original references
-        '''
+        # Search pubmed for the PMIDs        
         clauses = []
         for r in all_ref_dict: 
             ref_dict = all_ref_dict[r]
@@ -424,37 +466,28 @@ class NxmlDoc:
         if len(clauses)==0:
             return all_ref_dict
 
-        stem = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?api_key='+pubmed_api_key
+        stem1 = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&api_key='+pubmed_api_key
         pmids = []
         for i in range(0, len(clauses), 50):
-            query = '+OR+'.join(clauses[i:i+50])
-            r = requests.get(stem+'&db=pubmed&term='+query)
-            soup2 = BeautifulSoup(r.text, "lxml")
+            query1 = '+OR+'.join(clauses[i:i+50])
+            r1 = requests.get(stem1+'&db=pubmed&term='+query1)
+            soup2 = BeautifulSoup(r1.text, "lxml")
             for id in soup2.find_all('id'):
                 pmids.append(id.text)
 
-        # Search pubmed for the PMIDs
-        # query pubmed for the pmid
-        
-        #print('\n'+lookup_sql+'\n\n')
-        lookup_df = execute_query(cs, lookup_sql, ['PMID', 'FIRST_AUTHOR', 'YEAR', 'VOLUME', 'PAGE'])
-        lookup = {('%s-%s-%s-%s'%(row.FIRST_AUTHOR, row.YEAR, row.VOLUME, row.PAGE)).lower():row.PMID for row in lookup_df.itertuples()}      
-        
-        #print('doc: ', end = '')
-        for r in all_ref_dict: 
-            ref_dict = all_ref_dict[r]
-            if ref_dict.get('first_author', None) is not None and ref_dict.get('year', None) is not None and ref_dict.get('vol', None) is not None and ref_dict.get('page', None) is not None :
-            au = ref_dict['first_author']
-            dp = ref_dict['year']
-            vo = ref_dict['vol']
-            pg = ref_dict['page']
-            pmid = lookup.get(('%s-%s-%s-%s'%(au, dp, vo, pg)).lower(), None)
-            if pmid: 
-                ref_dict['pmid'] = pmid
-                #print('.', end = '')
-        #print()
-        '''
-        
+        stem2 = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&api_key='+pubmed_api_key
+        for i in range(0, len(pmids), 50):
+            query2 = ','.join(clauses[i:i+50])
+            r2 = requests.get(stem2+'&db=pubmed&id='+query2)
+            soup2 = BeautifulSoup(r2.text, "lxml")
+            for article_tag in soup2.find_all('PubmedArticle'):
+                first_author = article_tag.find('Author').find('LastName').text
+                year = article_tag.find('PubDate').find('Year').text
+                vol = article_tag.find('Volume').text
+                page = article_tag.find('StartPage').text
+                pmid = article_tag.find('PMID').text
+                all_ref_dict[('%s-%s-%s-%s'%(first_author, year, vol, page)).lower()] = pmid
+  
         return all_ref_dict
     
 

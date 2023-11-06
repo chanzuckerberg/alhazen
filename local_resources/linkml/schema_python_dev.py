@@ -1,9 +1,9 @@
-# Auto generated from sciknow.yaml by pythongen.py version: 0.0.1
-# Generation date: 2023-10-26T23:13:53
+# Auto generated from sciknow_dev.yaml by pythongen.py version: 0.0.1
+# Generation date: 2023-11-04T00:19:09
 # Schema: czScientificKnowledge
 #
 # id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
-# description: LinkML Schema for Entities that serves as vehicles that contain scientific knowledge.
+# description: LinkML Schema for scientific knowledge.
 # license: https://creativecommons.org/publicdomain/zero/1.0/
 
 import dataclasses
@@ -70,34 +70,6 @@ class ScientificPublicationId(ScientificKnowledgeExpressionId):
     pass
 
 
-class ScientificPrimaryResearchArticleId(ScientificPublicationId):
-    pass
-
-
-class ScientificPrimaryResearchPreprintId(ScientificPublicationId):
-    pass
-
-
-class ScientificReviewArticleId(ScientificPublicationId):
-    pass
-
-
-class ScientificBookId(ScientificPublicationId):
-    pass
-
-
-class ScientificBookChapterId(ScientificPublicationId):
-    pass
-
-
-class ScientificConferenceArticleId(ScientificPublicationId):
-    pass
-
-
-class ScientificDissertationId(ScientificPublicationId):
-    pass
-
-
 class InformationResourceId(InformationContentEntityId):
     pass
 
@@ -119,6 +91,26 @@ class SelectorId(InformationContentEntityId):
 
 
 class OffsetTextSelectorId(SelectorId):
+    pass
+
+
+class NoteId(InformationContentEntityId):
+    pass
+
+
+class NameValuePairId(InformationContentEntityId):
+    pass
+
+
+class NoteAboutProvenanceId(NoteId):
+    pass
+
+
+class NoteAboutPublicationId(NoteId):
+    pass
+
+
+class NoteAboutFragmentId(NoteId):
     pass
 
 
@@ -222,6 +214,7 @@ class InformationContentEntity(NamedThing):
     rights: Optional[str] = None
     format: Optional[str] = None
     creation_date: Optional[Union[str, XSDDate]] = None
+    provenance: Optional[Union[Union[str, NoteAboutProvenanceId], List[Union[str, NoteAboutProvenanceId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self.license is not None and not isinstance(self.license, str):
@@ -235,6 +228,10 @@ class InformationContentEntity(NamedThing):
 
         if self.creation_date is not None and not isinstance(self.creation_date, XSDDate):
             self.creation_date = XSDDate(self.creation_date)
+
+        if not isinstance(self.provenance, list):
+            self.provenance = [self.provenance] if self.provenance is not None else []
+        self.provenance = [v if isinstance(v, NoteAboutProvenanceId) else NoteAboutProvenanceId(v) for v in self.provenance]
 
         super().__post_init__(**kwargs)
 
@@ -256,7 +253,6 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     authors: Optional[Union[Dict[Union[str, AuthorId], Union[dict, "Author"]], List[Union[dict, "Author"]]]] = empty_dict()
     title: Optional[str] = None
     abstract: Optional[str] = None
-    full_text: Optional[str] = None
     publication_date: Optional[Union[str, XSDDate]] = None
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
@@ -276,9 +272,6 @@ class ScientificKnowledgeExpression(InformationContentEntity):
 
         if self.abstract is not None and not isinstance(self.abstract, str):
             self.abstract = str(self.abstract)
-
-        if self.full_text is not None and not isinstance(self.full_text, str):
-            self.full_text = str(self.full_text)
 
         if self.publication_date is not None and not isinstance(self.publication_date, XSDDate):
             self.publication_date = XSDDate(self.publication_date)
@@ -300,6 +293,8 @@ class ScientificPublication(ScientificKnowledgeExpression):
 
     id: Union[str, ScientificPublicationId] = None
     doi: Optional[str] = None
+    type_str: Optional[Union[str, "ScientificPublicationType"]] = None
+    part_of: Optional[Union[Union[str, ScientificPublicationCollectionId], List[Union[str, ScientificPublicationCollectionId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -310,181 +305,12 @@ class ScientificPublication(ScientificKnowledgeExpression):
         if self.doi is not None and not isinstance(self.doi, str):
             self.doi = str(self.doi)
 
-        super().__post_init__(**kwargs)
+        if self.type_str is not None and not isinstance(self.type_str, ScientificPublicationType):
+            self.type_str = ScientificPublicationType(self.type_str)
 
-
-@dataclass
-class ScientificPrimaryResearchArticle(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction,
-    methods, resulst, and discussion). These articles will have undergone peer review.
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.ScientificPrimaryResearchArticle
-    class_class_curie: ClassVar[str] = "czsk:ScientificPrimaryResearchArticle"
-    class_name: ClassVar[str] = "ScientificPrimaryResearchArticle"
-    class_model_uri: ClassVar[URIRef] = CZSK.ScientificPrimaryResearchArticle
-
-    id: Union[str, ScientificPrimaryResearchArticleId] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, ScientificPrimaryResearchArticleId):
-            self.id = ScientificPrimaryResearchArticleId(self.id)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class ScientificPrimaryResearchPreprint(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction,
-    methods, resulst, and discussion). These articles have been published as preprints and have NOT undergone peer
-    review.
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.ScientificPrimaryResearchPreprint
-    class_class_curie: ClassVar[str] = "czsk:ScientificPrimaryResearchPreprint"
-    class_name: ClassVar[str] = "ScientificPrimaryResearchPreprint"
-    class_model_uri: ClassVar[URIRef] = CZSK.ScientificPrimaryResearchPreprint
-
-    id: Union[str, ScientificPrimaryResearchPreprintId] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, ScientificPrimaryResearchPreprintId):
-            self.id = ScientificPrimaryResearchPreprintId(self.id)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class ScientificReviewArticle(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction,
-    methods, resulst, and discussion).
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.ScientificReviewArticle
-    class_class_curie: ClassVar[str] = "czsk:ScientificReviewArticle"
-    class_name: ClassVar[str] = "ScientificReviewArticle"
-    class_model_uri: ClassVar[URIRef] = CZSK.ScientificReviewArticle
-
-    id: Union[str, ScientificReviewArticleId] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, ScientificReviewArticleId):
-            self.id = ScientificReviewArticleId(self.id)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class ScientificBook(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction,
-    methods, resulst, and discussion).
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.ScientificBook
-    class_class_curie: ClassVar[str] = "czsk:ScientificBook"
-    class_name: ClassVar[str] = "ScientificBook"
-    class_model_uri: ClassVar[URIRef] = CZSK.ScientificBook
-
-    id: Union[str, ScientificBookId] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, ScientificBookId):
-            self.id = ScientificBookId(self.id)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class ScientificBookChapter(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction,
-    methods, resulst, and discussion).
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.ScientificBookChapter
-    class_class_curie: ClassVar[str] = "czsk:ScientificBookChapter"
-    class_name: ClassVar[str] = "ScientificBookChapter"
-    class_model_uri: ClassVar[URIRef] = CZSK.ScientificBookChapter
-
-    id: Union[str, ScientificBookChapterId] = None
-    part_of: Optional[Union[str, ScientificBookId]] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, ScientificBookChapterId):
-            self.id = ScientificBookChapterId(self.id)
-
-        if self.part_of is not None and not isinstance(self.part_of, ScientificBookId):
-            self.part_of = ScientificBookId(self.part_of)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class ScientificConferenceArticle(ScientificPublication):
-    """
-    A scientific publication describing original research that was presented at a conference.
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.ScientificConferenceArticle
-    class_class_curie: ClassVar[str] = "czsk:ScientificConferenceArticle"
-    class_name: ClassVar[str] = "ScientificConferenceArticle"
-    class_model_uri: ClassVar[URIRef] = CZSK.ScientificConferenceArticle
-
-    id: Union[str, ScientificConferenceArticleId] = None
-    part_of: Optional[Union[str, ScientificBookId]] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, ScientificConferenceArticleId):
-            self.id = ScientificConferenceArticleId(self.id)
-
-        if self.part_of is not None and not isinstance(self.part_of, ScientificBookId):
-            self.part_of = ScientificBookId(self.part_of)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class ScientificDissertation(ScientificPublication):
-    """
-    A thesis or dissertation submitted by a researcher as part of their work to qualify for an advanced degree -
-    usually a doctorate.
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.ScientificDissertation
-    class_class_curie: ClassVar[str] = "czsk:ScientificDissertation"
-    class_name: ClassVar[str] = "ScientificDissertation"
-    class_model_uri: ClassVar[URIRef] = CZSK.ScientificDissertation
-
-    id: Union[str, ScientificDissertationId] = None
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, ScientificDissertationId):
-            self.id = ScientificDissertationId(self.id)
+        if not isinstance(self.part_of, list):
+            self.part_of = [self.part_of] if self.part_of is not None else []
+        self.part_of = [v if isinstance(v, ScientificPublicationCollectionId) else ScientificPublicationCollectionId(v) for v in self.part_of]
 
         super().__post_init__(**kwargs)
 
@@ -653,7 +479,6 @@ class OffsetTextSelector(Selector):
     id: Union[str, OffsetTextSelectorId] = None
     offset: Optional[int] = None
     length: Optional[int] = None
-    text: Optional[str] = None
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -667,8 +492,164 @@ class OffsetTextSelector(Selector):
         if self.length is not None and not isinstance(self.length, int):
             self.length = int(self.length)
 
-        if self.text is not None and not isinstance(self.text, str):
-            self.text = str(self.text)
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class Note(InformationContentEntity):
+    """
+    A structured piece of information with an author that is about another InformationContentEntity.
+    """
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = CZSK.Note
+    class_class_curie: ClassVar[str] = "czsk:Note"
+    class_name: ClassVar[str] = "Note"
+    class_model_uri: ClassVar[URIRef] = CZSK.Note
+
+    id: Union[str, NoteId] = None
+    is_about: Optional[Union[Union[str, EntityId], List[Union[str, EntityId]]]] = empty_list()
+    authors: Optional[Union[Dict[Union[str, AuthorId], Union[dict, "Author"]], List[Union[dict, "Author"]]]] = empty_dict()
+    format: Optional[str] = None
+    type_str: Optional[Union[str, "NoteType"]] = None
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, NoteId):
+            self.id = NoteId(self.id)
+
+        if not isinstance(self.is_about, list):
+            self.is_about = [self.is_about] if self.is_about is not None else []
+        self.is_about = [v if isinstance(v, EntityId) else EntityId(v) for v in self.is_about]
+
+        self._normalize_inlined_as_list(slot_name="authors", slot_type=Author, key_name="id", keyed=True)
+
+        if self.format is not None and not isinstance(self.format, str):
+            self.format = str(self.format)
+
+        if self.type_str is not None and not isinstance(self.type_str, NoteType):
+            self.type_str = NoteType(self.type_str)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class NameValuePair(InformationContentEntity):
+    """
+    A single map {string :- string} to track structured data in a note.
+    """
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = CZSK.NameValuePair
+    class_class_curie: ClassVar[str] = "czsk:NameValuePair"
+    class_name: ClassVar[str] = "NameValuePair"
+    class_model_uri: ClassVar[URIRef] = CZSK.NameValuePair
+
+    id: Union[str, NameValuePairId] = None
+    is_about: Optional[Union[Union[str, EntityId], List[Union[str, EntityId]]]] = empty_list()
+    authors: Optional[Union[Dict[Union[str, AuthorId], Union[dict, "Author"]], List[Union[dict, "Author"]]]] = empty_dict()
+    format: Optional[str] = None
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, NameValuePairId):
+            self.id = NameValuePairId(self.id)
+
+        if not isinstance(self.is_about, list):
+            self.is_about = [self.is_about] if self.is_about is not None else []
+        self.is_about = [v if isinstance(v, EntityId) else EntityId(v) for v in self.is_about]
+
+        self._normalize_inlined_as_list(slot_name="authors", slot_type=Author, key_name="id", keyed=True)
+
+        if self.format is not None and not isinstance(self.format, str):
+            self.format = str(self.format)
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class NoteAboutProvenance(Note):
+    """
+    A note that describes the provenance of an InformationContentEntity by describing its source, when it was created
+    and any other salient details written in natural language.
+    """
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = CZSK.NoteAboutProvenance
+    class_class_curie: ClassVar[str] = "czsk:NoteAboutProvenance"
+    class_name: ClassVar[str] = "NoteAboutProvenance"
+    class_model_uri: ClassVar[URIRef] = CZSK.NoteAboutProvenance
+
+    id: Union[str, NoteAboutProvenanceId] = None
+    is_about: Optional[Union[Union[str, InformationContentEntityId], List[Union[str, InformationContentEntityId]]]] = empty_list()
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, NoteAboutProvenanceId):
+            self.id = NoteAboutProvenanceId(self.id)
+
+        if not isinstance(self.is_about, list):
+            self.is_about = [self.is_about] if self.is_about is not None else []
+        self.is_about = [v if isinstance(v, InformationContentEntityId) else InformationContentEntityId(v) for v in self.is_about]
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class NoteAboutPublication(Note):
+    """
+    A structured note about an ScientificPublication.
+    """
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = CZSK.NoteAboutPublication
+    class_class_curie: ClassVar[str] = "czsk:NoteAboutPublication"
+    class_name: ClassVar[str] = "NoteAboutPublication"
+    class_model_uri: ClassVar[URIRef] = CZSK.NoteAboutPublication
+
+    id: Union[str, NoteAboutPublicationId] = None
+    is_about: Optional[Union[Union[str, ScientificPublicationId], List[Union[str, ScientificPublicationId]]]] = empty_list()
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, NoteAboutPublicationId):
+            self.id = NoteAboutPublicationId(self.id)
+
+        if not isinstance(self.is_about, list):
+            self.is_about = [self.is_about] if self.is_about is not None else []
+        self.is_about = [v if isinstance(v, ScientificPublicationId) else ScientificPublicationId(v) for v in self.is_about]
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class NoteAboutFragment(Note):
+    """
+    A structured note about an ScientificKnowledgeFragment.
+    """
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = CZSK.NoteAboutFragment
+    class_class_curie: ClassVar[str] = "czsk:NoteAboutFragment"
+    class_name: ClassVar[str] = "NoteAboutFragment"
+    class_model_uri: ClassVar[URIRef] = CZSK.NoteAboutFragment
+
+    id: Union[str, NoteAboutFragmentId] = None
+    is_about: Optional[Union[Union[str, ScientificKnowledgeFragmentId], List[Union[str, ScientificKnowledgeFragmentId]]]] = empty_list()
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, NoteAboutFragmentId):
+            self.id = NoteAboutFragmentId(self.id)
+
+        if not isinstance(self.is_about, list):
+            self.is_about = [self.is_about] if self.is_about is not None else []
+        self.is_about = [v if isinstance(v, ScientificKnowledgeFragmentId) else ScientificKnowledgeFragmentId(v) for v in self.is_about]
 
         super().__post_init__(**kwargs)
 
@@ -793,23 +774,119 @@ class Country(NamedThing):
 
 
 # Enumerations
+class ScientificPublicationType(EnumDefinitionImpl):
 
+    ScientificPrimaryResearchArticle = PermissibleValue(
+        text="ScientificPrimaryResearchArticle",
+        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion). These articles will have undergone  peer review.""")
+    ScientificPrimaryResearchPreprint = PermissibleValue(
+        text="ScientificPrimaryResearchPreprint",
+        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion). These articles have been published as preprints and have NOT undergone peer review.""")
+    ScientificReviewArticle = PermissibleValue(
+        text="ScientificReviewArticle",
+        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).""")
+    ScientificBook = PermissibleValue(
+        text="ScientificBook",
+        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).""")
+    ScientificBookChapter = PermissibleValue(
+        text="ScientificBookChapter",
+        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).""")
+    ScientificConferenceArticle = PermissibleValue(
+        text="ScientificConferenceArticle",
+        description="A scientific publication describing original research that was presented at a conference.")
+    ScientificDissertation = PermissibleValue(
+        text="ScientificDissertation",
+        description="""A thesis or dissertation submitted by a researcher as  part of their work to qualify for an advanced degree - usually a  doctorate.""")
+
+    _defn = EnumDefinition(
+        name="ScientificPublicationType",
+    )
+
+class NoteType(EnumDefinitionImpl):
+
+    NoteAboutProvenance = PermissibleValue(
+        text="NoteAboutProvenance",
+        description="""A note that describes the provenance of an InformationContentEntity by describing its source, when it was created and any other salient details written in natural language.""")
+    NoteAboutPublication = PermissibleValue(
+        text="NoteAboutPublication",
+        description="A structured note about an ScientificPublication.")
+    NoteAboutFragment = PermissibleValue(
+        text="NoteAboutFragment",
+        description="A structured note about an ScientificKnowledgeFragment.")
+
+    _defn = EnumDefinition(
+        name="NoteType",
+    )
 
 # Slots
 class slots:
     pass
 
+slots.abstract = Slot(uri=CZSK.abstract, name="abstract", curie=CZSK.curie('abstract'),
+                   model_uri=CZSK.abstract, domain=ScientificKnowledgeExpression, range=Optional[str])
+
+slots.affiliations = Slot(uri=CZSK.affiliations, name="affiliations", curie=CZSK.curie('affiliations'),
+                   model_uri=CZSK.affiliations, domain=Author, range=Optional[Union[Union[str, OrganizationId], List[Union[str, OrganizationId]]]])
+
+slots.authors = Slot(uri=CZSK.authors, name="authors", curie=CZSK.curie('authors'),
+                   model_uri=CZSK.authors, domain=ScientificKnowledgeExpression, range=Optional[Union[Dict[Union[str, AuthorId], Union[dict, "Author"]], List[Union[dict, "Author"]]]])
+
+slots.cites = Slot(uri=CZSK.cites, name="cites", curie=CZSK.curie('cites'),
+                   model_uri=CZSK.cites, domain=ScientificKnowledgeExpression, range=Optional[Union[Union[str, ScientificKnowledgeExpressionId], List[Union[str, ScientificKnowledgeExpressionId]]]])
+
+slots.content = Slot(uri=CZSK.content, name="content", curie=CZSK.curie('content'),
+                   model_uri=CZSK.content, domain=InformationContentEntity, range=Optional[str])
+
+slots.creation_date = Slot(uri=CZSK.creation_date, name="creation date", curie=CZSK.curie('creation_date'),
+                   model_uri=CZSK.creation_date, domain=None, range=Optional[Union[str, XSDDate]])
+
+slots.doi = Slot(uri=CZSK.doi, name="doi", curie=CZSK.curie('doi'),
+                   model_uri=CZSK.doi, domain=None, range=Optional[str])
+
+slots.format = Slot(uri=CZSK.format, name="format", curie=CZSK.curie('format'),
+                   model_uri=CZSK.format, domain=InformationContentEntity, range=Optional[str])
+
+slots.has_part = Slot(uri=CZSK.has_part, name="has part", curie=CZSK.curie('has_part'),
+                   model_uri=CZSK.has_part, domain=None, range=Optional[Union[str, ScientificKnowledgeFragmentId]])
+
+slots.has_notes = Slot(uri=CZSK.has_notes, name="has notes", curie=CZSK.curie('has_notes'),
+                   model_uri=CZSK.has_notes, domain=Entity, range=Optional[Union[str, InformationContentEntityId]])
+
 slots.id = Slot(uri=CZSK.id, name="id", curie=CZSK.curie('id'),
                    model_uri=CZSK.id, domain=Entity, range=Union[str, EntityId])
-
-slots.orcid = Slot(uri=CZSK.orcid, name="orcid", curie=CZSK.curie('orcid'),
-                   model_uri=CZSK.orcid, domain=None, range=Optional[str])
 
 slots.iri = Slot(uri=CZSK.iri, name="iri", curie=CZSK.curie('iri'),
                    model_uri=CZSK.iri, domain=None, range=Optional[str])
 
-slots.doi = Slot(uri=CZSK.doi, name="doi", curie=CZSK.curie('doi'),
-                   model_uri=CZSK.doi, domain=None, range=Optional[str])
+slots.is_about = Slot(uri=CZSK.is_about, name="is about", curie=CZSK.curie('is_about'),
+                   model_uri=CZSK.is_about, domain=InformationContentEntity, range=Optional[Union[Union[str, EntityId], List[Union[str, EntityId]]]])
+
+slots.license = Slot(uri=CZSK.license, name="license", curie=CZSK.curie('license'),
+                   model_uri=CZSK.license, domain=InformationContentEntity, range=Optional[str])
+
+slots.logical_query = Slot(uri=CZSK.logical_query, name="logical query", curie=CZSK.curie('logical_query'),
+                   model_uri=CZSK.logical_query, domain=ScientificKnowledgeCollection, range=Optional[str])
+
+slots.name = Slot(uri=RDFS.label, name="name", curie=RDFS.curie('label'),
+                   model_uri=CZSK.name, domain=Entity, range=Optional[str])
+
+slots.orcid = Slot(uri=CZSK.orcid, name="orcid", curie=CZSK.curie('orcid'),
+                   model_uri=CZSK.orcid, domain=None, range=Optional[str])
+
+slots.part_of = Slot(uri=CZSK.part_of, name="part of", curie=CZSK.curie('part_of'),
+                   model_uri=CZSK.part_of, domain=None, range=Optional[Union[str, ScientificKnowledgeExpressionId]])
+
+slots.provenance = Slot(uri=CZSK.provenance, name="provenance", curie=CZSK.curie('provenance'),
+                   model_uri=CZSK.provenance, domain=InformationContentEntity, range=Optional[Union[Union[str, NoteAboutProvenanceId], List[Union[str, NoteAboutProvenanceId]]]])
+
+slots.publication_date = Slot(uri=CZSK.publication_date, name="publication date", curie=CZSK.curie('publication_date'),
+                   model_uri=CZSK.publication_date, domain=None, range=Optional[Union[str, XSDDate]])
+
+slots.rights = Slot(uri=CZSK.rights, name="rights", curie=CZSK.curie('rights'),
+                   model_uri=CZSK.rights, domain=InformationContentEntity, range=Optional[str])
+
+slots.title = Slot(uri=CZSK.title, name="title", curie=CZSK.curie('title'),
+                   model_uri=CZSK.title, domain=ScientificKnowledgeExpression, range=Optional[str])
 
 slots.type = Slot(uri=RDF.type, name="type", curie=RDF.curie('type'),
                    model_uri=CZSK.type, domain=Entity, range=Optional[Union[str, List[str]]])
@@ -817,68 +894,20 @@ slots.type = Slot(uri=RDF.type, name="type", curie=RDF.curie('type'),
 slots.type_str = Slot(uri=CZSK.type_str, name="type_str", curie=CZSK.curie('type_str'),
                    model_uri=CZSK.type_str, domain=Entity, range=Optional[str])
 
-slots.name = Slot(uri=RDFS.label, name="name", curie=RDFS.curie('label'),
-                   model_uri=CZSK.name, domain=Entity, range=Optional[str])
-
 slots.xref = Slot(uri=CZSK.xref, name="xref", curie=CZSK.curie('xref'),
                    model_uri=CZSK.xref, domain=NamedThing, range=Optional[Union[Union[str, URIorCURIE], List[Union[str, URIorCURIE]]]])
 
-slots.license = Slot(uri=CZSK.license, name="license", curie=CZSK.curie('license'),
-                   model_uri=CZSK.license, domain=InformationContentEntity, range=Optional[str])
-
-slots.rights = Slot(uri=CZSK.rights, name="rights", curie=CZSK.curie('rights'),
-                   model_uri=CZSK.rights, domain=InformationContentEntity, range=Optional[str])
-
-slots.format = Slot(uri=CZSK.format, name="format", curie=CZSK.curie('format'),
-                   model_uri=CZSK.format, domain=InformationContentEntity, range=Optional[str])
-
-slots.creation_date = Slot(uri=CZSK.creation_date, name="creation date", curie=CZSK.curie('creation_date'),
-                   model_uri=CZSK.creation_date, domain=None, range=Optional[Union[str, XSDDate]])
-
-slots.publication_date = Slot(uri=CZSK.publication_date, name="publication date", curie=CZSK.curie('publication_date'),
-                   model_uri=CZSK.publication_date, domain=None, range=Optional[Union[str, XSDDate]])
-
-slots.has_part = Slot(uri=CZSK.has_part, name="has part", curie=CZSK.curie('has_part'),
-                   model_uri=CZSK.has_part, domain=None, range=Optional[Union[str, ScientificBookChapterId]])
-
-slots.part_of = Slot(uri=CZSK.part_of, name="part of", curie=CZSK.curie('part_of'),
-                   model_uri=CZSK.part_of, domain=None, range=Optional[Union[str, ScientificKnowledgeExpressionId]])
-
-slots.logical_query = Slot(uri=CZSK.logical_query, name="logical query", curie=CZSK.curie('logical_query'),
-                   model_uri=CZSK.logical_query, domain=ScientificKnowledgeCollection, range=Optional[str])
-
-slots.authors = Slot(uri=CZSK.authors, name="authors", curie=CZSK.curie('authors'),
-                   model_uri=CZSK.authors, domain=ScientificKnowledgeExpression, range=Optional[Union[Dict[Union[str, AuthorId], Union[dict, "Author"]], List[Union[dict, "Author"]]]])
-
-slots.title = Slot(uri=CZSK.title, name="title", curie=CZSK.curie('title'),
-                   model_uri=CZSK.title, domain=ScientificKnowledgeExpression, range=Optional[str])
-
-slots.abstract = Slot(uri=CZSK.abstract, name="abstract", curie=CZSK.curie('abstract'),
-                   model_uri=CZSK.abstract, domain=ScientificKnowledgeExpression, range=Optional[str])
-
-slots.full_text = Slot(uri=CZSK.full_text, name="full text", curie=CZSK.curie('full_text'),
-                   model_uri=CZSK.full_text, domain=ScientificKnowledgeExpression, range=Optional[str])
-
-slots.cites = Slot(uri=CZSK.cites, name="cites", curie=CZSK.curie('cites'),
-                   model_uri=CZSK.cites, domain=ScientificKnowledgeExpression, range=Optional[Union[Union[str, ScientificKnowledgeExpressionId], List[Union[str, ScientificKnowledgeExpressionId]]]])
-
 slots.information_sources = Slot(uri=CZSK.information_sources, name="information sources", curie=CZSK.curie('information_sources'),
-                   model_uri=CZSK.information_sources, domain=ScientificKnowledgeCollection, range=Optional[Union[Union[str, InformationResourceId], List[Union[str, InformationResourceId]]]])
+                   model_uri=CZSK.information_sources, domain=NoteAboutProvenance, range=Optional[Union[Union[str, InformationResourceId], List[Union[str, InformationResourceId]]]])
 
 slots.selector = Slot(uri=CZSK.selector, name="selector", curie=CZSK.curie('selector'),
                    model_uri=CZSK.selector, domain=ScientificKnowledgeFragment, range=Optional[Union[str, SelectorId]])
-
-slots.affiliations = Slot(uri=CZSK.affiliations, name="affiliations", curie=CZSK.curie('affiliations'),
-                   model_uri=CZSK.affiliations, domain=Author, range=Optional[Union[Union[str, OrganizationId], List[Union[str, OrganizationId]]]])
 
 slots.offsetTextSelector__offset = Slot(uri=CZSK.offset, name="offsetTextSelector__offset", curie=CZSK.curie('offset'),
                    model_uri=CZSK.offsetTextSelector__offset, domain=None, range=Optional[int])
 
 slots.offsetTextSelector__length = Slot(uri=CZSK.length, name="offsetTextSelector__length", curie=CZSK.curie('length'),
                    model_uri=CZSK.offsetTextSelector__length, domain=None, range=Optional[int])
-
-slots.offsetTextSelector__text = Slot(uri=CZSK.text, name="offsetTextSelector__text", curie=CZSK.curie('text'),
-                   model_uri=CZSK.offsetTextSelector__text, domain=None, range=Optional[str])
 
 slots.organization__city = Slot(uri=CZSK.city, name="organization__city", curie=CZSK.curie('city'),
                    model_uri=CZSK.organization__city, domain=None, range=Optional[Union[Union[str, CityId], List[Union[str, CityId]]]])
@@ -889,14 +918,26 @@ slots.organization__country = Slot(uri=CZSK.country, name="organization__country
 slots.ScientificKnowledgeExpression_has_part = Slot(uri=CZSK.has_part, name="ScientificKnowledgeExpression_has part", curie=CZSK.curie('has_part'),
                    model_uri=CZSK.ScientificKnowledgeExpression_has_part, domain=ScientificKnowledgeExpression, range=Optional[Union[Union[str, ScientificKnowledgeFragmentId], List[Union[str, ScientificKnowledgeFragmentId]]]])
 
-slots.ScientificBookChapter_part_of = Slot(uri=CZSK.part_of, name="ScientificBookChapter_part of", curie=CZSK.curie('part_of'),
-                   model_uri=CZSK.ScientificBookChapter_part_of, domain=ScientificBookChapter, range=Optional[Union[str, ScientificBookId]])
+slots.ScientificPublication_type_str = Slot(uri=CZSK.type_str, name="ScientificPublication_type_str", curie=CZSK.curie('type_str'),
+                   model_uri=CZSK.ScientificPublication_type_str, domain=ScientificPublication, range=Optional[Union[str, "ScientificPublicationType"]])
 
-slots.ScientificConferenceArticle_part_of = Slot(uri=CZSK.part_of, name="ScientificConferenceArticle_part of", curie=CZSK.curie('part_of'),
-                   model_uri=CZSK.ScientificConferenceArticle_part_of, domain=ScientificConferenceArticle, range=Optional[Union[str, ScientificBookId]])
+slots.ScientificPublication_part_of = Slot(uri=CZSK.part_of, name="ScientificPublication_part of", curie=CZSK.curie('part_of'),
+                   model_uri=CZSK.ScientificPublication_part_of, domain=ScientificPublication, range=Optional[Union[Union[str, ScientificPublicationCollectionId], List[Union[str, ScientificPublicationCollectionId]]]])
 
 slots.ScientificPublicationCollection_has_part = Slot(uri=CZSK.has_part, name="ScientificPublicationCollection_has part", curie=CZSK.curie('has_part'),
                    model_uri=CZSK.ScientificPublicationCollection_has_part, domain=ScientificPublicationCollection, range=Optional[Union[Union[str, ScientificPublicationId], List[Union[str, ScientificPublicationId]]]])
 
 slots.ScientificKnowledgeFragment_part_of = Slot(uri=CZSK.part_of, name="ScientificKnowledgeFragment_part of", curie=CZSK.curie('part_of'),
                    model_uri=CZSK.ScientificKnowledgeFragment_part_of, domain=ScientificKnowledgeFragment, range=Optional[Union[str, ScientificKnowledgeExpressionId]])
+
+slots.Note_type_str = Slot(uri=CZSK.type_str, name="Note_type_str", curie=CZSK.curie('type_str'),
+                   model_uri=CZSK.Note_type_str, domain=Note, range=Optional[Union[str, "NoteType"]])
+
+slots.NoteAboutProvenance_is_about = Slot(uri=CZSK.is_about, name="NoteAboutProvenance_is about", curie=CZSK.curie('is_about'),
+                   model_uri=CZSK.NoteAboutProvenance_is_about, domain=NoteAboutProvenance, range=Optional[Union[Union[str, InformationContentEntityId], List[Union[str, InformationContentEntityId]]]])
+
+slots.NoteAboutPublication_is_about = Slot(uri=CZSK.is_about, name="NoteAboutPublication_is about", curie=CZSK.curie('is_about'),
+                   model_uri=CZSK.NoteAboutPublication_is_about, domain=NoteAboutPublication, range=Optional[Union[Union[str, ScientificPublicationId], List[Union[str, ScientificPublicationId]]]])
+
+slots.NoteAboutFragment_is_about = Slot(uri=CZSK.is_about, name="NoteAboutFragment_is about", curie=CZSK.curie('is_about'),
+                   model_uri=CZSK.NoteAboutFragment_is_about, domain=NoteAboutFragment, range=Optional[Union[Union[str, ScientificKnowledgeFragmentId], List[Union[str, ScientificKnowledgeFragmentId]]]])
