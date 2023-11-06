@@ -10,7 +10,7 @@
 -- # Class: "InformationContentEntity" Description: "a piece of information that typically describes some topic of discourse or is used as support."
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A unique identifier for an entity.
@@ -20,135 +20,33 @@
 --     * Slot: id Description: A unique identifier for an entity.
 --     * Slot: title Description: The title of a ScientificKnowledgeExpression.
 --     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
 --     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
 --     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
 -- # Class: "ScientificPublication" Description: "A published expression of scientific knowledge,  such as a paper, book, thesis, conference proceedings, etc.   "
 --     * Slot: doi Description: A digital object identifier (see http://doi.org/).
+--     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
 --     * Slot: id Description: A unique identifier for an entity.
 --     * Slot: title Description: The title of a ScientificKnowledgeExpression.
 --     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
 --     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
---     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
--- # Class: "ScientificPrimaryResearchArticle" Description: "A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion). These articles will have undergone  peer review. "
---     * Slot: doi Description: A digital object identifier (see http://doi.org/).
---     * Slot: id Description: A unique identifier for an entity.
---     * Slot: title Description: The title of a ScientificKnowledgeExpression.
---     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
---     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
---     * Slot: license Description: A license under which an information content entity is provided.
---     * Slot: rights Description: 
---     * Slot: format Description: 
---     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
---     * Slot: name Description: A human-readable name for an attribute or entity.
---     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
---     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
--- # Class: "ScientificPrimaryResearchPreprint" Description: "A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion). These articles have been published as preprints and have NOT undergone peer review. "
---     * Slot: doi Description: A digital object identifier (see http://doi.org/).
---     * Slot: id Description: A unique identifier for an entity.
---     * Slot: title Description: The title of a ScientificKnowledgeExpression.
---     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
---     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
---     * Slot: license Description: A license under which an information content entity is provided.
---     * Slot: rights Description: 
---     * Slot: format Description: 
---     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
---     * Slot: name Description: A human-readable name for an attribute or entity.
---     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
---     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
--- # Class: "ScientificReviewArticle" Description: "A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).   "
---     * Slot: doi Description: A digital object identifier (see http://doi.org/).
---     * Slot: id Description: A unique identifier for an entity.
---     * Slot: title Description: The title of a ScientificKnowledgeExpression.
---     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
---     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
---     * Slot: license Description: A license under which an information content entity is provided.
---     * Slot: rights Description: 
---     * Slot: format Description: 
---     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
---     * Slot: name Description: A human-readable name for an attribute or entity.
---     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
---     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
--- # Class: "ScientificBook" Description: "A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).   "
---     * Slot: doi Description: A digital object identifier (see http://doi.org/).
---     * Slot: id Description: A unique identifier for an entity.
---     * Slot: title Description: The title of a ScientificKnowledgeExpression.
---     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
---     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
---     * Slot: license Description: A license under which an information content entity is provided.
---     * Slot: rights Description: 
---     * Slot: format Description: 
---     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
---     * Slot: name Description: A human-readable name for an attribute or entity.
---     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
---     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
--- # Class: "ScientificBookChapter" Description: "A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).   "
---     * Slot: part_of Description: The book that this chapter is a part of
---     * Slot: doi Description: A digital object identifier (see http://doi.org/).
---     * Slot: id Description: A unique identifier for an entity.
---     * Slot: title Description: The title of a ScientificKnowledgeExpression.
---     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
---     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
---     * Slot: license Description: A license under which an information content entity is provided.
---     * Slot: rights Description: 
---     * Slot: format Description: 
---     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
---     * Slot: name Description: A human-readable name for an attribute or entity.
---     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
---     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
--- # Class: "ScientificConferenceArticle" Description: "A scientific publication describing original research that was presented at a conference.   "
---     * Slot: part_of Description: The book that this chapter is a part of
---     * Slot: doi Description: A digital object identifier (see http://doi.org/).
---     * Slot: id Description: A unique identifier for an entity.
---     * Slot: title Description: The title of a ScientificKnowledgeExpression.
---     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
---     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
---     * Slot: license Description: A license under which an information content entity is provided.
---     * Slot: rights Description: 
---     * Slot: format Description: 
---     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
---     * Slot: name Description: A human-readable name for an attribute or entity.
---     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
---     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
--- # Class: "ScientificDissertation" Description: "A thesis or dissertation submitted by a researcher as  part of their work to qualify for an advanced degree - usually a  doctorate.   "
---     * Slot: doi Description: A digital object identifier (see http://doi.org/).
---     * Slot: id Description: A unique identifier for an entity.
---     * Slot: title Description: The title of a ScientificKnowledgeExpression.
---     * Slot: abstract Description: The written abstract of a ScientificKnowledgeExpression.  This is typically a paragraph of text providing  a summary of the expression.
---     * Slot: full_text Description: The full textual content of a ScientificKnowledgeExpression, expressed as a string  (usually with an associated specified encoding / schema / format).
---     * Slot: publication_date Description: date on which an entity was published (i.e., made available to the public).
---     * Slot: license Description: A license under which an information content entity is provided.
---     * Slot: rights Description: 
---     * Slot: format Description: 
---     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
---     * Slot: name Description: A human-readable name for an attribute or entity.
---     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
---     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
 -- # Class: "InformationResource" Description: "A database or knowledgebase and its supporting ecosystem of interfaces  and services that deliver content to consumers (e.g. web portals, APIs,  query endpoints, streaming services, data downloads, etc.). A single Information Resource by this definition may span many different datasets or databases, and include many access endpoints and user interfaces. Information Resources include project-specific resources such as a Translator Knowledge Provider, and community knowledgebases like ChemBL, OMIM, or DGIdb."
 --     * Slot: id Description: A unique identifier for an entity.
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
 --     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
@@ -159,7 +57,7 @@
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
 --     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
 -- # Class: "ScientificPublicationCollection" Description: "A collection of scientific publications."
@@ -169,7 +67,7 @@
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
 --     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
 -- # Class: "ScientificKnowledgeFragment" Description: "A selected subportion of the contents of a ScientificKnowledgeExpression, described by an selector."
@@ -177,7 +75,7 @@
 --     * Slot: selector Description: A way of specifying a location within a ScientificKnowledgeExpression that describes where a ScientificKnowledgeFragment comes from
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A unique identifier for an entity.
@@ -186,7 +84,7 @@
 -- # Class: "Selector" Description: "A way of localizing and describing a ScientificKnowledgeFragment within a ScientificKnowledgeExpression."
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A unique identifier for an entity.
@@ -195,15 +93,59 @@
 -- # Class: "OffsetTextSelector" Description: "A way of localizing and describing a fragment of text within a larger body of text using offsets and lengths."
 --     * Slot: offset Description: The offset of the start of the fragment from the start of the text.
 --     * Slot: length Description: The length of the fragment.
---     * Slot: text Description: The text of the fragment.
 --     * Slot: license Description: A license under which an information content entity is provided.
 --     * Slot: rights Description: 
---     * Slot: format Description: 
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
 --     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A unique identifier for an entity.
 --     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
 --     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
+-- # Class: "Note" Description: "A structured piece of information with an author that is about another InformationContentEntity."
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
+--     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
+--     * Slot: license Description: A license under which an information content entity is provided.
+--     * Slot: rights Description: 
+--     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
+--     * Slot: name Description: A human-readable name for an attribute or entity.
+--     * Slot: id Description: A unique identifier for an entity.
+--     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
+-- # Class: "NameValuePair" Description: "A single map {string :- string} to track structured data in a note."
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
+--     * Slot: license Description: A license under which an information content entity is provided.
+--     * Slot: rights Description: 
+--     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
+--     * Slot: name Description: A human-readable name for an attribute or entity.
+--     * Slot: id Description: A unique identifier for an entity.
+--     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
+--     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
+-- # Class: "NoteAboutProvenance" Description: "A note that describes the provenance of an InformationContentEntity by describing its source, when it was created and any other salient details written in natural language."
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
+--     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
+--     * Slot: license Description: A license under which an information content entity is provided.
+--     * Slot: rights Description: 
+--     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
+--     * Slot: name Description: A human-readable name for an attribute or entity.
+--     * Slot: id Description: A unique identifier for an entity.
+--     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
+-- # Class: "NoteAboutPublication" Description: "A structured note about an ScientificPublication."
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
+--     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
+--     * Slot: license Description: A license under which an information content entity is provided.
+--     * Slot: rights Description: 
+--     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
+--     * Slot: name Description: A human-readable name for an attribute or entity.
+--     * Slot: id Description: A unique identifier for an entity.
+--     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
+-- # Class: "NoteAboutFragment" Description: "A structured note about an ScientificKnowledgeFragment."
+--     * Slot: format Description: The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
+--     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
+--     * Slot: license Description: A license under which an information content entity is provided.
+--     * Slot: rights Description: 
+--     * Slot: creation_date Description: date on which an entity was created. This can be applied to nodes or edges
+--     * Slot: name Description: A human-readable name for an attribute or entity.
+--     * Slot: id Description: A unique identifier for an entity.
+--     * Slot: iri Description: An IRI for an entity.  This is determined by the id using expansion rules.
 -- # Class: "Person" Description: ""
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A unique identifier for an entity.
@@ -217,13 +159,11 @@
 --     * Slot: type_str Description: A simple textual representation of the entity's type (for polymorphism mechansisms)
 --     * Slot: ScientificKnowledgeExpression_id Description: Autocreated FK slot
 --     * Slot: ScientificPublication_id Description: Autocreated FK slot
---     * Slot: ScientificPrimaryResearchArticle_id Description: Autocreated FK slot
---     * Slot: ScientificPrimaryResearchPreprint_id Description: Autocreated FK slot
---     * Slot: ScientificReviewArticle_id Description: Autocreated FK slot
---     * Slot: ScientificBook_id Description: Autocreated FK slot
---     * Slot: ScientificBookChapter_id Description: Autocreated FK slot
---     * Slot: ScientificConferenceArticle_id Description: Autocreated FK slot
---     * Slot: ScientificDissertation_id Description: Autocreated FK slot
+--     * Slot: Note_id Description: Autocreated FK slot
+--     * Slot: NameValuePair_id Description: Autocreated FK slot
+--     * Slot: NoteAboutProvenance_id Description: Autocreated FK slot
+--     * Slot: NoteAboutPublication_id Description: Autocreated FK slot
+--     * Slot: NoteAboutFragment_id Description: Autocreated FK slot
 -- # Class: "Organization" Description: ""
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A unique identifier for an entity.
@@ -248,6 +188,9 @@
 -- # Class: "NamedThing_type" Description: ""
 --     * Slot: NamedThing_id Description: Autocreated FK slot
 --     * Slot: type Description: 
+-- # Class: "InformationContentEntity_provenance" Description: ""
+--     * Slot: InformationContentEntity_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "InformationContentEntity_xref" Description: ""
 --     * Slot: InformationContentEntity_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
@@ -257,6 +200,9 @@
 -- # Class: "ScientificKnowledgeExpression_has_part" Description: ""
 --     * Slot: ScientificKnowledgeExpression_id Description: Autocreated FK slot
 --     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
+-- # Class: "ScientificKnowledgeExpression_provenance" Description: ""
+--     * Slot: ScientificKnowledgeExpression_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "ScientificKnowledgeExpression_xref" Description: ""
 --     * Slot: ScientificKnowledgeExpression_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
@@ -266,84 +212,30 @@
 -- # Class: "ScientificPublication_has_part" Description: ""
 --     * Slot: ScientificPublication_id Description: Autocreated FK slot
 --     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
+-- # Class: "ScientificPublication_provenance" Description: ""
+--     * Slot: ScientificPublication_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "ScientificPublication_xref" Description: ""
 --     * Slot: ScientificPublication_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
 -- # Class: "ScientificPublication_type" Description: ""
 --     * Slot: ScientificPublication_id Description: Autocreated FK slot
 --     * Slot: type Description: 
--- # Class: "ScientificPrimaryResearchArticle_has_part" Description: ""
---     * Slot: ScientificPrimaryResearchArticle_id Description: Autocreated FK slot
---     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
--- # Class: "ScientificPrimaryResearchArticle_xref" Description: ""
---     * Slot: ScientificPrimaryResearchArticle_id Description: Autocreated FK slot
---     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
--- # Class: "ScientificPrimaryResearchArticle_type" Description: ""
---     * Slot: ScientificPrimaryResearchArticle_id Description: Autocreated FK slot
---     * Slot: type Description: 
--- # Class: "ScientificPrimaryResearchPreprint_has_part" Description: ""
---     * Slot: ScientificPrimaryResearchPreprint_id Description: Autocreated FK slot
---     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
--- # Class: "ScientificPrimaryResearchPreprint_xref" Description: ""
---     * Slot: ScientificPrimaryResearchPreprint_id Description: Autocreated FK slot
---     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
--- # Class: "ScientificPrimaryResearchPreprint_type" Description: ""
---     * Slot: ScientificPrimaryResearchPreprint_id Description: Autocreated FK slot
---     * Slot: type Description: 
--- # Class: "ScientificReviewArticle_has_part" Description: ""
---     * Slot: ScientificReviewArticle_id Description: Autocreated FK slot
---     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
--- # Class: "ScientificReviewArticle_xref" Description: ""
---     * Slot: ScientificReviewArticle_id Description: Autocreated FK slot
---     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
--- # Class: "ScientificReviewArticle_type" Description: ""
---     * Slot: ScientificReviewArticle_id Description: Autocreated FK slot
---     * Slot: type Description: 
--- # Class: "ScientificBook_has_part" Description: ""
---     * Slot: ScientificBook_id Description: Autocreated FK slot
---     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
--- # Class: "ScientificBook_xref" Description: ""
---     * Slot: ScientificBook_id Description: Autocreated FK slot
---     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
--- # Class: "ScientificBook_type" Description: ""
---     * Slot: ScientificBook_id Description: Autocreated FK slot
---     * Slot: type Description: 
--- # Class: "ScientificBookChapter_has_part" Description: ""
---     * Slot: ScientificBookChapter_id Description: Autocreated FK slot
---     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
--- # Class: "ScientificBookChapter_xref" Description: ""
---     * Slot: ScientificBookChapter_id Description: Autocreated FK slot
---     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
--- # Class: "ScientificBookChapter_type" Description: ""
---     * Slot: ScientificBookChapter_id Description: Autocreated FK slot
---     * Slot: type Description: 
--- # Class: "ScientificConferenceArticle_has_part" Description: ""
---     * Slot: ScientificConferenceArticle_id Description: Autocreated FK slot
---     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
--- # Class: "ScientificConferenceArticle_xref" Description: ""
---     * Slot: ScientificConferenceArticle_id Description: Autocreated FK slot
---     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
--- # Class: "ScientificConferenceArticle_type" Description: ""
---     * Slot: ScientificConferenceArticle_id Description: Autocreated FK slot
---     * Slot: type Description: 
--- # Class: "ScientificDissertation_has_part" Description: ""
---     * Slot: ScientificDissertation_id Description: Autocreated FK slot
---     * Slot: has_part_id Description: Fragments that have been highlighted as as part of this SKE.
--- # Class: "ScientificDissertation_xref" Description: ""
---     * Slot: ScientificDissertation_id Description: Autocreated FK slot
---     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
--- # Class: "ScientificDissertation_type" Description: ""
---     * Slot: ScientificDissertation_id Description: Autocreated FK slot
---     * Slot: type Description: 
 -- # Class: "InformationResource_xref" Description: ""
 --     * Slot: InformationResource_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
+-- # Class: "InformationResource_provenance" Description: ""
+--     * Slot: InformationResource_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "InformationResource_type" Description: ""
 --     * Slot: InformationResource_id Description: Autocreated FK slot
 --     * Slot: type Description: 
 -- # Class: "ScientificKnowledgeCollection_information_sources" Description: ""
 --     * Slot: ScientificKnowledgeCollection_id Description: Autocreated FK slot
---     * Slot: information_sources_id Description: The InformationResources that are queried to build a  ScientificKnowledgeCollection.
+--     * Slot: information_sources_id Description: The source of information described in a NoteAboutProvenance.
+-- # Class: "ScientificKnowledgeCollection_provenance" Description: ""
+--     * Slot: ScientificKnowledgeCollection_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "ScientificKnowledgeCollection_xref" Description: ""
 --     * Slot: ScientificKnowledgeCollection_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
@@ -355,30 +247,102 @@
 --     * Slot: has_part_id Description: The publications that are part of the collection.
 -- # Class: "ScientificPublicationCollection_information_sources" Description: ""
 --     * Slot: ScientificPublicationCollection_id Description: Autocreated FK slot
---     * Slot: information_sources_id Description: The InformationResources that are queried to build a  ScientificKnowledgeCollection.
+--     * Slot: information_sources_id Description: The source of information described in a NoteAboutProvenance.
+-- # Class: "ScientificPublicationCollection_provenance" Description: ""
+--     * Slot: ScientificPublicationCollection_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "ScientificPublicationCollection_xref" Description: ""
 --     * Slot: ScientificPublicationCollection_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
 -- # Class: "ScientificPublicationCollection_type" Description: ""
 --     * Slot: ScientificPublicationCollection_id Description: Autocreated FK slot
 --     * Slot: type Description: 
+-- # Class: "ScientificKnowledgeFragment_provenance" Description: ""
+--     * Slot: ScientificKnowledgeFragment_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "ScientificKnowledgeFragment_xref" Description: ""
 --     * Slot: ScientificKnowledgeFragment_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
 -- # Class: "ScientificKnowledgeFragment_type" Description: ""
 --     * Slot: ScientificKnowledgeFragment_id Description: Autocreated FK slot
 --     * Slot: type Description: 
+-- # Class: "Selector_provenance" Description: ""
+--     * Slot: Selector_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "Selector_xref" Description: ""
 --     * Slot: Selector_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
 -- # Class: "Selector_type" Description: ""
 --     * Slot: Selector_id Description: Autocreated FK slot
 --     * Slot: type Description: 
+-- # Class: "OffsetTextSelector_provenance" Description: ""
+--     * Slot: OffsetTextSelector_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
 -- # Class: "OffsetTextSelector_xref" Description: ""
 --     * Slot: OffsetTextSelector_id Description: Autocreated FK slot
 --     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
 -- # Class: "OffsetTextSelector_type" Description: ""
 --     * Slot: OffsetTextSelector_id Description: Autocreated FK slot
+--     * Slot: type Description: 
+-- # Class: "Note_is_about" Description: ""
+--     * Slot: Note_id Description: Autocreated FK slot
+--     * Slot: is_about_id Description: A (currently) primitive relation that relates an information artifact to an entity. 
+-- # Class: "Note_provenance" Description: ""
+--     * Slot: Note_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
+-- # Class: "Note_xref" Description: ""
+--     * Slot: Note_id Description: Autocreated FK slot
+--     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
+-- # Class: "Note_type" Description: ""
+--     * Slot: Note_id Description: Autocreated FK slot
+--     * Slot: type Description: 
+-- # Class: "NameValuePair_is_about" Description: ""
+--     * Slot: NameValuePair_id Description: Autocreated FK slot
+--     * Slot: is_about_id Description: A (currently) primitive relation that relates an information artifact to an entity. 
+-- # Class: "NameValuePair_provenance" Description: ""
+--     * Slot: NameValuePair_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
+-- # Class: "NameValuePair_xref" Description: ""
+--     * Slot: NameValuePair_id Description: Autocreated FK slot
+--     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
+-- # Class: "NameValuePair_type" Description: ""
+--     * Slot: NameValuePair_id Description: Autocreated FK slot
+--     * Slot: type Description: 
+-- # Class: "NoteAboutProvenance_is_about" Description: ""
+--     * Slot: NoteAboutProvenance_id Description: Autocreated FK slot
+--     * Slot: is_about_id Description: A (currently) primitive relation that relates an information artifact to an entity. 
+-- # Class: "NoteAboutProvenance_provenance" Description: ""
+--     * Slot: NoteAboutProvenance_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
+-- # Class: "NoteAboutProvenance_xref" Description: ""
+--     * Slot: NoteAboutProvenance_id Description: Autocreated FK slot
+--     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
+-- # Class: "NoteAboutProvenance_type" Description: ""
+--     * Slot: NoteAboutProvenance_id Description: Autocreated FK slot
+--     * Slot: type Description: 
+-- # Class: "NoteAboutPublication_is_about" Description: ""
+--     * Slot: NoteAboutPublication_id Description: Autocreated FK slot
+--     * Slot: is_about_id Description: A (currently) primitive relation that relates an information artifact to an entity. 
+-- # Class: "NoteAboutPublication_provenance" Description: ""
+--     * Slot: NoteAboutPublication_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
+-- # Class: "NoteAboutPublication_xref" Description: ""
+--     * Slot: NoteAboutPublication_id Description: Autocreated FK slot
+--     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
+-- # Class: "NoteAboutPublication_type" Description: ""
+--     * Slot: NoteAboutPublication_id Description: Autocreated FK slot
+--     * Slot: type Description: 
+-- # Class: "NoteAboutFragment_is_about" Description: ""
+--     * Slot: NoteAboutFragment_id Description: Autocreated FK slot
+--     * Slot: is_about_id Description: A (currently) primitive relation that relates an information artifact to an entity. 
+-- # Class: "NoteAboutFragment_provenance" Description: ""
+--     * Slot: NoteAboutFragment_id Description: Autocreated FK slot
+--     * Slot: provenance_id Description: A description of the provenance of an information content entity.
+-- # Class: "NoteAboutFragment_xref" Description: ""
+--     * Slot: NoteAboutFragment_id Description: Autocreated FK slot
+--     * Slot: xref Description: A database cross reference or alternative identifier for a NamedThing or edge between two  NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or  gives more detail about the edge. This property can be used on a node or edge to provide multiple URIs or CURIE cross references.
+-- # Class: "NoteAboutFragment_type" Description: ""
+--     * Slot: NoteAboutFragment_id Description: Autocreated FK slot
 --     * Slot: type Description: 
 -- # Class: "Person_xref" Description: ""
 --     * Slot: Person_id Description: Autocreated FK slot
@@ -448,7 +412,6 @@ CREATE TABLE "ScientificKnowledgeExpression" (
 	id TEXT NOT NULL, 
 	title TEXT, 
 	abstract TEXT, 
-	full_text TEXT, 
 	publication_date DATE, 
 	license TEXT, 
 	rights TEXT, 
@@ -461,10 +424,10 @@ CREATE TABLE "ScientificKnowledgeExpression" (
 );
 CREATE TABLE "ScientificPublication" (
 	doi TEXT, 
+	type_str VARCHAR(33), 
 	id TEXT NOT NULL, 
 	title TEXT, 
 	abstract TEXT, 
-	full_text TEXT, 
 	publication_date DATE, 
 	license TEXT, 
 	rights TEXT, 
@@ -472,87 +435,6 @@ CREATE TABLE "ScientificPublication" (
 	creation_date DATE, 
 	name TEXT, 
 	iri TEXT, 
-	type_str TEXT, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE "ScientificPrimaryResearchArticle" (
-	doi TEXT, 
-	id TEXT NOT NULL, 
-	title TEXT, 
-	abstract TEXT, 
-	full_text TEXT, 
-	publication_date DATE, 
-	license TEXT, 
-	rights TEXT, 
-	format TEXT, 
-	creation_date DATE, 
-	name TEXT, 
-	iri TEXT, 
-	type_str TEXT, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE "ScientificPrimaryResearchPreprint" (
-	doi TEXT, 
-	id TEXT NOT NULL, 
-	title TEXT, 
-	abstract TEXT, 
-	full_text TEXT, 
-	publication_date DATE, 
-	license TEXT, 
-	rights TEXT, 
-	format TEXT, 
-	creation_date DATE, 
-	name TEXT, 
-	iri TEXT, 
-	type_str TEXT, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE "ScientificReviewArticle" (
-	doi TEXT, 
-	id TEXT NOT NULL, 
-	title TEXT, 
-	abstract TEXT, 
-	full_text TEXT, 
-	publication_date DATE, 
-	license TEXT, 
-	rights TEXT, 
-	format TEXT, 
-	creation_date DATE, 
-	name TEXT, 
-	iri TEXT, 
-	type_str TEXT, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE "ScientificBook" (
-	doi TEXT, 
-	id TEXT NOT NULL, 
-	title TEXT, 
-	abstract TEXT, 
-	full_text TEXT, 
-	publication_date DATE, 
-	license TEXT, 
-	rights TEXT, 
-	format TEXT, 
-	creation_date DATE, 
-	name TEXT, 
-	iri TEXT, 
-	type_str TEXT, 
-	PRIMARY KEY (id)
-);
-CREATE TABLE "ScientificDissertation" (
-	doi TEXT, 
-	id TEXT NOT NULL, 
-	title TEXT, 
-	abstract TEXT, 
-	full_text TEXT, 
-	publication_date DATE, 
-	license TEXT, 
-	rights TEXT, 
-	format TEXT, 
-	creation_date DATE, 
-	name TEXT, 
-	iri TEXT, 
-	type_str TEXT, 
 	PRIMARY KEY (id)
 );
 CREATE TABLE "InformationResource" (
@@ -604,7 +486,6 @@ CREATE TABLE "Selector" (
 CREATE TABLE "OffsetTextSelector" (
 	"offset" INTEGER, 
 	length INTEGER, 
-	text TEXT, 
 	license TEXT, 
 	rights TEXT, 
 	format TEXT, 
@@ -613,6 +494,61 @@ CREATE TABLE "OffsetTextSelector" (
 	id TEXT NOT NULL, 
 	iri TEXT, 
 	type_str TEXT, 
+	PRIMARY KEY (id)
+);
+CREATE TABLE "Note" (
+	format TEXT, 
+	type_str VARCHAR(20), 
+	license TEXT, 
+	rights TEXT, 
+	creation_date DATE, 
+	name TEXT, 
+	id TEXT NOT NULL, 
+	iri TEXT, 
+	PRIMARY KEY (id)
+);
+CREATE TABLE "NameValuePair" (
+	format TEXT, 
+	license TEXT, 
+	rights TEXT, 
+	creation_date DATE, 
+	name TEXT, 
+	id TEXT NOT NULL, 
+	iri TEXT, 
+	type_str TEXT, 
+	PRIMARY KEY (id)
+);
+CREATE TABLE "NoteAboutProvenance" (
+	format TEXT, 
+	type_str VARCHAR(20), 
+	license TEXT, 
+	rights TEXT, 
+	creation_date DATE, 
+	name TEXT, 
+	id TEXT NOT NULL, 
+	iri TEXT, 
+	PRIMARY KEY (id)
+);
+CREATE TABLE "NoteAboutPublication" (
+	format TEXT, 
+	type_str VARCHAR(20), 
+	license TEXT, 
+	rights TEXT, 
+	creation_date DATE, 
+	name TEXT, 
+	id TEXT NOT NULL, 
+	iri TEXT, 
+	PRIMARY KEY (id)
+);
+CREATE TABLE "NoteAboutFragment" (
+	format TEXT, 
+	type_str VARCHAR(20), 
+	license TEXT, 
+	rights TEXT, 
+	creation_date DATE, 
+	name TEXT, 
+	id TEXT NOT NULL, 
+	iri TEXT, 
 	PRIMARY KEY (id)
 );
 CREATE TABLE "Person" (
@@ -643,42 +579,6 @@ CREATE TABLE "Country" (
 	type_str TEXT, 
 	PRIMARY KEY (id)
 );
-CREATE TABLE "ScientificBookChapter" (
-	part_of TEXT, 
-	doi TEXT, 
-	id TEXT NOT NULL, 
-	title TEXT, 
-	abstract TEXT, 
-	full_text TEXT, 
-	publication_date DATE, 
-	license TEXT, 
-	rights TEXT, 
-	format TEXT, 
-	creation_date DATE, 
-	name TEXT, 
-	iri TEXT, 
-	type_str TEXT, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(part_of) REFERENCES "ScientificBook" (id)
-);
-CREATE TABLE "ScientificConferenceArticle" (
-	part_of TEXT, 
-	doi TEXT, 
-	id TEXT NOT NULL, 
-	title TEXT, 
-	abstract TEXT, 
-	full_text TEXT, 
-	publication_date DATE, 
-	license TEXT, 
-	rights TEXT, 
-	format TEXT, 
-	creation_date DATE, 
-	name TEXT, 
-	iri TEXT, 
-	type_str TEXT, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY(part_of) REFERENCES "ScientificBook" (id)
-);
 CREATE TABLE "ScientificKnowledgeFragment" (
 	part_of TEXT, 
 	selector TEXT, 
@@ -693,6 +593,28 @@ CREATE TABLE "ScientificKnowledgeFragment" (
 	PRIMARY KEY (id), 
 	FOREIGN KEY(part_of) REFERENCES "ScientificKnowledgeExpression" (id), 
 	FOREIGN KEY(selector) REFERENCES "Selector" (id)
+);
+CREATE TABLE "Author" (
+	orcid TEXT, 
+	name TEXT, 
+	id TEXT NOT NULL, 
+	iri TEXT, 
+	type_str TEXT, 
+	"ScientificKnowledgeExpression_id" TEXT, 
+	"ScientificPublication_id" TEXT, 
+	"Note_id" TEXT, 
+	"NameValuePair_id" TEXT, 
+	"NoteAboutProvenance_id" TEXT, 
+	"NoteAboutPublication_id" TEXT, 
+	"NoteAboutFragment_id" TEXT, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY("ScientificKnowledgeExpression_id") REFERENCES "ScientificKnowledgeExpression" (id), 
+	FOREIGN KEY("ScientificPublication_id") REFERENCES "ScientificPublication" (id), 
+	FOREIGN KEY("Note_id") REFERENCES "Note" (id), 
+	FOREIGN KEY("NameValuePair_id") REFERENCES "NameValuePair" (id), 
+	FOREIGN KEY("NoteAboutProvenance_id") REFERENCES "NoteAboutProvenance" (id), 
+	FOREIGN KEY("NoteAboutPublication_id") REFERENCES "NoteAboutPublication" (id), 
+	FOREIGN KEY("NoteAboutFragment_id") REFERENCES "NoteAboutFragment" (id)
 );
 CREATE TABLE "Entity_type" (
 	"Entity_id" TEXT, 
@@ -712,6 +634,13 @@ CREATE TABLE "NamedThing_type" (
 	PRIMARY KEY ("NamedThing_id", type), 
 	FOREIGN KEY("NamedThing_id") REFERENCES "NamedThing" (id)
 );
+CREATE TABLE "InformationContentEntity_provenance" (
+	"InformationContentEntity_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("InformationContentEntity_id", provenance_id), 
+	FOREIGN KEY("InformationContentEntity_id") REFERENCES "InformationContentEntity" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
 CREATE TABLE "InformationContentEntity_xref" (
 	"InformationContentEntity_id" TEXT, 
 	xref TEXT, 
@@ -723,6 +652,13 @@ CREATE TABLE "InformationContentEntity_type" (
 	type TEXT, 
 	PRIMARY KEY ("InformationContentEntity_id", type), 
 	FOREIGN KEY("InformationContentEntity_id") REFERENCES "InformationContentEntity" (id)
+);
+CREATE TABLE "ScientificKnowledgeExpression_provenance" (
+	"ScientificKnowledgeExpression_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("ScientificKnowledgeExpression_id", provenance_id), 
+	FOREIGN KEY("ScientificKnowledgeExpression_id") REFERENCES "ScientificKnowledgeExpression" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
 );
 CREATE TABLE "ScientificKnowledgeExpression_xref" (
 	"ScientificKnowledgeExpression_id" TEXT, 
@@ -736,6 +672,13 @@ CREATE TABLE "ScientificKnowledgeExpression_type" (
 	PRIMARY KEY ("ScientificKnowledgeExpression_id", type), 
 	FOREIGN KEY("ScientificKnowledgeExpression_id") REFERENCES "ScientificKnowledgeExpression" (id)
 );
+CREATE TABLE "ScientificPublication_provenance" (
+	"ScientificPublication_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("ScientificPublication_id", provenance_id), 
+	FOREIGN KEY("ScientificPublication_id") REFERENCES "ScientificPublication" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
 CREATE TABLE "ScientificPublication_xref" (
 	"ScientificPublication_id" TEXT, 
 	xref TEXT, 
@@ -748,71 +691,18 @@ CREATE TABLE "ScientificPublication_type" (
 	PRIMARY KEY ("ScientificPublication_id", type), 
 	FOREIGN KEY("ScientificPublication_id") REFERENCES "ScientificPublication" (id)
 );
-CREATE TABLE "ScientificPrimaryResearchArticle_xref" (
-	"ScientificPrimaryResearchArticle_id" TEXT, 
-	xref TEXT, 
-	PRIMARY KEY ("ScientificPrimaryResearchArticle_id", xref), 
-	FOREIGN KEY("ScientificPrimaryResearchArticle_id") REFERENCES "ScientificPrimaryResearchArticle" (id)
-);
-CREATE TABLE "ScientificPrimaryResearchArticle_type" (
-	"ScientificPrimaryResearchArticle_id" TEXT, 
-	type TEXT, 
-	PRIMARY KEY ("ScientificPrimaryResearchArticle_id", type), 
-	FOREIGN KEY("ScientificPrimaryResearchArticle_id") REFERENCES "ScientificPrimaryResearchArticle" (id)
-);
-CREATE TABLE "ScientificPrimaryResearchPreprint_xref" (
-	"ScientificPrimaryResearchPreprint_id" TEXT, 
-	xref TEXT, 
-	PRIMARY KEY ("ScientificPrimaryResearchPreprint_id", xref), 
-	FOREIGN KEY("ScientificPrimaryResearchPreprint_id") REFERENCES "ScientificPrimaryResearchPreprint" (id)
-);
-CREATE TABLE "ScientificPrimaryResearchPreprint_type" (
-	"ScientificPrimaryResearchPreprint_id" TEXT, 
-	type TEXT, 
-	PRIMARY KEY ("ScientificPrimaryResearchPreprint_id", type), 
-	FOREIGN KEY("ScientificPrimaryResearchPreprint_id") REFERENCES "ScientificPrimaryResearchPreprint" (id)
-);
-CREATE TABLE "ScientificReviewArticle_xref" (
-	"ScientificReviewArticle_id" TEXT, 
-	xref TEXT, 
-	PRIMARY KEY ("ScientificReviewArticle_id", xref), 
-	FOREIGN KEY("ScientificReviewArticle_id") REFERENCES "ScientificReviewArticle" (id)
-);
-CREATE TABLE "ScientificReviewArticle_type" (
-	"ScientificReviewArticle_id" TEXT, 
-	type TEXT, 
-	PRIMARY KEY ("ScientificReviewArticle_id", type), 
-	FOREIGN KEY("ScientificReviewArticle_id") REFERENCES "ScientificReviewArticle" (id)
-);
-CREATE TABLE "ScientificBook_xref" (
-	"ScientificBook_id" TEXT, 
-	xref TEXT, 
-	PRIMARY KEY ("ScientificBook_id", xref), 
-	FOREIGN KEY("ScientificBook_id") REFERENCES "ScientificBook" (id)
-);
-CREATE TABLE "ScientificBook_type" (
-	"ScientificBook_id" TEXT, 
-	type TEXT, 
-	PRIMARY KEY ("ScientificBook_id", type), 
-	FOREIGN KEY("ScientificBook_id") REFERENCES "ScientificBook" (id)
-);
-CREATE TABLE "ScientificDissertation_xref" (
-	"ScientificDissertation_id" TEXT, 
-	xref TEXT, 
-	PRIMARY KEY ("ScientificDissertation_id", xref), 
-	FOREIGN KEY("ScientificDissertation_id") REFERENCES "ScientificDissertation" (id)
-);
-CREATE TABLE "ScientificDissertation_type" (
-	"ScientificDissertation_id" TEXT, 
-	type TEXT, 
-	PRIMARY KEY ("ScientificDissertation_id", type), 
-	FOREIGN KEY("ScientificDissertation_id") REFERENCES "ScientificDissertation" (id)
-);
 CREATE TABLE "InformationResource_xref" (
 	"InformationResource_id" TEXT, 
 	xref TEXT, 
 	PRIMARY KEY ("InformationResource_id", xref), 
 	FOREIGN KEY("InformationResource_id") REFERENCES "InformationResource" (id)
+);
+CREATE TABLE "InformationResource_provenance" (
+	"InformationResource_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("InformationResource_id", provenance_id), 
+	FOREIGN KEY("InformationResource_id") REFERENCES "InformationResource" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
 );
 CREATE TABLE "InformationResource_type" (
 	"InformationResource_id" TEXT, 
@@ -826,6 +716,13 @@ CREATE TABLE "ScientificKnowledgeCollection_information_sources" (
 	PRIMARY KEY ("ScientificKnowledgeCollection_id", information_sources_id), 
 	FOREIGN KEY("ScientificKnowledgeCollection_id") REFERENCES "ScientificKnowledgeCollection" (id), 
 	FOREIGN KEY(information_sources_id) REFERENCES "InformationResource" (id)
+);
+CREATE TABLE "ScientificKnowledgeCollection_provenance" (
+	"ScientificKnowledgeCollection_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("ScientificKnowledgeCollection_id", provenance_id), 
+	FOREIGN KEY("ScientificKnowledgeCollection_id") REFERENCES "ScientificKnowledgeCollection" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
 );
 CREATE TABLE "ScientificKnowledgeCollection_xref" (
 	"ScientificKnowledgeCollection_id" TEXT, 
@@ -853,6 +750,13 @@ CREATE TABLE "ScientificPublicationCollection_information_sources" (
 	FOREIGN KEY("ScientificPublicationCollection_id") REFERENCES "ScientificPublicationCollection" (id), 
 	FOREIGN KEY(information_sources_id) REFERENCES "InformationResource" (id)
 );
+CREATE TABLE "ScientificPublicationCollection_provenance" (
+	"ScientificPublicationCollection_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("ScientificPublicationCollection_id", provenance_id), 
+	FOREIGN KEY("ScientificPublicationCollection_id") REFERENCES "ScientificPublicationCollection" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
 CREATE TABLE "ScientificPublicationCollection_xref" (
 	"ScientificPublicationCollection_id" TEXT, 
 	xref TEXT, 
@@ -864,6 +768,13 @@ CREATE TABLE "ScientificPublicationCollection_type" (
 	type TEXT, 
 	PRIMARY KEY ("ScientificPublicationCollection_id", type), 
 	FOREIGN KEY("ScientificPublicationCollection_id") REFERENCES "ScientificPublicationCollection" (id)
+);
+CREATE TABLE "Selector_provenance" (
+	"Selector_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("Selector_id", provenance_id), 
+	FOREIGN KEY("Selector_id") REFERENCES "Selector" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
 );
 CREATE TABLE "Selector_xref" (
 	"Selector_id" TEXT, 
@@ -877,6 +788,13 @@ CREATE TABLE "Selector_type" (
 	PRIMARY KEY ("Selector_id", type), 
 	FOREIGN KEY("Selector_id") REFERENCES "Selector" (id)
 );
+CREATE TABLE "OffsetTextSelector_provenance" (
+	"OffsetTextSelector_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("OffsetTextSelector_id", provenance_id), 
+	FOREIGN KEY("OffsetTextSelector_id") REFERENCES "OffsetTextSelector" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
 CREATE TABLE "OffsetTextSelector_xref" (
 	"OffsetTextSelector_id" TEXT, 
 	xref TEXT, 
@@ -888,6 +806,129 @@ CREATE TABLE "OffsetTextSelector_type" (
 	type TEXT, 
 	PRIMARY KEY ("OffsetTextSelector_id", type), 
 	FOREIGN KEY("OffsetTextSelector_id") REFERENCES "OffsetTextSelector" (id)
+);
+CREATE TABLE "Note_is_about" (
+	"Note_id" TEXT, 
+	is_about_id TEXT, 
+	PRIMARY KEY ("Note_id", is_about_id), 
+	FOREIGN KEY("Note_id") REFERENCES "Note" (id), 
+	FOREIGN KEY(is_about_id) REFERENCES "Entity" (id)
+);
+CREATE TABLE "Note_provenance" (
+	"Note_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("Note_id", provenance_id), 
+	FOREIGN KEY("Note_id") REFERENCES "Note" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
+CREATE TABLE "Note_xref" (
+	"Note_id" TEXT, 
+	xref TEXT, 
+	PRIMARY KEY ("Note_id", xref), 
+	FOREIGN KEY("Note_id") REFERENCES "Note" (id)
+);
+CREATE TABLE "Note_type" (
+	"Note_id" TEXT, 
+	type TEXT, 
+	PRIMARY KEY ("Note_id", type), 
+	FOREIGN KEY("Note_id") REFERENCES "Note" (id)
+);
+CREATE TABLE "NameValuePair_is_about" (
+	"NameValuePair_id" TEXT, 
+	is_about_id TEXT, 
+	PRIMARY KEY ("NameValuePair_id", is_about_id), 
+	FOREIGN KEY("NameValuePair_id") REFERENCES "NameValuePair" (id), 
+	FOREIGN KEY(is_about_id) REFERENCES "Entity" (id)
+);
+CREATE TABLE "NameValuePair_provenance" (
+	"NameValuePair_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("NameValuePair_id", provenance_id), 
+	FOREIGN KEY("NameValuePair_id") REFERENCES "NameValuePair" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
+CREATE TABLE "NameValuePair_xref" (
+	"NameValuePair_id" TEXT, 
+	xref TEXT, 
+	PRIMARY KEY ("NameValuePair_id", xref), 
+	FOREIGN KEY("NameValuePair_id") REFERENCES "NameValuePair" (id)
+);
+CREATE TABLE "NameValuePair_type" (
+	"NameValuePair_id" TEXT, 
+	type TEXT, 
+	PRIMARY KEY ("NameValuePair_id", type), 
+	FOREIGN KEY("NameValuePair_id") REFERENCES "NameValuePair" (id)
+);
+CREATE TABLE "NoteAboutProvenance_is_about" (
+	"NoteAboutProvenance_id" TEXT, 
+	is_about_id TEXT, 
+	PRIMARY KEY ("NoteAboutProvenance_id", is_about_id), 
+	FOREIGN KEY("NoteAboutProvenance_id") REFERENCES "NoteAboutProvenance" (id), 
+	FOREIGN KEY(is_about_id) REFERENCES "InformationContentEntity" (id)
+);
+CREATE TABLE "NoteAboutProvenance_provenance" (
+	"NoteAboutProvenance_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("NoteAboutProvenance_id", provenance_id), 
+	FOREIGN KEY("NoteAboutProvenance_id") REFERENCES "NoteAboutProvenance" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
+CREATE TABLE "NoteAboutProvenance_xref" (
+	"NoteAboutProvenance_id" TEXT, 
+	xref TEXT, 
+	PRIMARY KEY ("NoteAboutProvenance_id", xref), 
+	FOREIGN KEY("NoteAboutProvenance_id") REFERENCES "NoteAboutProvenance" (id)
+);
+CREATE TABLE "NoteAboutProvenance_type" (
+	"NoteAboutProvenance_id" TEXT, 
+	type TEXT, 
+	PRIMARY KEY ("NoteAboutProvenance_id", type), 
+	FOREIGN KEY("NoteAboutProvenance_id") REFERENCES "NoteAboutProvenance" (id)
+);
+CREATE TABLE "NoteAboutPublication_is_about" (
+	"NoteAboutPublication_id" TEXT, 
+	is_about_id TEXT, 
+	PRIMARY KEY ("NoteAboutPublication_id", is_about_id), 
+	FOREIGN KEY("NoteAboutPublication_id") REFERENCES "NoteAboutPublication" (id), 
+	FOREIGN KEY(is_about_id) REFERENCES "ScientificPublication" (id)
+);
+CREATE TABLE "NoteAboutPublication_provenance" (
+	"NoteAboutPublication_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("NoteAboutPublication_id", provenance_id), 
+	FOREIGN KEY("NoteAboutPublication_id") REFERENCES "NoteAboutPublication" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
+CREATE TABLE "NoteAboutPublication_xref" (
+	"NoteAboutPublication_id" TEXT, 
+	xref TEXT, 
+	PRIMARY KEY ("NoteAboutPublication_id", xref), 
+	FOREIGN KEY("NoteAboutPublication_id") REFERENCES "NoteAboutPublication" (id)
+);
+CREATE TABLE "NoteAboutPublication_type" (
+	"NoteAboutPublication_id" TEXT, 
+	type TEXT, 
+	PRIMARY KEY ("NoteAboutPublication_id", type), 
+	FOREIGN KEY("NoteAboutPublication_id") REFERENCES "NoteAboutPublication" (id)
+);
+CREATE TABLE "NoteAboutFragment_provenance" (
+	"NoteAboutFragment_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("NoteAboutFragment_id", provenance_id), 
+	FOREIGN KEY("NoteAboutFragment_id") REFERENCES "NoteAboutFragment" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
+);
+CREATE TABLE "NoteAboutFragment_xref" (
+	"NoteAboutFragment_id" TEXT, 
+	xref TEXT, 
+	PRIMARY KEY ("NoteAboutFragment_id", xref), 
+	FOREIGN KEY("NoteAboutFragment_id") REFERENCES "NoteAboutFragment" (id)
+);
+CREATE TABLE "NoteAboutFragment_type" (
+	"NoteAboutFragment_id" TEXT, 
+	type TEXT, 
+	PRIMARY KEY ("NoteAboutFragment_id", type), 
+	FOREIGN KEY("NoteAboutFragment_id") REFERENCES "NoteAboutFragment" (id)
 );
 CREATE TABLE "Person_xref" (
 	"Person_id" TEXT, 
@@ -951,32 +992,6 @@ CREATE TABLE "Country_type" (
 	PRIMARY KEY ("Country_id", type), 
 	FOREIGN KEY("Country_id") REFERENCES "Country" (id)
 );
-CREATE TABLE "Author" (
-	orcid TEXT, 
-	name TEXT, 
-	id TEXT NOT NULL, 
-	iri TEXT, 
-	type_str TEXT, 
-	"ScientificKnowledgeExpression_id" TEXT, 
-	"ScientificPublication_id" TEXT, 
-	"ScientificPrimaryResearchArticle_id" TEXT, 
-	"ScientificPrimaryResearchPreprint_id" TEXT, 
-	"ScientificReviewArticle_id" TEXT, 
-	"ScientificBook_id" TEXT, 
-	"ScientificBookChapter_id" TEXT, 
-	"ScientificConferenceArticle_id" TEXT, 
-	"ScientificDissertation_id" TEXT, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY("ScientificKnowledgeExpression_id") REFERENCES "ScientificKnowledgeExpression" (id), 
-	FOREIGN KEY("ScientificPublication_id") REFERENCES "ScientificPublication" (id), 
-	FOREIGN KEY("ScientificPrimaryResearchArticle_id") REFERENCES "ScientificPrimaryResearchArticle" (id), 
-	FOREIGN KEY("ScientificPrimaryResearchPreprint_id") REFERENCES "ScientificPrimaryResearchPreprint" (id), 
-	FOREIGN KEY("ScientificReviewArticle_id") REFERENCES "ScientificReviewArticle" (id), 
-	FOREIGN KEY("ScientificBook_id") REFERENCES "ScientificBook" (id), 
-	FOREIGN KEY("ScientificBookChapter_id") REFERENCES "ScientificBookChapter" (id), 
-	FOREIGN KEY("ScientificConferenceArticle_id") REFERENCES "ScientificConferenceArticle" (id), 
-	FOREIGN KEY("ScientificDissertation_id") REFERENCES "ScientificDissertation" (id)
-);
 CREATE TABLE "ScientificKnowledgeExpression_has_part" (
 	"ScientificKnowledgeExpression_id" TEXT, 
 	has_part_id TEXT, 
@@ -991,78 +1006,12 @@ CREATE TABLE "ScientificPublication_has_part" (
 	FOREIGN KEY("ScientificPublication_id") REFERENCES "ScientificPublication" (id), 
 	FOREIGN KEY(has_part_id) REFERENCES "ScientificKnowledgeFragment" (id)
 );
-CREATE TABLE "ScientificPrimaryResearchArticle_has_part" (
-	"ScientificPrimaryResearchArticle_id" TEXT, 
-	has_part_id TEXT, 
-	PRIMARY KEY ("ScientificPrimaryResearchArticle_id", has_part_id), 
-	FOREIGN KEY("ScientificPrimaryResearchArticle_id") REFERENCES "ScientificPrimaryResearchArticle" (id), 
-	FOREIGN KEY(has_part_id) REFERENCES "ScientificKnowledgeFragment" (id)
-);
-CREATE TABLE "ScientificPrimaryResearchPreprint_has_part" (
-	"ScientificPrimaryResearchPreprint_id" TEXT, 
-	has_part_id TEXT, 
-	PRIMARY KEY ("ScientificPrimaryResearchPreprint_id", has_part_id), 
-	FOREIGN KEY("ScientificPrimaryResearchPreprint_id") REFERENCES "ScientificPrimaryResearchPreprint" (id), 
-	FOREIGN KEY(has_part_id) REFERENCES "ScientificKnowledgeFragment" (id)
-);
-CREATE TABLE "ScientificReviewArticle_has_part" (
-	"ScientificReviewArticle_id" TEXT, 
-	has_part_id TEXT, 
-	PRIMARY KEY ("ScientificReviewArticle_id", has_part_id), 
-	FOREIGN KEY("ScientificReviewArticle_id") REFERENCES "ScientificReviewArticle" (id), 
-	FOREIGN KEY(has_part_id) REFERENCES "ScientificKnowledgeFragment" (id)
-);
-CREATE TABLE "ScientificBook_has_part" (
-	"ScientificBook_id" TEXT, 
-	has_part_id TEXT, 
-	PRIMARY KEY ("ScientificBook_id", has_part_id), 
-	FOREIGN KEY("ScientificBook_id") REFERENCES "ScientificBook" (id), 
-	FOREIGN KEY(has_part_id) REFERENCES "ScientificKnowledgeFragment" (id)
-);
-CREATE TABLE "ScientificBookChapter_has_part" (
-	"ScientificBookChapter_id" TEXT, 
-	has_part_id TEXT, 
-	PRIMARY KEY ("ScientificBookChapter_id", has_part_id), 
-	FOREIGN KEY("ScientificBookChapter_id") REFERENCES "ScientificBookChapter" (id), 
-	FOREIGN KEY(has_part_id) REFERENCES "ScientificKnowledgeFragment" (id)
-);
-CREATE TABLE "ScientificBookChapter_xref" (
-	"ScientificBookChapter_id" TEXT, 
-	xref TEXT, 
-	PRIMARY KEY ("ScientificBookChapter_id", xref), 
-	FOREIGN KEY("ScientificBookChapter_id") REFERENCES "ScientificBookChapter" (id)
-);
-CREATE TABLE "ScientificBookChapter_type" (
-	"ScientificBookChapter_id" TEXT, 
-	type TEXT, 
-	PRIMARY KEY ("ScientificBookChapter_id", type), 
-	FOREIGN KEY("ScientificBookChapter_id") REFERENCES "ScientificBookChapter" (id)
-);
-CREATE TABLE "ScientificConferenceArticle_has_part" (
-	"ScientificConferenceArticle_id" TEXT, 
-	has_part_id TEXT, 
-	PRIMARY KEY ("ScientificConferenceArticle_id", has_part_id), 
-	FOREIGN KEY("ScientificConferenceArticle_id") REFERENCES "ScientificConferenceArticle" (id), 
-	FOREIGN KEY(has_part_id) REFERENCES "ScientificKnowledgeFragment" (id)
-);
-CREATE TABLE "ScientificConferenceArticle_xref" (
-	"ScientificConferenceArticle_id" TEXT, 
-	xref TEXT, 
-	PRIMARY KEY ("ScientificConferenceArticle_id", xref), 
-	FOREIGN KEY("ScientificConferenceArticle_id") REFERENCES "ScientificConferenceArticle" (id)
-);
-CREATE TABLE "ScientificConferenceArticle_type" (
-	"ScientificConferenceArticle_id" TEXT, 
-	type TEXT, 
-	PRIMARY KEY ("ScientificConferenceArticle_id", type), 
-	FOREIGN KEY("ScientificConferenceArticle_id") REFERENCES "ScientificConferenceArticle" (id)
-);
-CREATE TABLE "ScientificDissertation_has_part" (
-	"ScientificDissertation_id" TEXT, 
-	has_part_id TEXT, 
-	PRIMARY KEY ("ScientificDissertation_id", has_part_id), 
-	FOREIGN KEY("ScientificDissertation_id") REFERENCES "ScientificDissertation" (id), 
-	FOREIGN KEY(has_part_id) REFERENCES "ScientificKnowledgeFragment" (id)
+CREATE TABLE "ScientificKnowledgeFragment_provenance" (
+	"ScientificKnowledgeFragment_id" TEXT, 
+	provenance_id TEXT, 
+	PRIMARY KEY ("ScientificKnowledgeFragment_id", provenance_id), 
+	FOREIGN KEY("ScientificKnowledgeFragment_id") REFERENCES "ScientificKnowledgeFragment" (id), 
+	FOREIGN KEY(provenance_id) REFERENCES "NoteAboutProvenance" (id)
 );
 CREATE TABLE "ScientificKnowledgeFragment_xref" (
 	"ScientificKnowledgeFragment_id" TEXT, 
@@ -1075,6 +1024,13 @@ CREATE TABLE "ScientificKnowledgeFragment_type" (
 	type TEXT, 
 	PRIMARY KEY ("ScientificKnowledgeFragment_id", type), 
 	FOREIGN KEY("ScientificKnowledgeFragment_id") REFERENCES "ScientificKnowledgeFragment" (id)
+);
+CREATE TABLE "NoteAboutFragment_is_about" (
+	"NoteAboutFragment_id" TEXT, 
+	is_about_id TEXT, 
+	PRIMARY KEY ("NoteAboutFragment_id", is_about_id), 
+	FOREIGN KEY("NoteAboutFragment_id") REFERENCES "NoteAboutFragment" (id), 
+	FOREIGN KEY(is_about_id) REFERENCES "ScientificKnowledgeFragment" (id)
 );
 CREATE TABLE "Author_affiliations" (
 	"Author_id" TEXT, 

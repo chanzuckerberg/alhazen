@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Building a simple Gradio application to allow the user to ask questions about a single file.">
+<meta name="description" content="Building a simple Gradio application to allow the user to ask questions about an ScientificKnowledgePublication in the database.">
 
-<title>alhazen - QA on single documents drawn from a corpus of individual files.</title>
+<title>alhazen - QA on papers drawn from a locally-run corpus database.</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,11 +100,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - QA on single documents drawn from a corpus of individual files.">
-<meta property="og:description" content="Building a simple Gradio application to allow the user to ask questions about a single file.">
+<meta property="og:title" content="alhazen - QA on papers drawn from a locally-run corpus database.">
+<meta property="og:description" content="Building a simple Gradio application to allow the user to ask questions about an ScientificKnowledgePublication in the database.">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - QA on single documents drawn from a corpus of individual files.">
-<meta name="twitter:description" content="Building a simple Gradio application to allow the user to ask questions about a single file.">
+<meta name="twitter:title" content="alhazen - QA on papers drawn from a locally-run corpus database.">
+<meta name="twitter:description" content="Building a simple Gradio application to allow the user to ask questions about an ScientificKnowledgePublication in the database.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -129,7 +129,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./single_document_qa.html">QA on single documents drawn from a corpus of individual files.</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">QA on papers drawn from a locally-run corpus database.</li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -158,7 +158,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./single_document_qa.html" class="sidebar-item-text sidebar-link active">
+  <a href="./single_document_qa.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">QA on single documents drawn from a corpus of individual files.</span></a>
   </div>
 </li>
@@ -193,12 +193,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">QA on single documents drawn from a corpus of individual files.</h1>
+<h1 class="title">QA on papers drawn from a locally-run corpus database.</h1>
 </div>
 
 <div>
   <div class="description">
-    Building a simple Gradio application to allow the user to ask questions about a single file.
+    Building a simple Gradio application to allow the user to ask questions about an <em>ScientificKnowledgePublication</em> in the database.
   </div>
 </div>
 
@@ -225,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                             chunk_overlap=100)</code></pre>
 </blockquote>
 <p>Uses a simple prompt to answer questions about a collection of short PDF files.</p>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'LLMS_TEMP_DIR'</span>] <span class="op">=</span> <span class="st">'/tmp/alhazen'</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cb <span class="op">=</span> LocalFileLangChainChatBot(<span class="st">'/Users/gburns/Documents/2023H2/cryoet_portal_rocrates/reading/cryoet_papers/'</span>, </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                               <span class="st">'llama-2-70b-chat'</span>,</span>
@@ -1014,90 +1014,125 @@ ggml_metal_init: allocating
 ggml_metal_init: found device: Apple M2 Max
 ggml_metal_init: picking default device: Apple M2 Max
 ggml_metal_init: loading '/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/llama_cpp/ggml-metal.metal'
-ggml_metal_init: loaded kernel_add                            0x2cdf14b10 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_add_row                        0x2cdf0e7f0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul                            0x2cdf3b090 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_row                        0x2c7f67410 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_scale                          0x2cdf17a10 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_silu                           0x2cdf119a0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_relu                           0x2cdf191c0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_gelu                           0x2cdf14470 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_soft_max                       0x2cdf0dd30 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_soft_max_4                     0x2cdf0fb00 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_diag_mask_inf                  0x2cdf0fd50 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_diag_mask_inf_8                0x2cdf0ffa0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_f32                   0x2cdf101f0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_f16                   0x2cdf15bf0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q4_0                  0x2cdf15e40 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q4_1                  0x2cdf16090 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q8_0                  0x2cdf19530 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q2_K                  0x2cdf19780 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q3_K                  0x2cdf199d0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q4_K                  0x2cdf19c20 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q5_K                  0x2cdf19e70 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_get_rows_q6_K                  0x2cdf1a0c0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_rms_norm                       0x2cdf1a310 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_norm                           0x2cdf1a560 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_f32_f32                0x2cdf1a7b0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_f16_f32                0x2cdf14e90 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_f16_f32_1row           0x2cdf150e0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_f16_f32_l4             0x2cdf0f4b0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q4_0_f32               0x2cdf0f700 | th_max =  896 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q4_1_f32               0x2cdf17d70 | th_max =  896 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q8_0_f32               0x2cdf17fc0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q2_K_f32               0x2cdf18210 | th_max =  640 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q3_K_f32               0x2cdf18460 | th_max =  576 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q4_K_f32               0x2cdf186b0 | th_max =  576 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q5_K_f32               0x2cdf18900 | th_max =  576 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mat_q6_K_f32               0x2cdf18b50 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_f32_f32                 0x2cdf18da0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_f16_f32                 0x2cdf1aab0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q4_0_f32                0x2cdf1ad00 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q8_0_f32                0x2cdf1af50 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q4_1_f32                0x2cdf0efc0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q2_K_f32                0x2cdf08930 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q3_K_f32                0x2cdf08b80 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q4_K_f32                0x2cdf08dd0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q5_K_f32                0x2cdf15690 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_mul_mm_q6_K_f32                0x2cdf158e0 | th_max =  768 | th_width =   32
-ggml_metal_init: loaded kernel_rope                           0x2cdf110e0 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_alibi_f32                      0x2cdf11330 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_cpy_f32_f16                    0x2cdf11580 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_cpy_f32_f32                    0x2cdf09f90 | th_max = 1024 | th_width =   32
-ggml_metal_init: loaded kernel_cpy_f16_f16                    0x2cdf0a1e0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_add                            0x2c847de10 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_add_row                        0x2c8482920 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul                            0x2c8482b70 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_row                        0x2c8485050 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_scale                          0x2c8484990 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_silu                           0x2c84862f0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_relu                           0x2c8486840 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_gelu                           0x2c8487090 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_soft_max                       0x2c84876e0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_soft_max_4                     0x2c8487c80 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_diag_mask_inf                  0x2c8488140 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_diag_mask_inf_8                0x2c84887f0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_f32                   0x2c8488d60 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_f16                   0x2c84892d0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_0                  0x2c8489800 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_1                  0x2c8489da0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q8_0                  0x2c848a310 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q2_K                  0x2c848a8b0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q3_K                  0x2c848ade0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q4_K                  0x2c848b380 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q5_K                  0x2c848b880 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_get_rows_q6_K                  0x2c848be20 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_rms_norm                       0x2c848c960 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_norm                           0x2c848cfe0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f32_f32                0x2c848d230 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32                0x2c848d620 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32_1row           0x2c848dba0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_f16_f32_l4             0x2c848e2a0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_0_f32               0x2c848e860 | th_max =  896 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_1_f32               0x2c848ee80 | th_max =  896 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q8_0_f32               0x2c848f730 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q2_K_f32               0x2c848fd20 | th_max =  640 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q3_K_f32               0x2c8490340 | th_max =  576 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q4_K_f32               0x2c8490960 | th_max =  576 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q5_K_f32               0x2c8490ee0 | th_max =  576 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mat_q6_K_f32               0x2c84914d0 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_f32_f32                 0x2c8491ac0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_f16_f32                 0x2c8491ff0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_0_f32                0x2c8492560 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q8_0_f32                0x2c8492b50 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_1_f32                0x2c84930c0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q2_K_f32                0x2c84936b0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q3_K_f32                0x2c8493c30 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q4_K_f32                0x2c8494220 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q5_K_f32                0x2c8494750 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_mul_mm_q6_K_f32                0x2c8494cc0 | th_max =  768 | th_width =   32
+ggml_metal_init: loaded kernel_rope                           0x2c8495260 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_alibi_f32                      0x2c8495a20 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f32_f16                    0x2c8495f50 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f32_f32                    0x2c8496540 | th_max = 1024 | th_width =   32
+ggml_metal_init: loaded kernel_cpy_f16_f16                    0x2c8496ac0 | th_max = 1024 | th_width =   32
 ggml_metal_init: hasUnifiedMemory              = true
 ggml_metal_init: recommendedMaxWorkingSetSize  = 73728.00 MB
 ggml_metal_init: maxTransferRate               = built-in GPU
 llama_new_context_with_model: compute buffer total size =  565.47 MB
 llama_new_context_with_model: max tensor size =   205.08 MB
-ggml_metal_add_buffer: allocated 'data            ' buffer, size = 46495.22 MB, (97926.58 / 73728.00), warning: current allocated size is greater than the recommended max working set size
-ggml_metal_add_buffer: allocated 'eval            ' buffer, size =     1.48 MB, (97928.06 / 73728.00), warning: current allocated size is greater than the recommended max working set size
-ggml_metal_add_buffer: allocated 'kv              ' buffer, size =  1282.00 MB, (99210.06 / 73728.00), warning: current allocated size is greater than the recommended max working set size
+ggml_metal_add_buffer: allocated 'data            ' buffer, size = 46495.22 MB, (46495.84 / 73728.00)
+ggml_metal_add_buffer: allocated 'eval            ' buffer, size =     1.48 MB, (46497.33 / 73728.00)
+ggml_metal_add_buffer: allocated 'kv              ' buffer, size =  1282.00 MB, (47779.33 / 73728.00)
 AVX = 0 | AVX2 = 0 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 0 | NEON = 1 | ARM_FMA = 1 | F16C = 0 | FP16_VA = 1 | WASM_SIMD = 0 | BLAS = 1 | SSE3 = 0 | SSSE3 = 0 | VSX = 0 | 
-ggml_metal_add_buffer: allocated 'alloc           ' buffer, size =   564.02 MB, (99774.08 / 73728.00), warning: current allocated size is greater than the recommended max working set size
-/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py:810: UserWarning: Expected 1 arguments for function &lt;function LocalFileLangChainChatBot.run_gradio.&lt;locals&gt;.clear_chat at 0xf68838cc0&gt;, received 0.
+ggml_metal_add_buffer: allocated 'alloc           ' buffer, size =   564.02 MB, (48343.34 / 73728.00)
+/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py:810: UserWarning: Expected 1 arguments for function &lt;function LocalFileLangChainChatBot.run_gradio.&lt;locals&gt;.clear_chat at 0xf67347a60&gt;, received 0.
   warnings.warn(
-/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py:814: UserWarning: Expected at least 1 arguments for function &lt;function LocalFileLangChainChatBot.run_gradio.&lt;locals&gt;.clear_chat at 0xf68838cc0&gt;, received 0.
+/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py:814: UserWarning: Expected at least 1 arguments for function &lt;function LocalFileLangChainChatBot.run_gradio.&lt;locals&gt;.clear_chat at 0xf67347a60&gt;, received 0.
   warnings.warn(
-
-llama_print_timings:        load time = 36521.32 ms
-llama_print_timings:      sample time =    33.72 ms /    22 runs   (    1.53 ms per token,   652.49 tokens per second)
-llama_print_timings: prompt eval time = 57511.37 ms /  1657 tokens (   34.71 ms per token,    28.81 tokens per second)
-llama_print_timings:        eval time =  3891.46 ms /    21 runs   (  185.31 ms per token,     5.40 tokens per second)
-llama_print_timings:       total time = 61550.17 ms</code></pre>
+Traceback (most recent call last):
+  File "/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/routes.py", line 534, in predict
+    output = await route_utils.call_process_api(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/route_utils.py", line 226, in call_process_api
+    output = await app.get_blocks().process_api(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/blocks.py", line 1554, in process_api
+    result = await self.call_function(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/blocks.py", line 1192, in call_function
+    prediction = await anyio.to_thread.run_sync(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/anyio/to_thread.py", line 33, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 877, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/anyio/_backends/_asyncio.py", line 807, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gburns/miniconda3/envs/alhazen/lib/python3.11/site-packages/gradio/utils.py", line 659, in wrapper
+    response = f(*args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^
+  File "/var/folders/pl/z8kd7hxd3qv9_0f1_ndg3hxm0000gq/T/ipykernel_6606/711079766.py", line 212, in select_file
+    html_text = self.read_one_nxml_document(file_path)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/folders/pl/z8kd7hxd3qv9_0f1_ndg3hxm0000gq/T/ipykernel_6606/711079766.py", line 104, in read_one_nxml_document
+    df_text = df1[df1['TAG_TREE'].str.contains(self.section_regex)]
+                  ~~~^^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>load INSTRUCTOR_Transformer
 max_seq_length  512
-Running on local URL:  http://127.0.0.1:7861
+Running on local URL:  http://127.0.0.1:7860
 
 To create a public link, set `share=True` in `launch()`.
-There are 0 in the collection
-  The cells being vitrified in this paper are yeast cells, specifically S. pombe.RESPONSE: {'query': 'What cells are being vitrified in this paper?', 'result': '  The cells being vitrified in this paper are yeast cells, specifically S. pombe.'}
-WHOLE HISTORY: [['What cells are being vitrified in this paper?', '  The cells being vitrified in this paper are yeast cells, specifically S. pombe.']]</code></pre>
+select_dir: /Users/gburns/Documents/2023H2/cryoet_portal_rocrates/reading
+select_dir: /Users/gburns/Documents/2023H2/cryoet_portal_rocrates
+select_dir: /Users/gburns/Documents/2023H2
+select_dir: /Users/gburns/Documents
+select_dir: /Users/gburns
+select_dir: /Users
+select_dir: /
+select_dir: //tmp
+select_dir: //tmp//alhazen
+select_dir: //tmp//alhazen//nxml_files
+select_dir: //tmp//alhazen//nxml_files//10.1021
+There are 0 in the collection</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<div><iframe src="http://127.0.0.1:7861/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen=""></iframe></div>
+<div><iframe src="http://127.0.0.1:7860/" width="100%" height="500" allow="autoplay; camera; microphone; clipboard-read; clipboard-write;" frameborder="0" allowfullscreen=""></iframe></div>
 </div>
 </div>
 

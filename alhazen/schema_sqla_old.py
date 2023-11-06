@@ -17,7 +17,6 @@ class Entity(Base):
 
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     type_rel = relationship( "EntityType" )
@@ -26,7 +25,7 @@ class Entity(Base):
     
 
     def __repr__(self):
-        return f"Entity(id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"Entity(id={self.id},iri={self.iri},)"
 
 
 
@@ -1122,7 +1121,6 @@ class NamedThing(Entity):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "NamedThingXref" )
@@ -1136,7 +1134,7 @@ class NamedThing(Entity):
     
 
     def __repr__(self):
-        return f"NamedThing(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"NamedThing(name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1161,7 +1159,6 @@ class InformationContentEntity(NamedThing):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "InformationContentEntityXref" )
@@ -1175,7 +1172,7 @@ class InformationContentEntity(NamedThing):
     
 
     def __repr__(self):
-        return f"InformationContentEntity(license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"InformationContentEntity(license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1196,7 +1193,6 @@ class Person(NamedThing):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "PersonXref" )
@@ -1210,7 +1206,7 @@ class Person(NamedThing):
     
 
     def __repr__(self):
-        return f"Person(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"Person(name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1231,7 +1227,6 @@ class Organization(NamedThing):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1253,7 +1248,7 @@ class Organization(NamedThing):
     
 
     def __repr__(self):
-        return f"Organization(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"Organization(name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1274,7 +1269,6 @@ class City(NamedThing):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "CityXref" )
@@ -1288,7 +1282,7 @@ class City(NamedThing):
     
 
     def __repr__(self):
-        return f"City(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"City(name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1309,7 +1303,6 @@ class Country(NamedThing):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "CountryXref" )
@@ -1323,7 +1316,7 @@ class Country(NamedThing):
     
 
     def __repr__(self):
-        return f"Country(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"Country(name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1352,7 +1345,6 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1374,7 +1366,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeExpression(id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificKnowledgeExpression(id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
 
 
@@ -1399,7 +1391,6 @@ class InformationResource(InformationContentEntity):
     format = Column(Text())
     creation_date = Column(Date())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "InformationResourceXref" )
@@ -1413,7 +1404,7 @@ class InformationResource(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"InformationResource(id={self.id},name={self.name},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},iri={self.iri},type_str={self.type_str},)"
+        return f"InformationResource(id={self.id},name={self.name},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},iri={self.iri},)"
 
 
 
@@ -1439,7 +1430,6 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     rights = Column(Text())
     format = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1457,7 +1447,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeCollection(id={self.id},name={self.name},logical_query={self.logical_query},creation_date={self.creation_date},license={self.license},rights={self.rights},format={self.format},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificKnowledgeCollection(id={self.id},name={self.name},logical_query={self.logical_query},creation_date={self.creation_date},license={self.license},rights={self.rights},format={self.format},iri={self.iri},)"
 
 
 
@@ -1484,7 +1474,6 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "ScientificKnowledgeFragmentXref" )
@@ -1498,7 +1487,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeFragment(part_of={self.part_of},selector={self.selector},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificKnowledgeFragment(part_of={self.part_of},selector={self.selector},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1523,7 +1512,6 @@ class Selector(InformationContentEntity):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "SelectorXref" )
@@ -1537,7 +1525,7 @@ class Selector(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Selector(license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"Selector(license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1559,7 +1547,6 @@ class Author(Person):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'))
     ScientificPublication_id = Column(Text(), ForeignKey('ScientificPublication.id'))
     ScientificPrimaryResearchArticle_id = Column(Text(), ForeignKey('ScientificPrimaryResearchArticle.id'))
@@ -1586,7 +1573,7 @@ class Author(Person):
     
 
     def __repr__(self):
-        return f"Author(orcid={self.orcid},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},ScientificPublication_id={self.ScientificPublication_id},ScientificPrimaryResearchArticle_id={self.ScientificPrimaryResearchArticle_id},ScientificPrimaryResearchPreprint_id={self.ScientificPrimaryResearchPreprint_id},ScientificReviewArticle_id={self.ScientificReviewArticle_id},ScientificBook_id={self.ScientificBook_id},ScientificBookChapter_id={self.ScientificBookChapter_id},ScientificConferenceArticle_id={self.ScientificConferenceArticle_id},ScientificDissertation_id={self.ScientificDissertation_id},)"
+        return f"Author(orcid={self.orcid},name={self.name},id={self.id},iri={self.iri},ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},ScientificPublication_id={self.ScientificPublication_id},ScientificPrimaryResearchArticle_id={self.ScientificPrimaryResearchArticle_id},ScientificPrimaryResearchPreprint_id={self.ScientificPrimaryResearchPreprint_id},ScientificReviewArticle_id={self.ScientificReviewArticle_id},ScientificBook_id={self.ScientificBook_id},ScientificBookChapter_id={self.ScientificBookChapter_id},ScientificConferenceArticle_id={self.ScientificConferenceArticle_id},ScientificDissertation_id={self.ScientificDissertation_id},)"
 
 
 
@@ -1616,9 +1603,7 @@ class ScientificPublication(ScientificKnowledgeExpression):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
-    
-    
+       
     # ManyToMany
     has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificPublication_has_part")
     
@@ -1638,13 +1623,15 @@ class ScientificPublication(ScientificKnowledgeExpression):
     
 
     def __repr__(self):
-        return f"ScientificPublication(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificPublication(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
+        'polymorphic_identity': 'ScientificPublication',
+        "polymorphic_on": pub_type,
         'concrete': True
     }
     
@@ -1664,7 +1651,6 @@ class ScientificPublicationCollection(ScientificKnowledgeCollection):
     rights = Column(Text())
     format = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1686,7 +1672,7 @@ class ScientificPublicationCollection(ScientificKnowledgeCollection):
     
 
     def __repr__(self):
-        return f"ScientificPublicationCollection(id={self.id},name={self.name},logical_query={self.logical_query},creation_date={self.creation_date},license={self.license},rights={self.rights},format={self.format},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificPublicationCollection(id={self.id},name={self.name},logical_query={self.logical_query},creation_date={self.creation_date},license={self.license},rights={self.rights},format={self.format},iri={self.iri},)"
 
 
 
@@ -1714,7 +1700,6 @@ class OffsetTextSelector(Selector):
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     xref_rel = relationship( "OffsetTextSelectorXref" )
@@ -1728,7 +1713,7 @@ class OffsetTextSelector(Selector):
     
 
     def __repr__(self):
-        return f"OffsetTextSelector(offset={self.offset},length={self.length},text={self.text},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"OffsetTextSelector(offset={self.offset},length={self.length},text={self.text},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},)"
 
 
 
@@ -1758,7 +1743,6 @@ class ScientificPrimaryResearchArticle(ScientificPublication):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1780,16 +1764,15 @@ class ScientificPrimaryResearchArticle(ScientificPublication):
     
 
     def __repr__(self):
-        return f"ScientificPrimaryResearchArticle(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
-
-
+        return f"ScientificPrimaryResearchArticle(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
+        'polymorphic_identity': 'ScientificPrimaryResearchArticle',
         'concrete': True
     }
-    
+
 
 
 class ScientificPrimaryResearchPreprint(ScientificPublication):
@@ -1810,7 +1793,6 @@ class ScientificPrimaryResearchPreprint(ScientificPublication):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1832,13 +1814,14 @@ class ScientificPrimaryResearchPreprint(ScientificPublication):
     
 
     def __repr__(self):
-        return f"ScientificPrimaryResearchPreprint(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificPrimaryResearchPreprint(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
+        'polymorphic_identity': 'ScientificPrimaryResearchPreprint',
         'concrete': True
     }
     
@@ -1862,7 +1845,6 @@ class ScientificReviewArticle(ScientificPublication):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1884,13 +1866,14 @@ class ScientificReviewArticle(ScientificPublication):
     
 
     def __repr__(self):
-        return f"ScientificReviewArticle(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificReviewArticle(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
+        'polymorphic_identity': 'ScientificReviewArticle',
         'concrete': True
     }
     
@@ -1914,7 +1897,6 @@ class ScientificBook(ScientificPublication):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1936,13 +1918,14 @@ class ScientificBook(ScientificPublication):
     
 
     def __repr__(self):
-        return f"ScientificBook(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificBook(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
+        'polymorphic_identity': 'ScientificBook',
         'concrete': True
     }
     
@@ -1967,7 +1950,6 @@ class ScientificBookChapter(ScientificPublication):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -1989,13 +1971,14 @@ class ScientificBookChapter(ScientificPublication):
     
 
     def __repr__(self):
-        return f"ScientificBookChapter(part_of={self.part_of},doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificBookChapter(part_of={self.part_of},doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
+        'polymorphic_identity': 'ScientificBookChapter',
         'concrete': True
     }
     
@@ -2020,7 +2003,6 @@ class ScientificConferenceArticle(ScientificPublication):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -2042,18 +2024,17 @@ class ScientificConferenceArticle(ScientificPublication):
     
 
     def __repr__(self):
-        return f"ScientificConferenceArticle(part_of={self.part_of},doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificConferenceArticle(part_of={self.part_of},doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
+        'polymorphic_identity': 'ScientificConferenceArticle',
         'concrete': True
     }
     
-
-
 class ScientificDissertation(ScientificPublication):
     """
     A thesis or dissertation submitted by a researcher as  part of their work to qualify for an advanced degree - usually a  doctorate.   
@@ -2072,7 +2053,6 @@ class ScientificDissertation(ScientificPublication):
     creation_date = Column(Date())
     name = Column(Text())
     iri = Column(Text())
-    type_str = Column(Text())
     
     
     # ManyToMany
@@ -2094,13 +2074,14 @@ class ScientificDissertation(ScientificPublication):
     
 
     def __repr__(self):
-        return f"ScientificDissertation(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificDissertation(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
+        'polymorphic_identity': 'ScientificDissertation',
         'concrete': True
     }
     
