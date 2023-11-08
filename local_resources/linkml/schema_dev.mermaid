@@ -145,9 +145,11 @@ Note {
     stringList type  
 }
 NameValuePair {
-    string format  
+    string variable  
+    string value  
     string license  
     string rights  
+    string format  
     date creation_date  
     string name  
     uriorcurieList xref  
@@ -155,42 +157,6 @@ NameValuePair {
     string iri  
     stringList type  
     string type_str  
-}
-NoteAboutProvenance {
-    string format  
-    NoteType type_str  
-    string license  
-    string rights  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string id  
-    string iri  
-    stringList type  
-}
-NoteAboutPublication {
-    string format  
-    NoteType type_str  
-    string license  
-    string rights  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string id  
-    string iri  
-    stringList type  
-}
-NoteAboutFragment {
-    string format  
-    NoteType type_str  
-    string license  
-    string rights  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string id  
-    string iri  
-    stringList type  
 }
 Person {
     string name  
@@ -234,39 +200,29 @@ Country {
     string type_str  
 }
 
-InformationContentEntity ||--}o NoteAboutProvenance : "provenance"
+InformationContentEntity ||--}o Note : "provenance"
 ScientificKnowledgeExpression ||--}o ScientificKnowledgeFragment : "has part"
 ScientificKnowledgeExpression ||--}o Author : "authors"
-ScientificKnowledgeExpression ||--}o NoteAboutProvenance : "provenance"
+ScientificKnowledgeExpression ||--}o Note : "provenance"
 ScientificPublication ||--}o ScientificKnowledgeFragment : "has part"
 ScientificPublication ||--}o Author : "authors"
-ScientificPublication ||--}o NoteAboutProvenance : "provenance"
-InformationResource ||--}o NoteAboutProvenance : "provenance"
+ScientificPublication ||--}o Note : "provenance"
+InformationResource ||--}o Note : "provenance"
 ScientificKnowledgeCollection ||--}o InformationResource : "information sources"
-ScientificKnowledgeCollection ||--}o NoteAboutProvenance : "provenance"
+ScientificKnowledgeCollection ||--}o Note : "provenance"
 ScientificPublicationCollection ||--}o ScientificPublication : "has part"
 ScientificPublicationCollection ||--}o InformationResource : "information sources"
-ScientificPublicationCollection ||--}o NoteAboutProvenance : "provenance"
+ScientificPublicationCollection ||--}o Note : "provenance"
 ScientificKnowledgeFragment ||--|o ScientificKnowledgeExpression : "part of"
 ScientificKnowledgeFragment ||--|o Selector : "selector"
-ScientificKnowledgeFragment ||--}o NoteAboutProvenance : "provenance"
-Selector ||--}o NoteAboutProvenance : "provenance"
-OffsetTextSelector ||--}o NoteAboutProvenance : "provenance"
+ScientificKnowledgeFragment ||--}o Note : "provenance"
+Selector ||--}o Note : "provenance"
+OffsetTextSelector ||--}o Note : "provenance"
 Note ||--}o Entity : "is about"
 Note ||--}o Author : "authors"
-Note ||--}o NoteAboutProvenance : "provenance"
-NameValuePair ||--}o Entity : "is about"
-NameValuePair ||--}o Author : "authors"
-NameValuePair ||--}o NoteAboutProvenance : "provenance"
-NoteAboutProvenance ||--}o InformationContentEntity : "is about"
-NoteAboutProvenance ||--}o Author : "authors"
-NoteAboutProvenance ||--}o NoteAboutProvenance : "provenance"
-NoteAboutPublication ||--}o ScientificPublication : "is about"
-NoteAboutPublication ||--}o Author : "authors"
-NoteAboutPublication ||--}o NoteAboutProvenance : "provenance"
-NoteAboutFragment ||--}o ScientificKnowledgeFragment : "is about"
-NoteAboutFragment ||--}o Author : "authors"
-NoteAboutFragment ||--}o NoteAboutProvenance : "provenance"
+Note ||--}o NameValuePair : "structured_content"
+Note ||--}o Note : "provenance"
+NameValuePair ||--}o Note : "provenance"
 Author ||--}o Organization : "affiliations"
 Organization ||--}o City : "city"
 Organization ||--}o Country : "country"

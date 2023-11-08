@@ -1,5 +1,5 @@
 # Auto generated from sciknow_dev.yaml by pythongen.py version: 0.0.1
-# Generation date: 2023-11-04T00:19:09
+# Generation date: 2023-11-07T11:01:38
 # Schema: czScientificKnowledge
 #
 # id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
@@ -99,18 +99,6 @@ class NoteId(InformationContentEntityId):
 
 
 class NameValuePairId(InformationContentEntityId):
-    pass
-
-
-class NoteAboutProvenanceId(NoteId):
-    pass
-
-
-class NoteAboutPublicationId(NoteId):
-    pass
-
-
-class NoteAboutFragmentId(NoteId):
     pass
 
 
@@ -214,7 +202,7 @@ class InformationContentEntity(NamedThing):
     rights: Optional[str] = None
     format: Optional[str] = None
     creation_date: Optional[Union[str, XSDDate]] = None
-    provenance: Optional[Union[Union[str, NoteAboutProvenanceId], List[Union[str, NoteAboutProvenanceId]]]] = empty_list()
+    provenance: Optional[Union[Union[str, NoteId], List[Union[str, NoteId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self.license is not None and not isinstance(self.license, str):
@@ -231,7 +219,7 @@ class InformationContentEntity(NamedThing):
 
         if not isinstance(self.provenance, list):
             self.provenance = [self.provenance] if self.provenance is not None else []
-        self.provenance = [v if isinstance(v, NoteAboutProvenanceId) else NoteAboutProvenanceId(v) for v in self.provenance]
+        self.provenance = [v if isinstance(v, NoteId) else NoteId(v) for v in self.provenance]
 
         super().__post_init__(**kwargs)
 
@@ -512,6 +500,7 @@ class Note(InformationContentEntity):
     authors: Optional[Union[Dict[Union[str, AuthorId], Union[dict, "Author"]], List[Union[dict, "Author"]]]] = empty_dict()
     format: Optional[str] = None
     type_str: Optional[Union[str, "NoteType"]] = None
+    structured_content: Optional[Union[Union[str, NameValuePairId], List[Union[str, NameValuePairId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -531,6 +520,10 @@ class Note(InformationContentEntity):
         if self.type_str is not None and not isinstance(self.type_str, NoteType):
             self.type_str = NoteType(self.type_str)
 
+        if not isinstance(self.structured_content, list):
+            self.structured_content = [self.structured_content] if self.structured_content is not None else []
+        self.structured_content = [v if isinstance(v, NameValuePairId) else NameValuePairId(v) for v in self.structured_content]
+
         super().__post_init__(**kwargs)
 
 
@@ -547,9 +540,8 @@ class NameValuePair(InformationContentEntity):
     class_model_uri: ClassVar[URIRef] = CZSK.NameValuePair
 
     id: Union[str, NameValuePairId] = None
-    is_about: Optional[Union[Union[str, EntityId], List[Union[str, EntityId]]]] = empty_list()
-    authors: Optional[Union[Dict[Union[str, AuthorId], Union[dict, "Author"]], List[Union[dict, "Author"]]]] = empty_dict()
-    format: Optional[str] = None
+    variable: Optional[str] = None
+    value: Optional[str] = None
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
         if self._is_empty(self.id):
@@ -557,99 +549,11 @@ class NameValuePair(InformationContentEntity):
         if not isinstance(self.id, NameValuePairId):
             self.id = NameValuePairId(self.id)
 
-        if not isinstance(self.is_about, list):
-            self.is_about = [self.is_about] if self.is_about is not None else []
-        self.is_about = [v if isinstance(v, EntityId) else EntityId(v) for v in self.is_about]
+        if self.variable is not None and not isinstance(self.variable, str):
+            self.variable = str(self.variable)
 
-        self._normalize_inlined_as_list(slot_name="authors", slot_type=Author, key_name="id", keyed=True)
-
-        if self.format is not None and not isinstance(self.format, str):
-            self.format = str(self.format)
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class NoteAboutProvenance(Note):
-    """
-    A note that describes the provenance of an InformationContentEntity by describing its source, when it was created
-    and any other salient details written in natural language.
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.NoteAboutProvenance
-    class_class_curie: ClassVar[str] = "czsk:NoteAboutProvenance"
-    class_name: ClassVar[str] = "NoteAboutProvenance"
-    class_model_uri: ClassVar[URIRef] = CZSK.NoteAboutProvenance
-
-    id: Union[str, NoteAboutProvenanceId] = None
-    is_about: Optional[Union[Union[str, InformationContentEntityId], List[Union[str, InformationContentEntityId]]]] = empty_list()
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, NoteAboutProvenanceId):
-            self.id = NoteAboutProvenanceId(self.id)
-
-        if not isinstance(self.is_about, list):
-            self.is_about = [self.is_about] if self.is_about is not None else []
-        self.is_about = [v if isinstance(v, InformationContentEntityId) else InformationContentEntityId(v) for v in self.is_about]
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class NoteAboutPublication(Note):
-    """
-    A structured note about an ScientificPublication.
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.NoteAboutPublication
-    class_class_curie: ClassVar[str] = "czsk:NoteAboutPublication"
-    class_name: ClassVar[str] = "NoteAboutPublication"
-    class_model_uri: ClassVar[URIRef] = CZSK.NoteAboutPublication
-
-    id: Union[str, NoteAboutPublicationId] = None
-    is_about: Optional[Union[Union[str, ScientificPublicationId], List[Union[str, ScientificPublicationId]]]] = empty_list()
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, NoteAboutPublicationId):
-            self.id = NoteAboutPublicationId(self.id)
-
-        if not isinstance(self.is_about, list):
-            self.is_about = [self.is_about] if self.is_about is not None else []
-        self.is_about = [v if isinstance(v, ScientificPublicationId) else ScientificPublicationId(v) for v in self.is_about]
-
-        super().__post_init__(**kwargs)
-
-
-@dataclass
-class NoteAboutFragment(Note):
-    """
-    A structured note about an ScientificKnowledgeFragment.
-    """
-    _inherited_slots: ClassVar[List[str]] = []
-
-    class_class_uri: ClassVar[URIRef] = CZSK.NoteAboutFragment
-    class_class_curie: ClassVar[str] = "czsk:NoteAboutFragment"
-    class_name: ClassVar[str] = "NoteAboutFragment"
-    class_model_uri: ClassVar[URIRef] = CZSK.NoteAboutFragment
-
-    id: Union[str, NoteAboutFragmentId] = None
-    is_about: Optional[Union[Union[str, ScientificKnowledgeFragmentId], List[Union[str, ScientificKnowledgeFragmentId]]]] = empty_list()
-
-    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
-        if self._is_empty(self.id):
-            self.MissingRequiredField("id")
-        if not isinstance(self.id, NoteAboutFragmentId):
-            self.id = NoteAboutFragmentId(self.id)
-
-        if not isinstance(self.is_about, list):
-            self.is_about = [self.is_about] if self.is_about is not None else []
-        self.is_about = [v if isinstance(v, ScientificKnowledgeFragmentId) else ScientificKnowledgeFragmentId(v) for v in self.is_about]
+        if self.value is not None and not isinstance(self.value, str):
+            self.value = str(self.value)
 
         super().__post_init__(**kwargs)
 
@@ -877,13 +781,16 @@ slots.part_of = Slot(uri=CZSK.part_of, name="part of", curie=CZSK.curie('part_of
                    model_uri=CZSK.part_of, domain=None, range=Optional[Union[str, ScientificKnowledgeExpressionId]])
 
 slots.provenance = Slot(uri=CZSK.provenance, name="provenance", curie=CZSK.curie('provenance'),
-                   model_uri=CZSK.provenance, domain=InformationContentEntity, range=Optional[Union[Union[str, NoteAboutProvenanceId], List[Union[str, NoteAboutProvenanceId]]]])
+                   model_uri=CZSK.provenance, domain=InformationContentEntity, range=Optional[Union[Union[str, NoteId], List[Union[str, NoteId]]]])
 
 slots.publication_date = Slot(uri=CZSK.publication_date, name="publication date", curie=CZSK.curie('publication_date'),
                    model_uri=CZSK.publication_date, domain=None, range=Optional[Union[str, XSDDate]])
 
 slots.rights = Slot(uri=CZSK.rights, name="rights", curie=CZSK.curie('rights'),
                    model_uri=CZSK.rights, domain=InformationContentEntity, range=Optional[str])
+
+slots.structured_content = Slot(uri=CZSK.structured_content, name="structured_content", curie=CZSK.curie('structured_content'),
+                   model_uri=CZSK.structured_content, domain=Note, range=Optional[Union[Union[str, NameValuePairId], List[Union[str, NameValuePairId]]]])
 
 slots.title = Slot(uri=CZSK.title, name="title", curie=CZSK.curie('title'),
                    model_uri=CZSK.title, domain=ScientificKnowledgeExpression, range=Optional[str])
@@ -898,10 +805,16 @@ slots.xref = Slot(uri=CZSK.xref, name="xref", curie=CZSK.curie('xref'),
                    model_uri=CZSK.xref, domain=NamedThing, range=Optional[Union[Union[str, URIorCURIE], List[Union[str, URIorCURIE]]]])
 
 slots.information_sources = Slot(uri=CZSK.information_sources, name="information sources", curie=CZSK.curie('information_sources'),
-                   model_uri=CZSK.information_sources, domain=NoteAboutProvenance, range=Optional[Union[Union[str, InformationResourceId], List[Union[str, InformationResourceId]]]])
+                   model_uri=CZSK.information_sources, domain=Note, range=Optional[Union[Union[str, InformationResourceId], List[Union[str, InformationResourceId]]]])
 
 slots.selector = Slot(uri=CZSK.selector, name="selector", curie=CZSK.curie('selector'),
                    model_uri=CZSK.selector, domain=ScientificKnowledgeFragment, range=Optional[Union[str, SelectorId]])
+
+slots.variable = Slot(uri=CZSK.variable, name="variable", curie=CZSK.curie('variable'),
+                   model_uri=CZSK.variable, domain=NameValuePair, range=Optional[str])
+
+slots.value = Slot(uri=CZSK.value, name="value", curie=CZSK.curie('value'),
+                   model_uri=CZSK.value, domain=NameValuePair, range=Optional[str])
 
 slots.offsetTextSelector__offset = Slot(uri=CZSK.offset, name="offsetTextSelector__offset", curie=CZSK.curie('offset'),
                    model_uri=CZSK.offsetTextSelector__offset, domain=None, range=Optional[int])
@@ -932,12 +845,3 @@ slots.ScientificKnowledgeFragment_part_of = Slot(uri=CZSK.part_of, name="Scienti
 
 slots.Note_type_str = Slot(uri=CZSK.type_str, name="Note_type_str", curie=CZSK.curie('type_str'),
                    model_uri=CZSK.Note_type_str, domain=Note, range=Optional[Union[str, "NoteType"]])
-
-slots.NoteAboutProvenance_is_about = Slot(uri=CZSK.is_about, name="NoteAboutProvenance_is about", curie=CZSK.curie('is_about'),
-                   model_uri=CZSK.NoteAboutProvenance_is_about, domain=NoteAboutProvenance, range=Optional[Union[Union[str, InformationContentEntityId], List[Union[str, InformationContentEntityId]]]])
-
-slots.NoteAboutPublication_is_about = Slot(uri=CZSK.is_about, name="NoteAboutPublication_is about", curie=CZSK.curie('is_about'),
-                   model_uri=CZSK.NoteAboutPublication_is_about, domain=NoteAboutPublication, range=Optional[Union[Union[str, ScientificPublicationId], List[Union[str, ScientificPublicationId]]]])
-
-slots.NoteAboutFragment_is_about = Slot(uri=CZSK.is_about, name="NoteAboutFragment_is about", curie=CZSK.curie('is_about'),
-                   model_uri=CZSK.NoteAboutFragment_is_about, domain=NoteAboutFragment, range=Optional[Union[Union[str, ScientificKnowledgeFragmentId], List[Union[str, ScientificKnowledgeFragmentId]]]])

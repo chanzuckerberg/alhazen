@@ -146,7 +146,7 @@ slots:
 
   provenance:
     domain: InformationContentEntity
-    range: NoteAboutProvenance
+    range: Note
     description: >-
       A description of the provenance of an information content entity.
     multivalued: true
@@ -163,6 +163,13 @@ slots:
     domain: InformationContentEntity
     exact_mappings:
       - dct:rights
+
+  structured_content:
+    description: >-
+      A collection of structured information contained in a Note.
+    domain: Note
+    range: NameValuePair
+    multivalued: true
 
   title:
     description: >-
@@ -193,8 +200,8 @@ slots:
 
   information sources:
     description: >-
-      The source of information described in a NoteAboutProvenance.
-    domain: NoteAboutProvenance
+      The source of information described in a Note.
+    domain: Note
     range: InformationResource
     multivalued: true
 
@@ -203,6 +210,19 @@ slots:
       A way of specifying a location within a ScientificKnowledgeExpression that describes where a ScientificKnowledgeFragment comes from
     domain: ScientificKnowledgeFragment
     range: Selector
+
+  variable:
+    description: >-
+      The name of an attribute recorded in a Note. This is currently stored as an unstructured string.
+    domain: NameValuePair
+    range: string
+
+  value:
+    description: >-
+      The value of an attribute recorded in a Note. This is currently stored as an unstructured string.
+    domain: NameValuePair
+    range: string
+
 
 classes:
   Entity:
@@ -235,11 +255,10 @@ classes:
       a piece of information that typically describes
       some topic of discourse or is used as support.
     slots:
-      - license
-      - rights
       - format
       - creation date
       - provenance
+      - content
     exact_mappings:
       - biolink:information content entity
 
@@ -366,56 +385,19 @@ classes:
       - authors
       - format
       - type_str
+      - structured_content
     slot_usage:
       type_str:
         range: NoteType
-
 
   NameValuePair:
     description:
       A single map {string :- string} to track structured data in a note.
     is_a: InformationContentEntity 
     slots:
-      - is about
-      - authors
-      - format
+      - variable
+      - value
     
-
-  NoteAboutProvenance:
-    description:
-      A note that describes the provenance of an InformationContentEntity 
-      by describing its source, when it was created and any other salient details
-      written in natural language.  
-    is_a: Note 
-    slots:
-      - is about
-    slot_usage:
-      is about:
-        multivalued: true
-        range: InformationContentEntity
-
-  NoteAboutPublication:
-    description:
-      A structured note about an ScientificPublication.  
-    is_a: Note 
-    slots:
-      - is about
-    slot_usage:
-      is about:
-        multivalued: true
-        range: ScientificPublication
-
-  NoteAboutFragment:
-    description:
-      A structured note about an ScientificKnowledgeFragment.  
-    is_a: Note 
-    slots:
-      - is about
-    slot_usage:
-      is about:
-        multivalued: true
-        range: ScientificKnowledgeFragment
-
   Person:
     is_a: NamedThing 
 

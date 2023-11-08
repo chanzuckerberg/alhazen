@@ -94,7 +94,7 @@ class InformationContentEntityProvenance(Base):
     __tablename__ = 'InformationContentEntity_provenance'
 
     InformationContentEntity_id = Column(Text(), ForeignKey('InformationContentEntity.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -166,7 +166,7 @@ class ScientificKnowledgeExpressionProvenance(Base):
     __tablename__ = 'ScientificKnowledgeExpression_provenance'
 
     ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -238,7 +238,7 @@ class ScientificPublicationProvenance(Base):
     __tablename__ = 'ScientificPublication_provenance'
 
     ScientificPublication_id = Column(Text(), ForeignKey('ScientificPublication.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -310,7 +310,7 @@ class InformationResourceProvenance(Base):
     __tablename__ = 'InformationResource_provenance'
 
     InformationResource_id = Column(Text(), ForeignKey('InformationResource.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -364,7 +364,7 @@ class ScientificKnowledgeCollectionProvenance(Base):
     __tablename__ = 'ScientificKnowledgeCollection_provenance'
 
     ScientificKnowledgeCollection_id = Column(Text(), ForeignKey('ScientificKnowledgeCollection.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -454,7 +454,7 @@ class ScientificPublicationCollectionProvenance(Base):
     __tablename__ = 'ScientificPublicationCollection_provenance'
 
     ScientificPublicationCollection_id = Column(Text(), ForeignKey('ScientificPublicationCollection.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -508,7 +508,7 @@ class ScientificKnowledgeFragmentProvenance(Base):
     __tablename__ = 'ScientificKnowledgeFragment_provenance'
 
     ScientificKnowledgeFragment_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -562,7 +562,7 @@ class SelectorProvenance(Base):
     __tablename__ = 'Selector_provenance'
 
     Selector_id = Column(Text(), ForeignKey('Selector.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -616,7 +616,7 @@ class OffsetTextSelectorProvenance(Base):
     __tablename__ = 'OffsetTextSelector_provenance'
 
     OffsetTextSelector_id = Column(Text(), ForeignKey('OffsetTextSelector.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -681,6 +681,24 @@ class NoteIsAbout(Base):
     
 
 
+class NoteStructuredContent(Base):
+    """
+    
+    """
+    __tablename__ = 'Note_structured_content'
+
+    Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    structured_content_id = Column(Text(), ForeignKey('NameValuePair.id'), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Note_structured_content(Note_id={self.Note_id},structured_content_id={self.structured_content_id},)"
+
+
+
+    
+
+
 class NoteProvenance(Base):
     """
     
@@ -688,7 +706,7 @@ class NoteProvenance(Base):
     __tablename__ = 'Note_provenance'
 
     Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -735,24 +753,6 @@ class NoteType(Base):
     
 
 
-class NameValuePairIsAbout(Base):
-    """
-    
-    """
-    __tablename__ = 'NameValuePair_is_about'
-
-    NameValuePair_id = Column(Text(), ForeignKey('NameValuePair.id'), primary_key=True)
-    is_about_id = Column(Text(), ForeignKey('Entity.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NameValuePair_is_about(NameValuePair_id={self.NameValuePair_id},is_about_id={self.is_about_id},)"
-
-
-
-    
-
-
 class NameValuePairProvenance(Base):
     """
     
@@ -760,7 +760,7 @@ class NameValuePairProvenance(Base):
     __tablename__ = 'NameValuePair_provenance'
 
     NameValuePair_id = Column(Text(), ForeignKey('NameValuePair.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
+    provenance_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -801,222 +801,6 @@ class NameValuePairType(Base):
 
     def __repr__(self):
         return f"NameValuePair_type(NameValuePair_id={self.NameValuePair_id},type={self.type},)"
-
-
-
-    
-
-
-class NoteAboutProvenanceIsAbout(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutProvenance_is_about'
-
-    NoteAboutProvenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
-    is_about_id = Column(Text(), ForeignKey('InformationContentEntity.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutProvenance_is_about(NoteAboutProvenance_id={self.NoteAboutProvenance_id},is_about_id={self.is_about_id},)"
-
-
-
-    
-
-
-class NoteAboutProvenanceProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutProvenance_provenance'
-
-    NoteAboutProvenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutProvenance_provenance(NoteAboutProvenance_id={self.NoteAboutProvenance_id},provenance_id={self.provenance_id},)"
-
-
-
-    
-
-
-class NoteAboutProvenanceXref(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutProvenance_xref'
-
-    NoteAboutProvenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutProvenance_xref(NoteAboutProvenance_id={self.NoteAboutProvenance_id},xref={self.xref},)"
-
-
-
-    
-
-
-class NoteAboutProvenanceType(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutProvenance_type'
-
-    NoteAboutProvenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutProvenance_type(NoteAboutProvenance_id={self.NoteAboutProvenance_id},type={self.type},)"
-
-
-
-    
-
-
-class NoteAboutPublicationIsAbout(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutPublication_is_about'
-
-    NoteAboutPublication_id = Column(Text(), ForeignKey('NoteAboutPublication.id'), primary_key=True)
-    is_about_id = Column(Text(), ForeignKey('ScientificPublication.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutPublication_is_about(NoteAboutPublication_id={self.NoteAboutPublication_id},is_about_id={self.is_about_id},)"
-
-
-
-    
-
-
-class NoteAboutPublicationProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutPublication_provenance'
-
-    NoteAboutPublication_id = Column(Text(), ForeignKey('NoteAboutPublication.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutPublication_provenance(NoteAboutPublication_id={self.NoteAboutPublication_id},provenance_id={self.provenance_id},)"
-
-
-
-    
-
-
-class NoteAboutPublicationXref(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutPublication_xref'
-
-    NoteAboutPublication_id = Column(Text(), ForeignKey('NoteAboutPublication.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutPublication_xref(NoteAboutPublication_id={self.NoteAboutPublication_id},xref={self.xref},)"
-
-
-
-    
-
-
-class NoteAboutPublicationType(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutPublication_type'
-
-    NoteAboutPublication_id = Column(Text(), ForeignKey('NoteAboutPublication.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutPublication_type(NoteAboutPublication_id={self.NoteAboutPublication_id},type={self.type},)"
-
-
-
-    
-
-
-class NoteAboutFragmentIsAbout(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutFragment_is_about'
-
-    NoteAboutFragment_id = Column(Text(), ForeignKey('NoteAboutFragment.id'), primary_key=True)
-    is_about_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutFragment_is_about(NoteAboutFragment_id={self.NoteAboutFragment_id},is_about_id={self.is_about_id},)"
-
-
-
-    
-
-
-class NoteAboutFragmentProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutFragment_provenance'
-
-    NoteAboutFragment_id = Column(Text(), ForeignKey('NoteAboutFragment.id'), primary_key=True)
-    provenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutFragment_provenance(NoteAboutFragment_id={self.NoteAboutFragment_id},provenance_id={self.provenance_id},)"
-
-
-
-    
-
-
-class NoteAboutFragmentXref(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutFragment_xref'
-
-    NoteAboutFragment_id = Column(Text(), ForeignKey('NoteAboutFragment.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutFragment_xref(NoteAboutFragment_id={self.NoteAboutFragment_id},xref={self.xref},)"
-
-
-
-    
-
-
-class NoteAboutFragmentType(Base):
-    """
-    
-    """
-    __tablename__ = 'NoteAboutFragment_type'
-
-    NoteAboutFragment_id = Column(Text(), ForeignKey('NoteAboutFragment.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"NoteAboutFragment_type(NoteAboutFragment_id={self.NoteAboutFragment_id},type={self.type},)"
 
 
 
@@ -1309,7 +1093,7 @@ class InformationContentEntity(NamedThing):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="InformationContentEntity_provenance")
+    provenance = relationship( "Note", secondary="InformationContentEntity_provenance")
     
     
     xref_rel = relationship( "InformationContentEntityXref" )
@@ -1511,7 +1295,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="ScientificKnowledgeExpression_provenance")
+    provenance = relationship( "Note", secondary="ScientificKnowledgeExpression_provenance")
     
     
     xref_rel = relationship( "ScientificKnowledgeExpressionXref" )
@@ -1559,7 +1343,7 @@ class InformationResource(InformationContentEntity):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="InformationResource_provenance")
+    provenance = relationship( "Note", secondary="InformationResource_provenance")
     
     
     type_rel = relationship( "InformationResourceType" )
@@ -1602,7 +1386,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="ScientificKnowledgeCollection_provenance")
+    provenance = relationship( "Note", secondary="ScientificKnowledgeCollection_provenance")
     
     
     xref_rel = relationship( "ScientificKnowledgeCollectionXref" )
@@ -1647,7 +1431,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="ScientificKnowledgeFragment_provenance")
+    provenance = relationship( "Note", secondary="ScientificKnowledgeFragment_provenance")
     
     
     xref_rel = relationship( "ScientificKnowledgeFragmentXref" )
@@ -1690,7 +1474,7 @@ class Selector(InformationContentEntity):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="Selector_provenance")
+    provenance = relationship( "Note", secondary="Selector_provenance")
     
     
     xref_rel = relationship( "SelectorXref" )
@@ -1741,7 +1525,11 @@ class Note(InformationContentEntity):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="Note_provenance")
+    structured_content = relationship( "NameValuePair", secondary="Note_structured_content")
+    
+    
+    # ManyToMany
+    provenance = relationship( "Note", secondary="Note_provenance")
     
     
     xref_rel = relationship( "NoteXref" )
@@ -1773,9 +1561,11 @@ class NameValuePair(InformationContentEntity):
     """
     __tablename__ = 'NameValuePair'
 
-    format = Column(Text())
+    variable = Column(Text())
+    value = Column(Text())
     license = Column(Text())
     rights = Column(Text())
+    format = Column(Text())
     creation_date = Column(Date())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1784,15 +1574,7 @@ class NameValuePair(InformationContentEntity):
     
     
     # ManyToMany
-    is_about = relationship( "Entity", secondary="NameValuePair_is_about")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='NameValuePair', source_slot='authors', mapping_type=None, target_class='Author', target_slot='NameValuePair_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.NameValuePair_id]")
-    
-    
-    # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="NameValuePair_provenance")
+    provenance = relationship( "Note", secondary="NameValuePair_provenance")
     
     
     xref_rel = relationship( "NameValuePairXref" )
@@ -1806,7 +1588,7 @@ class NameValuePair(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"NameValuePair(format={self.format},license={self.license},rights={self.rights},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"NameValuePair(variable={self.variable},value={self.value},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
 
 
 
@@ -1832,10 +1614,6 @@ class Author(Person):
     ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'))
     ScientificPublication_id = Column(Text(), ForeignKey('ScientificPublication.id'))
     Note_id = Column(Text(), ForeignKey('Note.id'))
-    NameValuePair_id = Column(Text(), ForeignKey('NameValuePair.id'))
-    NoteAboutProvenance_id = Column(Text(), ForeignKey('NoteAboutProvenance.id'))
-    NoteAboutPublication_id = Column(Text(), ForeignKey('NoteAboutPublication.id'))
-    NoteAboutFragment_id = Column(Text(), ForeignKey('NoteAboutFragment.id'))
     
     
     # ManyToMany
@@ -1853,7 +1631,7 @@ class Author(Person):
     
 
     def __repr__(self):
-        return f"Author(orcid={self.orcid},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},ScientificPublication_id={self.ScientificPublication_id},Note_id={self.Note_id},NameValuePair_id={self.NameValuePair_id},NoteAboutProvenance_id={self.NoteAboutProvenance_id},NoteAboutPublication_id={self.NoteAboutPublication_id},NoteAboutFragment_id={self.NoteAboutFragment_id},)"
+        return f"Author(orcid={self.orcid},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},ScientificPublication_id={self.ScientificPublication_id},Note_id={self.Note_id},)"
 
 
 
@@ -1894,7 +1672,7 @@ class ScientificPublication(ScientificKnowledgeExpression):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="ScientificPublication_provenance")
+    provenance = relationship( "Note", secondary="ScientificPublication_provenance")
     
     
     xref_rel = relationship( "ScientificPublicationXref" )
@@ -1946,7 +1724,7 @@ class ScientificPublicationCollection(ScientificKnowledgeCollection):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="ScientificPublicationCollection_provenance")
+    provenance = relationship( "Note", secondary="ScientificPublicationCollection_provenance")
     
     
     xref_rel = relationship( "ScientificPublicationCollectionXref" )
@@ -1991,7 +1769,7 @@ class OffsetTextSelector(Selector):
     
     
     # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="OffsetTextSelector_provenance")
+    provenance = relationship( "Note", secondary="OffsetTextSelector_provenance")
     
     
     xref_rel = relationship( "OffsetTextSelectorXref" )
@@ -2006,159 +1784,6 @@ class OffsetTextSelector(Selector):
 
     def __repr__(self):
         return f"OffsetTextSelector(offset={self.offset},length={self.length},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class NoteAboutProvenance(Note):
-    """
-    A note that describes the provenance of an InformationContentEntity by describing its source, when it was created and any other salient details written in natural language.
-    """
-    __tablename__ = 'NoteAboutProvenance'
-
-    format = Column(Text())
-    type_str = Column(Enum('NoteAboutProvenance', 'NoteAboutPublication', 'NoteAboutFragment', name='NoteType'))
-    license = Column(Text())
-    rights = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    
-    
-    # ManyToMany
-    is_about = relationship( "InformationContentEntity", secondary="NoteAboutProvenance_is_about")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='NoteAboutProvenance', source_slot='authors', mapping_type=None, target_class='Author', target_slot='NoteAboutProvenance_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.NoteAboutProvenance_id]")
-    
-    
-    # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="NoteAboutProvenance_provenance")
-    
-    
-    xref_rel = relationship( "NoteAboutProvenanceXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: NoteAboutProvenanceXref(xref=x_))
-    
-    
-    type_rel = relationship( "NoteAboutProvenanceType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: NoteAboutProvenanceType(type=x_))
-    
-
-    def __repr__(self):
-        return f"NoteAboutProvenance(format={self.format},type_str={self.type_str},license={self.license},rights={self.rights},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class NoteAboutPublication(Note):
-    """
-    A structured note about an ScientificPublication.
-    """
-    __tablename__ = 'NoteAboutPublication'
-
-    format = Column(Text())
-    type_str = Column(Enum('NoteAboutProvenance', 'NoteAboutPublication', 'NoteAboutFragment', name='NoteType'))
-    license = Column(Text())
-    rights = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    
-    
-    # ManyToMany
-    is_about = relationship( "ScientificPublication", secondary="NoteAboutPublication_is_about")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='NoteAboutPublication', source_slot='authors', mapping_type=None, target_class='Author', target_slot='NoteAboutPublication_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.NoteAboutPublication_id]")
-    
-    
-    # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="NoteAboutPublication_provenance")
-    
-    
-    xref_rel = relationship( "NoteAboutPublicationXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: NoteAboutPublicationXref(xref=x_))
-    
-    
-    type_rel = relationship( "NoteAboutPublicationType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: NoteAboutPublicationType(type=x_))
-    
-
-    def __repr__(self):
-        return f"NoteAboutPublication(format={self.format},type_str={self.type_str},license={self.license},rights={self.rights},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class NoteAboutFragment(Note):
-    """
-    A structured note about an ScientificKnowledgeFragment.
-    """
-    __tablename__ = 'NoteAboutFragment'
-
-    format = Column(Text())
-    type_str = Column(Enum('NoteAboutProvenance', 'NoteAboutPublication', 'NoteAboutFragment', name='NoteType'))
-    license = Column(Text())
-    rights = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    
-    
-    # ManyToMany
-    is_about = relationship( "ScientificKnowledgeFragment", secondary="NoteAboutFragment_is_about")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='NoteAboutFragment', source_slot='authors', mapping_type=None, target_class='Author', target_slot='NoteAboutFragment_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.NoteAboutFragment_id]")
-    
-    
-    # ManyToMany
-    provenance = relationship( "NoteAboutProvenance", secondary="NoteAboutFragment_provenance")
-    
-    
-    xref_rel = relationship( "NoteAboutFragmentXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: NoteAboutFragmentXref(xref=x_))
-    
-    
-    type_rel = relationship( "NoteAboutFragmentType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: NoteAboutFragmentType(type=x_))
-    
-
-    def __repr__(self):
-        return f"NoteAboutFragment(format={self.format},type_str={self.type_str},license={self.license},rights={self.rights},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},)"
 
 
 
