@@ -1,94 +1,70 @@
 id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
-name: czScientificKnowledge
-description: LinkML Schema for Entities that serves as vehicles that contain scientific knowledge.
+name: ScientificKnowledgeExpressionModel
+description: >-
+  LinkML Schema for scientific knowledge collections, expressions, items, and fragments.
 prefixes:     
-  czsk: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
+  skem: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
   dct: 'http://purl.org/dc/terms/'
   linkml: https://w3id.org/linkml/
   schema: http://schema.org/
-  ORCID: https://orcid.org/
   biolink: 'https://w3id.org/biolink/vocab/'
   fabio: 'http://purl.org/spar/fabio/'
   MESH: 'http://id.nlm.nih.gov/mesh/'
   iao: 'http://purl.obolibrary.org/obo/IAO_'
   WIKIDATA: 'https://www.wikidata.org/entity/'            
   WIKIDATA_PROPERTY: 'https://www.wikidata.org/prop/'
-
+  pmid: 'https://www.ncbi.nlm.nih.gov/pubmed/'
+  epmcid: 'https://europepmc.org/articles/'
+  pmcid: 'https://www.ncbi.nlm.nih.gov/pmc/articles/'
+  doi: 'https://doi.org/'
+  orcid: 'https://orcid.org/'
+  umls: 'http://purl.bioontology.org/ontology/UMLS/'
+  
 imports:
   - linkml:types
 default_curi_maps:
   - semweb_context
-default_prefix: czsk
+default_prefix: skem
 default_range: string
   
 slots:
-
-  id:
-    identifier: true
-    domain: Entity
+  abstract:
     description: >-
-      A unique identifier for an entity.
-    required: true
+      The written abstract of a ScientificKnowledgeExpression. 
+      This is typically a paragraph of text providing 
+      a summary of the expression.
+    domain: ScientificKnowledgeExpression
+    range: string
 
-  orcid:
+  affiliations:
     description: >-
-      An ORCID for an entity. 
-    id_prefixes:
-      - ORCID
-
-  iri:
-    description: >-
-      An IRI for an entity. 
-      This is determined by the id using expansion rules.
-
-  doi:
-    description: >-
-      A digital object identifier (see http://doi.org/).
-
-  type:
-    slot_uri: rdf:type
-    domain: Entity
-    multivalued: true
-  
-  type_str:
-    domain: Entity
-    description: >-
-      A simple textual representation of the entity's type (for polymorphism mechansisms)
-
-  name:
-    aliases: ['label', 'display name', 'title']
-    description: >-
-      A human-readable name for an attribute or entity.
-    domain: Entity
-    slot_uri: rdfs:label
-
-  xref:
-    aliases: ['dbxref', 'Dbxref', 'DbXref', 'record_url', 'source_record_urls']
-    domain: NamedThing
-    range: uriorcurie
-    description: >-
-      A database cross reference or alternative identifier for a NamedThing or edge between two 
-      NamedThings.  This property should point to a database record or webpage that supports the existence of the edge, or 
-      gives more detail about the edge. This property can be used on a node or edge to provide multiple
-      URIs or CURIE cross references.
+      The affiliations of an author. 
+    domain: Author
+    range: Organization
     multivalued: true
 
-  license:
-    domain: InformationContentEntity
+  authors:
     description: >-
-      A license under which an information content entity is provided.
-    exact_mappings:
-      - dct:license
-  
-  rights:
+      The authors of a InformationContentEntity. 
     domain: InformationContentEntity
+    range: Author
+    multivalued: true
+    inlined_as_list: true
     exact_mappings:
-      - dct:rights
+      - schema:author
 
-  format:
+  cites:
+    description: >-
+      The ScientificKnowledgeExpression that are cited by this ScientificKnowledgeExpression. 
+    domain: ScientificKnowledgeExpression
+    range: ScientificKnowledgeExpression
+    multivalued: true
+ 
+  content:
+    description: >-
+      The content of an InformationContentEntity expressed as a string.
     domain: InformationContentEntity
-    exact_mappings:
-      - dct:format
+    range: string
 
   creation date:
     range: date
@@ -98,23 +74,67 @@ slots:
       - dct:createdOn
       - WIKIDATA_PROPERTY:P577
 
-  publication date:
-    range: date
+  format:
     description: >-
-      date on which an entity was published (i.e., made available to the public).
+      The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
+    domain: InformationContentEntity
     exact_mappings:
-      - dct:createdOn
-      - WIKIDATA_PROPERTY:P577
+      - dct:format
+
+  has members:
+    description: >-
+      holds between collections and their members
+    inverse: member of
+    multivalued: true
+    domain: ScientificKnowledgeCollection
+    range: ScientificKnowledgeExpression
+  
+  has notes:
+    inverse: is about
+    multivalued: true
+    domain: InformationContentEntity
+    range: Note
+    description: >-
+      Points to notes that are about a given entity.
 
   has part:
     inverse: part of
+    domain: ScientificKnowledgeItem
+    range: ScientificKnowledgeFragment
+    multivalued: true
     description: >-
       holds between wholes and their parts (material entities or processes)
 
-  part of:
+  has representation:
+    inverse: representation of
+    domain: ScientificKnowledgeExpression
+    range: ScientificKnowledgeItem
+    multivalued: true
     description: >-
-      holds between parts and wholes (material entities or processes)
-    inverse: has part
+      holds between wholes and their parts (material entities or processes)
+
+  iri:
+    description: >-
+      An IRI for an entity. 
+    domain: Entity
+    multivalued: true
+    range: uriorcurie
+
+  is about: 
+    description: >-
+       A (currently) primitive relation that relates an information artifact to an entity. 
+    domain: Note
+    range: InformationContentEntity
+    multivalued: true
+    exact_mappings:
+      - iao:0000136
+
+  license:
+    domain: InformationContentEntity
+    description: >-
+      A license under which an information content entity is provided.
+    exact_mappings:
+      - dct:license
 
   logical query:
     description: >-
@@ -124,63 +144,95 @@ slots:
     domain: ScientificKnowledgeCollection
     range: string
 
-  authors:
+  member of:
     description: >-
-      The authors of a ScientificKnowledgeExpression. 
-    domain: ScientificKnowledgeExpression
-    range: Author
+      holds between individuals and collections that they are members of
     multivalued: true
-    inlined_as_list: true
-    exact_mappings:
-      - schema:author 
-
-  title:
-    description: >-
-      The title of a ScientificKnowledgeExpression.
+    inverse: has members
     domain: ScientificKnowledgeExpression
-    range: string
+    range: ScientificKnowledgeCollection
 
-  abstract:
+  name:
+    aliases: ['label', 'display name', 'title']
     description: >-
-      The written abstract of a ScientificKnowledgeExpression. 
-      This is typically a paragraph of text providing 
-      a summary of the expression.
-    domain: ScientificKnowledgeExpression
-    range: string
+      A human-readable name for an attribute or entity.
+    domain: Entity
+    slot_uri: rdfs:label
 
-  full text:
+  offset:
     description: >-
-      The full textual content of a ScientificKnowledgeExpression, expressed as a string 
-      (usually with an associated specified encoding / schema / format).
-    domain: ScientificKnowledgeExpression
-    range: string
-
-  cites:
-    description: >-
-      The ScientificKnowledgeExpression that are cited by this ScientificKnowledgeExpression. 
-    domain: ScientificKnowledgeExpression
-    range: ScientificKnowledgeExpression
-    multivalued: true
-
-  information sources:
-    description: >-
-      The InformationResources that are queried to build a 
-      ScientificKnowledgeCollection.
-    domain: ScientificKnowledgeCollection
-    range: InformationResource
-    multivalued: true
-
-  selector: 
-    description: >-
-      A way of specifying a location within a ScientificKnowledgeExpression that describes where a ScientificKnowledgeFragment comes from
+      The offset of the start of the fragment from the start of the text.
     domain: ScientificKnowledgeFragment
-    range: Selector
-
-  affiliations:
+    range: integer
+  
+  length:
     description: >-
-      The affiliations of an author. 
-    domain: Author
-    range: Organization
+      The length of the fragment.
+    domain: ScientificKnowledgeFragment
+    range: integer
+      
+  part of:
+    description: >-
+      holds between parts and wholes (material entities or processes)
+    inverse: has part
+    multivalued: false
+    domain: ScientificKnowledgeFragment
+    range: ScientificKnowledgeItem
+    
+  provenance:
+    domain: InformationContentEntity
+    range: string
+    description: >-
+      A description of the provenance of an information content entity.
+      Expressed as a list of commands describing how the collection was built.
+      This should involve describing the operation to generate the collection in 
+      sufficient detail that that could be replicated by an LLM agent with 
+      the appropriate tooling.             
+    multivalued: true
+    
+  publication date:
+    range: date
+    description: >-
+      date on which an entity was published (i.e., made available to the public).
+    exact_mappings:
+      - dct:createdOn
+      - WIKIDATA_PROPERTY:P577
+
+  representation of:
+    description: >-
+      The ScientificKnowledgeExpression that this ScientificKnowledgeItem 
+      is a representation of.
+    inverse: has representation
+    multivalued: false
+    domain: ScientificKnowledgeItem
+    range: ScientificKnowledgeExpression
+
+  rights:
+    domain: InformationContentEntity
+    exact_mappings:
+      - dct:rights
+
+  type:
+    description: >-
+      The type of an Entity expressed as curi.
+    domain: Entity
+    range: string
+    required: true
+  
+  id:
+    identifier: true
+    description: >-
+      A simple, locally-generated unique identifier specific with different heuristic formatting for each application.
+    required: true
+
+  xref:
+    aliases: ['dbxref', 'Dbxref', 'DbXref', 'record_url', 'source_record_urls']
+    domain: InformationContentEntity
+    range: uriorcurie
+    description: >-
+      A database cross reference or alternative identifier for a NamedThing or edge between two NamedThings.  
+      This property should point to a database record or webpage that 
+      defines the definition of the NamedThing. 
     multivalued: true
 
 classes:
@@ -192,7 +244,6 @@ classes:
       - id
       - iri
       - type    # rdf:type
-      - type_str    
     exact_mappings:
       - biolink:entity
 
@@ -202,7 +253,6 @@ classes:
     description: "an entity or concept/class described by a name"
     slots:
       - name
-      - xref
     exact_mappings:
       - biolink:named thing
       
@@ -214,107 +264,15 @@ classes:
       a piece of information that typically describes
       some topic of discourse or is used as support.
     slots:
-      - license
-      - rights
-      - format
       - creation date
+      - content
+      - format
+      - provenance
+      - authors
+      - xref
+      - has notes
     exact_mappings:
       - biolink:information content entity
-
-  ScientificKnowledgeExpression:
-    description: >-
-      Any expression of scientific knowledge.   
-    is_a: InformationContentEntity
-    slots:
-      - id
-      - has part
-      - authors
-      - title
-      - abstract
-      - full text
-      - publication date
-    slot_usage:
-      has part:
-        multivalued: true
-        range: ScientificKnowledgeFragment
-        description: 
-          Fragments that have been highlighted as as part of this SKE.
-    exact_mappings:
-      - fabio:expression
-
-  ScientificPublication:
-    is_a: ScientificKnowledgeExpression
-    slots:
-      - doi
-    description: >-
-      A published expression of scientific knowledge, 
-      such as a paper, book, thesis, conference proceedings, etc.   
-
-  ScientificPrimaryResearchArticle:
-    is_a: ScientificPublication
-    description: >-
-      A scientific publication describing original research
-      typically formatted in an IMRaD structure (introduction, methods,
-      resulst, and discussion). These articles will have undergone 
-      peer review. 
-
-  ScientificPrimaryResearchPreprint:
-    is_a: ScientificPublication
-    description: >-
-      A scientific publication describing original research
-      typically formatted in an IMRaD structure (introduction, methods,
-      resulst, and discussion). These articles have been published as preprints
-      and have NOT undergone peer review. 
-
-  ScientificReviewArticle:
-    is_a: ScientificPublication
-    description: >-
-      A scientific publication describing original research
-      typically formatted in an IMRaD structure (introduction, methods,
-      resulst, and discussion).   
-
-  ScientificBook:
-    is_a: ScientificPublication
-    description: >-
-      A scientific publication describing original research
-      typically formatted in an IMRaD structure (introduction, methods,
-      resulst, and discussion).   
-
-  ScientificBookChapter:
-    is_a: ScientificPublication
-    description: >-
-      A scientific publication describing original research
-      typically formatted in an IMRaD structure (introduction, methods,
-      resulst, and discussion).   
-    slots:
-      - part of
-    slot_usage:
-      part of:
-        multivalued: false
-        description: 
-          The book that this chapter is a part of
-        range: ScientificBook
-
-  ScientificConferenceArticle:
-    is_a: ScientificPublication
-    description: >-
-      A scientific publication describing original research
-      that was presented at a conference.   
-    slots:
-      - part of
-    slot_usage:
-      part of:
-        multivalued: false
-        description: 
-          The book that this chapter is a part of
-        range: ScientificBook
-
-  ScientificDissertation:
-    is_a: ScientificPublication
-    description: >-
-      A thesis or dissertation submitted by a researcher as 
-      part of their work to qualify for an advanced degree - usually a 
-      doctorate.   
 
   InformationResource:
     is_a: InformationContentEntity
@@ -327,34 +285,38 @@ classes:
       databases, and include many access endpoints and user
       interfaces. Information Resources include project-specific resources
       such as a Translator Knowledge Provider, and community knowledgebases like ChemBL, OMIM, or DGIdb.
-    slots:
-      - id
-      - name
-      - xref
 
   ScientificKnowledgeCollection:
     description:
       A collection of expressions of scientific knowledge. 
     is_a: InformationContentEntity 
     slots:
-      - id
-      - name
-      - logical query
-      - creation date
-      - information sources
+      - has members
 
-  ScientificPublicationCollection:
-    description:
-      A collection of scientific publications. 
-    is_a: ScientificKnowledgeCollection 
+  ScientificKnowledgeExpression:
+    description: >-
+      Any expression of scientific knowledge.   
+    is_a: InformationContentEntity
     slots:
-      - has part
+      - has representation
+      - member of 
+      - publication date
+      - type
+    exact_mappings:
+      - fabio:expression
     slot_usage:
-      has part:
-        multivalued: true
-        description: 
-          The publications that are part of the collection.
-        range: ScientificPublication
+      type:
+        range: ScientificKnowledgeExpressionType
+
+  ScientificKnowledgeItem:
+    description:
+      A specific instance of a ScientificKnowledgeExpression:- our internal representation
+      of an EPMC citation record, a local copy of a full-text article. This is the 
+      substrate that forms the basis for a ScientificKnowledgeFragment. 
+    is_a: InformationContentEntity 
+    slots:
+      - representation of
+      - has part
 
   ScientificKnowledgeFragment:
     description:
@@ -363,46 +325,25 @@ classes:
     is_a: InformationContentEntity 
     slots:
       - part of
-      - selector
-    slot_usage:
-      part of:
-        multivalued: false
-        description: 
-          The SKE that this fragment is a part of
-        range: ScientificKnowledgeExpression
+      - offset
+      - length
 
-  Selector: 
+  Note:
+    aliases: ['annotation']
     description:
-      A way of localizing and describing a ScientificKnowledgeFragment within a ScientificKnowledgeExpression.  
+      A structured piece of information with an author that is about another InformationContentEntity.
     is_a: InformationContentEntity 
-    abstract: true
-    
-  OffsetTextSelector: 
-    description:
-      A way of localizing and describing a fragment of text within a larger 
-      body of text using offsets and lengths.  
-    is_a: Selector 
-    attributes:
-      offset:
-        description: >-
-          The offset of the start of the fragment from the start of the text.
-        range: integer
-      length:
-        description: >-
-          The length of the fragment.
-        range: integer
-      text:
-        description: >-
-          The text of the fragment.
-        range: string     
-
-  Person:
-    is_a: NamedThing 
-
-  Author:
-    is_a: Person
     slots:
-      - orcid
+      - is about
+      - format
+      - type
+    slot_usage:
+      type:
+        range: NoteType
+    
+  Author:
+    is_a: NamedThing
+    slots:
       - affiliations
 
   Organization:
@@ -420,3 +361,109 @@ classes:
 
   Country: 
     is_a: NamedThing
+
+enums:
+  ScientificKnowledgeExpressionType:
+    permissible_values:
+      ScientificPrimaryResearchArticle:
+        description: >-
+          A scientific publication describing original research
+          typically formatted in an IMRaD structure (introduction, methods,
+          results, and discussion). These articles will have undergone 
+          peer review. 
+      ScientificPrimaryResearchPreprint:
+        description: >-
+          A scientific publication describing original research
+          typically formatted in an IMRaD structure (introduction, methods,
+          resulst, and discussion). These articles have been published as preprints
+          and have NOT undergone peer review. 
+      ScientificReviewArticle:
+        description: >-
+          A scientific publication describing original research
+          typically formatted in an IMRaD structure (introduction, methods,
+          resulst, and discussion).   
+      ScientificBook:
+        description: >-
+          A scientific publication describing original research
+          typically formatted in an IMRaD structure (introduction, methods,
+          results, and discussion).   
+      ScientificBookChapter:
+        description: >-
+          A scientific publication describing original research
+          typically formatted in an IMRaD structure (introduction, methods,
+          resulst, and discussion).   
+      ScientificConferenceArticle:
+        description: >-
+          A scientific publication describing original research
+          that was presented at a conference.   
+      ScientificDissertation:
+        description: >-
+          A thesis or dissertation submitted by a researcher as 
+          part of their work to qualify for an advanced degree - usually a 
+          doctorate.   
+  ItemType: 
+    permissible_values:
+      CitationRecord:
+        description:
+          An instantiated record that describes metadata about a research paper 
+          (including title and abstract).  
+      FullTextPaper:
+        description:
+          A copy of the full text of a paper.  
+  FragmentType: 
+    permissible_values:
+      title:
+        description:
+          The text denoting the title.  
+      abstract:
+        description:
+          The text denoting the abstract. 
+      section:
+        description:
+          Text within a given section.  
+      heading:
+        description:
+          Text of a section heading.  
+      paragraph:
+        description:
+          Text in a paragraph.  
+      caption:
+        description:
+          Text describing a figure or table caption.  
+      sentence:
+        description:
+          Text of a sentence.  
+      excerpt:
+        description:
+          A single quoted text excerpt.  
+  NoteType:
+    permissible_values:
+      NoteAboutCollection:
+        description:
+          A structured note about a collection of scientific knowledge.  
+      NoteAboutExpression:
+        description:
+          A structured note about an expression of scientific knowledge.  
+      NoteAboutFragment:
+        description:
+          A structured note about a fragment of scientific knowledge.  
+  IdType:
+    permissible_values:
+      PMID:
+        description:
+          Pubmed ID - numeric identifier for a publication denoting (broadly) when the publication was indexed in Pubmed  
+      PMCID:
+        description:
+          PubmedCentral ID - numeric identifier for a publication in PubmedCentral. When used in PMC directly, the numbers usually have a prefix of PMC
+      EPMCID:
+        description:
+          European PubmedCentral ID - alphanumeric string used within Europe PMC.
+      DOI:
+        description:
+          Digital Object Identifier.  
+      ORCID:
+        description:
+          ORCID Identifier for scientists.  
+
+  
+  

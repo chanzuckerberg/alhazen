@@ -1,0 +1,79 @@
+protocol step identification: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Identify what protocol step of an experiment is being described, given an existing model of the protocol steps.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: 
+    Read the text of a section of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    The text is taken from a scientific paper that uses {methodology} to {method_goal}.
+
+    The text may describe the procedures followed as part of the protocol or some other aspect of the work. 
+    
+    If the text describes the protocol being used, identify which of the following steps is being described - 
+    {all_protocol_steps} 
+
+    If the text describes other aspects of the work, record 'not present' in the 'protocol_step' field of the output.
+    
+    Generate only JSON formatted output with one field 'protocol_step'. 
+    Do not include any other response other than a JSON object.
+    
+    Identify which of these parts of the protocol are described in the text, and record
+    the corresponding value of {all_protocol_step_codes} in the 'protocol_step' field of the output.
+  input_variables: 
+    - section_text
+    - methodology
+    - method_goal
+    - all_protocol_steps
+    - all_protocol_step_codes
+  output_variables:
+    - protocol_step
+
+metadata extraction: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    First attempt to develop a prompt for metadata extraction from full text.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: 
+    Read the text of a section from the methods section of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    The text is taken from a scientific paper that uses {methodology} to {method_goal}.
+
+    Extract the metadata from the section text based only on the specification delineated by square brackets 
+    and record the answer in the 'metadata_value' field of the output. Do not extract any other metadata. 
+
+    [{metadata_specification}]
+
+    Record the term '{metadata_name}' in the 'metadata_name' field of the output.
+    
+    Generate only JSON formatted output with three fields 'metadata_name', 'metadata_value' and 'orginal_text'. 
+    Do not provide additional explanation or context for the answer.
+   
+    If the metadata is not present in the text, record a value of 'not present' in the 'metadata_value' field of the output.  
+    Do not include any other response other than a JSON object.
+    
+    Finally, if you found the metadata in the text, record the original text of the sentence 
+    where the metadata specification was extracted from in the 'original_text' field of the output. 
+    
+    If you did not find the specified metadata in the text, record 'not present' in the 'original_text' field of the output.
+
+    Remember, only generate JSON formatted output without any additional text or explanation.
+    
+  input_variables: 
+    - section_text
+    - methodology
+    - method_goal
+    - metadata_specification
+    - metadata_name
+  output_variables:
+    - metadata_name
+    - metadata_value
+    - original_text

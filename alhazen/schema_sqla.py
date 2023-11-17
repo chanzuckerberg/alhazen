@@ -16,71 +16,70 @@ class Entity(Base):
     __tablename__ = 'Entity'
 
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
+    type = Column(Text(), nullable=False )
     
     
-    type_rel = relationship( "EntityType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: EntityType(type=x_))
+    iri_rel = relationship( "EntityIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: EntityIri(iri=x_))
     
 
     def __repr__(self):
-        return f"Entity(id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"Entity(id={self.id},type={self.type},)"
 
 
 
     
 
 
-class EntityType(Base):
+class EntityIri(Base):
     """
     
     """
-    __tablename__ = 'Entity_type'
+    __tablename__ = 'Entity_iri'
 
     Entity_id = Column(Text(), ForeignKey('Entity.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"Entity_type(Entity_id={self.Entity_id},type={self.type},)"
+        return f"Entity_iri(Entity_id={self.Entity_id},iri={self.iri},)"
 
 
 
     
 
 
-class NamedThingXref(Base):
+class NamedThingIri(Base):
     """
     
     """
-    __tablename__ = 'NamedThing_xref'
+    __tablename__ = 'NamedThing_iri'
 
     NamedThing_id = Column(Text(), ForeignKey('NamedThing.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"NamedThing_xref(NamedThing_id={self.NamedThing_id},xref={self.xref},)"
+        return f"NamedThing_iri(NamedThing_id={self.NamedThing_id},iri={self.iri},)"
 
 
 
     
 
 
-class NamedThingType(Base):
+class InformationContentEntityProvenance(Base):
     """
     
     """
-    __tablename__ = 'NamedThing_type'
+    __tablename__ = 'InformationContentEntity_provenance'
 
-    NamedThing_id = Column(Text(), ForeignKey('NamedThing.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
+    InformationContentEntity_id = Column(Text(), ForeignKey('InformationContentEntity.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"NamedThing_type(NamedThing_id={self.NamedThing_id},type={self.type},)"
+        return f"InformationContentEntity_provenance(InformationContentEntity_id={self.InformationContentEntity_id},provenance={self.provenance},)"
 
 
 
@@ -105,504 +104,54 @@ class InformationContentEntityXref(Base):
     
 
 
-class InformationContentEntityType(Base):
+class InformationContentEntityHasNotes(Base):
     """
     
     """
-    __tablename__ = 'InformationContentEntity_type'
+    __tablename__ = 'InformationContentEntity_has_notes'
 
     InformationContentEntity_id = Column(Text(), ForeignKey('InformationContentEntity.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
-        return f"InformationContentEntity_type(InformationContentEntity_id={self.InformationContentEntity_id},type={self.type},)"
+        return f"InformationContentEntity_has_notes(InformationContentEntity_id={self.InformationContentEntity_id},has_notes_id={self.has_notes_id},)"
 
 
 
     
 
 
-class ScientificKnowledgeExpressionHasPart(Base):
+class InformationContentEntityIri(Base):
     """
     
     """
-    __tablename__ = 'ScientificKnowledgeExpression_has_part'
+    __tablename__ = 'InformationContentEntity_iri'
 
-    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
+    InformationContentEntity_id = Column(Text(), ForeignKey('InformationContentEntity.id'), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeExpression_has_part(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},has_part_id={self.has_part_id},)"
+        return f"InformationContentEntity_iri(InformationContentEntity_id={self.InformationContentEntity_id},iri={self.iri},)"
 
 
 
     
 
 
-class ScientificKnowledgeExpressionXref(Base):
+class InformationResourceProvenance(Base):
     """
     
     """
-    __tablename__ = 'ScientificKnowledgeExpression_xref'
+    __tablename__ = 'InformationResource_provenance'
 
-    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
+    InformationResource_id = Column(Text(), ForeignKey('InformationResource.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeExpression_xref(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificKnowledgeExpressionType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificKnowledgeExpression_type'
-
-    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificKnowledgeExpression_type(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},type={self.type},)"
-
-
-
-    
-
-
-class ScientificPublicationHasPart(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPublication_has_part'
-
-    ScientificPublication_id = Column(Text(), ForeignKey('ScientificPublication.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPublication_has_part(ScientificPublication_id={self.ScientificPublication_id},has_part_id={self.has_part_id},)"
-
-
-
-    
-
-
-class ScientificPublicationXref(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPublication_xref'
-
-    ScientificPublication_id = Column(Text(), ForeignKey('ScientificPublication.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPublication_xref(ScientificPublication_id={self.ScientificPublication_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificPublicationType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPublication_type'
-
-    ScientificPublication_id = Column(Text(), ForeignKey('ScientificPublication.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPublication_type(ScientificPublication_id={self.ScientificPublication_id},type={self.type},)"
-
-
-
-    
-
-
-class ScientificPrimaryResearchArticleHasPart(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPrimaryResearchArticle_has_part'
-
-    ScientificPrimaryResearchArticle_id = Column(Text(), ForeignKey('ScientificPrimaryResearchArticle.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPrimaryResearchArticle_has_part(ScientificPrimaryResearchArticle_id={self.ScientificPrimaryResearchArticle_id},has_part_id={self.has_part_id},)"
-
-
-
-    
-
-
-class ScientificPrimaryResearchArticleXref(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPrimaryResearchArticle_xref'
-
-    ScientificPrimaryResearchArticle_id = Column(Text(), ForeignKey('ScientificPrimaryResearchArticle.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPrimaryResearchArticle_xref(ScientificPrimaryResearchArticle_id={self.ScientificPrimaryResearchArticle_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificPrimaryResearchArticleType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPrimaryResearchArticle_type'
-
-    ScientificPrimaryResearchArticle_id = Column(Text(), ForeignKey('ScientificPrimaryResearchArticle.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPrimaryResearchArticle_type(ScientificPrimaryResearchArticle_id={self.ScientificPrimaryResearchArticle_id},type={self.type},)"
-
-
-
-    
-
-
-class ScientificPrimaryResearchPreprintHasPart(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPrimaryResearchPreprint_has_part'
-
-    ScientificPrimaryResearchPreprint_id = Column(Text(), ForeignKey('ScientificPrimaryResearchPreprint.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPrimaryResearchPreprint_has_part(ScientificPrimaryResearchPreprint_id={self.ScientificPrimaryResearchPreprint_id},has_part_id={self.has_part_id},)"
-
-
-
-    
-
-
-class ScientificPrimaryResearchPreprintXref(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPrimaryResearchPreprint_xref'
-
-    ScientificPrimaryResearchPreprint_id = Column(Text(), ForeignKey('ScientificPrimaryResearchPreprint.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPrimaryResearchPreprint_xref(ScientificPrimaryResearchPreprint_id={self.ScientificPrimaryResearchPreprint_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificPrimaryResearchPreprintType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificPrimaryResearchPreprint_type'
-
-    ScientificPrimaryResearchPreprint_id = Column(Text(), ForeignKey('ScientificPrimaryResearchPreprint.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificPrimaryResearchPreprint_type(ScientificPrimaryResearchPreprint_id={self.ScientificPrimaryResearchPreprint_id},type={self.type},)"
-
-
-
-    
-
-
-class ScientificReviewArticleHasPart(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificReviewArticle_has_part'
-
-    ScientificReviewArticle_id = Column(Text(), ForeignKey('ScientificReviewArticle.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificReviewArticle_has_part(ScientificReviewArticle_id={self.ScientificReviewArticle_id},has_part_id={self.has_part_id},)"
-
-
-
-    
-
-
-class ScientificReviewArticleXref(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificReviewArticle_xref'
-
-    ScientificReviewArticle_id = Column(Text(), ForeignKey('ScientificReviewArticle.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificReviewArticle_xref(ScientificReviewArticle_id={self.ScientificReviewArticle_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificReviewArticleType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificReviewArticle_type'
-
-    ScientificReviewArticle_id = Column(Text(), ForeignKey('ScientificReviewArticle.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificReviewArticle_type(ScientificReviewArticle_id={self.ScientificReviewArticle_id},type={self.type},)"
-
-
-
-    
-
-
-class ScientificBookHasPart(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificBook_has_part'
-
-    ScientificBook_id = Column(Text(), ForeignKey('ScientificBook.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificBook_has_part(ScientificBook_id={self.ScientificBook_id},has_part_id={self.has_part_id},)"
-
-
-
-    
-
-
-class ScientificBookXref(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificBook_xref'
-
-    ScientificBook_id = Column(Text(), ForeignKey('ScientificBook.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificBook_xref(ScientificBook_id={self.ScientificBook_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificBookType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificBook_type'
-
-    ScientificBook_id = Column(Text(), ForeignKey('ScientificBook.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificBook_type(ScientificBook_id={self.ScientificBook_id},type={self.type},)"
-
-
-
-    
-
-
-class ScientificBookChapterHasPart(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificBookChapter_has_part'
-
-    ScientificBookChapter_id = Column(Text(), ForeignKey('ScientificBookChapter.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificBookChapter_has_part(ScientificBookChapter_id={self.ScientificBookChapter_id},has_part_id={self.has_part_id},)"
-
-
-
-    
-
-
-class ScientificBookChapterXref(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificBookChapter_xref'
-
-    ScientificBookChapter_id = Column(Text(), ForeignKey('ScientificBookChapter.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificBookChapter_xref(ScientificBookChapter_id={self.ScientificBookChapter_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificBookChapterType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificBookChapter_type'
-
-    ScientificBookChapter_id = Column(Text(), ForeignKey('ScientificBookChapter.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificBookChapter_type(ScientificBookChapter_id={self.ScientificBookChapter_id},type={self.type},)"
-
-
-
-    
-
-
-class ScientificConferenceArticleHasPart(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificConferenceArticle_has_part'
-
-    ScientificConferenceArticle_id = Column(Text(), ForeignKey('ScientificConferenceArticle.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificConferenceArticle_has_part(ScientificConferenceArticle_id={self.ScientificConferenceArticle_id},has_part_id={self.has_part_id},)"
-
-
-
-    
-
-
-class ScientificConferenceArticleXref(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificConferenceArticle_xref'
-
-    ScientificConferenceArticle_id = Column(Text(), ForeignKey('ScientificConferenceArticle.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificConferenceArticle_xref(ScientificConferenceArticle_id={self.ScientificConferenceArticle_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificConferenceArticleType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificConferenceArticle_type'
-
-    ScientificConferenceArticle_id = Column(Text(), ForeignKey('ScientificConferenceArticle.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificConferenceArticle_type(ScientificConferenceArticle_id={self.ScientificConferenceArticle_id},type={self.type},)"
-
-
-
-    
-
-
-class ScientificDissertationHasPart(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificDissertation_has_part'
-
-    ScientificDissertation_id = Column(Text(), ForeignKey('ScientificDissertation.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificDissertation_has_part(ScientificDissertation_id={self.ScientificDissertation_id},has_part_id={self.has_part_id},)"
-
-
-
-    
-
-
-class ScientificDissertationXref(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificDissertation_xref'
-
-    ScientificDissertation_id = Column(Text(), ForeignKey('ScientificDissertation.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificDissertation_xref(ScientificDissertation_id={self.ScientificDissertation_id},xref={self.xref},)"
-
-
-
-    
-
-
-class ScientificDissertationType(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificDissertation_type'
-
-    ScientificDissertation_id = Column(Text(), ForeignKey('ScientificDissertation.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificDissertation_type(ScientificDissertation_id={self.ScientificDissertation_id},type={self.type},)"
+        return f"InformationResource_provenance(InformationResource_id={self.InformationResource_id},provenance={self.provenance},)"
 
 
 
@@ -627,36 +176,72 @@ class InformationResourceXref(Base):
     
 
 
-class InformationResourceType(Base):
+class InformationResourceHasNotes(Base):
     """
     
     """
-    __tablename__ = 'InformationResource_type'
+    __tablename__ = 'InformationResource_has_notes'
 
     InformationResource_id = Column(Text(), ForeignKey('InformationResource.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
-        return f"InformationResource_type(InformationResource_id={self.InformationResource_id},type={self.type},)"
+        return f"InformationResource_has_notes(InformationResource_id={self.InformationResource_id},has_notes_id={self.has_notes_id},)"
 
 
 
     
 
 
-class ScientificKnowledgeCollectionInformationSources(Base):
+class InformationResourceIri(Base):
     """
     
     """
-    __tablename__ = 'ScientificKnowledgeCollection_information_sources'
+    __tablename__ = 'InformationResource_iri'
+
+    InformationResource_id = Column(Text(), ForeignKey('InformationResource.id'), primary_key=True)
+    iri = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"InformationResource_iri(InformationResource_id={self.InformationResource_id},iri={self.iri},)"
+
+
+
+    
+
+
+class ScientificKnowledgeCollectionHasMembers(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeCollection_has_members'
 
     ScientificKnowledgeCollection_id = Column(Text(), ForeignKey('ScientificKnowledgeCollection.id'), primary_key=True)
-    information_sources_id = Column(Text(), ForeignKey('InformationResource.id'), primary_key=True)
+    has_members_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeCollection_information_sources(ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},information_sources_id={self.information_sources_id},)"
+        return f"ScientificKnowledgeCollection_has_members(ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},has_members_id={self.has_members_id},)"
+
+
+
+    
+
+
+class ScientificKnowledgeCollectionProvenance(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeCollection_provenance'
+
+    ScientificKnowledgeCollection_id = Column(Text(), ForeignKey('ScientificKnowledgeCollection.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeCollection_provenance(ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},provenance={self.provenance},)"
 
 
 
@@ -681,90 +266,252 @@ class ScientificKnowledgeCollectionXref(Base):
     
 
 
-class ScientificKnowledgeCollectionType(Base):
+class ScientificKnowledgeCollectionHasNotes(Base):
     """
     
     """
-    __tablename__ = 'ScientificKnowledgeCollection_type'
+    __tablename__ = 'ScientificKnowledgeCollection_has_notes'
 
     ScientificKnowledgeCollection_id = Column(Text(), ForeignKey('ScientificKnowledgeCollection.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeCollection_type(ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},type={self.type},)"
+        return f"ScientificKnowledgeCollection_has_notes(ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},has_notes_id={self.has_notes_id},)"
 
 
 
     
 
 
-class ScientificPublicationCollectionHasPart(Base):
+class ScientificKnowledgeCollectionIri(Base):
     """
     
     """
-    __tablename__ = 'ScientificPublicationCollection_has_part'
+    __tablename__ = 'ScientificKnowledgeCollection_iri'
 
-    ScientificPublicationCollection_id = Column(Text(), ForeignKey('ScientificPublicationCollection.id'), primary_key=True)
-    has_part_id = Column(Text(), ForeignKey('ScientificPublication.id'), primary_key=True)
+    ScientificKnowledgeCollection_id = Column(Text(), ForeignKey('ScientificKnowledgeCollection.id'), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificPublicationCollection_has_part(ScientificPublicationCollection_id={self.ScientificPublicationCollection_id},has_part_id={self.has_part_id},)"
+        return f"ScientificKnowledgeCollection_iri(ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},iri={self.iri},)"
 
 
 
     
 
 
-class ScientificPublicationCollectionInformationSources(Base):
+class ScientificKnowledgeExpressionHasRepresentation(Base):
     """
     
     """
-    __tablename__ = 'ScientificPublicationCollection_information_sources'
+    __tablename__ = 'ScientificKnowledgeExpression_has_representation'
 
-    ScientificPublicationCollection_id = Column(Text(), ForeignKey('ScientificPublicationCollection.id'), primary_key=True)
-    information_sources_id = Column(Text(), ForeignKey('InformationResource.id'), primary_key=True)
+    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
+    has_representation_id = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificPublicationCollection_information_sources(ScientificPublicationCollection_id={self.ScientificPublicationCollection_id},information_sources_id={self.information_sources_id},)"
+        return f"ScientificKnowledgeExpression_has_representation(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},has_representation_id={self.has_representation_id},)"
 
 
 
     
 
 
-class ScientificPublicationCollectionXref(Base):
+class ScientificKnowledgeExpressionMemberOf(Base):
     """
     
     """
-    __tablename__ = 'ScientificPublicationCollection_xref'
+    __tablename__ = 'ScientificKnowledgeExpression_member_of'
 
-    ScientificPublicationCollection_id = Column(Text(), ForeignKey('ScientificPublicationCollection.id'), primary_key=True)
+    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
+    member_of_id = Column(Text(), ForeignKey('ScientificKnowledgeCollection.id'), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeExpression_member_of(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},member_of_id={self.member_of_id},)"
+
+
+
+    
+
+
+class ScientificKnowledgeExpressionProvenance(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeExpression_provenance'
+
+    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeExpression_provenance(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},provenance={self.provenance},)"
+
+
+
+    
+
+
+class ScientificKnowledgeExpressionXref(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeExpression_xref'
+
+    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
     xref = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificPublicationCollection_xref(ScientificPublicationCollection_id={self.ScientificPublicationCollection_id},xref={self.xref},)"
+        return f"ScientificKnowledgeExpression_xref(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},xref={self.xref},)"
 
 
 
     
 
 
-class ScientificPublicationCollectionType(Base):
+class ScientificKnowledgeExpressionHasNotes(Base):
     """
     
     """
-    __tablename__ = 'ScientificPublicationCollection_type'
+    __tablename__ = 'ScientificKnowledgeExpression_has_notes'
 
-    ScientificPublicationCollection_id = Column(Text(), ForeignKey('ScientificPublicationCollection.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
+    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificPublicationCollection_type(ScientificPublicationCollection_id={self.ScientificPublicationCollection_id},type={self.type},)"
+        return f"ScientificKnowledgeExpression_has_notes(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},has_notes_id={self.has_notes_id},)"
+
+
+
+    
+
+
+class ScientificKnowledgeExpressionIri(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeExpression_iri'
+
+    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
+    iri = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeExpression_iri(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},iri={self.iri},)"
+
+
+
+    
+
+
+class ScientificKnowledgeItemHasPart(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeItem_has_part'
+
+    ScientificKnowledgeItem_id = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'), primary_key=True)
+    has_part_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeItem_has_part(ScientificKnowledgeItem_id={self.ScientificKnowledgeItem_id},has_part_id={self.has_part_id},)"
+
+
+
+    
+
+
+class ScientificKnowledgeItemProvenance(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeItem_provenance'
+
+    ScientificKnowledgeItem_id = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeItem_provenance(ScientificKnowledgeItem_id={self.ScientificKnowledgeItem_id},provenance={self.provenance},)"
+
+
+
+    
+
+
+class ScientificKnowledgeItemXref(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeItem_xref'
+
+    ScientificKnowledgeItem_id = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'), primary_key=True)
+    xref = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeItem_xref(ScientificKnowledgeItem_id={self.ScientificKnowledgeItem_id},xref={self.xref},)"
+
+
+
+    
+
+
+class ScientificKnowledgeItemHasNotes(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeItem_has_notes'
+
+    ScientificKnowledgeItem_id = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeItem_has_notes(ScientificKnowledgeItem_id={self.ScientificKnowledgeItem_id},has_notes_id={self.has_notes_id},)"
+
+
+
+    
+
+
+class ScientificKnowledgeItemIri(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeItem_iri'
+
+    ScientificKnowledgeItem_id = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'), primary_key=True)
+    iri = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeItem_iri(ScientificKnowledgeItem_id={self.ScientificKnowledgeItem_id},iri={self.iri},)"
+
+
+
+    
+
+
+class ScientificKnowledgeFragmentProvenance(Base):
+    """
+    
+    """
+    __tablename__ = 'ScientificKnowledgeFragment_provenance'
+
+    ScientificKnowledgeFragment_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeFragment_provenance(ScientificKnowledgeFragment_id={self.ScientificKnowledgeFragment_id},provenance={self.provenance},)"
 
 
 
@@ -789,126 +536,126 @@ class ScientificKnowledgeFragmentXref(Base):
     
 
 
-class ScientificKnowledgeFragmentType(Base):
+class ScientificKnowledgeFragmentHasNotes(Base):
     """
     
     """
-    __tablename__ = 'ScientificKnowledgeFragment_type'
+    __tablename__ = 'ScientificKnowledgeFragment_has_notes'
 
     ScientificKnowledgeFragment_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeFragment_type(ScientificKnowledgeFragment_id={self.ScientificKnowledgeFragment_id},type={self.type},)"
+        return f"ScientificKnowledgeFragment_has_notes(ScientificKnowledgeFragment_id={self.ScientificKnowledgeFragment_id},has_notes_id={self.has_notes_id},)"
 
 
 
     
 
 
-class SelectorXref(Base):
+class ScientificKnowledgeFragmentIri(Base):
     """
     
     """
-    __tablename__ = 'Selector_xref'
+    __tablename__ = 'ScientificKnowledgeFragment_iri'
 
-    Selector_id = Column(Text(), ForeignKey('Selector.id'), primary_key=True)
+    ScientificKnowledgeFragment_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
+    iri = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeFragment_iri(ScientificKnowledgeFragment_id={self.ScientificKnowledgeFragment_id},iri={self.iri},)"
+
+
+
+    
+
+
+class NoteIsAbout(Base):
+    """
+    
+    """
+    __tablename__ = 'Note_is_about'
+
+    Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    is_about_id = Column(Text(), ForeignKey('InformationContentEntity.id'), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Note_is_about(Note_id={self.Note_id},is_about_id={self.is_about_id},)"
+
+
+
+    
+
+
+class NoteProvenance(Base):
+    """
+    
+    """
+    __tablename__ = 'Note_provenance'
+
+    Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Note_provenance(Note_id={self.Note_id},provenance={self.provenance},)"
+
+
+
+    
+
+
+class NoteXref(Base):
+    """
+    
+    """
+    __tablename__ = 'Note_xref'
+
+    Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     xref = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"Selector_xref(Selector_id={self.Selector_id},xref={self.xref},)"
+        return f"Note_xref(Note_id={self.Note_id},xref={self.xref},)"
 
 
 
     
 
 
-class SelectorType(Base):
+class NoteHasNotes(Base):
     """
     
     """
-    __tablename__ = 'Selector_type'
+    __tablename__ = 'Note_has_notes'
 
-    Selector_id = Column(Text(), ForeignKey('Selector.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
+    Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
-        return f"Selector_type(Selector_id={self.Selector_id},type={self.type},)"
+        return f"Note_has_notes(Note_id={self.Note_id},has_notes_id={self.has_notes_id},)"
 
 
 
     
 
 
-class OffsetTextSelectorXref(Base):
+class NoteIri(Base):
     """
     
     """
-    __tablename__ = 'OffsetTextSelector_xref'
+    __tablename__ = 'Note_iri'
 
-    OffsetTextSelector_id = Column(Text(), ForeignKey('OffsetTextSelector.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
+    Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"OffsetTextSelector_xref(OffsetTextSelector_id={self.OffsetTextSelector_id},xref={self.xref},)"
-
-
-
-    
-
-
-class OffsetTextSelectorType(Base):
-    """
-    
-    """
-    __tablename__ = 'OffsetTextSelector_type'
-
-    OffsetTextSelector_id = Column(Text(), ForeignKey('OffsetTextSelector.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"OffsetTextSelector_type(OffsetTextSelector_id={self.OffsetTextSelector_id},type={self.type},)"
-
-
-
-    
-
-
-class PersonXref(Base):
-    """
-    
-    """
-    __tablename__ = 'Person_xref'
-
-    Person_id = Column(Text(), ForeignKey('Person.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"Person_xref(Person_id={self.Person_id},xref={self.xref},)"
-
-
-
-    
-
-
-class PersonType(Base):
-    """
-    
-    """
-    __tablename__ = 'Person_type'
-
-    Person_id = Column(Text(), ForeignKey('Person.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"Person_type(Person_id={self.Person_id},type={self.type},)"
+        return f"Note_iri(Note_id={self.Note_id},iri={self.iri},)"
 
 
 
@@ -933,36 +680,18 @@ class AuthorAffiliations(Base):
     
 
 
-class AuthorXref(Base):
+class AuthorIri(Base):
     """
     
     """
-    __tablename__ = 'Author_xref'
+    __tablename__ = 'Author_iri'
 
     Author_id = Column(Text(), ForeignKey('Author.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"Author_xref(Author_id={self.Author_id},xref={self.xref},)"
-
-
-
-    
-
-
-class AuthorType(Base):
-    """
-    
-    """
-    __tablename__ = 'Author_type'
-
-    Author_id = Column(Text(), ForeignKey('Author.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"Author_type(Author_id={self.Author_id},type={self.type},)"
+        return f"Author_iri(Author_id={self.Author_id},iri={self.iri},)"
 
 
 
@@ -1005,108 +734,54 @@ class OrganizationCountry(Base):
     
 
 
-class OrganizationXref(Base):
+class OrganizationIri(Base):
     """
     
     """
-    __tablename__ = 'Organization_xref'
+    __tablename__ = 'Organization_iri'
 
     Organization_id = Column(Text(), ForeignKey('Organization.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"Organization_xref(Organization_id={self.Organization_id},xref={self.xref},)"
+        return f"Organization_iri(Organization_id={self.Organization_id},iri={self.iri},)"
 
 
 
     
 
 
-class OrganizationType(Base):
+class CityIri(Base):
     """
     
     """
-    __tablename__ = 'Organization_type'
-
-    Organization_id = Column(Text(), ForeignKey('Organization.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"Organization_type(Organization_id={self.Organization_id},type={self.type},)"
-
-
-
-    
-
-
-class CityXref(Base):
-    """
-    
-    """
-    __tablename__ = 'City_xref'
+    __tablename__ = 'City_iri'
 
     City_id = Column(Text(), ForeignKey('City.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"City_xref(City_id={self.City_id},xref={self.xref},)"
+        return f"City_iri(City_id={self.City_id},iri={self.iri},)"
 
 
 
     
 
 
-class CityType(Base):
+class CountryIri(Base):
     """
     
     """
-    __tablename__ = 'City_type'
-
-    City_id = Column(Text(), ForeignKey('City.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"City_type(City_id={self.City_id},type={self.type},)"
-
-
-
-    
-
-
-class CountryXref(Base):
-    """
-    
-    """
-    __tablename__ = 'Country_xref'
+    __tablename__ = 'Country_iri'
 
     Country_id = Column(Text(), ForeignKey('Country.id'), primary_key=True)
-    xref = Column(Text(), primary_key=True)
+    iri = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"Country_xref(Country_id={self.Country_id},xref={self.xref},)"
-
-
-
-    
-
-
-class CountryType(Base):
-    """
-    
-    """
-    __tablename__ = 'Country_type'
-
-    Country_id = Column(Text(), ForeignKey('Country.id'), primary_key=True)
-    type = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"Country_type(Country_id={self.Country_id},type={self.type},)"
+        return f"Country_iri(Country_id={self.Country_id},iri={self.iri},)"
 
 
 
@@ -1121,22 +796,16 @@ class NamedThing(Entity):
 
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
+    type = Column(Text(), nullable=False )
     
     
-    xref_rel = relationship( "NamedThingXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: NamedThingXref(xref=x_))
-    
-    
-    type_rel = relationship( "NamedThingType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: NamedThingType(type=x_))
+    iri_rel = relationship( "NamedThingIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: NamedThingIri(iri=x_))
     
 
     def __repr__(self):
-        return f"NamedThing(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"NamedThing(name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1154,14 +823,21 @@ class InformationContentEntity(NamedThing):
     """
     __tablename__ = 'InformationContentEntity'
 
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
     creation_date = Column(Date())
+    content = Column(Text())
+    format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
+    type = Column(Text(), nullable=False )
+    
+    
+    provenance_rel = relationship( "InformationContentEntityProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: InformationContentEntityProvenance(provenance=x_))
+    
+    
+    # One-To-Many: OneToAnyMapping(source_class='InformationContentEntity', source_slot='authors', mapping_type=None, target_class='Author', target_slot='InformationContentEntity_id', join_class=None, uses_join_table=None, multivalued=False)
+    authors = relationship( "Author", foreign_keys="[Author.InformationContentEntity_id]")
     
     
     xref_rel = relationship( "InformationContentEntityXref" )
@@ -1169,48 +845,58 @@ class InformationContentEntity(NamedThing):
                                   creator=lambda x_: InformationContentEntityXref(xref=x_))
     
     
-    type_rel = relationship( "InformationContentEntityType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: InformationContentEntityType(type=x_))
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="InformationContentEntity_has_notes", back_populates="is_about")
+    
+    
+    iri_rel = relationship( "InformationContentEntityIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: InformationContentEntityIri(iri=x_))
     
 
     def __repr__(self):
-        return f"InformationContentEntity(license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        'polymorphic_on': type,
+        "polymorphic_identity": "InformationContentEntity",
+    }    
 
 
-class Person(NamedThing):
+class Author(NamedThing):
     """
     
     """
-    __tablename__ = 'Person'
+    __tablename__ = 'Author'
 
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
+    type = Column(Text(), nullable=False )
+    InformationContentEntity_id = Column(Text(), ForeignKey('InformationContentEntity.id'))
+    InformationResource_id = Column(Text(), ForeignKey('InformationResource.id'))
+    ScientificKnowledgeCollection_id = Column(Text(), ForeignKey('ScientificKnowledgeCollection.id'))
+    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'))
+    ScientificKnowledgeItem_id = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'))
+    ScientificKnowledgeFragment_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'))
+    Note_id = Column(Text(), ForeignKey('Note.id'))
     
     
-    xref_rel = relationship( "PersonXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: PersonXref(xref=x_))
+    # ManyToMany
+    affiliations = relationship( "Organization", secondary="Author_affiliations")
     
     
-    type_rel = relationship( "PersonType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: PersonType(type=x_))
+    iri_rel = relationship( "AuthorIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: AuthorIri(iri=x_))
     
 
     def __repr__(self):
-        return f"Person(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"Author(name={self.name},id={self.id},type={self.type},InformationContentEntity_id={self.InformationContentEntity_id},InformationResource_id={self.InformationResource_id},ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},ScientificKnowledgeItem_id={self.ScientificKnowledgeItem_id},ScientificKnowledgeFragment_id={self.ScientificKnowledgeFragment_id},Note_id={self.Note_id},)"
 
 
 
@@ -1230,8 +916,7 @@ class Organization(NamedThing):
 
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
+    type = Column(Text(), nullable=False )
     
     
     # ManyToMany
@@ -1242,18 +927,13 @@ class Organization(NamedThing):
     country = relationship( "Country", secondary="Organization_country")
     
     
-    xref_rel = relationship( "OrganizationXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: OrganizationXref(xref=x_))
-    
-    
-    type_rel = relationship( "OrganizationType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: OrganizationType(type=x_))
+    iri_rel = relationship( "OrganizationIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: OrganizationIri(iri=x_))
     
 
     def __repr__(self):
-        return f"Organization(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"Organization(name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1273,22 +953,16 @@ class City(NamedThing):
 
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
+    type = Column(Text(), nullable=False )
     
     
-    xref_rel = relationship( "CityXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: CityXref(xref=x_))
-    
-    
-    type_rel = relationship( "CityType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: CityType(type=x_))
+    iri_rel = relationship( "CityIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: CityIri(iri=x_))
     
 
     def __repr__(self):
-        return f"City(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"City(name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1308,73 +982,16 @@ class Country(NamedThing):
 
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
+    type = Column(Text(), nullable=False )
     
     
-    xref_rel = relationship( "CountryXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: CountryXref(xref=x_))
-    
-    
-    type_rel = relationship( "CountryType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: CountryType(type=x_))
+    iri_rel = relationship( "CountryIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: CountryIri(iri=x_))
     
 
     def __repr__(self):
-        return f"Country(name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificKnowledgeExpression(InformationContentEntity):
-    """
-    Any expression of scientific knowledge.   
-    """
-    __tablename__ = 'ScientificKnowledgeExpression'
-
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificKnowledgeExpression_has_part")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='ScientificKnowledgeExpression', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificKnowledgeExpression_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificKnowledgeExpression_id]")
-    
-    
-    xref_rel = relationship( "ScientificKnowledgeExpressionXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificKnowledgeExpressionXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificKnowledgeExpressionType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificKnowledgeExpressionType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificKnowledgeExpression(id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"Country(name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1392,14 +1009,21 @@ class InformationResource(InformationContentEntity):
     """
     __tablename__ = 'InformationResource'
 
-    id = Column(Text(), primary_key=True, nullable=False )
-    name = Column(Text())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
     creation_date = Column(Date())
-    iri = Column(Text())
-    type_str = Column(Text())
+    content = Column(Text())
+    format = Column(Text())
+    name = Column(Text())
+    id = Column(Text(), primary_key=True, nullable=False )
+    type = Column(Text(), nullable=False )
+    
+    
+    provenance_rel = relationship( "InformationResourceProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: InformationResourceProvenance(provenance=x_))
+    
+    
+    # One-To-Many: OneToAnyMapping(source_class='InformationResource', source_slot='authors', mapping_type=None, target_class='Author', target_slot='InformationResource_id', join_class=None, uses_join_table=None, multivalued=False)
+    authors = relationship( "Author", foreign_keys="[Author.InformationResource_id]")
     
     
     xref_rel = relationship( "InformationResourceXref" )
@@ -1407,13 +1031,17 @@ class InformationResource(InformationContentEntity):
                                   creator=lambda x_: InformationResourceXref(xref=x_))
     
     
-    type_rel = relationship( "InformationResourceType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: InformationResourceType(type=x_))
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="InformationResource_has_notes")
+    
+    
+    iri_rel = relationship( "InformationResourceIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: InformationResourceIri(iri=x_))
     
 
     def __repr__(self):
-        return f"InformationResource(id={self.id},name={self.name},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},iri={self.iri},type_str={self.type_str},)"
+        return f"InformationResource(creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1431,19 +1059,25 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     """
     __tablename__ = 'ScientificKnowledgeCollection'
 
-    id = Column(Text(), primary_key=True, nullable=False )
-    name = Column(Text())
-    logical_query = Column(Text())
     creation_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
+    content = Column(Text())
     format = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
+    name = Column(Text())
+    id = Column(Text(), primary_key=True, nullable=False )
+    type = Column(Text(), nullable=False )
     
     
     # ManyToMany
-    information_sources = relationship( "InformationResource", secondary="ScientificKnowledgeCollection_information_sources")
+    has_members = relationship( "ScientificKnowledgeExpression", secondary="ScientificKnowledgeCollection_has_members")
+    
+    
+    provenance_rel = relationship( "ScientificKnowledgeCollectionProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: ScientificKnowledgeCollectionProvenance(provenance=x_))
+    
+    
+    # One-To-Many: OneToAnyMapping(source_class='ScientificKnowledgeCollection', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificKnowledgeCollection_id', join_class=None, uses_join_table=None, multivalued=False)
+    authors = relationship( "Author", foreign_keys="[Author.ScientificKnowledgeCollection_id]")
     
     
     xref_rel = relationship( "ScientificKnowledgeCollectionXref" )
@@ -1451,22 +1085,140 @@ class ScientificKnowledgeCollection(InformationContentEntity):
                                   creator=lambda x_: ScientificKnowledgeCollectionXref(xref=x_))
     
     
-    type_rel = relationship( "ScientificKnowledgeCollectionType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificKnowledgeCollectionType(type=x_))
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeCollection_has_notes", back_populates="is_about")
+    
+    
+    iri_rel = relationship( "ScientificKnowledgeCollectionIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: ScientificKnowledgeCollectionIri(iri=x_))
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeCollection(id={self.id},name={self.name},logical_query={self.logical_query},creation_date={self.creation_date},license={self.license},rights={self.rights},format={self.format},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
+        'concrete': True,
+        "polymorphic_identity": "ScientificKnowledgeCollection",
+    }    
+
+
+class ScientificKnowledgeExpression(InformationContentEntity):
+    """
+    Any expression of scientific knowledge.   
+    """
+    __tablename__ = 'ScientificKnowledgeExpression'
+
+    publication_date = Column(Date())
+    type = Column(Enum('ScientificPrimaryResearchArticle', 'ScientificPrimaryResearchPreprint', 'ScientificReviewArticle', 'ScientificBook', 'ScientificBookChapter', 'ScientificConferenceArticle', 'ScientificDissertation', name='ScientificKnowledgeExpressionType'), nullable=False )
+    creation_date = Column(Date())
+    content = Column(Text())
+    format = Column(Text())
+    name = Column(Text())
+    id = Column(Text(), primary_key=True, nullable=False )
     
+    
+    # ManyToMany
+    has_representation = relationship( "ScientificKnowledgeItem", secondary="ScientificKnowledgeExpression_has_representation")
+    
+    
+    # ManyToMany
+    member_of = relationship( "ScientificKnowledgeCollection", secondary="ScientificKnowledgeExpression_member_of")
+    
+    
+    provenance_rel = relationship( "ScientificKnowledgeExpressionProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: ScientificKnowledgeExpressionProvenance(provenance=x_))
+    
+    
+    # One-To-Many: OneToAnyMapping(source_class='ScientificKnowledgeExpression', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificKnowledgeExpression_id', join_class=None, uses_join_table=None, multivalued=False)
+    authors = relationship( "Author", foreign_keys="[Author.ScientificKnowledgeExpression_id]")
+    
+    
+    xref_rel = relationship( "ScientificKnowledgeExpressionXref" )
+    xref = association_proxy("xref_rel", "xref",
+                                  creator=lambda x_: ScientificKnowledgeExpressionXref(xref=x_))
+    
+    
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeExpression_has_notes", back_populates="is_about")
+    
+    
+    iri_rel = relationship( "ScientificKnowledgeExpressionIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: ScientificKnowledgeExpressionIri(iri=x_))
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},)"
+
+
+
+    
+    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
+    __mapper_args__ = {
+        'concrete': True,
+        "polymorphic_identity": "ScientificKnowledgeExpression",
+    }    
+
+
+class ScientificKnowledgeItem(InformationContentEntity):
+    """
+    A specific instance of a ScientificKnowledgeExpression:- our internal representation of an EPMC citation record, a local copy of a full-text article. This is the substrate that forms the basis for a ScientificKnowledgeFragment.
+    """
+    __tablename__ = 'ScientificKnowledgeItem'
+
+    representation_of = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'))
+    creation_date = Column(Date())
+    content = Column(Text())
+    format = Column(Text())
+    name = Column(Text())
+    id = Column(Text(), primary_key=True, nullable=False )
+    type = Column(Text(), nullable=False )
+    
+    
+    # ManyToMany
+    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificKnowledgeItem_has_part")
+    
+    
+    provenance_rel = relationship( "ScientificKnowledgeItemProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: ScientificKnowledgeItemProvenance(provenance=x_))
+    
+    
+    # One-To-Many: OneToAnyMapping(source_class='ScientificKnowledgeItem', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificKnowledgeItem_id', join_class=None, uses_join_table=None, multivalued=False)
+    authors = relationship( "Author", foreign_keys="[Author.ScientificKnowledgeItem_id]")
+    
+    
+    xref_rel = relationship( "ScientificKnowledgeItemXref" )
+    xref = association_proxy("xref_rel", "xref",
+                                  creator=lambda x_: ScientificKnowledgeItemXref(xref=x_))
+    
+    
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeItem_has_notes", back_populates="is_about")
+    
+    
+    iri_rel = relationship( "ScientificKnowledgeItemIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: ScientificKnowledgeItemIri(iri=x_))
+    
+
+    def __repr__(self):
+        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
+
+
+
+    
+    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
+    __mapper_args__ = {
+        'concrete': True,
+        "polymorphic_identity": "ScientificKnowledgeItem",
+    }    
 
 
 class ScientificKnowledgeFragment(InformationContentEntity):
@@ -1475,16 +1227,24 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     """
     __tablename__ = 'ScientificKnowledgeFragment'
 
-    part_of = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'))
-    selector = Column(Text(), ForeignKey('Selector.id'))
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
+    part_of = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'))
+    offset = Column(Integer())
+    length = Column(Integer())
     creation_date = Column(Date())
+    content = Column(Text())
+    format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
+    type = Column(Text(), nullable=False )
+    
+    
+    provenance_rel = relationship( "ScientificKnowledgeFragmentProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: ScientificKnowledgeFragmentProvenance(provenance=x_))
+    
+    
+    # One-To-Many: OneToAnyMapping(source_class='ScientificKnowledgeFragment', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificKnowledgeFragment_id', join_class=None, uses_join_table=None, multivalued=False)
+    authors = relationship( "Author", foreign_keys="[Author.ScientificKnowledgeFragment_id]")
     
     
     xref_rel = relationship( "ScientificKnowledgeFragmentXref" )
@@ -1492,617 +1252,83 @@ class ScientificKnowledgeFragment(InformationContentEntity):
                                   creator=lambda x_: ScientificKnowledgeFragmentXref(xref=x_))
     
     
-    type_rel = relationship( "ScientificKnowledgeFragmentType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificKnowledgeFragmentType(type=x_))
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeFragment_has_notes", back_populates="is_about")
+    
+    
+    iri_rel = relationship( "ScientificKnowledgeFragmentIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: ScientificKnowledgeFragmentIri(iri=x_))
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeFragment(part_of={self.part_of},selector={self.selector},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
+        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "ScientificKnowledgeFragment",
+    }    
 
 
-class Selector(InformationContentEntity):
+class Note(InformationContentEntity):
     """
-    A way of localizing and describing a ScientificKnowledgeFragment within a ScientificKnowledgeExpression.
+    A structured piece of information with an author that is about another InformationContentEntity.
     """
-    __tablename__ = 'Selector'
+    __tablename__ = 'Note'
 
-    license = Column(Text())
-    rights = Column(Text())
     format = Column(Text())
+    type = Column(Enum('NoteAboutCollection', 'NoteAboutExpression', 'NoteAboutFragment', name='NoteType'), nullable=False )
     creation_date = Column(Date())
+    content = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    xref_rel = relationship( "SelectorXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: SelectorXref(xref=x_))
-    
-    
-    type_rel = relationship( "SelectorType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: SelectorType(type=x_))
-    
-
-    def __repr__(self):
-        return f"Selector(license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class Author(Person):
-    """
-    
-    """
-    __tablename__ = 'Author'
-
-    orcid = Column(Text())
-    name = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
-    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'))
-    ScientificPublication_id = Column(Text(), ForeignKey('ScientificPublication.id'))
-    ScientificPrimaryResearchArticle_id = Column(Text(), ForeignKey('ScientificPrimaryResearchArticle.id'))
-    ScientificPrimaryResearchPreprint_id = Column(Text(), ForeignKey('ScientificPrimaryResearchPreprint.id'))
-    ScientificReviewArticle_id = Column(Text(), ForeignKey('ScientificReviewArticle.id'))
-    ScientificBook_id = Column(Text(), ForeignKey('ScientificBook.id'))
-    ScientificBookChapter_id = Column(Text(), ForeignKey('ScientificBookChapter.id'))
-    ScientificConferenceArticle_id = Column(Text(), ForeignKey('ScientificConferenceArticle.id'))
-    ScientificDissertation_id = Column(Text(), ForeignKey('ScientificDissertation.id'))
     
     
     # ManyToMany
-    affiliations = relationship( "Organization", secondary="Author_affiliations")
+    is_about = relationship( "InformationContentEntity", secondary="Note_is_about", back_populates="has_notes")
     
     
-    xref_rel = relationship( "AuthorXref" )
+    provenance_rel = relationship( "NoteProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: NoteProvenance(provenance=x_))
+    
+    
+    # One-To-Many: OneToAnyMapping(source_class='Note', source_slot='authors', mapping_type=None, target_class='Author', target_slot='Note_id', join_class=None, uses_join_table=None, multivalued=False)
+    authors = relationship( "Author", foreign_keys="[Author.Note_id]")
+    
+    
+    xref_rel = relationship( "NoteXref" )
     xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: AuthorXref(xref=x_))
-    
-    
-    type_rel = relationship( "AuthorType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: AuthorType(type=x_))
-    
-
-    def __repr__(self):
-        return f"Author(orcid={self.orcid},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},ScientificPublication_id={self.ScientificPublication_id},ScientificPrimaryResearchArticle_id={self.ScientificPrimaryResearchArticle_id},ScientificPrimaryResearchPreprint_id={self.ScientificPrimaryResearchPreprint_id},ScientificReviewArticle_id={self.ScientificReviewArticle_id},ScientificBook_id={self.ScientificBook_id},ScientificBookChapter_id={self.ScientificBookChapter_id},ScientificConferenceArticle_id={self.ScientificConferenceArticle_id},ScientificDissertation_id={self.ScientificDissertation_id},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificPublication(ScientificKnowledgeExpression):
-    """
-    A published expression of scientific knowledge,  such as a paper, book, thesis, conference proceedings, etc.   
-    """
-    __tablename__ = 'ScientificPublication'
-
-    doi = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
+                                  creator=lambda x_: NoteXref(xref=x_))
     
     
     # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificPublication_has_part")
+    has_notes = relationship( "Note", 
+                             secondary="Note_has_notes", 
+                             primaryjoin="Note.id==Note_has_notes.c.Note_id",
+                             secondaryjoin="Note.id==Note_has_notes.c.has_notes_id",
+                             back_populates="is_about")
     
     
-    # One-To-Many: OneToAnyMapping(source_class='ScientificPublication', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificPublication_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificPublication_id]")
-    
-    
-    xref_rel = relationship( "ScientificPublicationXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificPublicationXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificPublicationType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificPublicationType(type=x_))
+    iri_rel = relationship( "NoteIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: NoteIri(iri=x_))
     
 
     def __repr__(self):
-        return f"ScientificPublication(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
+        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},name={self.name},id={self.id},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificPublicationCollection(ScientificKnowledgeCollection):
-    """
-    A collection of scientific publications.
-    """
-    __tablename__ = 'ScientificPublicationCollection'
-
-    id = Column(Text(), primary_key=True, nullable=False )
-    name = Column(Text())
-    logical_query = Column(Text())
-    creation_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificPublication", secondary="ScientificPublicationCollection_has_part")
-    
-    
-    # ManyToMany
-    information_sources = relationship( "InformationResource", secondary="ScientificPublicationCollection_information_sources")
-    
-    
-    xref_rel = relationship( "ScientificPublicationCollectionXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificPublicationCollectionXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificPublicationCollectionType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificPublicationCollectionType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificPublicationCollection(id={self.id},name={self.name},logical_query={self.logical_query},creation_date={self.creation_date},license={self.license},rights={self.rights},format={self.format},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class OffsetTextSelector(Selector):
-    """
-    A way of localizing and describing a fragment of text within a larger body of text using offsets and lengths.
-    """
-    __tablename__ = 'OffsetTextSelector'
-
-    offset = Column(Integer())
-    length = Column(Integer())
-    text = Column(Text())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    xref_rel = relationship( "OffsetTextSelectorXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: OffsetTextSelectorXref(xref=x_))
-    
-    
-    type_rel = relationship( "OffsetTextSelectorType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: OffsetTextSelectorType(type=x_))
-    
-
-    def __repr__(self):
-        return f"OffsetTextSelector(offset={self.offset},length={self.length},text={self.text},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},id={self.id},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificPrimaryResearchArticle(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion). These articles will have undergone  peer review. 
-    """
-    __tablename__ = 'ScientificPrimaryResearchArticle'
-
-    doi = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificPrimaryResearchArticle_has_part")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='ScientificPrimaryResearchArticle', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificPrimaryResearchArticle_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificPrimaryResearchArticle_id]")
-    
-    
-    xref_rel = relationship( "ScientificPrimaryResearchArticleXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificPrimaryResearchArticleXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificPrimaryResearchArticleType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificPrimaryResearchArticleType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificPrimaryResearchArticle(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificPrimaryResearchPreprint(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion). These articles have been published as preprints and have NOT undergone peer review. 
-    """
-    __tablename__ = 'ScientificPrimaryResearchPreprint'
-
-    doi = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificPrimaryResearchPreprint_has_part")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='ScientificPrimaryResearchPreprint', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificPrimaryResearchPreprint_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificPrimaryResearchPreprint_id]")
-    
-    
-    xref_rel = relationship( "ScientificPrimaryResearchPreprintXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificPrimaryResearchPreprintXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificPrimaryResearchPreprintType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificPrimaryResearchPreprintType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificPrimaryResearchPreprint(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificReviewArticle(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).   
-    """
-    __tablename__ = 'ScientificReviewArticle'
-
-    doi = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificReviewArticle_has_part")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='ScientificReviewArticle', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificReviewArticle_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificReviewArticle_id]")
-    
-    
-    xref_rel = relationship( "ScientificReviewArticleXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificReviewArticleXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificReviewArticleType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificReviewArticleType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificReviewArticle(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificBook(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).   
-    """
-    __tablename__ = 'ScientificBook'
-
-    doi = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificBook_has_part")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='ScientificBook', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificBook_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificBook_id]")
-    
-    
-    xref_rel = relationship( "ScientificBookXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificBookXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificBookType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificBookType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificBook(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificBookChapter(ScientificPublication):
-    """
-    A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).   
-    """
-    __tablename__ = 'ScientificBookChapter'
-
-    part_of = Column(Text(), ForeignKey('ScientificBook.id'))
-    doi = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificBookChapter_has_part")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='ScientificBookChapter', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificBookChapter_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificBookChapter_id]")
-    
-    
-    xref_rel = relationship( "ScientificBookChapterXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificBookChapterXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificBookChapterType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificBookChapterType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificBookChapter(part_of={self.part_of},doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificConferenceArticle(ScientificPublication):
-    """
-    A scientific publication describing original research that was presented at a conference.   
-    """
-    __tablename__ = 'ScientificConferenceArticle'
-
-    part_of = Column(Text(), ForeignKey('ScientificBook.id'))
-    doi = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificConferenceArticle_has_part")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='ScientificConferenceArticle', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificConferenceArticle_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificConferenceArticle_id]")
-    
-    
-    xref_rel = relationship( "ScientificConferenceArticleXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificConferenceArticleXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificConferenceArticleType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificConferenceArticleType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificConferenceArticle(part_of={self.part_of},doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class ScientificDissertation(ScientificPublication):
-    """
-    A thesis or dissertation submitted by a researcher as  part of their work to qualify for an advanced degree - usually a  doctorate.   
-    """
-    __tablename__ = 'ScientificDissertation'
-
-    doi = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    title = Column(Text())
-    abstract = Column(Text())
-    full_text = Column(Text())
-    publication_date = Column(Date())
-    license = Column(Text())
-    rights = Column(Text())
-    format = Column(Text())
-    creation_date = Column(Date())
-    name = Column(Text())
-    iri = Column(Text())
-    type_str = Column(Text())
-    
-    
-    # ManyToMany
-    has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificDissertation_has_part")
-    
-    
-    # One-To-Many: OneToAnyMapping(source_class='ScientificDissertation', source_slot='authors', mapping_type=None, target_class='Author', target_slot='ScientificDissertation_id', join_class=None, uses_join_table=None, multivalued=False)
-    authors = relationship( "Author", foreign_keys="[Author.ScientificDissertation_id]")
-    
-    
-    xref_rel = relationship( "ScientificDissertationXref" )
-    xref = association_proxy("xref_rel", "xref",
-                                  creator=lambda x_: ScientificDissertationXref(xref=x_))
-    
-    
-    type_rel = relationship( "ScientificDissertationType" )
-    type = association_proxy("type_rel", "type",
-                                  creator=lambda x_: ScientificDissertationType(type=x_))
-    
-
-    def __repr__(self):
-        return f"ScientificDissertation(doi={self.doi},id={self.id},title={self.title},abstract={self.abstract},full_text={self.full_text},publication_date={self.publication_date},license={self.license},rights={self.rights},format={self.format},creation_date={self.creation_date},name={self.name},iri={self.iri},type_str={self.type_str},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "Note",
+    }    
 
 
