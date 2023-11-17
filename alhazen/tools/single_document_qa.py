@@ -7,7 +7,7 @@ __all__ = ['PROMPT_SINGLE_ARTICLE_QUESTION', 'LocalFileLangChainChatBot']
 import os
 import pandas as pd
 
-from ..core import TaskInstructionRegistry, get_langchain_llm, get_langchain_embeddings, GGUF_LOOKUP_URL, MODEL_TYPE
+from ..core import PromptTemplateRegistry, get_langchain_llm, get_langchain_embeddings, GGUF_LOOKUP_URL, MODEL_TYPE
 import alhazen.utils.jats_text_extractor as te 
 from ..utils.pdf_research_article_text_extractor import PyMuPDFBlockLoader, PyMuPDFBlockParser, PyMuPDFBlock
 
@@ -80,7 +80,7 @@ class LocalFileLangChainChatBot:
         if doc_dir[-1:] != '/':
             doc_dir += '/'
         self.change_directory(self.doc_dir)
-        self.prompt_registry = TaskInstructionRegistry()
+        self.prompt_registry = PromptTemplateRegistry()
         self.prompt_registry.register_new_instruction_template(PROMPT_SINGLE_ARTICLE_QUESTION)
         model_type = None
 

@@ -1,326 +1,141 @@
 erDiagram
 Entity {
     string id  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
+    string type  
 }
 NamedThing {
     string name  
-    uriorcurieList xref  
     string id  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
+    string type  
 }
 InformationContentEntity {
-    string license  
-    string rights  
-    string format  
     date creation_date  
-    string name  
-    uriorcurieList xref  
-    string id  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificKnowledgeExpression {
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
+    string content  
     string format  
-    date creation_date  
-    string name  
+    stringList provenance  
     uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificPublication {
-    string doi  
+    string name  
     string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificPrimaryResearchArticle {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificPrimaryResearchPreprint {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificReviewArticle {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificBook {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificBookChapter {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificConferenceArticle {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
-}
-ScientificDissertation {
-    string doi  
-    string id  
-    string title  
-    string abstract  
-    string full_text  
-    date publication_date  
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
+    string type  
 }
 InformationResource {
-    string id  
-    string name  
-    uriorcurieList xref  
-    string license  
-    string rights  
-    string format  
     date creation_date  
-    string iri  
-    stringList type  
-    string type_str  
+    string content  
+    string format  
+    stringList provenance  
+    uriorcurieList xref  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
 }
 ScientificKnowledgeCollection {
-    string id  
-    string name  
-    string logical_query  
     date creation_date  
-    string license  
-    string rights  
+    string content  
     string format  
+    stringList provenance  
     uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
 }
-ScientificPublicationCollection {
-    string id  
-    string name  
-    string logical_query  
+ScientificKnowledgeExpression {
+    date publication_date  
+    ScientificKnowledgeExpressionType type  
     date creation_date  
-    string license  
-    string rights  
+    string content  
     string format  
+    stringList provenance  
     uriorcurieList xref  
-    string iri  
-    stringList type  
-    string type_str  
+    string name  
+    string id  
+    uriorcurieList iri  
+}
+ScientificKnowledgeItem {
+    date creation_date  
+    string content  
+    string format  
+    stringList provenance  
+    uriorcurieList xref  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
 }
 ScientificKnowledgeFragment {
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string id  
-    string iri  
-    stringList type  
-    string type_str  
-}
-Selector {
-    string license  
-    string rights  
-    string format  
-    date creation_date  
-    string name  
-    uriorcurieList xref  
-    string id  
-    string iri  
-    stringList type  
-    string type_str  
-}
-OffsetTextSelector {
     integer offset  
     integer length  
-    string text  
-    string license  
-    string rights  
-    string format  
     date creation_date  
-    string name  
+    string content  
+    string format  
+    stringList provenance  
     uriorcurieList xref  
+    string name  
     string id  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
+    string type  
 }
-Person {
-    string name  
+Note {
+    string format  
+    NoteType type  
+    date creation_date  
+    string content  
+    stringList provenance  
     uriorcurieList xref  
+    string name  
     string id  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
 }
 Author {
-    string orcid  
     string name  
-    uriorcurieList xref  
     string id  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
+    string type  
 }
 Organization {
     string name  
-    uriorcurieList xref  
     string id  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
+    string type  
 }
 City {
     string name  
-    uriorcurieList xref  
     string id  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
+    string type  
 }
 Country {
     string name  
-    uriorcurieList xref  
     string id  
-    string iri  
-    stringList type  
-    string type_str  
+    uriorcurieList iri  
+    string type  
 }
 
-ScientificKnowledgeExpression ||--}o ScientificKnowledgeFragment : "has part"
+InformationContentEntity ||--}o Author : "authors"
+InformationContentEntity ||--}o Note : "has notes"
+InformationResource ||--}o Author : "authors"
+InformationResource ||--}o Note : "has notes"
+ScientificKnowledgeCollection ||--}o ScientificKnowledgeExpression : "has members"
+ScientificKnowledgeCollection ||--}o Author : "authors"
+ScientificKnowledgeCollection ||--}o Note : "has notes"
+ScientificKnowledgeExpression ||--}o ScientificKnowledgeItem : "has representation"
+ScientificKnowledgeExpression ||--}o ScientificKnowledgeCollection : "member of"
 ScientificKnowledgeExpression ||--}o Author : "authors"
-ScientificPublication ||--}o ScientificKnowledgeFragment : "has part"
-ScientificPublication ||--}o Author : "authors"
-ScientificPrimaryResearchArticle ||--}o ScientificKnowledgeFragment : "has part"
-ScientificPrimaryResearchArticle ||--}o Author : "authors"
-ScientificPrimaryResearchPreprint ||--}o ScientificKnowledgeFragment : "has part"
-ScientificPrimaryResearchPreprint ||--}o Author : "authors"
-ScientificReviewArticle ||--}o ScientificKnowledgeFragment : "has part"
-ScientificReviewArticle ||--}o Author : "authors"
-ScientificBook ||--}o ScientificKnowledgeFragment : "has part"
-ScientificBook ||--}o Author : "authors"
-ScientificBookChapter ||--|o ScientificBook : "part of"
-ScientificBookChapter ||--}o ScientificKnowledgeFragment : "has part"
-ScientificBookChapter ||--}o Author : "authors"
-ScientificConferenceArticle ||--|o ScientificBook : "part of"
-ScientificConferenceArticle ||--}o ScientificKnowledgeFragment : "has part"
-ScientificConferenceArticle ||--}o Author : "authors"
-ScientificDissertation ||--}o ScientificKnowledgeFragment : "has part"
-ScientificDissertation ||--}o Author : "authors"
-ScientificKnowledgeCollection ||--}o InformationResource : "information sources"
-ScientificPublicationCollection ||--}o ScientificPublication : "has part"
-ScientificPublicationCollection ||--}o InformationResource : "information sources"
-ScientificKnowledgeFragment ||--|o ScientificKnowledgeExpression : "part of"
-ScientificKnowledgeFragment ||--|o Selector : "selector"
+ScientificKnowledgeExpression ||--}o Note : "has notes"
+ScientificKnowledgeItem ||--|o ScientificKnowledgeExpression : "representation of"
+ScientificKnowledgeItem ||--}o ScientificKnowledgeFragment : "has part"
+ScientificKnowledgeItem ||--}o Author : "authors"
+ScientificKnowledgeItem ||--}o Note : "has notes"
+ScientificKnowledgeFragment ||--|o ScientificKnowledgeItem : "part of"
+ScientificKnowledgeFragment ||--}o Author : "authors"
+ScientificKnowledgeFragment ||--}o Note : "has notes"
+Note ||--}o InformationContentEntity : "is about"
+Note ||--}o Author : "authors"
+Note ||--}o Note : "has notes"
 Author ||--}o Organization : "affiliations"
 Organization ||--}o City : "city"
 Organization ||--}o Country : "country"
