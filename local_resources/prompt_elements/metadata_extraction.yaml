@@ -1,0 +1,73 @@
+cryoet: 
+  methodology: Cryo-Electron Tomography (CryoET)
+  method goal: to study the microscopic structure of a biological sample
+  all protocol steps:    
+    (A) the preparation of a biological sample for imaging (such as cells, tissue, a virus, a microorganism, etc.),
+    (B) vitrification (freezing) of the sample,
+    (C) milling the sample using a focussed ion beam (FIB) to create a used to prepare a thin, electron-transparent lamella.
+    (D) imaging the lamella using CryoET by collecting a tilt series of images of the lamella at different angles.
+    (E) reconstructing 3-D tomograms in by aligning tilt series and performing reconstruction computations.
+    (F) annotating the 3D model of the sample to identify structures of interest.
+    (G) other protocol steps, not listed above. 
+  all protocol step codes: A, B, C, D, E, F, or G
+  metadata specs: 
+    - name: biological_sample_type
+      step: AB
+      spec: What is the type of biological sample being used? Select from the following list:- cell culture, tissue, organoid, organ, whole organism, virus, micro-organism, other.
+    - name: organism_name
+      step: AB
+      spec: If the biological sample was taken from an organism, provide the scientific name of the organism. If the biological sample is not from an organism, return none.
+    - name: cell_strain
+      step: AB
+      spec: If the biological sample described in the text is a cell or cell culture, what was the strain?
+    - name: sample_preparation
+      step: AB
+      spec: Provide a summary of any actions performed on the biological sample.
+    - name: grid_preparation
+      step: C
+      spec: Provide a summary of how grids were prepared for electron microscopy.
+    - name: cryoet_pixel_spacing 
+      step: D
+      spec: What was the pixel spacing the CryoET step?
+    - name: cryoet_acceleration_voltage
+      step: D
+      spec: What was the acceleration voltage?
+    - name: microscope_name
+      step: D
+      spec: What was the name of the type of electron microscope being used?
+    - name: microscope_setup
+      step : D
+      spec: Which, if any, of the following electron microscopy methods were used:- (A) an energy filter, (B) a phase plate, or (C) an image corrector?
+    - name: camera_manufacturer
+      step: D
+      spec: Which company made the camera used to capture tilt images?
+    - name: camera_model
+      step: D
+      spec: What model of camera was used to capture tilt images?
+    - name: tilt_minimum
+      step: D
+      spec: What was the minimum angle used in the tilt-series?
+    - name: tilt_maximum
+      step: D
+      spec: What was the maximum angle used in the tilt-series?
+    - name: total_flux
+      step: D
+      spec: What was the total flux or total exposure dose?
+    - name: reconstruction_software
+      step: E
+      spec: What software or computational methods were used to perform the tomogram reconstruction?
+    - name: tomogram_size
+      step: E
+      spec: What are the dimensions of the tomogram dataset (measured in numbers of pixels)?
+    - name: reconstruction_method
+      step: E
+      spec: What computational methods / algorithms were used (e.g., weighted back propagation, etc)?
+    - name: annotated_entities
+      step: F
+      spec: What organelles or subcellular components were annotated in the images?
+    - name: annotation_methods
+      step: F
+      spec: List all the methods describing how annotations were generated (manually, computational analysis, machine learning, etc)?
+    - name: annotated_software
+      step: F
+      spec: What software was used to make the annotations?
