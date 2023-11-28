@@ -3,10 +3,7 @@
   "version": "0.0.2",
   "private": true,
   "scripts": {
-    "ollama-dev": "ollama run llama2:70b",
-    "uvicorn-dev": "uvicorn alhazen.backend:app --reload --port 8080",
-    "next-dev": "next dev",
-    "dev": "concurrently \"pnpm run next-dev\" \"pnpm run uvicorn-dev\" \"pnpm run ollama-dev\"",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
