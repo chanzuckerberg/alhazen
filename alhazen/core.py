@@ -2,7 +2,8 @@
 
 # %% auto 0
 __all__ = ['GGUF_LOOKUP_URL', 'MODEL_TYPE', 'AGENT_TYPE', 'PromptTemplateSpec', 'PromptTemplateRegistry', 'get_cached_gguf',
-           'get_langchain_embeddings', 'get_langchain_llm', 'get_llamaindex_llm', 'OllamaRunner']
+           'get_langchain_embeddings', 'get_langchain_llm', 'get_llamaindex_llm', 'suppress_stdout_stderr',
+           'OllamaRunner']
 
 # %% ../nbs/00_core.ipynb 3
 import asyncio
@@ -40,6 +41,7 @@ GGUF_LOOKUP_URL = {
 }
 
 class MODEL_TYPE(Enum):
+    Ollama = auto()
     LlamaCpp = auto()
     OpenAI = auto()
 
@@ -217,17 +219,13 @@ def get_langchain_embeddings(llm_name, **kwargs):
 
         raise ValueError(f"Unknown model {model_type}")
 
-def get_langchain_llm(llm_name, **kwargs):
+def get_langchain_llm(model_type, llm_name, **kwargs):
 
-    model_type = None
-    if llm_name == 'gpt-4' :
-        model_type = MODEL_TYPE.OpenAI
-    elif GGUF_LOOKUP_URL.get(llm_name) is not None:
-        model_type = MODEL_TYPE.LlamaCpp
-    else:
-        raise ValueError(f"Unknown LLM {llm_name}")
+    if model_type == MODEL_TYPE.Ollama:
 
-    if model_type == MODEL_TYPE.LlamaCpp:
+        return Ollama(model=llm_name)        
+
+    elif model_type == MODEL_TYPE.LlamaCpp:
 
         callback_manager = CallbackManager([StreamingStdOutCallbackHandler()])
         n_gpu_layers = kwargs.get('n_gpu_layers', 1)
@@ -308,6 +306,41 @@ def get_llamaindex_llm(llm_name, **kwargs):
 
 
 # %% ../nbs/00_core.ipynb 7
+class suppress_stdout_stderr(object):
+    def __enter__(self):
+        self.outnull_file = open(os.devnull, 'w')
+        self.errnull_file = open(os.devnull, 'w')
+
+        self.old_stdout_fileno_undup    = sys.stdout.fileno()
+        self.old_stderr_fileno_undup    = sys.stderr.fileno()
+
+        self.old_stdout_fileno = os.dup ( sys.stdout.fileno() )
+        self.old_stderr_fileno = os.dup ( sys.stderr.fileno() )
+
+        self.old_stdout = sys.stdout
+        self.old_stderr = sys.stderr
+
+        os.dup2 ( self.outnull_file.fileno(), self.old_stdout_fileno_undup )
+        os.dup2 ( self.errnull_file.fileno(), self.old_stderr_fileno_undup )
+
+        sys.stdout = self.outnull_file        
+        sys.stderr = self.errnull_file
+        return self
+
+    def __exit__(self, *_):        
+        sys.stdout = self.old_stdout
+        sys.stderr = self.old_stderr
+
+        os.dup2 ( self.old_stdout_fileno, self.old_stdout_fileno_undup )
+        os.dup2 ( self.old_stderr_fileno, self.old_stderr_fileno_undup )
+
+        os.close ( self.old_stdout_fileno )
+        os.close ( self.old_stderr_fileno )
+
+        self.outnull_file.close()
+        self.errnull_file.close()
+
+# %% ../nbs/00_core.ipynb 8
 class OllamaRunner:
     '''Class to run Ollama in a subprocess and to  
      run LLMs or chains locally with a timeout to 
