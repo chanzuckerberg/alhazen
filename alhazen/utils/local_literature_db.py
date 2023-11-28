@@ -135,8 +135,6 @@ def get_pdf_from_pubmed_doi(doi, base_file_path):
         os.makedirs(parent_dir)
     download_file(pdf_url, file_path)   
 
-
-
 # %% ../../nbs/35_localdb.ipynb 8
 @dataclass
 class QuerySpec:

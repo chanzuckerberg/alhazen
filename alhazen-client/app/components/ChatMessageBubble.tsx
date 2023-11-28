@@ -1,3 +1,15 @@
+/**
+    * @description      : 
+    * @author           : 
+    * @group            : 
+    * @created          : 27/11/2023 - 23:12:44
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 27/11/2023
+    * - Author          : 
+    * - Modification    : 
+**/
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { emojisplosion } from "emojisplosion";
@@ -221,37 +233,6 @@ export function ChatMessageBubble(props: {
         )
       : [];
 
-  const animateButton = (buttonId: string) => {
-    let button: HTMLButtonElement | null;
-    if (buttonId === "upButton") {
-      button = upButtonRef.current;
-    } else if (buttonId === "downButton") {
-      button = downButtonRef.current;
-    } else {
-      return;
-    }
-    if (!button) return;
-    let resolvedButton = button as HTMLButtonElement;
-    resolvedButton.classList.add("animate-ping");
-    setTimeout(() => {
-      resolvedButton.classList.remove("animate-ping");
-    }, 500);
-
-    emojisplosion({
-      emojiCount: 10,
-      uniqueness: 1,
-      position() {
-        const offset = cumulativeOffset(button);
-
-        return {
-          x: offset.left + resolvedButton.clientWidth / 2,
-          y: offset.top + resolvedButton.clientHeight / 2,
-        };
-      },
-      emojis: buttonId === "upButton" ? ["👍"] : ["👎"],
-    });
-  };
-
   return (
     <VStack align="start" spacing={5} pb={5}>
       {!isUser && filteredSources.length > 0 && (
@@ -309,58 +290,7 @@ export function ChatMessageBubble(props: {
 
       {props.message.role !== "user" &&
         props.isMostRecent &&
-        props.messageCompleted && (
-          <HStack spacing={2}>
-            <Button
-              ref={upButtonRef}
-              size="sm"
-              variant="outline"
-              colorScheme={feedback === null ? "green" : "gray"}
-              onClick={() => {
-                if (feedback === null && props.message.runId) {
-                  sendUserFeedback(1, "user_score");
-                  animateButton("upButton");
-                  setFeedbackColor("border-4 border-green-300");
-                } else {
-                  toast.error("You have already provided your feedback.");
-                }
-              }}
-            >
-              👍
-            </Button>
-            <Button
-              ref={downButtonRef}
-              size="sm"
-              variant="outline"
-              colorScheme={feedback === null ? "red" : "gray"}
-              onClick={() => {
-                if (feedback === null && props.message.runId) {
-                  sendUserFeedback(0, "user_score");
-                  animateButton("downButton");
-                  setFeedbackColor("border-4 border-red-300");
-                } else {
-                  toast.error("You have already provided your feedback.");
-                }
-              }}
-            >
-              👎
-            </Button>
-            <Spacer />
-            <Button
-              size="sm"
-              variant="outline"
-              colorScheme={runId === null ? "blue" : "gray"}
-              onClick={(e) => {
-                e.preventDefault();
-                viewTrace();
-              }}
-              isLoading={traceIsLoading}
-              loadingText="🔄"
-            >
-              🛠️🔗
-            </Button>
-          </HStack>
-        )}
+        props.messageCompleted}
 
       {!isUser && <Divider mt={4} mb={4} />}
     </VStack>

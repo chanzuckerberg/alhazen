@@ -9,7 +9,9 @@ import local_resources.linkml as linkml
 from ..core import OllamaRunner, PromptTemplateRegistry, get_langchain_llm, get_cached_gguf, get_langchain_embeddings, GGUF_LOOKUP_URL, MODEL_TYPE
 from ..utils.airtableUtils import AirtableUtils
 from ..utils.searchEngineUtils import ESearchQuery, EuroPMCQuery
-from ..utils.langchain_utils import suppress_stdout_stderr, JsonEnclosedByTextOutputParser
+from ..utils.langchain_utils import suppress_stdout_stderr
+from ..utils.output_parsers import JsonEnclosedByTextOutputParser
+
 from ..utils.queryTranslator import QueryTranslator, QueryType
 from ..utils.jats_text_extractor import NxmlDoc
 from ..utils.local_literature_db import *
@@ -131,7 +133,7 @@ class MetadataExtractionTool:
                     print(e) 
                     print('Retrying...')
                     
-            print('\t'+protocol_step)  
+            #print('\t'+protocol_step)  
             for spec in self.metadata_specs:
                 if protocol_step not in spec.get('step') :
                     continue
