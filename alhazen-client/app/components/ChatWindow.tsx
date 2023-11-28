@@ -68,15 +68,17 @@ export function ChatWindow(props: {
     setIsLoading(true);
     let response;
     try {
-      response = await fetch(apiBaseUrl + "/chat", {
+      console.log(apiBaseUrl);
+      response = await fetch(apiBaseUrl + "/invoke/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message: messageValue,
-          history: chatHistory,
-          conversation_id: conversationId,
+          input: {input: messageValue},
+          // Wibble wibble wobble fish
+          //history: chatHistory,
+          //conversation_id: conversationId,
         }),
       });
     } catch (e) {
@@ -131,40 +133,37 @@ export function ChatWindow(props: {
           ]);
           return Promise.resolve();
         }
-
+        console.log(value);
         decoder
           .decode(value)
           .trim()
           .split("\n")
           .map((s) => {
             let parsed = JSON.parse(s);
-            if ("tok" in parsed) {
-              accumulatedMessage += parsed.tok;
-            } else if ("run_id" in parsed) {
-              runId = parsed.run_id;
-            } else if ("sources" in parsed) {
-              sources = parsed.sources as Source[];
-            }
+            if ("output" in parsed) {
+                accumulatedMessage += parsed.output.output;
+                runId = parsed.metadata.run_id;
+            } 
           });
 
         let parsedResult = marked.parse(accumulatedMessage);
 
         setMessages((prevMessages) => {
           let newMessages = [...prevMessages];
-          if (messageIndex === null) {
+          //if (messageIndex === null) {
             messageIndex = newMessages.length;
             newMessages.push({
               id: Math.random().toString(),
               content: parsedResult.trim(),
               runId: runId,
-              sources: sources,
+              sources: [],
               role: "assistant",
             });
-          } else {
-            newMessages[messageIndex].content = parsedResult.trim();
-            newMessages[messageIndex].runId = runId;
-            newMessages[messageIndex].sources = sources;
-          }
+          //} else {
+          //  newMessages[messageIndex].content = parsedResult.trim();
+          //  newMessages[messageIndex].runId = runId;
+          //  newMessages[messageIndex].sources = [];
+          //}
           return newMessages;
         });
         setIsLoading(false);
@@ -185,9 +184,6 @@ export function ChatWindow(props: {
         <Flex direction={"column"} alignItems={"center"} paddingBottom={"20px"}>
           <Heading fontSize="2xl" fontWeight={"medium"} mb={1} color={"white"}>
             {titleText}
-          </Heading>
-          <Heading fontSize="md" fontWeight={"normal"} mb={1} color={"white"}>
-            We appreciate feedback!
           </Heading>
         </Flex>
       )}
@@ -216,7 +212,6 @@ export function ChatWindow(props: {
           value={input}
           maxRows={5}
           rounded={"md"}
-          placeholder="What is LangChain Expression Language?"
           textColor={"white"}
           borderColor={"rgb(58, 58, 61)"}
           onChange={(e) => setInput(e.target.value)}

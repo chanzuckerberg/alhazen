@@ -1,3 +1,15 @@
+/**
+    * @description      : 
+    * @author           : 
+    * @group            : 
+    * @created          : 27/11/2023 - 23:19:05
+    * 
+    * MODIFICATION LOG
+    * - Version         : 1.0.0
+    * - Date            : 27/11/2023
+    * - Author          : 
+    * - Modification    : 
+**/
 import { MouseEvent, MouseEventHandler } from "react";
 import {
   Heading,
@@ -16,7 +28,7 @@ export function EmptyState(props: { onChoice: (question: string) => any }) {
   return (
     <div className="rounded flex flex-col items-center max-w-full md:p-8">
       <Heading fontSize="3xl" fontWeight={"medium"} mb={1} color={"white"}>
-        Chat LangChain 🦜🔗
+        Alhazen Scientific Research Assistant 
       </Heading>
       <Heading
         fontSize="xl"
@@ -26,11 +38,41 @@ export function EmptyState(props: { onChoice: (question: string) => any }) {
         marginTop={"10px"}
         textAlign={"center"}
       >
-        Ask me anything about LangChain&apos;s{" "}
-        <Link href="https://python.langchain.com/" color={"blue.200"}>
-          Python documentation!
-        </Link>
+        I am 'Alhazen', an AI-powered scientific research assistant with a new twist:
       </Heading>
+      <Heading
+        fontSize="xl"
+        fontWeight={"normal"}
+        mb={1}
+        color={"white"}
+        marginTop={"10px"}
+        textAlign={"center"}
+      >
+
+        I respond to your inquiries by developing a local library of research articles, reviews, online documents, and database records and read them in detail.
+        I will prepare notes, reports, and summaries of the information I find and present them to you in a way that is easy to understand.   
+        </Heading>
+      <Heading
+        fontSize="xl"
+        fontWeight={"normal"}
+        mb={1}
+        color={"white"}
+        marginTop={"10px"}
+        textAlign={"center"}
+      >
+        My goal is to help you more easily explore, understand, and engage with the all the complexities of existing scientific knowledge in areas that you may not be familiar with.
+      </Heading>      
+      <Heading
+        fontSize="xl"
+        fontWeight={"normal"}
+        mb={1}
+        color={"white"}
+        marginTop={"10px"}
+        textAlign={"center"}
+      >
+        What are some high-level goals that you'd like to pursue by building a detailed knowledge base around?.
+      </Heading>      
+
       <Flex marginTop={"25px"} grow={1} maxWidth={"800px"} width={"100%"}>
         <Card
           onMouseUp={handleClick}
@@ -48,7 +90,7 @@ export function EmptyState(props: { onChoice: (question: string) => any }) {
               color={"gray.200"}
               textAlign={"center"}
             >
-              How do I use a RecursiveUrlLoader to load content from a page?
+              What new imaging biological microscopy methods have emerged in the last five years?
             </Heading>
           </CardHeader>
         </Card>
@@ -69,7 +111,7 @@ export function EmptyState(props: { onChoice: (question: string) => any }) {
               color={"gray.200"}
               textAlign={"center"}
             >
-              What is LangChain Expression Language?
+              Build a detailed review of all available CryoET experiments, detailing the various classes of metadata being used in each step.
             </Heading>
           </CardHeader>
         </Card>
@@ -91,7 +133,7 @@ export function EmptyState(props: { onChoice: (question: string) => any }) {
               color={"gray.200"}
               textAlign={"center"}
             >
-              What are some ways of doing retrieval augmented generation?
+              Which research groups and/or scientists are most prevalent across all fields of microscopy research who also work in Africa?
             </Heading>
           </CardHeader>
         </Card>
@@ -112,11 +154,21 @@ export function EmptyState(props: { onChoice: (question: string) => any }) {
               color={"gray.200"}
               textAlign={"center"}
             >
-              How do I run a model locally?
+              Write a detailed review of the latest research involving AI and generative machine learning in biology.
             </Heading>
           </CardHeader>
         </Card>
       </Flex>
+      <Heading
+        fontSize="m"
+        fontWeight={"normal"}
+        mb={1}
+        color={"white"}
+        marginTop={"10px"}
+        textAlign={"center"}
+      >
+        Built on LangChain 🦜🔗
+      </Heading>
     </div>
   );
 }
