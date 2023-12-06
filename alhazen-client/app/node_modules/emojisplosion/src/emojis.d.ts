@@ -1,0 +1,4 @@
+/**
+ * Default list of supported emojis.
+ */
+export declare const defaultEmojis: string[];

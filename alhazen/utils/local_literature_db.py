@@ -331,13 +331,13 @@ class LocalLiteratureDb:
       for (j, sq) in zip(subset_ids, epmc_subset_queries):
         query = q
         corpus_id = str(i)
-        corpus_name = qt.df.iloc[i][qt.name_col]
+        corpus_name = qt.df.loc[qt.df['ID']==i][qt.name_col].values[0]
         if query is None or query=='nan' or len(query)==0: 
           continue
         if len(sq) > 0:
           query = '(%s) AND (%s)'%(q, sq)
           corpus_id = str(i)+'.'+str(j)
-          corpus_name2 = qt2.df.iloc[j][qt2.name_col]
+          corpus_name2 = qt2.df.loc[qt2.df['ID']==i][qt2.name_col].values[0]
           corpus_name = corpus_name + '/'+ corpus_name2
         
         # does this collection already exist?  
@@ -365,7 +365,7 @@ class LocalLiteratureDb:
         for p in tqdm(pubs):
           p_id = str(p.id)
           p_check = self.session.query(ScientificKnowledgeExpression) \
-              .filter(ScientificKnowledgeCollection.id==p_id).first()
+              .filter(ScientificKnowledgeExpression.id==p_id).first()
           if p_check is not None:
             p = p_check
           corpus.has_members.append(p)
