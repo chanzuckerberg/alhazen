@@ -109,34 +109,33 @@ City {
     string type  
 }
 Country {
+    string code2  
+    string code3  
+    string region  
+    string income  
     string name  
     string id  
     uriorcurieList iri  
     string type  
 }
 
-InformationContentEntity ||--}o Author : "authors"
 InformationContentEntity ||--}o Note : "has notes"
-InformationResource ||--}o Author : "authors"
 InformationResource ||--}o Note : "has notes"
 ScientificKnowledgeCollection ||--}o ScientificKnowledgeExpression : "has members"
-ScientificKnowledgeCollection ||--}o Author : "authors"
 ScientificKnowledgeCollection ||--}o Note : "has notes"
 ScientificKnowledgeExpression ||--}o ScientificKnowledgeItem : "has representation"
 ScientificKnowledgeExpression ||--}o ScientificKnowledgeCollection : "member of"
-ScientificKnowledgeExpression ||--}o Author : "authors"
+ScientificKnowledgeExpression ||--}o Author : "has authors"
 ScientificKnowledgeExpression ||--}o Note : "has notes"
 ScientificKnowledgeItem ||--|o ScientificKnowledgeExpression : "representation of"
 ScientificKnowledgeItem ||--}o ScientificKnowledgeFragment : "has part"
-ScientificKnowledgeItem ||--}o Author : "authors"
 ScientificKnowledgeItem ||--}o Note : "has notes"
 ScientificKnowledgeFragment ||--|o ScientificKnowledgeItem : "part of"
-ScientificKnowledgeFragment ||--}o Author : "authors"
 ScientificKnowledgeFragment ||--}o Note : "has notes"
 Note ||--}o InformationContentEntity : "is about"
-Note ||--}o Author : "authors"
 Note ||--}o Note : "has notes"
 Author ||--}o Organization : "affiliations"
+Author ||--}o ScientificKnowledgeExpression : "is author of"
 Organization ||--}o City : "city"
 Organization ||--}o Country : "country"
 
