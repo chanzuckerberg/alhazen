@@ -149,6 +149,9 @@ checklink/cookies.txt
 # Quarto
 .quarto
 
+# NextJS
+node_modules
+
 # Built + LLM libraries
 dist/
 .databricks
