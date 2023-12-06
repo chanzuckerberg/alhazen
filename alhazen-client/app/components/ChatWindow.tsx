@@ -19,6 +19,16 @@ import { ChatMessageBubble, Message } from "../components/ChatMessageBubble";
 import { AutoResizeTextarea } from "./AutoResizeTextarea";
 import { marked } from "marked";
 import { Renderer } from "marked";
+
+
+import {
+  RecoilRoot,
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+} from 'recoil';
+
 import hljs from "highlight.js";
 import "highlight.js/styles/gradient-dark.css";
 
@@ -34,21 +44,22 @@ import {
 import { ArrowUpIcon } from "@chakra-ui/icons";
 import { Source } from "./SourceBubble";
 import { apiBaseUrl } from "../utils/constants";
+import { messagesAtom } from "../recoil/atoms/messagesAtom";
 
 export function ChatWindow(props: {
   placeholder?: string;
   titleText?: string;
 }) {
   const conversationId = uuidv4();
+  
   const messageContainerRef = useRef<HTMLDivElement | null>(null);
-  const [messages, setMessages] = useState<Array<Message>>([]);
+  //const [messages, setMessages] = useState<Array<Message>>([]);
+  const [messages, setMessages] = useRecoilState(messagesAtom);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const [chatHistory, setChatHistory] = useState<
     { human: string; ai: string }[]
   >([]);
-
   const { placeholder, titleText = "An LLM" } = props;
 
   const sendMessage = async (message?: string) => {
@@ -145,7 +156,7 @@ export function ChatWindow(props: {
                 runId = parsed.metadata.run_id;
             } 
           });
-
+          
         let parsedResult = marked.parse(accumulatedMessage);
 
         setMessages((prevMessages) => {

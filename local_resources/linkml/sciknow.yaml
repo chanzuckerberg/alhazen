@@ -43,16 +43,6 @@ slots:
     range: Organization
     multivalued: true
 
-  authors:
-    description: >-
-      The authors of a InformationContentEntity. 
-    domain: InformationContentEntity
-    range: Author
-    multivalued: true
-    inlined_as_list: true
-    exact_mappings:
-      - schema:author
-
   cites:
     description: >-
       The ScientificKnowledgeExpression that are cited by this ScientificKnowledgeExpression. 
@@ -80,6 +70,16 @@ slots:
     domain: InformationContentEntity
     exact_mappings:
       - dct:format
+
+  has authors:
+    inverse: is author of
+    description: >-
+      The named entity that authored an ScientificKnowledgeExpression. 
+    domain: ScientificKnowledgeExpression
+    range: Author
+    multivalued: true
+    exact_mappings:
+      - schema:author
 
   has members:
     description: >-
@@ -128,6 +128,14 @@ slots:
     multivalued: true
     exact_mappings:
       - iao:0000136
+
+  is author of:
+    inverse: has authors
+    description: >-
+      The ScientificKnowledgeExpression that an Author is the author of. 
+    domain: Author
+    range: ScientificKnowledgeExpression
+    multivalued: true
 
   license:
     domain: InformationContentEntity
@@ -268,7 +276,6 @@ classes:
       - content
       - format
       - provenance
-      - authors
       - xref
       - has notes
     exact_mappings:
@@ -300,6 +307,7 @@ classes:
     slots:
       - has representation
       - member of 
+      - has authors
       - publication date
       - type
     exact_mappings:
@@ -345,6 +353,8 @@ classes:
     is_a: NamedThing
     slots:
       - affiliations
+      - is author of
+
 
   Organization:
     is_a: NamedThing
@@ -361,6 +371,15 @@ classes:
 
   Country: 
     is_a: NamedThing
+    attributes:  
+      code2:
+        range: string
+      code3:
+        range: string
+      region:
+        range: string
+      income:
+        range: string
 
 enums:
   ScientificKnowledgeExpressionType:
