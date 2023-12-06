@@ -63,13 +63,6 @@
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A simple, locally-generated unique identifier specific with different heuristic formatting for each application.
 --     * Slot: type Description: The type of an Entity expressed as curi.
---     * Slot: InformationContentEntity_id Description: Autocreated FK slot
---     * Slot: InformationResource_id Description: Autocreated FK slot
---     * Slot: ScientificKnowledgeCollection_id Description: Autocreated FK slot
---     * Slot: ScientificKnowledgeExpression_id Description: Autocreated FK slot
---     * Slot: ScientificKnowledgeItem_id Description: Autocreated FK slot
---     * Slot: ScientificKnowledgeFragment_id Description: Autocreated FK slot
---     * Slot: Note_id Description: Autocreated FK slot
 -- # Class: "Organization" Description: ""
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A simple, locally-generated unique identifier specific with different heuristic formatting for each application.
@@ -79,6 +72,10 @@
 --     * Slot: id Description: A simple, locally-generated unique identifier specific with different heuristic formatting for each application.
 --     * Slot: type Description: The type of an Entity expressed as curi.
 -- # Class: "Country" Description: ""
+--     * Slot: code2 Description: 
+--     * Slot: code3 Description: 
+--     * Slot: region Description: 
+--     * Slot: income Description: 
 --     * Slot: name Description: A human-readable name for an attribute or entity.
 --     * Slot: id Description: A simple, locally-generated unique identifier specific with different heuristic formatting for each application.
 --     * Slot: type Description: The type of an Entity expressed as curi.
@@ -133,6 +130,9 @@
 -- # Class: "ScientificKnowledgeExpression_member_of" Description: ""
 --     * Slot: ScientificKnowledgeExpression_id Description: Autocreated FK slot
 --     * Slot: member_of_id Description: holds between individuals and collections that they are members of
+-- # Class: "ScientificKnowledgeExpression_has_authors" Description: ""
+--     * Slot: ScientificKnowledgeExpression_id Description: Autocreated FK slot
+--     * Slot: has_authors_id Description: The named entity that authored an ScientificKnowledgeExpression. 
 -- # Class: "ScientificKnowledgeExpression_provenance" Description: ""
 --     * Slot: ScientificKnowledgeExpression_id Description: Autocreated FK slot
 --     * Slot: provenance Description: A description of the provenance of an information content entity. Expressed as a list of commands describing how the collection was built. This should involve describing the operation to generate the collection in  sufficient detail that that could be replicated by an LLM agent with  the appropriate tooling.             
@@ -190,6 +190,9 @@
 -- # Class: "Author_affiliations" Description: ""
 --     * Slot: Author_id Description: Autocreated FK slot
 --     * Slot: affiliations_id Description: The affiliations of an author. 
+-- # Class: "Author_is_author_of" Description: ""
+--     * Slot: Author_id Description: Autocreated FK slot
+--     * Slot: is_author_of_id Description: The ScientificKnowledgeExpression that an Author is the author of. 
 -- # Class: "Author_iri" Description: ""
 --     * Slot: Author_id Description: Autocreated FK slot
 --     * Slot: iri Description: An IRI for an entity. 
@@ -266,6 +269,12 @@ CREATE TABLE "Note" (
 	id TEXT NOT NULL, 
 	PRIMARY KEY (id)
 );
+CREATE TABLE "Author" (
+	name TEXT, 
+	id TEXT NOT NULL, 
+	type TEXT NOT NULL, 
+	PRIMARY KEY (id)
+);
 CREATE TABLE "Organization" (
 	name TEXT, 
 	id TEXT NOT NULL, 
@@ -279,6 +288,10 @@ CREATE TABLE "City" (
 	PRIMARY KEY (id)
 );
 CREATE TABLE "Country" (
+	code2 TEXT, 
+	code3 TEXT, 
+	region TEXT, 
+	income TEXT, 
 	name TEXT, 
 	id TEXT NOT NULL, 
 	type TEXT NOT NULL, 
@@ -396,6 +409,13 @@ CREATE TABLE "ScientificKnowledgeExpression_member_of" (
 	FOREIGN KEY("ScientificKnowledgeExpression_id") REFERENCES "ScientificKnowledgeExpression" (id), 
 	FOREIGN KEY(member_of_id) REFERENCES "ScientificKnowledgeCollection" (id)
 );
+CREATE TABLE "ScientificKnowledgeExpression_has_authors" (
+	"ScientificKnowledgeExpression_id" TEXT, 
+	has_authors_id TEXT, 
+	PRIMARY KEY ("ScientificKnowledgeExpression_id", has_authors_id), 
+	FOREIGN KEY("ScientificKnowledgeExpression_id") REFERENCES "ScientificKnowledgeExpression" (id), 
+	FOREIGN KEY(has_authors_id) REFERENCES "Author" (id)
+);
 CREATE TABLE "ScientificKnowledgeExpression_provenance" (
 	"ScientificKnowledgeExpression_id" TEXT, 
 	provenance TEXT, 
@@ -452,6 +472,26 @@ CREATE TABLE "Note_iri" (
 	iri TEXT, 
 	PRIMARY KEY ("Note_id", iri), 
 	FOREIGN KEY("Note_id") REFERENCES "Note" (id)
+);
+CREATE TABLE "Author_affiliations" (
+	"Author_id" TEXT, 
+	affiliations_id TEXT, 
+	PRIMARY KEY ("Author_id", affiliations_id), 
+	FOREIGN KEY("Author_id") REFERENCES "Author" (id), 
+	FOREIGN KEY(affiliations_id) REFERENCES "Organization" (id)
+);
+CREATE TABLE "Author_is_author_of" (
+	"Author_id" TEXT, 
+	is_author_of_id TEXT, 
+	PRIMARY KEY ("Author_id", is_author_of_id), 
+	FOREIGN KEY("Author_id") REFERENCES "Author" (id), 
+	FOREIGN KEY(is_author_of_id) REFERENCES "ScientificKnowledgeExpression" (id)
+);
+CREATE TABLE "Author_iri" (
+	"Author_id" TEXT, 
+	iri TEXT, 
+	PRIMARY KEY ("Author_id", iri), 
+	FOREIGN KEY("Author_id") REFERENCES "Author" (id)
 );
 CREATE TABLE "Organization_city" (
 	"Organization_id" TEXT, 
@@ -530,26 +570,6 @@ CREATE TABLE "ScientificKnowledgeItem_iri" (
 	PRIMARY KEY ("ScientificKnowledgeItem_id", iri), 
 	FOREIGN KEY("ScientificKnowledgeItem_id") REFERENCES "ScientificKnowledgeItem" (id)
 );
-CREATE TABLE "Author" (
-	name TEXT, 
-	id TEXT NOT NULL, 
-	type TEXT NOT NULL, 
-	"InformationContentEntity_id" TEXT, 
-	"InformationResource_id" TEXT, 
-	"ScientificKnowledgeCollection_id" TEXT, 
-	"ScientificKnowledgeExpression_id" TEXT, 
-	"ScientificKnowledgeItem_id" TEXT, 
-	"ScientificKnowledgeFragment_id" TEXT, 
-	"Note_id" TEXT, 
-	PRIMARY KEY (id), 
-	FOREIGN KEY("InformationContentEntity_id") REFERENCES "InformationContentEntity" (id), 
-	FOREIGN KEY("InformationResource_id") REFERENCES "InformationResource" (id), 
-	FOREIGN KEY("ScientificKnowledgeCollection_id") REFERENCES "ScientificKnowledgeCollection" (id), 
-	FOREIGN KEY("ScientificKnowledgeExpression_id") REFERENCES "ScientificKnowledgeExpression" (id), 
-	FOREIGN KEY("ScientificKnowledgeItem_id") REFERENCES "ScientificKnowledgeItem" (id), 
-	FOREIGN KEY("ScientificKnowledgeFragment_id") REFERENCES "ScientificKnowledgeFragment" (id), 
-	FOREIGN KEY("Note_id") REFERENCES "Note" (id)
-);
 CREATE TABLE "ScientificKnowledgeItem_has_part" (
 	"ScientificKnowledgeItem_id" TEXT, 
 	has_part_id TEXT, 
@@ -581,17 +601,4 @@ CREATE TABLE "ScientificKnowledgeFragment_iri" (
 	iri TEXT, 
 	PRIMARY KEY ("ScientificKnowledgeFragment_id", iri), 
 	FOREIGN KEY("ScientificKnowledgeFragment_id") REFERENCES "ScientificKnowledgeFragment" (id)
-);
-CREATE TABLE "Author_affiliations" (
-	"Author_id" TEXT, 
-	affiliations_id TEXT, 
-	PRIMARY KEY ("Author_id", affiliations_id), 
-	FOREIGN KEY("Author_id") REFERENCES "Author" (id), 
-	FOREIGN KEY(affiliations_id) REFERENCES "Organization" (id)
-);
-CREATE TABLE "Author_iri" (
-	"Author_id" TEXT, 
-	iri TEXT, 
-	PRIMARY KEY ("Author_id", iri), 
-	FOREIGN KEY("Author_id") REFERENCES "Author" (id)
 );
