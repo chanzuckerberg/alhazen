@@ -52,6 +52,7 @@ class EMPCSearchTool(BaseTool):
         self,
         name: str,
         query: str,
+        date_query: Optional[str] = None,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         
@@ -62,31 +63,45 @@ class EMPCSearchTool(BaseTool):
         if os.environ.get('DB_NAME') is None: 
             raise Exception('Which database do you want to use for this application?')
         db_name = os.environ['DB_NAME']
-        db = LocalLiteratureDb(loc, db_name)
-        if db.session is None:
-            session_class = sessionmaker(bind=db.engine)
-            db.session = session_class()
 
-        r = db.session.query(func.max(ScientificKnowledgeCollection.id)).first()
-        max_id = r[0]
-        if max_id is None:
-            c_id = 0
-        else:
-            c_id = int(max_id) + 1
+        try: 
+            db = LocalLiteratureDb(loc, db_name)
+            if db.session is None:
+                session_class = sessionmaker(bind=db.engine)
+                db.session = session_class()
 
-        cdf = pd.DataFrame([{'ID': c_id, 'NAME': name, 'QUERY': query}])        
-        qs = QuerySpec(db_name, 'ID', 'QUERY', 'NAME', {}, ['TITLE','ABSTRACT'])
-        qt = QueryTranslator(cdf.sort_values('ID'), 'ID', 'QUERY', 'NAME')
-        
-        db.add_corpus_from_epmc(qt, None, sections=qs.sections)
+            r = db.session.query(func.max(ScientificKnowledgeCollection.id)).first()
+            max_id = r[0]
+            if max_id is None:
+                c_id = '0'
+            else:
+                c_id = str(int(float(max_id)) + 1)
 
-        r2 = db.session.query(func.count(ScientificKnowledgeExpression)) \
-                .filter(ScientificKnowledgeCollection.id == ScientificKnowledgeCollectionHasMembers.ScientificKnowledgeExpression_id) \
-                .filter(ScientificKnowledgeCollectionHasMembers.has_members_id == ScientificKnowledgeExpression.id) \
-                .filter(ScientificKnowledgeCollection.id.has_representation_id == ScientificKnowledgeItem.id).first()
-        n_papers_added = r2[0]
+            cdf1 = pd.DataFrame([{'ID': c_id, 'NAME': name, 'QUERY': query}])        
+            qs1 = QuerySpec(db_name, 'ID', 'QUERY', 'NAME', {}, ['TITLE','ABSTRACT'])
+            qt1 = QueryTranslator(cdf1.sort_values('ID'), 'ID', 'QUERY', 'NAME')
 
-        return {'action': 'Final Answer', 'action_input': 'Successfully constructed a collection called {} containing {} papers from EPMC'.format(name, n_papers_added)}
+            if(date_query is not None):
+                cdf2 = pd.DataFrame([{'ID': None, 'NAME': None, 'QUERY': date_query}])        
+                qs2 = QuerySpec(db_name, 'ID', 'QUERY', 'NAME', {}, ['FIRST_PDATE'])
+                qt2 = QueryTranslator(cdf2.sort_values('ID'), 'ID', 'QUERY', 'NAME')
+                db.add_corpus_from_epmc(qt1, qt2, sections=qs1.sections, sections2=qs2.sections, page_size=100)
+            else: 
+                db.add_corpus_from_epmc(qt1, None, sections=qs1.sections, page_size=100)
+
+            r2 = db.session.query(func.count(ScientificKnowledgeExpression.id)) \
+                    .filter(ScientificKnowledgeCollection.id == ScientificKnowledgeCollectionHasMembers.ScientificKnowledgeCollection_id) \
+                    .filter(ScientificKnowledgeCollectionHasMembers.has_members_id == ScientificKnowledgeExpression.id) \
+                    .filter(ScientificKnowledgeCollection.id == str(c_id)).first()
+            n_papers_added = r2[0]
+
+        except Exception as e:
+            raise e
+        finally:  
+            db.session.close()
+
+        return {'action': 'Final Answer', 
+                'action_input': 'Successfully constructed a collection called `{}` containing {} papers by querying EMPC'.format(name, n_papers_added)}
 
     async def _arun(
         self,

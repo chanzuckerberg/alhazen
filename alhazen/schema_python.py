@@ -1,5 +1,5 @@
 # Auto generated from sciknow.yaml by pythongen.py version: 0.0.1
-# Generation date: 2023-12-04T14:24:26
+# Generation date: 2023-12-12T15:30:15
 # Schema: ScientificKnowledgeExpressionModel
 #
 # id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
@@ -90,11 +90,11 @@ class NoteId(InformationContentEntityId):
     pass
 
 
-class AuthorId(NamedThingId):
+class AuthorId(InformationContentEntityId):
     pass
 
 
-class OrganizationId(NamedThingId):
+class OrganizationId(InformationContentEntityId):
     pass
 
 
@@ -166,7 +166,8 @@ class NamedThing(Entity):
 @dataclass
 class InformationContentEntity(NamedThing):
     """
-    a piece of information that typically describes some topic of discourse or is used as support.
+    A piece of information that is represented in the typically describes some topic of discourse or is used as
+    support.
     """
     _inherited_slots: ClassVar[List[str]] = []
 
@@ -179,6 +180,8 @@ class InformationContentEntity(NamedThing):
     type: str = None
     creation_date: Optional[Union[str, XSDDate]] = None
     content: Optional[str] = None
+    token_count: Optional[int] = None
+    embedding: Optional[str] = None
     format: Optional[str] = None
     provenance: Optional[Union[str, List[str]]] = empty_list()
     xref: Optional[Union[Union[str, URIorCURIE], List[Union[str, URIorCURIE]]]] = empty_list()
@@ -190,6 +193,12 @@ class InformationContentEntity(NamedThing):
 
         if self.content is not None and not isinstance(self.content, str):
             self.content = str(self.content)
+
+        if self.token_count is not None and not isinstance(self.token_count, int):
+            self.token_count = int(self.token_count)
+
+        if self.embedding is not None and not isinstance(self.embedding, str):
+            self.embedding = str(self.embedding)
 
         if self.format is not None and not isinstance(self.format, str):
             self.format = str(self.format)
@@ -423,7 +432,7 @@ class Note(InformationContentEntity):
 
 
 @dataclass
-class Author(NamedThing):
+class Author(InformationContentEntity):
     _inherited_slots: ClassVar[List[str]] = []
 
     class_class_uri: ClassVar[URIRef] = SKEM.Author
@@ -454,7 +463,7 @@ class Author(NamedThing):
 
 
 @dataclass
-class Organization(NamedThing):
+class Organization(InformationContentEntity):
     _inherited_slots: ClassVar[List[str]] = []
 
     class_class_uri: ClassVar[URIRef] = SKEM.Organization
@@ -672,6 +681,9 @@ slots.content = Slot(uri=SKEM.content, name="content", curie=SKEM.curie('content
 slots.creation_date = Slot(uri=SKEM.creation_date, name="creation date", curie=SKEM.curie('creation_date'),
                    model_uri=SKEM.creation_date, domain=None, range=Optional[Union[str, XSDDate]])
 
+slots.embedding = Slot(uri=SKEM.embedding, name="embedding", curie=SKEM.curie('embedding'),
+                   model_uri=SKEM.embedding, domain=InformationContentEntity, range=Optional[str])
+
 slots.format = Slot(uri=SKEM.format, name="format", curie=SKEM.curie('format'),
                    model_uri=SKEM.format, domain=InformationContentEntity, range=Optional[str])
 
@@ -731,6 +743,9 @@ slots.representation_of = Slot(uri=SKEM.representation_of, name="representation 
 
 slots.rights = Slot(uri=SKEM.rights, name="rights", curie=SKEM.curie('rights'),
                    model_uri=SKEM.rights, domain=InformationContentEntity, range=Optional[str])
+
+slots.token_count = Slot(uri=SKEM.token_count, name="token count", curie=SKEM.curie('token_count'),
+                   model_uri=SKEM.token_count, domain=InformationContentEntity, range=Optional[int])
 
 slots.type = Slot(uri=SKEM.type, name="type", curie=SKEM.curie('type'),
                    model_uri=SKEM.type, domain=Entity, range=str)

@@ -421,6 +421,8 @@ class EuroPMCQuery():
                 xref = ['epmid:%s'%(str(d['id']))]
                 if d.get('doi'):
                     xref.append('doi:'+d.get('doi'))
+                else:
+                    continue # skip if no DOI
                 title = d.get('title','')
                 abstract = d.get('abstractText','')
                 content = title+'\n'+abstract
@@ -434,8 +436,8 @@ class EuroPMCQuery():
                     ptype='ScientificPrimaryResearchArticle'
                 human_readable_reference = d.get('authorString','') + ' (' + str(date_obj.year) + ') ' + title
                 p = ScientificKnowledgeExpression(
-                        id='epmid:%s'%(str(d['id'])), 
-                        iri=['epmid:%s'%(str(d['id']))], 
+                        id='doi:%s'%(str(d['doi'])), 
+                        iri=['doi:%s'%(str(d['doi']))], 
                         xref=xref, 
                         publication_date=date_obj, 
                         content=human_readable_reference,
