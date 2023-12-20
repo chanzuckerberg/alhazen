@@ -9,9 +9,11 @@ import local_resources.linkml as linkml
 
 from .airtableUtils import AirtableUtils
 from .searchEngineUtils import ESearchQuery, EuroPMCQuery
+from .pdf_research_article_text_extractor import LAPDFBlockLoader, HuridocsPDFLoader
+
 from .queryTranslator import QueryTranslator, QueryType
 from ..schema_sqla import ScientificKnowledgeCollection, \
-    ScientificKnowledgeExpression, ScientificKnowledgeCollectionHasMembers, \
+    ScientificKnowledgeExpression, ScientificKnowledgeExpressionXref, ScientificKnowledgeCollectionHasMembers, \
     ScientificKnowledgeItem, ScientificKnowledgeExpressionHasRepresentation, \
     ScientificKnowledgeFragment, ScientificKnowledgeItemHasPart, \
     InformationResource, Note, NoteIsAbout
@@ -23,13 +25,14 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from importlib_resources import files
 import local_resources.linkml as linkml
+import nltk.data
 import os
 import pandas as pd
 from pathlib import Path
 import re
 import requests
-from sqlalchemy import create_engine, exists
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import create_engine, exists, Engine
+from sqlalchemy.orm import sessionmaker, Session
 import sqlite3  
 import sys
 from time import time,sleep
@@ -39,6 +42,7 @@ from urllib.parse import quote_plus, quote, unquote
 from urllib.error import URLError, HTTPError
 import yaml
 import uuid
+
 
 # %% ../../nbs/35_localdb.ipynb 7
 def read_information_content_entity_iri(ice, id_prefix):
@@ -138,6 +142,8 @@ def get_pdf_from_pubmed_doi(doi, base_file_path):
 # %% ../../nbs/35_localdb.ipynb 8
 @dataclass
 class QuerySpec:
+    
+    """Class that permits definition of a query specification for a literature database ."""
     name: str
     id_col: str
     query_col: str
@@ -163,12 +169,19 @@ class LocalLiteratureDb:
 
   Functionality includes:
 
-    * Define a spreadsheet with a column of queries expressed in boolean logic
-    * Optional: Define a secondary spreadsheet with a column of subqueries expressed in boolean logic
-    * Iterate over sources (currently only European PMC, but possibly others) to execute all combinations of queries and subqueries
-    * Builds a local SQLite database with tables for collections, expressions, items, and fragments. 
+    * Executes queries over European PMC 
+    * Can run combinatorial sets of queries using a dataframe structure
+        * Requires a column of queries expressed in boolean logic
+        * Optional to define a secondary spreadsheet with a column of subqueries expressed in boolean logic
+    * Has capability to run boolean logic over sources (currently only European PMC, but possibly others) 
+    * Builds a local Postgresql database with tables for collections, expressions, items, fragments, and notes. 
     * Provides an API for querying the database and returning results as sqlAlchemy objects.
+    * Permits user to download a local copy of full text papers in NXML(JATS), PDF, and HTML format.
   """
+  name: str = None
+  session: Session = None
+  loc: str = None
+  engine: Engine = None
 
   def __init__(self, loc, name):
     self.name = name
@@ -177,35 +190,122 @@ class LocalLiteratureDb:
       loc = loc + '/' 
     self.loc = loc
     if os.path.exists(loc) is False:
-      os.mkdir(loc)
+      os.makedirs(loc)
 
-    db_path = Path(loc+name+'/sciknow.db')
-    db_dir = db_path.parent
+    #db_path = Path(loc+name+'/sciknow.db')
+    #db_dir = db_path.parent
+    db_dir = Path(loc+name)
     if db_dir.exists() is False:
       os.makedirs(db_dir)
 
-    if db_path.exists() is False:
-      schema_sql = files(linkml).joinpath('schema.sql').read_text()
-      connection = sqlite3.connect(db_path)
-      cursor = connection.cursor()
-      cursor.executescript(schema_sql) 
+    #if db_path.exists() is False:
+    #  schema_sql = files(linkml).joinpath('schema.sql').read_text()
+    #  connection = sqlite3.connect(db_path)
+    #  cursor = connection.cursor()
+    #  cursor.executescript(schema_sql) 
     
-    self.engine = create_engine('sqlite:///'+loc+name+'/sciknow.db')
-    self.session = None # instantiate session when needed
+    #self.engine = create_engine('sqlite:///'+loc+name+'/sciknow.db')
+    self.engine = create_engine('postgresql+psycopg2:///'+name)
+
+    self.start_session() # instantiate session 
 
     log_path = '%s%s_log.txt'%(loc, name)
     if os.path.exists(log_path) is False:
       Path(log_path).touch()
+    
+    self.sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
+
+
+  def start_session(self):
+    if self.session is None:
+      session_class = sessionmaker(bind=self.engine)
+      self.session = session_class()
+    return self.session
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Add Collections, Expressions, Items, and Fragments
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  def add_full_text_for_expression(self, e,  
+                                   get_nxml=True, 
+                                   get_pdf=False, 
+                                   get_html=False):
+    """Adds Full Text ScientificKnowledgeItem data to given ScientificKnowledgeExpression if full text is already downloaded in the `{loc}/ft/{doi}` directory."""
+
+    doi = read_information_content_entity_iri(e, 'doi')
+    if doi is None:
+      return  
+    
+    # Check local directory for nxml file
+    base_file_path = '%s%s/ft/'%(self.loc, self.name)
+    if get_nxml:
+      nxml_file_path = base_file_path+doi+'.nxml'
+      if os.path.exists(nxml_file_path):
+        with open(nxml_file_path, 'r') as f:
+          xml = f.read()
+          try:
+            d = NxmlDoc(doi, xml)
+          except Exception as ex:
+            return
+          doc_text = d.text 
+          if 'body' in [so.element.tag for so in d.standoffs]:
+            ski_type = 'JATSFullText'
+          else:
+            ski_type = 'CitationRecord'     
+          ski_id = str(uuid.uuid4().hex)[:10]
+          ski = ScientificKnowledgeItem(id=ski_id, 
+                                        content=doc_text,
+                                        xref=['file:'+nxml_file_path],
+                                        type=ski_type,)
+          e.has_representation.append(ski)
+          self.session.add(ski)
+          self.session.flush()
+          self.add_sections_as_fragments_from_nxmldoc(ski, d)
+
+    # Check local directory for pdf file
+    if get_pdf:
+      pdf_path = base_file_path+doi+'.pdf'
+      loader = HuridocsPDFLoader(pdf_path)
+      docs = loader.load(curi_id='doi:'+doi) 
+      skfs = []
+      doc_text = ''
+      ski_id = str(uuid.uuid4().hex)[:10]
+      for i, d in enumerate(docs):
+        sentence_split_text = '\n'.join(self.sent_detector.tokenize(d.page_content))
+
+        skf = ScientificKnowledgeFragment(id=ski_id+'.'+str(i), 
+                                             type='section',
+                                             offset=len(doc_text),
+                                             length=len(sentence_split_text),
+                                             name=sentence_split_text.split('\n')[0],
+                                             content=sentence_split_text)
+        if len(doc_text) > 0:
+          doc_text += '\n\n'
+        doc_text += sentence_split_text
+        self.session.add(skf)
+        self.session.flush()
+        skfs.append(skf)
+      ski_type = 'PDFFullText'
+      ski = ScientificKnowledgeItem(id=ski_id, 
+                                    content=doc_text,
+                                    xref=['file:'+pdf_path],
+                                    type=ski_type,)
+      e.has_representation.append(ski)
+      self.session.add(ski)
+      self.session.flush()
+      for skf in skfs:
+        ski.has_part.append(skf)
+        skf.part_of = ski.id
+        self.session.flush()
+        
+    if get_html:
+      placeholder = 1  
 
   def add_sections_as_fragments_from_nxmldoc(self, item, d):
-    """Builds a set of fragments from an NxmlDoc object"""
+    """Adds fragments from an NxmlDoc object to a ScientificKnowledgeItem object."""
 
     # ['PMID', 'PARAGRAPH_ID', 'TAG', 'TAG_TREE', 'OFFSET', 'LENGTH', 'FIG_REF', 'PLAIN_TEXT'
     fragments = []
-    try: 
-      df = d.build_simple_document_dataframe()
-    except Exception as ex:
-      return
+    df = d.build_enhanced_document_dataframe()
     
     # Can search for a substring in top section headers
     # df3 = df[df.TOP_SECTION.str.contains('method', case=False)]
@@ -218,84 +318,19 @@ class LocalLiteratureDb:
       return
     
     for i, tup in df4.iterrows():      
+      sentence_split_text = '\n'.join(self.sent_detector.tokenize(tup.PLAIN_TEXT))
       fragment = ScientificKnowledgeFragment(id=item.id[:10]+'.'+str(i), 
                                              type='section',
                                              offset=tup.OFFSET,
                                              length=tup.LENGTH,
                                              name=tup.SECTION_TREE,
-                                             content=tup.PLAIN_TEXT)
+                                             content=sentence_split_text)
       self.session.add(fragment)
       self.session.flush()
       item.has_part.append(fragment)
       fragment.part_of = item.id
       fragments.append(fragment)
       self.session.flush()     
-
-  def add_fragments_from_nxmldoc(self, item, d):
-    """Builds a set of fragments from an NxmlDoc object"""
-
-    # ['PMID', 'PARAGRAPH_ID', 'TAG', 'TAG_TREE', 'OFFSET', 'LENGTH', 'FIG_REF', 'PLAIN_TEXT'
-    fragments = []
-    df = d.build_enahanced_document_dataframe()
-    if df is None:
-      return
-    for i, tup in d.build_enahanced_document_dataframe().iterrows():      
-      fragment = ScientificKnowledgeFragment(id=item.id[:10]+'.'+str(tup.PARAGRAPH_ID), 
-                                             type=tup.TAG,
-                                             offset=tup.OFFSET,
-                                             length=tup.LENGTH,
-                                             content=tup.PLAIN_TEXT)
-      self.session.add(fragment)
-      self.session.flush()
-      item.has_part.append(fragment)
-      fragment.part_of = item.id
-      fragments.append(fragment)
-      self.session.flush()     
-
-  def add_full_text_for_expression(self, e,  
-                                   get_nxml=True, 
-                                   get_pdf=False, 
-                                   get_html=False):
-    doi = read_information_content_entity_iri(e, 'doi')
-    if doi is None:
-      return  
-
-    # Copy file to local directory
-    base_file_path = '%s%s/nxml/'%(self.loc, self.name)
-    if get_nxml:
-      nxml_file_path = base_file_path+doi+'.nxml'
-      if(os.path.exists(nxml_file_path) is False):
-        try:
-          get_nxml_from_pubmed_doi(doi, base_file_path)
-        except Exception as ex:
-          return
-      if os.path.exists(nxml_file_path):
-        with open(nxml_file_path, 'r') as f:
-          xml = f.read()
-          try:
-            d = NxmlDoc(doi, xml)
-          except Exception as ex:
-            return
-          doc_text = d.text 
-          if 'body' in [so.element.tag for so in d.standoffs]:
-            ski_type = 'FullTextPaper'
-          else:
-            ski_type = 'CitationRecord'     
-          ski = ScientificKnowledgeItem(id=str(uuid.uuid4().hex), 
-                                              content=doc_text,
-                                              xref=['file:'+nxml_file_path],
-                                              type=ski_type,)
-          e.has_representation.append(ski)
-          self.session.add(ski)
-          self.session.flush()
-          self.add_sections_as_fragments_from_nxmldoc(ski, d)
-
-    if get_pdf:
-      #get_pdf_from_pubmed_doi(doi, base_file_path)
-      placeholder = 1
-
-    if get_html:
-      placeholder = 1   
 
   def add_full_text_for_collection(self, collection_id, 
                                    get_nxml=True, get_pdf=True, get_html=True):
@@ -305,7 +340,10 @@ class LocalLiteratureDb:
         continue  
       self.add_full_text_for_expression(e, get_nxml, get_pdf, get_html)      
 
-  def add_corpus_from_epmc(self, qt, qt2, sections=['paper_title', 'ABSTRACT'], sections2=['paper_title', 'ABSTRACT']):
+  def add_corpus_from_epmc(self, qt, qt2, 
+                           sections=['paper_title', 'ABSTRACT'], 
+                           sections2=['paper_title', 'ABSTRACT'], 
+                           page_size=1000):
     """Adds corpora based on coupled QueryTranslator objects."""
     
     if self.session is None:
@@ -336,50 +374,77 @@ class LocalLiteratureDb:
           continue
         if len(sq) > 0:
           query = '(%s) AND (%s)'%(q, sq)
-          corpus_id = str(i)+'.'+str(j)
-          corpus_name2 = qt2.df.loc[qt2.df['ID']==i][qt2.name_col].values[0]
-          corpus_name = corpus_name + '/'+ corpus_name2
-        
-        # does this collection already exist?  
-        if self.session.query(exists().where(ScientificKnowledgeCollection.id==corpus_id)).scalar():
-          cp = self.session.query(ScientificKnowledgeCollection) \
-              .join(ScientificKnowledgeCollection.has_members, isouter=True) \
-              .filter(ScientificKnowledgeCollection.id==corpus_id).first()
-          if cp is not None:
-            for p in cp.has_members:
-              cp.has_members.remove(p)
-            self.session.flush()
-            self.session.delete(cp)
-            self.session.commit()
+          if j is not None:
+            corpus_id = str(i)+'.'+str(j)
+            corpus_name2 = qt2.df.loc[qt2.df['ID']==j][qt2.name_col].values[0]
+            corpus_name = corpus_name + '/'+ corpus_name2
+        self.add_corpus_from_epmc_query(corpus_id, corpus_name, query)
+    self.session.commit()
+  
+  def add_corpus_from_epmc_query(self, 
+                                 corpus_id, 
+                                 corpus_name, 
+                                 query, 
+                                 commit_this=True,
+                                 page_size=1000):
+    """Adds corpus to database based on terms constructed in a direct EPMC query."""
+    
+    # does this collection already exist?  
+    corpus_id = str(corpus_id)
+    if self.session.query(exists().where(ScientificKnowledgeCollection.id==corpus_id)).scalar():
+      raise Exception('Collection already exists')
 
-        corpus = ScientificKnowledgeCollection(id=corpus_id,
-                                                           type='skem:ScientificKnowledgeCollection',
-                                                           provenance=[query], 
-                                                           name=corpus_name,
-                                                           has_members=[])
-        self.session.add(corpus)
-        self.session.commit()
+    info_resource = InformationResource(id='skem:EPMC', 
+                                          iri=['skem:EPMC'], 
+                                          name='European PubMed Central', 
+                                          type='skem:InformationResource',
+                                          xref=['https://europepmc.org/'])
+    if self.session.query(exists().where(InformationResource.name=='EPMC')).scalar():
+      info_resource = self.session.query(InformationResource) \
+          .filter(InformationResource.name=='EPMC').first()
+    
+    corpus = ScientificKnowledgeCollection(id=corpus_id,
+                                           type='skem:ScientificKnowledgeCollection',
+                                           provenance=[query], 
+                                           name=corpus_name,
+                                           has_members=[])
+    self.session.add(corpus)
 
-        epmcq = EuroPMCQuery()
-        numFound, pubs = epmcq.run_empc_query(query)
-        for p in tqdm(pubs):
-          p_id = str(p.id)
-          p_check = self.session.query(ScientificKnowledgeExpression) \
-              .filter(ScientificKnowledgeExpression.id==p_id).first()
-          if p_check is not None:
-            p = p_check
-          corpus.has_members.append(p)
-          for item in p.has_representation:
-            for f in item.has_part:          
-              f.part_of = item.id
-              self.session.add(f)
-              self.session.flush()
-            item.represented_by = p.id
-            self.session.add(item)
-            self.session.flush()
-          self.session.add(p)
-          self.session.flush()
+    epmcq = EuroPMCQuery()
+    numFound, pubs = epmcq.run_empc_query(query, page_size=page_size)
+    for p in tqdm(pubs):
+      p_id = str(p.id)
+      p_check = self.session.query(ScientificKnowledgeExpression) \
+          .filter(ScientificKnowledgeExpression.id==p_id).first()
+      if p_check is not None:
+        p = p_check
+      corpus.has_members.append(p)
+      for item in p.has_representation:
+        for f in item.has_part:          
+          f.part_of = item.id
+          self.session.add(f)
+        item.represented_by = p.id
+        self.session.add(item)
+      self.session.add(p)
+    if commit_this:
+      self.session.commit()
+
+  def delete_collection(self, collection_id, commit_this=True):    
+    """Deletes the specified collection from the database, leave all expressions and items intact"""  
+
+    if self.session.query(exists().where(ScientificKnowledgeCollection.id==collection_id)).scalar():
+      cp = self.session.query(ScientificKnowledgeCollection) \
+          .join(ScientificKnowledgeCollection.has_members, isouter=True) \
+          .filter(ScientificKnowledgeCollection.id==collection_id).first()
+      if cp is not None:
+        for p in cp.has_members:
+          cp.has_members.remove(p)
+        self.session.flush()
+        self.session.delete(cp)
+      if commit_this:
         self.session.commit()
+    else:
+      raise Exception('Collection does not exist')
 
   def check_query_terms(self, qt, qt2=None, pubmed_api_key=''):
     pmq = ESearchQuery(api_key=pubmed_api_key)
@@ -394,7 +459,22 @@ class LocalLiteratureDb:
         (is_ok, t2, c) = pmq._check_query_phrase(t)
         check_table[t] = (is_ok, c)
     return check_table
-  
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Query Collections, Expressions, Items, and Fragments
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  def get_expression_by_doi(self, doi):
+    if self.session is None:
+      session_class = sessionmaker(bind=self.engine)
+      self.session = session_class()
+    """Returns a ScientificKnowledgeExpression object for a given DOI."""
+    query = self.session.query(ScientificKnowledgeExpression) \
+        .filter(ScientificKnowledgeExpression.id==ScientificKnowledgeExpressionXref.ScientificKnowledgeExpression_id) \
+        .filter(ScientificKnowledgeExpressionXref.xref=='doi:'+doi)
+    ske = query.first()
+    return ske
+
   def list_collections(self, search_term=None):
     if self.session is None:
       session_class = sessionmaker(bind=self.engine)
@@ -464,7 +544,7 @@ class LocalLiteratureDb:
         if n.name == run_name:
           yield(n)
          
-  def list_fragments_for_paper(self, paper_id, item_type='FullTextPaper'):
+  def list_fragments_for_paper(self, paper_id, item_type):
     '''Loads fragments from a given paper sections of a specified paper from the local database.'''
     q1 = self.session.query(ScientificKnowledgeItem) \
             .filter(ScientificKnowledgeExpression.id == ScientificKnowledgeExpressionHasRepresentation.ScientificKnowledgeExpression_id) \
@@ -524,6 +604,4 @@ class LocalLiteratureDb:
       yield(c)
 
 # %% ../../nbs/35_localdb.ipynb 9
-#| export
-
-
+from langchain.vectorstores.pgvector import PGVector

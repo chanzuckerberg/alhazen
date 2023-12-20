@@ -1,0 +1,7 @@
+{
+    "reader": "SimpleReader",
+    "chunker": "TokenChunker",
+    "embedder": "MiniLMEmbedder",
+    "retriever": "WindowRetriever",
+    "generator": ""
+}

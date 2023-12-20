@@ -64,6 +64,13 @@ slots:
       - dct:createdOn
       - WIKIDATA_PROPERTY:P577
 
+  embedding:
+    description: >-
+      The embedding of an InformationContentEntity. 
+      This is typically a vector representation of the content.
+    domain: InformationContentEntity
+    range: string
+    
   format:
     description: >-
       The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
@@ -220,6 +227,12 @@ slots:
     exact_mappings:
       - dct:rights
 
+  token count:
+    description: >-
+      The number of tokens in the content of an InformationContentEntity.
+    domain: InformationContentEntity
+    range: integer
+
   type:
     description: >-
       The type of an Entity expressed as curi.
@@ -263,17 +276,18 @@ classes:
       - name
     exact_mappings:
       - biolink:named thing
-      
+  
   InformationContentEntity:
     aliases: ['information', 'information artefact', 'information entity']
     abstract: true
     is_a: NamedThing
     description: >-
-      a piece of information that typically describes
-      some topic of discourse or is used as support.
+      A piece of information that is represented in the typically describes some topic of discourse or is used as support.
     slots:
       - creation date
       - content
+      - token count
+      - embedding
       - format
       - provenance
       - xref
@@ -350,14 +364,14 @@ classes:
         range: NoteType
     
   Author:
-    is_a: NamedThing
+    is_a: InformationContentEntity
     slots:
       - affiliations
       - is author of
 
 
   Organization:
-    is_a: NamedThing
+    is_a: InformationContentEntity
     attributes:  
       city:
         multivalued: true
