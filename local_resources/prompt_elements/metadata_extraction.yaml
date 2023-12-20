@@ -1,6 +1,6 @@
 cryoet: 
   methodology: Cryo-Electron Tomography (CryoET)
-  method goal: to study the microscopic structure of a biological sample
+  method goal: study the microscopic structure of a biological sample
   all protocol steps:    
     (A) the preparation of a biological sample for imaging (such as cells, tissue, a virus, a microorganism, etc.),
     (B) vitrification (freezing) of the sample,

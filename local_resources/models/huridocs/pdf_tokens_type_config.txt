@@ -1,0 +1,18 @@
+{
+    "boosting_type": "gbdt",
+    "verbose": -1,
+    "learning_rate": 0.1,
+    "num_class": len(TokenType),
+    "context_size": 4,
+    "num_boost_round": 700,
+    "num_leaves": 127,
+    "bagging_fraction": 0.6810645192499981,
+    "bagging_freq": 10,
+    "feature_fraction": 0.7087268965467017,
+    "lambda_l1": 1.1533558410486358e-08,
+    "lambda_l2": 4.91211684620458,
+    "min_data_in_leaf": 47,
+    "feature_pre_filter": False,
+    "seed": 22,
+    "deterministic": True,
+}

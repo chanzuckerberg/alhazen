@@ -70,7 +70,7 @@ class MetadataExtractionTool:
     metadata_specs: []
     run_name = None
     
-    def __init__(self, lldb, prompt_element_spec_name, llm_model='llama2:70b'):
+    def __init__(self, lldb, prompt_element_spec_name, llm_model='mixtral'):
         self.lldb = lldb
         if self.lldb.session is None:
             session_class = sessionmaker(bind=self.lldb.engine)
@@ -99,11 +99,11 @@ class MetadataExtractionTool:
         self.protocol_step_id_lcel = self.step_identification_prompt_template | self.llm | JsonEnclosedByTextOutputParser()
         self.extract_lcel = self.metadata_extraction_prompt_template | self.llm | JsonEnclosedByTextOutputParser()
 
-    def run(self, paper_id, section_name):
+    def run(self, paper_id, section_name, item_type='JATSFullText'):
         '''Runs the metadata extraction pipeline over a specified paper.'''
         
         # Load the paper + fragments from the local database
-        fragments = self.lldb.list_fragments_for_paper(paper_id)
+        fragments = self.lldb.list_fragments_for_paper(paper_id, item_type)
     
         for f in fragments:
             if len(f.content) <= 50:
