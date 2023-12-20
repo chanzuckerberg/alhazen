@@ -716,6 +716,60 @@ class AuthorIsAuthorOf(Base):
     
 
 
+class AuthorProvenance(Base):
+    """
+    
+    """
+    __tablename__ = 'Author_provenance'
+
+    Author_id = Column(Text(), ForeignKey('Author.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Author_provenance(Author_id={self.Author_id},provenance={self.provenance},)"
+
+
+
+    
+
+
+class AuthorXref(Base):
+    """
+    
+    """
+    __tablename__ = 'Author_xref'
+
+    Author_id = Column(Text(), ForeignKey('Author.id'), primary_key=True)
+    xref = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Author_xref(Author_id={self.Author_id},xref={self.xref},)"
+
+
+
+    
+
+
+class AuthorHasNotes(Base):
+    """
+    
+    """
+    __tablename__ = 'Author_has_notes'
+
+    Author_id = Column(Text(), ForeignKey('Author.id'), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Author_has_notes(Author_id={self.Author_id},has_notes_id={self.has_notes_id},)"
+
+
+
+    
+
+
 class AuthorIri(Base):
     """
     
@@ -764,6 +818,60 @@ class OrganizationCountry(Base):
 
     def __repr__(self):
         return f"Organization_country(Organization_id={self.Organization_id},country_id={self.country_id},)"
+
+
+
+    
+
+
+class OrganizationProvenance(Base):
+    """
+    
+    """
+    __tablename__ = 'Organization_provenance'
+
+    Organization_id = Column(Text(), ForeignKey('Organization.id'), primary_key=True)
+    provenance = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Organization_provenance(Organization_id={self.Organization_id},provenance={self.provenance},)"
+
+
+
+    
+
+
+class OrganizationXref(Base):
+    """
+    
+    """
+    __tablename__ = 'Organization_xref'
+
+    Organization_id = Column(Text(), ForeignKey('Organization.id'), primary_key=True)
+    xref = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Organization_xref(Organization_id={self.Organization_id},xref={self.xref},)"
+
+
+
+    
+
+
+class OrganizationHasNotes(Base):
+    """
+    
+    """
+    __tablename__ = 'Organization_has_notes'
+
+    Organization_id = Column(Text(), ForeignKey('Organization.id'), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"Organization_has_notes(Organization_id={self.Organization_id},has_notes_id={self.has_notes_id},)"
 
 
 
@@ -855,12 +963,14 @@ class NamedThing(Entity):
 
 class InformationContentEntity(NamedThing):
     """
-    a piece of information that typically describes some topic of discourse or is used as support.
+    A piece of information that is represented in the typically describes some topic of discourse or is used as support.
     """
     __tablename__ = 'InformationContentEntity'
 
     creation_date = Column(Date())
     content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -887,7 +997,7 @@ class InformationContentEntity(NamedThing):
     
 
     def __repr__(self):
-        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -898,80 +1008,6 @@ class InformationContentEntity(NamedThing):
         'polymorphic_on': type,
         "polymorphic_identity": "InformationContentEntity",
     }    
-
-
-class Author(NamedThing):
-    """
-    
-    """
-    __tablename__ = 'Author'
-
-    name = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    type = Column(Text(), nullable=False )
-    
-    
-    # ManyToMany
-    affiliations = relationship( "Organization", secondary="Author_affiliations")
-    
-    
-    # ManyToMany
-    is_author_of = relationship( "ScientificKnowledgeExpression", secondary="Author_is_author_of")
-    
-    
-    iri_rel = relationship( "AuthorIri" )
-    iri = association_proxy("iri_rel", "iri",
-                                  creator=lambda x_: AuthorIri(iri=x_))
-    
-
-    def __repr__(self):
-        return f"Author(name={self.name},id={self.id},type={self.type},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
-
-
-class Organization(NamedThing):
-    """
-    
-    """
-    __tablename__ = 'Organization'
-
-    name = Column(Text())
-    id = Column(Text(), primary_key=True, nullable=False )
-    type = Column(Text(), nullable=False )
-    
-    
-    # ManyToMany
-    city = relationship( "City", secondary="Organization_city")
-    
-    
-    # ManyToMany
-    country = relationship( "Country", secondary="Organization_country")
-    
-    
-    iri_rel = relationship( "OrganizationIri" )
-    iri = association_proxy("iri_rel", "iri",
-                                  creator=lambda x_: OrganizationIri(iri=x_))
-    
-
-    def __repr__(self):
-        return f"Organization(name={self.name},id={self.id},type={self.type},)"
-
-
-
-    
-    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
-    __mapper_args__ = {
-        'concrete': True
-    }
-    
 
 
 class City(NamedThing):
@@ -1044,6 +1080,8 @@ class InformationResource(InformationContentEntity):
 
     creation_date = Column(Date())
     content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1070,7 +1108,7 @@ class InformationResource(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"InformationResource(creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"InformationResource(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1090,6 +1128,8 @@ class ScientificKnowledgeCollection(InformationContentEntity):
 
     creation_date = Column(Date())
     content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1120,7 +1160,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1142,6 +1182,8 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     type = Column(Enum('ScientificPrimaryResearchArticle', 'ScientificPrimaryResearchPreprint', 'ScientificReviewArticle', 'ScientificBook', 'ScientificBookChapter', 'ScientificConferenceArticle', 'ScientificDissertation', name='ScientificKnowledgeExpressionType'), nullable=False )
     creation_date = Column(Date())
     content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1179,7 +1221,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},)"
+        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},)"
 
 
 
@@ -1200,6 +1242,8 @@ class ScientificKnowledgeItem(InformationContentEntity):
     representation_of = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'))
     creation_date = Column(Date())
     content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1230,7 +1274,7 @@ class ScientificKnowledgeItem(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1253,6 +1297,8 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     length = Column(Integer())
     creation_date = Column(Date())
     content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1279,7 +1325,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1301,6 +1347,8 @@ class Note(InformationContentEntity):
     type = Column(Enum('NoteAboutCollection', 'NoteAboutExpression', 'NoteAboutFragment', name='NoteType'), nullable=False )
     creation_date = Column(Date())
     content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     
@@ -1333,7 +1381,7 @@ class Note(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},name={self.name},id={self.id},)"
+        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},name={self.name},id={self.id},)"
 
 
 
@@ -1342,6 +1390,118 @@ class Note(InformationContentEntity):
     __mapper_args__ = {
         'concrete': True,
         "polymorphic_identity": "Note",
+    }    
+
+
+class Author(InformationContentEntity):
+    """
+    
+    """
+    __tablename__ = 'Author'
+
+    creation_date = Column(Date())
+    content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
+    format = Column(Text())
+    name = Column(Text())
+    id = Column(Text(), primary_key=True, nullable=False )
+    type = Column(Text(), nullable=False )
+    
+    
+    # ManyToMany
+    affiliations = relationship( "Organization", secondary="Author_affiliations")
+    
+    
+    # ManyToMany
+    is_author_of = relationship( "ScientificKnowledgeExpression", secondary="Author_is_author_of")
+    
+    
+    provenance_rel = relationship( "AuthorProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: AuthorProvenance(provenance=x_))
+    
+    
+    xref_rel = relationship( "AuthorXref" )
+    xref = association_proxy("xref_rel", "xref",
+                                  creator=lambda x_: AuthorXref(xref=x_))
+    
+    
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="Author_has_notes", back_populates="is_about")
+    
+    
+    iri_rel = relationship( "AuthorIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: AuthorIri(iri=x_))
+    
+
+    def __repr__(self):
+        return f"Author(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+
+
+
+    
+    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
+    __mapper_args__ = {
+        'concrete': True,
+        "polymorphic_identity": "Author",
+    }    
+
+
+class Organization(InformationContentEntity):
+    """
+    
+    """
+    __tablename__ = 'Organization'
+
+    creation_date = Column(Date())
+    content = Column(Text())
+    token_count = Column(Integer())
+    embedding = Column(Text())
+    format = Column(Text())
+    name = Column(Text())
+    id = Column(Text(), primary_key=True, nullable=False )
+    type = Column(Text(), nullable=False )
+    
+    
+    # ManyToMany
+    city = relationship( "City", secondary="Organization_city")
+    
+    
+    # ManyToMany
+    country = relationship( "Country", secondary="Organization_country")
+    
+    
+    provenance_rel = relationship( "OrganizationProvenance" )
+    provenance = association_proxy("provenance_rel", "provenance",
+                                  creator=lambda x_: OrganizationProvenance(provenance=x_))
+    
+    
+    xref_rel = relationship( "OrganizationXref" )
+    xref = association_proxy("xref_rel", "xref",
+                                  creator=lambda x_: OrganizationXref(xref=x_))
+    
+    
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="Organization_has_notes", back_populates="is_about")
+    
+    
+    iri_rel = relationship( "OrganizationIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: OrganizationIri(iri=x_))
+    
+
+    def __repr__(self):
+        return f"Organization(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+
+
+
+    
+    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
+    __mapper_args__ = {
+        'concrete': True,
+        "polymorphic_identity": "Organization",
     }    
 
 

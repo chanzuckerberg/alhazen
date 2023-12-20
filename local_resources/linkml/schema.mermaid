@@ -13,6 +13,8 @@ NamedThing {
 InformationContentEntity {
     date creation_date  
     string content  
+    integer token_count  
+    string embedding  
     string format  
     stringList provenance  
     uriorcurieList xref  
@@ -24,6 +26,8 @@ InformationContentEntity {
 InformationResource {
     date creation_date  
     string content  
+    integer token_count  
+    string embedding  
     string format  
     stringList provenance  
     uriorcurieList xref  
@@ -35,6 +39,8 @@ InformationResource {
 ScientificKnowledgeCollection {
     date creation_date  
     string content  
+    integer token_count  
+    string embedding  
     string format  
     stringList provenance  
     uriorcurieList xref  
@@ -48,6 +54,8 @@ ScientificKnowledgeExpression {
     ScientificKnowledgeExpressionType type  
     date creation_date  
     string content  
+    integer token_count  
+    string embedding  
     string format  
     stringList provenance  
     uriorcurieList xref  
@@ -58,6 +66,8 @@ ScientificKnowledgeExpression {
 ScientificKnowledgeItem {
     date creation_date  
     string content  
+    integer token_count  
+    string embedding  
     string format  
     stringList provenance  
     uriorcurieList xref  
@@ -71,6 +81,8 @@ ScientificKnowledgeFragment {
     integer length  
     date creation_date  
     string content  
+    integer token_count  
+    string embedding  
     string format  
     stringList provenance  
     uriorcurieList xref  
@@ -84,6 +96,8 @@ Note {
     NoteType type  
     date creation_date  
     string content  
+    integer token_count  
+    string embedding  
     stringList provenance  
     uriorcurieList xref  
     string name  
@@ -91,12 +105,26 @@ Note {
     uriorcurieList iri  
 }
 Author {
+    date creation_date  
+    string content  
+    integer token_count  
+    string embedding  
+    string format  
+    stringList provenance  
+    uriorcurieList xref  
     string name  
     string id  
     uriorcurieList iri  
     string type  
 }
 Organization {
+    date creation_date  
+    string content  
+    integer token_count  
+    string embedding  
+    string format  
+    stringList provenance  
+    uriorcurieList xref  
     string name  
     string id  
     uriorcurieList iri  
@@ -136,6 +164,8 @@ Note ||--}o InformationContentEntity : "is about"
 Note ||--}o Note : "has notes"
 Author ||--}o Organization : "affiliations"
 Author ||--}o ScientificKnowledgeExpression : "is author of"
+Author ||--}o Note : "has notes"
 Organization ||--}o City : "city"
 Organization ||--}o Country : "country"
+Organization ||--}o Note : "has notes"
 

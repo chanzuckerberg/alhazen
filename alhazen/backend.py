@@ -54,7 +54,7 @@ from uuid import UUID
 from .utils.langchain_utils import ChatPromptValue_to_string
 from langchain.prompts.chat import ChatPromptValue
 
-# %% ../nbs/41_langchain_chat_main.ipynb 5
+# %% ../nbs/41_langchain_chat_main.ipynb 4
 # Provides access to an agent interface via langserve.
 # Very useful for NextJS applications + demos
 
@@ -80,7 +80,7 @@ prompt = prompt.partial(
     tool_names=", ".join([t.name for t in tools]),
 )
 
-chat_model = ChatOllama(model='llama2:70b')
+chat_model = ChatOllama(model='mixtral')
 chat_model_with_stop = chat_model.bind(stop=["\nObservation"])
 ChatPromptValue.to_string = ChatPromptValue_to_string
 
@@ -112,7 +112,7 @@ class Output(BaseModel):
     output: str
 
 
-# %% ../nbs/41_langchain_chat_main.ipynb 6
+# %% ../nbs/41_langchain_chat_main.ipynb 5
 app = FastAPI(
     title="Alhazen Server",
     version="0.0.1",
@@ -133,7 +133,7 @@ app.add_middleware(
 # /stream
 add_routes(app, agent_executor, input_type=Input, output_type=Output)
 
-# %% ../nbs/41_langchain_chat_main.ipynb 9
+# %% ../nbs/41_langchain_chat_main.ipynb 8
 if __name__ == "__main__":
     import uvicorn
 

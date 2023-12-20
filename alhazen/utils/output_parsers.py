@@ -47,19 +47,23 @@ class JsonEnclosedByTextOutputParser(BaseOutputParser[Any]):
 
     def parse(self, text: str) -> Any:
         text = text.strip()
-        m = re.search('.*([\[\{](.|\n)*[\}\]]).*', text, flags=re.M)
+        fixed = re.sub(r'(?<!\\)\\(?!["\\/bfnrt]|u[0-9a-fA-F]{4})', r'', text)
+        m = re.search('.*([\[\{](.|\n)*[\}\]]).*', fixed, flags=re.M)
+        
         if m:
             text1 = m.group(1)
 
-            # need to make sure all entries in the JSON are quoted
-            # so that the JSON parser can parse it
-            # e.g. {"a": E} -> {"a": "E"}
-            # this is a hack, but it works
-            text2 = re.sub(r':\s*([a-zA-Z0-9_]+)\s*([,\]\}])', r': "\1"\2', text1)
             try:
-                return json.loads(text2)
+                return json.loads(text1)
             except json.JSONDecodeError as e:
-                raise OutputParserException(f"Invalid json output: {text2} derived from {text}") from e
+                try:
+                    # need to make sure all entries in the JSON are quoted
+                    # so that the JSON parser can parse it
+                    # e.g. {"a": E} -> {"a": "E"}
+                    # this is a hack, but it works
+                    text2 = re.sub(r':\s*([a-zA-Z0-9_]+)\s*([,\]\}])', r': "\1"\2', text1)
+                except json.JSONDecodeError as e1:
+                    raise OutputParserException(f"Invalid json output: {text2} \n\nderived from\n\n {text}") from e1
         else: 
             raise OutputParserException(f"Could not find json-formatted data in: {text}")
 
