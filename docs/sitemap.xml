@@ -2,66 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/index.html</loc>
-    <lastmod>2023-11-06T19:13:55.296Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/apps.html</loc>
-    <lastmod>2023-11-06T19:13:54.713Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/airtable_utils.html</loc>
-    <lastmod>2023-11-06T19:13:54.238Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/langchain_chat_main.html</loc>
-    <lastmod>2023-11-06T19:13:53.792Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/general_langchain_utils.html</loc>
-    <lastmod>2023-11-06T19:13:53.366Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/pdf_text_extractor.html</loc>
-    <lastmod>2023-11-06T19:13:52.925Z</lastmod>
+    <lastmod>2023-12-22T21:41:53.317Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/search_engine_eutils.html</loc>
-    <lastmod>2023-11-06T19:13:52.453Z</lastmod>
+    <lastmod>2023-12-22T21:41:52.796Z</lastmod>
   </url>
   <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/20_ms_nlp_utils.html</loc>
-    <lastmod>2023-11-06T19:13:51.953Z</lastmod>
+    <loc>https://chanzuckerberg.github.io/alhazen/airtable_utils.html</loc>
+    <lastmod>2023-12-22T21:41:52.352Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/pdf_text_extractor.html</loc>
+    <lastmod>2023-12-22T21:41:51.838Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/langchain_chat_main.html</loc>
+    <lastmod>2023-12-22T21:41:51.337Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/web_robot.html</loc>
+    <lastmod>2023-12-22T21:41:50.830Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/demo.html</loc>
+    <lastmod>2023-12-22T21:41:50.360Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/general_langchain_utils.html</loc>
+    <lastmod>2023-12-22T21:41:49.892Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/query_translator.html</loc>
-    <lastmod>2023-11-06T19:13:51.738Z</lastmod>
+    <lastmod>2023-12-22T21:41:49.415Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/sqla_fixes.html</loc>
+    <lastmod>2023-12-22T21:41:48.950Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/30_ms_nlp_utils.html</loc>
+    <lastmod>2023-12-22T21:41:48.483Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/core.html</loc>
-    <lastmod>2023-11-06T19:13:52.227Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/single_document_qa.html</loc>
-    <lastmod>2023-11-06T19:13:52.713Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/curated_data_utils.html</loc>
-    <lastmod>2023-11-06T19:13:53.152Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/client.html</loc>
-    <lastmod>2023-11-06T19:13:53.580Z</lastmod>
+    <lastmod>2023-12-22T21:41:48.261Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/jats_text_extractor.html</loc>
-    <lastmod>2023-11-06T19:13:54.012Z</lastmod>
+    <lastmod>2023-12-22T21:41:48.710Z</lastmod>
   </url>
   <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/single_document_qa copy.html</loc>
-    <lastmod>2023-11-06T19:13:54.494Z</lastmod>
+    <loc>https://chanzuckerberg.github.io/alhazen/toolkit.html</loc>
+    <lastmod>2023-12-22T21:41:49.177Z</lastmod>
   </url>
   <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/localdb.html</loc>
-    <lastmod>2023-11-06T19:13:55.007Z</lastmod>
+    <loc>https://chanzuckerberg.github.io/alhazen/single_document_qa.html</loc>
+    <lastmod>2023-12-22T21:41:49.670Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/91_ssl_hackfix.html</loc>
+    <lastmod>2023-12-22T21:41:50.122Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/curated_data_utils.html</loc>
+    <lastmod>2023-12-22T21:41:50.586Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/metadata_extraction_tool.html</loc>
+    <lastmod>2023-12-22T21:41:51.074Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/basic_tools.html</loc>
+    <lastmod>2023-12-22T21:41:51.606Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/ceifns_db.html</loc>
+    <lastmod>2023-12-22T21:41:52.139Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/apps.html</loc>
+    <lastmod>2023-12-22T21:41:52.570Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/langchain_output_parsers.html</loc>
+    <lastmod>2023-12-22T21:41:53.032Z</lastmod>
   </url>
 </urlset>

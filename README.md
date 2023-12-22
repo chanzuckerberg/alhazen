@@ -21,37 +21,12 @@ pip install -e .
 
 ## Other dependencies
 
-### Databricks
+### Ollama
 
-You will need to run remote queries on CZI’s Databricks general prod
-instance:
-<https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/>
-
-You will need to have a Databricks token in your environment variables.
-You can generate one by following the instructions here:
-<https://docs.databricks.com/dev-tools/api/latest/authentication.html#generate-a-token>
-
-Set this token as an environment variable called `DB_TOKEN` in your
-shell:
-
-``` bash
-export DB_TOKEN=<your token>
-```
-
-### GGUF Files from HuggingFace (TheBloke)
-
-The tool uses quantized model files from HuggingFace and will place them
-for you into a temporary location on disk (`/tmp/alhazen/` is the
-default):
-
-- [Llama-2-70B](https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF)
-  (recommended
-  [file](https://huggingface.co/TheBloke/Llama-2-70B-chat-GGUF/blob/main/llama-2-70b-chat.Q5_K_M.gguf),
-  requires 51.25 GB)
-- [Llama-2-13B](https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF)
-  (recommended
-  [file](https://huggingface.co/TheBloke/Llama-2-13B-chat-GGUF/blob/main/llama-2-13b-chat.Q5_K_M.gguf),
-  requires 11.73 GB)
+The tool uses the [Ollama](https://ollama.ai/) library to execute large
+language models locally on your machine. Note that to able to run the
+best performing models on a Apple Mac M1 or M2 machine, you will need at
+least 48GB of memory.
 
 ## How to use
 
@@ -79,6 +54,22 @@ access to the full range of capabilities of the project as we develop
 them. We will provide some access to each capability through
 [Gradio](https://gradio.app/) as we develop them, and will eventually
 synthesise them into a single agent-driven interface.
+
+### Contributing
+
+We warmly welcome contributions from the community! Please see our
+[contributing
+guide](https://github.com/chanzuckerberg/cellxgene-documentation/blob/main/contribute.md)
+and don’t hesitate to open an issue or send a pull request to improve
+CELLxGENE Annotate. Please see the
+[dev_docs](https://github.com/chanzuckerberg/cellxgene/tree/main/dev_docs)
+for pull request suggestions, unit test details, local documentation
+preview, and other development specifics.
+
+This project adheres to the Contributor Covenant [code of
+conduct](https://github.com/chanzuckerberg/.github/blob/master/CODE_OF_CONDUCT.md).
+By participating, you are expected to uphold this code. Please report
+unacceptable behavior to opensource@chanzuckerberg.com.
 
 ## Where does the Name ‘Alhazen’ come from?
 

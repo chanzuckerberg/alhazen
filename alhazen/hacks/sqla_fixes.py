@@ -22,8 +22,6 @@ target = '''has_notes = relationship( "Note",
 if re.search(source, sqla_source_code):
     sqla_source_code = re.sub(source, target, sqla_source_code)
 
-
-
 # %% ../../nbs/90_sqla_fixes.ipynb 6
 source = '''(return f"InformationContentEntity\\(creation_date={.*\n+\s+#.*\n\s+__mapper_args__ = )(\{\n.*?\n\s+\})\n'''
 target = '''\g<1>{
@@ -33,7 +31,6 @@ target = '''\g<1>{
     }'''
 if re.search(source, sqla_source_code, re.MULTILINE):
     sqla_source_code = re.sub(source, target, sqla_source_code, re.MULTILINE)
-
 
 # %% ../../nbs/90_sqla_fixes.ipynb 7
 source = '''(return f"<<<SUBHERE>>>\\(.*\n+\s+#.*\n\s+__mapper_args__ = )(\{\n.*?\n\s+\})\n'''
@@ -90,7 +87,7 @@ lines = [l for l in raw_sql_source_code.splitlines() if 'FOREIGN' not in l]
 lines = [re.sub('\),\s*$', ')', l) if 'PRIMARY' in l else l for l in lines ]
 raw_sql_source_code = '\n'.join(lines)
 
-#print(raw_sql_source_code)
+print(raw_sql_source_code)
 
 
 # %% ../../nbs/90_sqla_fixes.ipynb 13
