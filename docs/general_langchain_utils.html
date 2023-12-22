@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>alhazen - Query Translation Tools</title>
+<title>alhazen - General Utilities for Parts of the Langchain environment</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -62,10 +62,10 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Query Translation Tools">
+<meta property="og:title" content="alhazen - General Utilities for Parts of the Langchain environment">
 <meta property="og:description" content="">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Query Translation Tools">
+<meta name="twitter:title" content="alhazen - General Utilities for Parts of the Langchain environment">
 <meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
@@ -91,7 +91,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Query Translation Tools</li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">General Utilities for Parts of the Langchain environment</li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -119,23 +119,14 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">10_tiab_corpus_qa.ipynb</span>
   </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./single_document_qa.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">QA on single documents drawn from a corpus of individual files.</span></a>
-  </div>
-</li>
+ <span class="menu-text">11_single_document_qa.ipynb</span>
+  </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./jats_text_extractor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">JATS Text Extractor Utility</span></a>
-  </div>
-</li>
+ <span class="menu-text">21_jats_text_extractor.ipynb</span>
+  </li>
         <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./pdf_text_extractor.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">PDF Text Extractor Utility</span></a>
-  </div>
-</li>
+ <span class="menu-text">22_pdf_text_extractor.ipynb</span>
+  </li>
     </ul>
     </div>
 </nav>
@@ -146,8 +137,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#jsonenclosedbytextoutputparser" id="toc-jsonenclosedbytextoutputparser" class="nav-link active" data-scroll-target="#jsonenclosedbytextoutputparser">JsonEnclosedByTextOutputParser</a></li>
-  <li><a href="#suppress_stdout_stderr" id="toc-suppress_stdout_stderr" class="nav-link" data-scroll-target="#suppress_stdout_stderr">suppress_stdout_stderr</a></li>
+  <li><a href="#suppress_stdout_stderr" id="toc-suppress_stdout_stderr" class="nav-link active" data-scroll-target="#suppress_stdout_stderr">suppress_stdout_stderr</a></li>
+  <li><a href="#ollamarunner" id="toc-ollamarunner" class="nav-link" data-scroll-target="#ollamarunner">OllamaRunner</a></li>
+  <li><a href="#chatpromptvalue_to_string" id="toc-chatpromptvalue_to_string" class="nav-link" data-scroll-target="#chatpromptvalue_to_string">ChatPromptValue_to_string</a></li>
+  <li><a href="#get_buffer_string_for_llama" id="toc-get_buffer_string_for_llama" class="nav-link" data-scroll-target="#get_buffer_string_for_llama">get_buffer_string_for_llama</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -156,7 +149,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Query Translation Tools</h1>
+<h1 class="title">General Utilities for Parts of the Langchain environment</h1>
 </div>
 
 
@@ -173,22 +166,60 @@ ul.task-list li input[type="checkbox"] {
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/langchain_utils.py#L30" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="jsonenclosedbytextoutputparser" class="level3">
-<h3 class="anchored" data-anchor-id="jsonenclosedbytextoutputparser">JsonEnclosedByTextOutputParser</h3>
-<blockquote class="blockquote">
-<pre><code> JsonEnclosedByTextOutputParser ()</code></pre>
-</blockquote>
-<p>Parse the output of an LLM call to a JSON object.</p>
-<hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/langchain_utils.py#L58" target="_blank" style="float:right; font-size:smaller">source</a></p>
-</section>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/langchain_utils.py#L43" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="suppress_stdout_stderr" class="level3">
 <h3 class="anchored" data-anchor-id="suppress_stdout_stderr">suppress_stdout_stderr</h3>
 <blockquote class="blockquote">
 <pre><code> suppress_stdout_stderr ()</code></pre>
 </blockquote>
 <p>Initialize self. See help(type(self)) for accurate signature.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/langchain_utils.py#L78" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="ollamarunner" class="level3">
+<h3 class="anchored" data-anchor-id="ollamarunner">OllamaRunner</h3>
+<blockquote class="blockquote">
+<pre><code> OllamaRunner (model)</code></pre>
+</blockquote>
+<p>Class to run Ollama in a subprocess and to<br>
+run LLMs or chains locally with a timeout to prevent long-running processes from hanging the server.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/langchain_utils.py#L205" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="chatpromptvalue_to_string" class="level3">
+<h3 class="anchored" data-anchor-id="chatpromptvalue_to_string">ChatPromptValue_to_string</h3>
+<blockquote class="blockquote">
+<pre><code> ChatPromptValue_to_string ()</code></pre>
+</blockquote>
+<p>Return prompt as string.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/langchain_utils.py#L143" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_buffer_string_for_llama" class="level3">
+<h3 class="anchored" data-anchor-id="get_buffer_string_for_llama">get_buffer_string_for_llama</h3>
+<blockquote class="blockquote">
+<pre><code> get_buffer_string_for_llama
+                              (messages:Sequence[langchain.schema.messages
+                              .BaseMessage], human_prefix:str='Human',
+                              ai_prefix:str='AI')</code></pre>
+</blockquote>
+<p>Convert sequence of Messages to strings and concatenate them into one string.</p>
+<p>Args: messages: Messages to be converted to strings. human_prefix: The prefix to prepend to contents of HumanMessages. ai_prefix: THe prefix to prepend to contents of AIMessages.</p>
+<p>Returns: A single string concatenation of all input messages, formatted for Llama Chat Models with &lt;<sys>&gt;, &lt;</sys>&gt;, [INST], and [/INST] tags.</p>
+<p>Example: .. code-block:: python</p>
+<pre><code>    from langchain.schema import AIMessage, HumanMessage
+
+    messages = [
+        HumanMessage(content="Hi, how are you?"),
+        AIMessage(content="Good, how are you?"),
+    ]
+    get_buffer_string(messages)
+    "&lt;s&gt;&lt;&lt;SYS&gt;&gt;You are a helpful bot&lt;&lt;/SYS&gt;&gt;
+    [INST] Hi, how are you?[/INST]
+    Good, how are you?"&lt;/s&gt;
+    &lt;s&gt;[INST]I'm fine, can you tell me who wrote 'Arabian Nights?'[/INST]
+    Antoine Galland has been for three centuries, credited as being the author of the Arabian Nights.&lt;/s&gt;
+    ...</code></pre>
 
 
 </section>
