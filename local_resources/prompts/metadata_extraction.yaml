@@ -47,32 +47,21 @@ metadata extraction:
 
     The text is taken from a scientific paper that uses {methodology} to {method_goal}.
 
-    Extract the metadata from the section text based only on the specification delineated by square brackets 
-    and record the answer in the 'metadata_value' field of the output. Do not extract any other metadata. 
-
-    [{metadata_specification}]
-
-    Record the term '{metadata_name}' in the 'metadata_name' field of the output.
+    Extract metadata from the section text based on the following list of questions. 
+    Record answers as the specified fields of the output. Do not extract any other metadata. 
     
-    Generate only JSON formatted output with three fields 'metadata_name', 'metadata_value' and 'orginal_text'. 
+    {questions_output_specification}
+
     Do not provide additional explanation or context for the answer.
    
-    If the metadata is not present in the text, record a value of 'not present' in the 'metadata_value' field of the output.  
+    If you cannot answer a listed question, record a value of 'not present' in appropriate fields of the output.  
     Do not include any other response other than a JSON object.
-    
-    Finally, if you found the metadata in the text, record the original text of the sentence 
-    where the metadata specification was extracted from in the 'original_text' field of the output. 
-    
-    If you did not find the specified metadata in the text, record 'not present' in the 'original_text' field of the output.
-
-    Remember, only generate JSON formatted output without any additional text or explanation.
-    
+            
   input_variables: 
     - section_text
     - methodology
     - method_goal
-    - metadata_specification
-    - metadata_name
+    - questions_output_specification
   output_variables:
     - metadata_name
     - metadata_value
