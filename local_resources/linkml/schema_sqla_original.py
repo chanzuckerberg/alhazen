@@ -988,7 +988,7 @@ class InformationContentEntity(NamedThing):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="InformationContentEntity_has_notes", back_populates="is_about")
+    has_notes = relationship( "Note", secondary="InformationContentEntity_has_notes")
     
     
     iri_rel = relationship( "InformationContentEntityIri" )
@@ -1004,10 +1004,9 @@ class InformationContentEntity(NamedThing):
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True,
-        'polymorphic_on': type,
-        "polymorphic_identity": "InformationContentEntity",
-    }    
+        'concrete': True
+    }
+    
 
 
 class City(NamedThing):
@@ -1151,7 +1150,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="ScientificKnowledgeCollection_has_notes", back_populates="is_about")
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeCollection_has_notes")
     
     
     iri_rel = relationship( "ScientificKnowledgeCollectionIri" )
@@ -1167,9 +1166,9 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True,
-        "polymorphic_identity": "ScientificKnowledgeCollection",
-    }    
+        'concrete': True
+    }
+    
 
 
 class ScientificKnowledgeExpression(InformationContentEntity):
@@ -1212,7 +1211,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="ScientificKnowledgeExpression_has_notes", back_populates="is_about")
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeExpression_has_notes")
     
     
     iri_rel = relationship( "ScientificKnowledgeExpressionIri" )
@@ -1228,9 +1227,9 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True,
-        "polymorphic_identity": "ScientificKnowledgeExpression",
-    }    
+        'concrete': True
+    }
+    
 
 
 class ScientificKnowledgeItem(InformationContentEntity):
@@ -1265,7 +1264,7 @@ class ScientificKnowledgeItem(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="ScientificKnowledgeItem_has_notes", back_populates="is_about")
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeItem_has_notes")
     
     
     iri_rel = relationship( "ScientificKnowledgeItemIri" )
@@ -1281,9 +1280,9 @@ class ScientificKnowledgeItem(InformationContentEntity):
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True,
-        "polymorphic_identity": "ScientificKnowledgeItem",
-    }    
+        'concrete': True
+    }
+    
 
 
 class ScientificKnowledgeFragment(InformationContentEntity):
@@ -1316,7 +1315,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="ScientificKnowledgeFragment_has_notes", back_populates="is_about")
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeFragment_has_notes")
     
     
     iri_rel = relationship( "ScientificKnowledgeFragmentIri" )
@@ -1332,9 +1331,9 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True,
-        "polymorphic_identity": "ScientificKnowledgeFragment",
-    }    
+        'concrete': True
+    }
+    
 
 
 class Note(InformationContentEntity):
@@ -1354,7 +1353,7 @@ class Note(InformationContentEntity):
     
     
     # ManyToMany
-    is_about = relationship( "InformationContentEntity", secondary="Note_is_about", back_populates="has_notes")
+    is_about = relationship( "InformationContentEntity", secondary="Note_is_about")
     
     
     provenance_rel = relationship( "NoteProvenance" )
@@ -1368,11 +1367,7 @@ class Note(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", 
-                             secondary="Note_has_notes", 
-                             primaryjoin="Note.id==Note_has_notes.c.Note_id",
-                             secondaryjoin="Note.id==Note_has_notes.c.has_notes_id",
-                             back_populates="is_about")
+    has_notes = relationship( "Note", secondary="Note_has_notes")
     
     
     iri_rel = relationship( "NoteIri" )
@@ -1388,9 +1383,9 @@ class Note(InformationContentEntity):
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True,
-        "polymorphic_identity": "Note",
-    }    
+        'concrete': True
+    }
+    
 
 
 class Author(InformationContentEntity):
@@ -1428,7 +1423,7 @@ class Author(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="Author_has_notes", back_populates="is_about")
+    has_notes = relationship( "Note", secondary="Author_has_notes")
     
     
     iri_rel = relationship( "AuthorIri" )
@@ -1444,9 +1439,9 @@ class Author(InformationContentEntity):
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True,
-        "polymorphic_identity": "Author",
-    }    
+        'concrete': True
+    }
+    
 
 
 class Organization(InformationContentEntity):
@@ -1484,7 +1479,7 @@ class Organization(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="Organization_has_notes", back_populates="is_about")
+    has_notes = relationship( "Note", secondary="Organization_has_notes")
     
     
     iri_rel = relationship( "OrganizationIri" )
@@ -1500,8 +1495,8 @@ class Organization(InformationContentEntity):
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True,
-        "polymorphic_identity": "Organization",
-    }    
+        'concrete': True
+    }
+    
 
 

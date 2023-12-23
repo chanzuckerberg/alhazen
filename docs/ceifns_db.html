@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="Pragmatic tools for constructing databases of scientific works based on queries defined with Boolean Logic.">
+<meta name="description" content="CEIFNS stands for Collection, Expression, Item, Fragment, Notes, Summaries. This is a local Postgresql database of scientific content with associated Notes and Summaries. The intent is to use this repository as the memory of a Langchain-enabled agent.">
 
-<title>alhazen - Building databases of published works</title>
+<title>alhazen - CEIFNS Database for Scientific Works</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -97,15 +97,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Building databases of published works">
-<meta property="og:description" content="Pragmatic tools for constructing databases of scientific works based on queries defined with Boolean Logic.">
+<meta property="og:title" content="alhazen - CEIFNS Database for Scientific Works">
+<meta property="og:description" content="CEIFNS stands for Collection, Expression, Item, Fragment, Notes, Summaries. This is a local Postgresql database of scientific content with associated Notes and Summaries. The intent is to use this repository as the memory of a Langchain-enabled agent.">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Building databases of published works">
-<meta name="twitter:description" content="Pragmatic tools for constructing databases of scientific works based on queries defined with Boolean Logic.">
+<meta name="twitter:title" content="alhazen - CEIFNS Database for Scientific Works">
+<meta name="twitter:description" content="CEIFNS stands for Collection, Expression, Item, Fragment, Notes, Summaries. This is a local Postgresql database of scientific content with associated Notes and Summaries. The intent is to use this repository as the memory of a Langchain-enabled agent.">
 <meta name="twitter:card" content="summary">
 </head>
 
-<body class="nav-sidebar floating nav-fixed">
+<body class="nav-sidebar docked nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -126,41 +126,123 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Building databases of published works</li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ceifns_db.html">CEIFiNS Database</a></li><li class="breadcrumb-item"><a href="./ceifns_db.html">CEIFNS Database for Scientific Works</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
     </div>
   </nav>
 </header>
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">CEIFiNS Database</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Alhazen</span></a>
+  <a href="./ceifns_db.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">CEIFNS Database for Scientific Works</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Apps + Demos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./apps.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Apps</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
- <span class="menu-text">10_tiab_corpus_qa.ipynb</span>
+      </ul>
   </li>
-        <li class="sidebar-item">
- <span class="menu-text">11_single_document_qa.ipynb</span>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Agents + Tools</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./toolkit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Alhazen Toolkit</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./basic_tools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Basic Tools for Alhazen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./metadata_extraction_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Methods Metadata Extraction Tool</span></a>
+  </div>
+</li>
+      </ul>
   </li>
-        <li class="sidebar-item">
- <span class="menu-text">21_jats_text_extractor.ipynb</span>
-  </li>
-        <li class="sidebar-item">
- <span class="menu-text">22_pdf_text_extractor.ipynb</span>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Utilities</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./search_engine_eutils.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Search Engine Tools</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./jats_text_extractor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">JATS Text Extractor Utility</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pdf_text_extractor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDF Text Extractor Utility</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./web_robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Web Robots</span></a>
+  </div>
+</li>
+      </ul>
   </li>
     </ul>
     </div>
@@ -186,12 +268,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Building databases of published works</h1>
+<h1 class="title">CEIFNS Database for Scientific Works</h1>
 </div>
 
 <div>
   <div class="description">
-    Pragmatic tools for constructing databases of scientific works based on queries defined with Boolean Logic.
+    CEIFNS stands for Collection, Expression, Item, Fragment, Notes, Summaries. This is a local Postgresql database of scientific content with associated Notes and Summaries. The intent is to use this repository as the memory of a Langchain-enabled agent.
   </div>
 </div>
 
@@ -292,7 +374,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        f.write(xml)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L99" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L100" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="get_pdf_from_pubmed_doi" class="level3">
 <h3 class="anchored" data-anchor-id="get_pdf_from_pubmed_doi">get_pdf_from_pubmed_doi</h3>
 <blockquote class="blockquote">
@@ -300,7 +382,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Executes a query on the target database and returns a count of papers</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L91" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L92" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="download_file" class="level3">
 <h3 class="anchored" data-anchor-id="download_file">download_file</h3>
@@ -308,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code> download_file (url, local_filename)</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L53" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L54" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="get_nxml_from_pubmed_doi" class="level3">
 <h3 class="anchored" data-anchor-id="get_nxml_from_pubmed_doi">get_nxml_from_pubmed_doi</h3>
@@ -317,7 +399,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Executes a query on the target database and returns a count of papers</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L48" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L49" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="read_information_content_entity_iri" class="level3">
 <h3 class="anchored" data-anchor-id="read_information_content_entity_iri">read_information_content_entity_iri</h3>
@@ -352,7 +434,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Permits user to download a local copy of full text papers in NXML(JATS), PDF, and HTML format.</li>
 </ul>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/local_literature_db.py#L144" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L145" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="queryspec" class="level3">
 <h3 class="anchored" data-anchor-id="queryspec">QuerySpec</h3>
