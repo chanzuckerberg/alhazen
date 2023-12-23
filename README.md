@@ -5,7 +5,13 @@
 This is an early proof-of-concept prototype developed within CZI’s
 Research Science Team (RST). It is intended to be used as a downloadable
 library that can be run on a high-end local machine (M2 Apple Macbook
-with 32+GB of memory - no support for Windows or Linux yet).
+with 48+GB of memory - no support for Windows or Linux yet).
+
+> Note: Alhazen could conceivably be run on a lightweight machine
+> calling external Large Language Models (LLM) APIs such as GPT-4 (but
+> the goal is to investigate the use of long-running agents which would
+> likely be prohibitively expensive with high-performing commerical
+> endpoints).
 
 ## Installation
 
@@ -59,12 +65,9 @@ synthesise them into a single agent-driven interface.
 
 We warmly welcome contributions from the community! Please see our
 [contributing
-guide](https://github.com/chanzuckerberg/cellxgene-documentation/blob/main/contribute.md)
+guide](https://github.com/chanzuckerberg/alhazen/blob/main/CONTRIBUTING.md)
 and don’t hesitate to open an issue or send a pull request to improve
-CELLxGENE Annotate. Please see the
-[dev_docs](https://github.com/chanzuckerberg/cellxgene/tree/main/dev_docs)
-for pull request suggestions, unit test details, local documentation
-preview, and other development specifics.
+Alhazen.
 
 This project adheres to the Contributor Covenant [code of
 conduct](https://github.com/chanzuckerberg/.github/blob/master/CODE_OF_CONDUCT.md).

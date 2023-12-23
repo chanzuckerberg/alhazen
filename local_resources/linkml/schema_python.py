@@ -1,5 +1,5 @@
 # Auto generated from sciknow.yaml by pythongen.py version: 0.0.1
-# Generation date: 2023-12-22T13:25:32
+# Generation date: 2023-12-22T14:54:15
 # Schema: ScientificKnowledgeExpressionModel
 #
 # id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
