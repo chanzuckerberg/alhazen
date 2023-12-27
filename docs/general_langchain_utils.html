@@ -123,7 +123,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./ceifns_db.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">CEIFNS Database for Scientific Works</span></a>
+ <span class="menu-text">Database for Scientific Knowledge</span></a>
   </div>
 </li>
       </ul>
@@ -302,6 +302,8 @@ run LLMs or chains locally with a timeout to prevent long-running processes from
     &lt;s&gt;[INST]I'm fine, can you tell me who wrote 'Arabian Nights?'[/INST]
     Antoine Galland has been for three centuries, credited as being the author of the Arabian Nights.&lt;/s&gt;
     ...</code></pre>
+<p>Put this code in your notebook to get the chat prompt to submit correctly to the Llama2 model from langchain.prompts.chat import ChatPromptValue</p>
+<pre><code>ChatPromptValue.to_string = ChatPromptValue_to_string</code></pre>
 
 
 </section>

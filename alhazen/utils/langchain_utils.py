@@ -206,6 +206,3 @@ def ChatPromptValue_to_string(self) -> str:
     """Return prompt as string."""
     return get_buffer_string_for_llama(self.messages)
 
-# Put this code in your notebook to get the chat prompt to submit correctly to the Llama2 model
-# from langchain.prompts.chat import ChatPromptValue
-#ChatPromptValue.to_string = ChatPromptValue_to_string
