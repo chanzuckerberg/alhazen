@@ -42,7 +42,7 @@ from urllib.parse import quote_plus, quote, unquote
 import uuid
 import yaml
 
-# %% ../../nbs/22_metadata_extraction_tool.ipynb 5
+# %% ../../nbs/22_metadata_extraction_tool.ipynb 4
 class MetadataExtractionToolSchema(BaseModel):
     query: str = Field(description="should be a search query")
     name: str = Field(description="should be the name of the collection we will add papers to")
