@@ -14,8 +14,8 @@
 
 import React, { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { EmptyState } from "../components/EmptyState";
-import { ChatMessageBubble, Message } from "../components/ChatMessageBubble";
+import { EmptyState } from "./EmptyState";
+import { ChatMessageBubble, Message } from "./ChatMessageBubble";
 import { AutoResizeTextarea } from "./AutoResizeTextarea";
 import { marked } from "marked";
 import { Renderer } from "marked";
