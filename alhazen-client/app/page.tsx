@@ -12,11 +12,11 @@
 **/
 "use client";
 
-import { ChatWindow } from "../app/components/ChatWindow";
+import { ChatWindow } from "./components/ChatWindow";
 import { ToastContainer } from "react-toastify";
 import { RecoilRoot } from "recoil";
 import { EmailIcon } from "@chakra-ui/icons";
-import { TopDashboard } from "../app/components/TopDashboard";
+import { TopDashboard } from "./components/TopDashboard";
 
 import {
   Box,
