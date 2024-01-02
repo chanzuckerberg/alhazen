@@ -272,7 +272,12 @@ class Ceifns_LiteratureDb(BaseModel):
             corpus_id = str(i)+'.'+str(j)
             corpus_name2 = qt2.df.loc[qt2.df['ID']==j][qt2.name_col].values[0]
             corpus_name = corpus_name + '/'+ corpus_name2
-        self.add_corpus_from_epmc_query(corpus_id, corpus_name, query)
+        try:
+          self.add_corpus_from_epmc_query(corpus_id, corpus_name, query)
+        except Exception as ex:
+          print(ex)
+          print('skipping %s'%(corpus_name) )
+          continue
     self.session.commit()
   
   def add_corpus_from_epmc_query(self, 
