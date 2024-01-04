@@ -64,13 +64,6 @@ slots:
       - dct:createdOn
       - WIKIDATA_PROPERTY:P577
 
-  embedding:
-    description: >-
-      The embedding of an InformationContentEntity. 
-      This is typically a vector representation of the content.
-    domain: InformationContentEntity
-    range: string
-    
   format:
     description: >-
       The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
@@ -274,9 +267,7 @@ classes:
     description: "an entity or concept/class described by a name"
     slots:
       - name
-    exact_mappings:
-      - biolink:named thing
-  
+    
   InformationContentEntity:
     aliases: ['information', 'information artefact', 'information entity']
     abstract: true
@@ -287,13 +278,10 @@ classes:
       - creation date
       - content
       - token count
-      - embedding
       - format
       - provenance
       - xref
       - has notes
-    exact_mappings:
-      - biolink:information content entity
 
   InformationResource:
     is_a: InformationContentEntity

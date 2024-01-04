@@ -325,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="how-to-execute-the-tool" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-execute-the-tool">How to execute the tool</h2>
-<div class="cell" data-execution_count="4">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.core <span class="im">import</span> OllamaRunner</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.ceifns_db <span class="im">import</span> Ceifns_LiteratureDb</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.tools.basic <span class="im">import</span> EMPCSearchTool </span>
@@ -334,7 +334,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the directory where all Alhazen data will be stored</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'LOCAL_FILE_PATH'</span>] <span class="op">=</span> <span class="st">'/Users/gburns/alhazen/'</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'LOCAL_FILE_PATH'</span>] <span class="op">=</span> <span class="st">'/tmp/alhazen/'</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co"># This is the name of the database used for this application. </span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co"># This will be (A) a postgres database, and (B) a subdirectory of the above folder where the system will store</span></span>
@@ -354,8 +354,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This command will call a predefined set of 20 questions to be asked </span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># about de Teresa et al. 2022 (https://www.biorxiv.org/content/10.1101/2022.04.12.488077v1)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>doi <span class="op">=</span> <span class="st">'10.1101/2022.04.12.488077'</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>t.run(tool_input<span class="op">=</span>{<span class="st">'paper_id'</span>:doi, <span class="st">'section_name'</span>:<span class="st">'method'</span>, <span class="st">'extraction_type'</span>:<span class="st">'cryoet'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#doi = '10.1101/2022.04.12.488077'</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#t.run(tool_input={'paper_id':doi, 'section_name':'method', 'extraction_type':'cryoet'})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

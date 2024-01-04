@@ -1,5 +1,5 @@
 # Auto generated from sciknow.yaml by pythongen.py version: 0.0.1
-# Generation date: 2023-12-22T14:54:15
+# Generation date: 2024-01-03T10:36:22
 # Schema: ScientificKnowledgeExpressionModel
 #
 # id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
@@ -113,7 +113,7 @@ class Entity(YAMLRoot):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.Entity
+    class_class_uri: ClassVar[URIRef] = SKEM["Entity"]
     class_class_curie: ClassVar[str] = "skem:Entity"
     class_name: ClassVar[str] = "Entity"
     class_model_uri: ClassVar[URIRef] = SKEM.Entity
@@ -147,7 +147,7 @@ class NamedThing(Entity):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.NamedThing
+    class_class_uri: ClassVar[URIRef] = SKEM["NamedThing"]
     class_class_curie: ClassVar[str] = "skem:NamedThing"
     class_name: ClassVar[str] = "NamedThing"
     class_model_uri: ClassVar[URIRef] = SKEM.NamedThing
@@ -171,7 +171,7 @@ class InformationContentEntity(NamedThing):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.InformationContentEntity
+    class_class_uri: ClassVar[URIRef] = SKEM["InformationContentEntity"]
     class_class_curie: ClassVar[str] = "skem:InformationContentEntity"
     class_name: ClassVar[str] = "InformationContentEntity"
     class_model_uri: ClassVar[URIRef] = SKEM.InformationContentEntity
@@ -181,7 +181,6 @@ class InformationContentEntity(NamedThing):
     creation_date: Optional[Union[str, XSDDate]] = None
     content: Optional[str] = None
     token_count: Optional[int] = None
-    embedding: Optional[str] = None
     format: Optional[str] = None
     provenance: Optional[Union[str, List[str]]] = empty_list()
     xref: Optional[Union[Union[str, URIorCURIE], List[Union[str, URIorCURIE]]]] = empty_list()
@@ -196,9 +195,6 @@ class InformationContentEntity(NamedThing):
 
         if self.token_count is not None and not isinstance(self.token_count, int):
             self.token_count = int(self.token_count)
-
-        if self.embedding is not None and not isinstance(self.embedding, str):
-            self.embedding = str(self.embedding)
 
         if self.format is not None and not isinstance(self.format, str):
             self.format = str(self.format)
@@ -229,7 +225,7 @@ class InformationResource(InformationContentEntity):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.InformationResource
+    class_class_uri: ClassVar[URIRef] = SKEM["InformationResource"]
     class_class_curie: ClassVar[str] = "skem:InformationResource"
     class_name: ClassVar[str] = "InformationResource"
     class_model_uri: ClassVar[URIRef] = SKEM.InformationResource
@@ -253,7 +249,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeCollection
+    class_class_uri: ClassVar[URIRef] = SKEM["ScientificKnowledgeCollection"]
     class_class_curie: ClassVar[str] = "skem:ScientificKnowledgeCollection"
     class_name: ClassVar[str] = "ScientificKnowledgeCollection"
     class_model_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeCollection
@@ -282,7 +278,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeExpression
+    class_class_uri: ClassVar[URIRef] = SKEM["ScientificKnowledgeExpression"]
     class_class_curie: ClassVar[str] = "skem:ScientificKnowledgeExpression"
     class_name: ClassVar[str] = "ScientificKnowledgeExpression"
     class_model_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeExpression
@@ -331,7 +327,7 @@ class ScientificKnowledgeItem(InformationContentEntity):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeItem
+    class_class_uri: ClassVar[URIRef] = SKEM["ScientificKnowledgeItem"]
     class_class_curie: ClassVar[str] = "skem:ScientificKnowledgeItem"
     class_name: ClassVar[str] = "ScientificKnowledgeItem"
     class_model_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeItem
@@ -364,7 +360,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeFragment
+    class_class_uri: ClassVar[URIRef] = SKEM["ScientificKnowledgeFragment"]
     class_class_curie: ClassVar[str] = "skem:ScientificKnowledgeFragment"
     class_name: ClassVar[str] = "ScientificKnowledgeFragment"
     class_model_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeFragment
@@ -400,7 +396,7 @@ class Note(InformationContentEntity):
     """
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.Note
+    class_class_uri: ClassVar[URIRef] = SKEM["Note"]
     class_class_curie: ClassVar[str] = "skem:Note"
     class_name: ClassVar[str] = "Note"
     class_model_uri: ClassVar[URIRef] = SKEM.Note
@@ -435,7 +431,7 @@ class Note(InformationContentEntity):
 class Author(InformationContentEntity):
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.Author
+    class_class_uri: ClassVar[URIRef] = SKEM["Author"]
     class_class_curie: ClassVar[str] = "skem:Author"
     class_name: ClassVar[str] = "Author"
     class_model_uri: ClassVar[URIRef] = SKEM.Author
@@ -466,7 +462,7 @@ class Author(InformationContentEntity):
 class Organization(InformationContentEntity):
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.Organization
+    class_class_uri: ClassVar[URIRef] = SKEM["Organization"]
     class_class_curie: ClassVar[str] = "skem:Organization"
     class_name: ClassVar[str] = "Organization"
     class_model_uri: ClassVar[URIRef] = SKEM.Organization
@@ -497,7 +493,7 @@ class Organization(InformationContentEntity):
 class City(NamedThing):
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.City
+    class_class_uri: ClassVar[URIRef] = SKEM["City"]
     class_class_curie: ClassVar[str] = "skem:City"
     class_name: ClassVar[str] = "City"
     class_model_uri: ClassVar[URIRef] = SKEM.City
@@ -518,7 +514,7 @@ class City(NamedThing):
 class Country(NamedThing):
     _inherited_slots: ClassVar[List[str]] = []
 
-    class_class_uri: ClassVar[URIRef] = SKEM.Country
+    class_class_uri: ClassVar[URIRef] = SKEM["Country"]
     class_class_curie: ClassVar[str] = "skem:Country"
     class_name: ClassVar[str] = "Country"
     class_model_uri: ClassVar[URIRef] = SKEM.Country
@@ -680,9 +676,6 @@ slots.content = Slot(uri=SKEM.content, name="content", curie=SKEM.curie('content
 
 slots.creation_date = Slot(uri=SKEM.creation_date, name="creation date", curie=SKEM.curie('creation_date'),
                    model_uri=SKEM.creation_date, domain=None, range=Optional[Union[str, XSDDate]])
-
-slots.embedding = Slot(uri=SKEM.embedding, name="embedding", curie=SKEM.curie('embedding'),
-                   model_uri=SKEM.embedding, domain=InformationContentEntity, range=Optional[str])
 
 slots.format = Slot(uri=SKEM.format, name="format", curie=SKEM.curie('format'),
                    model_uri=SKEM.format, domain=InformationContentEntity, range=Optional[str])
