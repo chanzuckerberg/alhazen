@@ -970,7 +970,6 @@ class InformationContentEntity(NamedThing):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -988,7 +987,7 @@ class InformationContentEntity(NamedThing):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="InformationContentEntity_has_notes")
+    has_notes = relationship( "Note", secondary="InformationContentEntity_has_notes", back_populates="is_about")
     
     
     iri_rel = relationship( "InformationContentEntityIri" )
@@ -997,16 +996,17 @@ class InformationContentEntity(NamedThing):
     
 
     def __repr__(self):
-        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        'polymorphic_on': type,
+        "polymorphic_identity": "InformationContentEntity",
+    }    
 
 
 class City(NamedThing):
@@ -1080,7 +1080,6 @@ class InformationResource(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1107,7 +1106,7 @@ class InformationResource(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"InformationResource(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"InformationResource(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1128,7 +1127,6 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1150,7 +1148,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="ScientificKnowledgeCollection_has_notes")
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeCollection_has_notes", back_populates="is_about")
     
     
     iri_rel = relationship( "ScientificKnowledgeCollectionIri" )
@@ -1159,16 +1157,16 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "ScientificKnowledgeCollection",
+    }    
 
 
 class ScientificKnowledgeExpression(InformationContentEntity):
@@ -1182,7 +1180,6 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1211,7 +1208,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="ScientificKnowledgeExpression_has_notes")
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeExpression_has_notes", back_populates="is_about")
     
     
     iri_rel = relationship( "ScientificKnowledgeExpressionIri" )
@@ -1220,16 +1217,16 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},)"
+        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "ScientificKnowledgeExpression",
+    }    
 
 
 class ScientificKnowledgeItem(InformationContentEntity):
@@ -1242,7 +1239,6 @@ class ScientificKnowledgeItem(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1264,7 +1260,7 @@ class ScientificKnowledgeItem(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="ScientificKnowledgeItem_has_notes")
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeItem_has_notes", back_populates="is_about")
     
     
     iri_rel = relationship( "ScientificKnowledgeItemIri" )
@@ -1273,16 +1269,16 @@ class ScientificKnowledgeItem(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "ScientificKnowledgeItem",
+    }    
 
 
 class ScientificKnowledgeFragment(InformationContentEntity):
@@ -1297,7 +1293,6 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1315,7 +1310,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="ScientificKnowledgeFragment_has_notes")
+    has_notes = relationship( "Note", secondary="ScientificKnowledgeFragment_has_notes", back_populates="is_about")
     
     
     iri_rel = relationship( "ScientificKnowledgeFragmentIri" )
@@ -1324,16 +1319,16 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "ScientificKnowledgeFragment",
+    }    
 
 
 class Note(InformationContentEntity):
@@ -1347,13 +1342,12 @@ class Note(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     
     
     # ManyToMany
-    is_about = relationship( "InformationContentEntity", secondary="Note_is_about")
+    is_about = relationship( "InformationContentEntity", secondary="Note_is_about", back_populates="has_notes")
     
     
     provenance_rel = relationship( "NoteProvenance" )
@@ -1367,7 +1361,11 @@ class Note(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="Note_has_notes")
+    has_notes = relationship( "Note", 
+                             secondary="Note_has_notes", 
+                             primaryjoin="Note.id==Note_has_notes.c.Note_id",
+                             secondaryjoin="Note.id==Note_has_notes.c.has_notes_id",
+                             back_populates="is_about")
     
     
     iri_rel = relationship( "NoteIri" )
@@ -1376,16 +1374,16 @@ class Note(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},name={self.name},id={self.id},)"
+        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},name={self.name},id={self.id},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "Note",
+    }    
 
 
 class Author(InformationContentEntity):
@@ -1397,7 +1395,6 @@ class Author(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1423,7 +1420,7 @@ class Author(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="Author_has_notes")
+    has_notes = relationship( "Note", secondary="Author_has_notes", back_populates="is_about")
     
     
     iri_rel = relationship( "AuthorIri" )
@@ -1432,16 +1429,16 @@ class Author(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Author(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"Author(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "Author",
+    }    
 
 
 class Organization(InformationContentEntity):
@@ -1453,7 +1450,6 @@ class Organization(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
-    embedding = Column(Text())
     format = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1479,7 +1475,7 @@ class Organization(InformationContentEntity):
     
     
     # ManyToMany
-    has_notes = relationship( "Note", secondary="Organization_has_notes")
+    has_notes = relationship( "Note", secondary="Organization_has_notes", back_populates="is_about")
     
     
     iri_rel = relationship( "OrganizationIri" )
@@ -1488,15 +1484,15 @@ class Organization(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Organization(creation_date={self.creation_date},content={self.content},token_count={self.token_count},embedding={self.embedding},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"Organization(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
 
 
 
     
     # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
     __mapper_args__ = {
-        'concrete': True
-    }
-    
+        'concrete': True,
+        "polymorphic_identity": "Organization",
+    }    
 
 
