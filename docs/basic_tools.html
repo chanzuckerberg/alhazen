@@ -309,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Prepare a report over a core research question by collecting a number of notes and synthesizing them into a report</li>
 </ol>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L53" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L51" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="alhazentoolmixin" class="level3">
 <h3 class="anchored" data-anchor-id="alhazentoolmixin">AlhazenToolMixin</h3>
 <blockquote class="blockquote">
@@ -320,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Base tool for interacting with an Alhazen CEIFNS (pron. ‘SAI-FiNS’) database (CEIFNS = Collection-Expression-Item-Fragment-Note-Summary).</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L72" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L70" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="empcsearchtool" class="level3">
 <h3 class="anchored" data-anchor-id="empcsearchtool">EMPCSearchTool</h3>
@@ -342,7 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Interface LangChain tools must implement.</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L67" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L65" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="empcsearchtoolschema" class="level3">
 <h3 class="anchored" data-anchor-id="empcsearchtoolschema">EMPCSearchToolSchema</h3>
@@ -353,7 +353,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L142" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L140" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="fulltextretrievaltool" class="level3">
 <h3 class="anchored" data-anchor-id="fulltextretrievaltool">FullTextRetrievalTool</h3>
@@ -376,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Interface LangChain tools must implement.</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L138" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L136" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="fulltextretrievaltoolschema" class="level3">
 <h3 class="anchored" data-anchor-id="fulltextretrievaltoolschema">FullTextRetrievalToolSchema</h3>
@@ -388,27 +388,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'LOCAL_FILE_PATH'</span>] <span class="op">=</span> <span class="st">'/Users/gburns/alhazen/'</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'DATABASE_NAME'</span>] <span class="op">=</span> <span class="st">'temp'</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> EMPCSearchTool()</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>t._run(name<span class="op">=</span><span class="st">'Stuff'</span>, </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>       query<span class="op">=</span><span class="st">'Cryoelectron Tomography | Cryo Electron Tomography | Cryo-Electron Tomography | Cryo-ET | CryoE'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#os.environ['LOCAL_FILE_PATH'] = '/Users/gburns/alhazen/'</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#os.environ['DATABASE_NAME'] = 'temp'</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#t = EMPCSearchTool()</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#t._run(name='Stuff', </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       query='Cryoelectron Tomography | Cryo Electron Tomography | Cryo-Electron Tomography | Cryo-ET | CryoE')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>db_name <span class="op">=</span> os.environ[<span class="st">'DB_NAME'</span>]</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>loc <span class="op">=</span> os.environ[<span class="st">'LLMS_TEMP_DIR'</span>]</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> Ceifns_LiteratureDb(loc, db_name)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> db.session <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    session_class <span class="op">=</span> sessionmaker(bind<span class="op">=</span>db.engine)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    db.session <span class="op">=</span> session_class()</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>r2 <span class="op">=</span> db.session.query(func.count(ScientificKnowledgeExpression.<span class="bu">id</span>)) <span class="op">\</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                    .<span class="bu">filter</span>(ScientificKnowledgeCollection.<span class="bu">id</span> <span class="op">==</span> ScientificKnowledgeCollectionHasMembers.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                    .<span class="bu">filter</span>(ScientificKnowledgeCollectionHasMembers.has_members_id <span class="op">==</span> ScientificKnowledgeExpression.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                    .<span class="bu">filter</span>(ScientificKnowledgeCollection.<span class="bu">id</span> <span class="op">==</span> <span class="bu">str</span>(<span class="fl">0.0</span>))</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">str</span>(r2.first()[<span class="dv">0</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#db_name = os.environ['DB_NAME']</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#loc = os.environ['LLMS_TEMP_DIR']</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#db = Ceifns_LiteratureDb(loc, db_name)</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#if db.session is None:</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#    session_class = sessionmaker(bind=db.engine)</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#    db.session = session_class()</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#r2 = db.session.query(func.count(ScientificKnowledgeExpression.id)) \</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                    .filter(ScientificKnowledgeCollection.id == ScientificKnowledgeCollectionHasMembers.ScientificKnowledgeCollection_id) \</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                    .filter(ScientificKnowledgeCollectionHasMembers.has_members_id == ScientificKnowledgeExpression.id) \</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#                    .filter(ScientificKnowledgeCollection.id == str(0.0))</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#print(str(r2.first()[0]))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>1853</code></pre>
 </div>
