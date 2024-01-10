@@ -1,5 +1,5 @@
 # Auto generated from sciknow.yaml by pythongen.py version: 0.0.1
-# Generation date: 2024-01-03T10:36:22
+# Generation date: 2024-01-08T14:33:45
 # Schema: ScientificKnowledgeExpressionModel
 #
 # id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
@@ -184,6 +184,7 @@ class InformationContentEntity(NamedThing):
     format: Optional[str] = None
     provenance: Optional[Union[str, List[str]]] = empty_list()
     xref: Optional[Union[Union[str, URIorCURIE], List[Union[str, URIorCURIE]]]] = empty_list()
+    license: Optional[str] = None
     has_notes: Optional[Union[Union[str, NoteId], List[Union[str, NoteId]]]] = empty_list()
 
     def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
@@ -206,6 +207,9 @@ class InformationContentEntity(NamedThing):
         if not isinstance(self.xref, list):
             self.xref = [self.xref] if self.xref is not None else []
         self.xref = [v if isinstance(v, URIorCURIE) else URIorCURIE(v) for v in self.xref]
+
+        if self.license is not None and not isinstance(self.license, str):
+            self.license = str(self.license)
 
         if not isinstance(self.has_notes, list):
             self.has_notes = [self.has_notes] if self.has_notes is not None else []
@@ -555,22 +559,37 @@ class ScientificKnowledgeExpressionType(EnumDefinitionImpl):
         description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion). These articles will have undergone  peer review.""")
     ScientificPrimaryResearchPreprint = PermissibleValue(
         text="ScientificPrimaryResearchPreprint",
-        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion). These articles have been published as preprints and have NOT undergone peer review.""")
+        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion). These articles have been published as preprints and have NOT undergone peer review.""")
     ScientificReviewArticle = PermissibleValue(
         text="ScientificReviewArticle",
-        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).""")
+        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion).""")
     ScientificBook = PermissibleValue(
         text="ScientificBook",
         description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion).""")
     ScientificBookChapter = PermissibleValue(
         text="ScientificBookChapter",
-        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, resulst, and discussion).""")
+        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion).""")
     ScientificConferenceArticle = PermissibleValue(
         text="ScientificConferenceArticle",
         description="A scientific publication describing original research that was presented at a conference.")
     ScientificDissertation = PermissibleValue(
         text="ScientificDissertation",
         description="""A thesis or dissertation submitted by a researcher as  part of their work to qualify for an advanced degree - usually a  doctorate.""")
+    ClinicalCaseReport = PermissibleValue(
+        text="ClinicalCaseReport",
+        description="A published case report of a patient's clinical experience.")
+    ClinicalTrial = PermissibleValue(
+        text="ClinicalTrial",
+        description="A description of a clinical trial of a therapeutic procedure or drug.")
+    ScientificComment = PermissibleValue(
+        text="ScientificComment",
+        description="Commentary expressed as a letter to the editor or an editorial.")
+    ScientificErrata = PermissibleValue(
+        text="ScientificErrata",
+        description="An erratum or retraction describing errors in another scientific publication.")
+    ClinicalGuidelines = PermissibleValue(
+        text="ClinicalGuidelines",
+        description="""An official publication making recommendations to physicians for clinical best practices.  Could be any aspect of clinical work including treatment, diagnosis, standard of care, etc.""")
 
     _defn = EnumDefinition(
         name="ScientificKnowledgeExpressionType",
