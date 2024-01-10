@@ -21,8 +21,6 @@ from ..schema_sqla import ScientificKnowledgeExpression, \
         ScientificKnowledgeItem, ScientificKnowledgeFragment
 import uuid
 
-
-
 # %% ../../nbs/36_search_engine_eutils.ipynb 5
 PAGE_SIZE = 10000
 TIME_THRESHOLD = 0.3333334
@@ -428,12 +426,25 @@ class EuroPMCQuery():
                 content = title+'\n'+abstract
                 if 'patent' in pTypes:
                     continue
-                elif 'review' in pTypes:
+                elif 'clinical trial' in pTypes: 
+                    ptype='ClinicalTrial'
+                elif 'review' in pTypes or 'systematic review' in pTypes or 'systematic-review' in pTypes or 'meta-analysis' in pTypes or 'review-article' in pTypes:
                     ptype='ScientificReviewArticle'
                 elif 'preprint' in pTypes:
                     ptype='ScientificPrimaryResearchPreprint'
                 elif 'journal article' in pTypes or 'research-article' in pTypes:
                     ptype='ScientificPrimaryResearchArticle'
+                elif 'case-report' in pTypes or 'case reports' in pTypes:
+                    ptype='ClinicalCaseReport'
+                elif 'practice guideline' in pTypes:
+                    ptype='ClinicalGuidelines'
+                elif 'letter' in pTypes or 'comment' in pTypes or 'editorial' in pTypes:
+                    ptype='ScientificComment'
+                elif 'published erratum' in pTypes or 'correction' in pTypes or 'retraction of publication' in pTypes: 
+                    ptype='ScientificErrata'
+                else:
+                    #print('|'.join(pTypes))
+                    continue 
                 human_readable_reference = d.get('authorString','') + ' (' + str(date_obj.year) + ') ' + title
                 p = ScientificKnowledgeExpression(
                         id='doi:%s'%(str(d['doi'])), 

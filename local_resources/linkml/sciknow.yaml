@@ -281,6 +281,7 @@ classes:
       - format
       - provenance
       - xref
+      - license
       - has notes
 
   InformationResource:
@@ -357,7 +358,6 @@ classes:
       - affiliations
       - is author of
 
-
   Organization:
     is_a: InformationContentEntity
     attributes:  
@@ -396,13 +396,13 @@ enums:
         description: >-
           A scientific publication describing original research
           typically formatted in an IMRaD structure (introduction, methods,
-          resulst, and discussion). These articles have been published as preprints
+          results, and discussion). These articles have been published as preprints
           and have NOT undergone peer review. 
       ScientificReviewArticle:
         description: >-
           A scientific publication describing original research
           typically formatted in an IMRaD structure (introduction, methods,
-          resulst, and discussion).   
+          results, and discussion).   
       ScientificBook:
         description: >-
           A scientific publication describing original research
@@ -412,7 +412,7 @@ enums:
         description: >-
           A scientific publication describing original research
           typically formatted in an IMRaD structure (introduction, methods,
-          resulst, and discussion).   
+          results, and discussion).   
       ScientificConferenceArticle:
         description: >-
           A scientific publication describing original research
@@ -421,7 +421,23 @@ enums:
         description: >-
           A thesis or dissertation submitted by a researcher as 
           part of their work to qualify for an advanced degree - usually a 
-          doctorate.   
+          doctorate.
+      ClinicalCaseReport:
+        description: >-
+          A published case report of a patient's clinical experience.   
+      ClinicalTrial:
+        description: >-
+          A description of a clinical trial of a therapeutic procedure or drug.   
+      ScientificComment:
+        description: >-
+          Commentary expressed as a letter to the editor or an editorial.   
+      ScientificErrata:
+        description: >-
+          An erratum or retraction describing errors in another scientific publication.
+      ClinicalGuidelines:
+        description: >-
+          An official publication making recommendations to physicians for clinical best practices. 
+          Could be any aspect of clinical work including treatment, diagnosis, standard of care, etc.
   ItemType: 
     permissible_values:
       CitationRecord:
@@ -476,7 +492,7 @@ enums:
       PMCID:
         description:
           PubmedCentral ID - numeric identifier for a publication in PubmedCentral. When used in PMC directly, the numbers usually have a prefix of PMC
-      EPMCID:
+      EPMCID:pg_du
         description:
           European PubmedCentral ID - alphanumeric string used within Europe PMC.
       DOI:

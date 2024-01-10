@@ -4,7 +4,7 @@
 __all__ = ['retrieve_pdf_from_doidotorg', 'retrieve_full_text_links_from_biorxiv', 'execute_search_on_biorxiv',
            'get_html_from_pmc_doi', 'clean_and_convert_tags', 'extract_reconstructed_nxml']
 
-# %% ../../nbs/36_web_robot.ipynb 2
+# %% ../../nbs/36_web_robot.ipynb 3
 from bs4 import BeautifulSoup,Tag,Comment,NavigableString
 
 import requests
@@ -24,7 +24,7 @@ import os
 from pathlib import Path
 
 
-# %% ../../nbs/36_web_robot.ipynb 3
+# %% ../../nbs/36_web_robot.ipynb 4
 def retrieve_pdf_from_doidotorg(doi, base_dir):
     browser = Browser()#, headless=True)
     doi = doi.replace('https://doi.org/', '').replace('doi', '')
@@ -52,7 +52,7 @@ def retrieve_pdf_from_doidotorg(doi, base_dir):
 
 #retrieve_pdf_from_doidotorg('10.1083/jcb.202204093', '/Users/gburns/alhazen/em_tech/temp/')
 
-# %% ../../nbs/36_web_robot.ipynb 4
+# %% ../../nbs/36_web_robot.ipynb 5
 def retrieve_full_text_links_from_biorxiv(doi, base_dir):
     browser = Browser()#, headless=True)
     doi = doi.replace('https://doi.org/', '').replace('doi', '')
@@ -90,7 +90,7 @@ def retrieve_full_text_links_from_biorxiv(doi, base_dir):
     return files
         
 
-# %% ../../nbs/36_web_robot.ipynb 5
+# %% ../../nbs/36_web_robot.ipynb 6
 def execute_search_on_biorxiv(search_term):
     browser = Browser()#, headless=True)
     all_dois = []
@@ -153,9 +153,6 @@ def execute_search_on_biorxiv(search_term):
 
     browser.quit()
     return all_dois
-
-#all_dois = run_biorxiv_assistant('cellxgene')
-#print(all_dois)
 
 # %% ../../nbs/36_web_robot.ipynb 7
 def get_html_from_pmc_doi(doi, base_file_path):    

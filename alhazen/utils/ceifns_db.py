@@ -266,7 +266,7 @@ class Ceifns_LiteratureDb(BaseModel):
         corpus_name = qt.df.loc[qt.df['ID']==i][qt.name_col].values[0]
         if query is None or query=='nan' or len(query)==0: 
           continue
-        if len(sq) > 0:
+        if len(sq) > 0 and sq != 'nan':
           query = '(%s) AND (%s)'%(q, sq)
           if j is not None:
             corpus_id = str(i)+'.'+str(j)
