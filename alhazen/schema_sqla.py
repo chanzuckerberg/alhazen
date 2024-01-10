@@ -971,6 +971,7 @@ class InformationContentEntity(NamedThing):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
@@ -996,7 +997,7 @@ class InformationContentEntity(NamedThing):
     
 
     def __repr__(self):
-        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1081,6 +1082,7 @@ class InformationResource(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
@@ -1106,7 +1108,7 @@ class InformationResource(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"InformationResource(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"InformationResource(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1128,6 +1130,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
@@ -1157,7 +1160,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1176,11 +1179,12 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     __tablename__ = 'ScientificKnowledgeExpression'
 
     publication_date = Column(Date())
-    type = Column(Enum('ScientificPrimaryResearchArticle', 'ScientificPrimaryResearchPreprint', 'ScientificReviewArticle', 'ScientificBook', 'ScientificBookChapter', 'ScientificConferenceArticle', 'ScientificDissertation', name='ScientificKnowledgeExpressionType'), nullable=False )
+    type = Column(Enum('ScientificPrimaryResearchArticle', 'ScientificPrimaryResearchPreprint', 'ScientificReviewArticle', 'ScientificBook', 'ScientificBookChapter', 'ScientificConferenceArticle', 'ScientificDissertation', 'ClinicalCaseReport', 'ClinicalTrial', 'ScientificComment', 'ScientificErrata', 'ClinicalGuidelines', name='ScientificKnowledgeExpressionType'), nullable=False )
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     
@@ -1217,7 +1221,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},)"
+        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},)"
 
 
 
@@ -1240,6 +1244,7 @@ class ScientificKnowledgeItem(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
@@ -1269,7 +1274,7 @@ class ScientificKnowledgeItem(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1294,6 +1299,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
@@ -1319,7 +1325,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1342,6 +1348,7 @@ class Note(InformationContentEntity):
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     
@@ -1374,7 +1381,7 @@ class Note(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},name={self.name},id={self.id},)"
+        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},license={self.license},name={self.name},id={self.id},)"
 
 
 
@@ -1396,6 +1403,7 @@ class Author(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
@@ -1429,7 +1437,7 @@ class Author(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Author(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"Author(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1451,6 +1459,7 @@ class Organization(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
@@ -1484,7 +1493,7 @@ class Organization(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Organization(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},name={self.name},id={self.id},type={self.type},)"
+        return f"Organization(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
