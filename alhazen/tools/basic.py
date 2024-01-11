@@ -21,7 +21,7 @@ from ..schema_sqla import ScientificKnowledgeCollection, \
     ScientificKnowledgeItem, ScientificKnowledgeExpressionHasRepresentation, \
     ScientificKnowledgeFragment, ScientificKnowledgeItemHasPart, \
     InformationResource, Note, NoteIsAbout
-from ..utils.ceifns_db import QuerySpec, Ceifns_LiteratureDb
+from ..utils.ceifns_db import Ceifns_LiteratureDb
 from ..utils.jats_text_extractor import NxmlDoc
 
 from langchain.tools import StructuredTool
@@ -84,9 +84,9 @@ class EMPCSearchTool(BaseTool):
         if os.environ.get('LOCAL_FILE_PATH') is None: 
             raise Exception('Where are you storing your local literature database?')
         loc = os.environ['LOCAL_FILE_PATH']
-        if os.environ.get('DATABASE_NAME') is None: 
+        if os.environ.get('ALHAZEN_DB_NAME') is None: 
             raise Exception('Which database do you want to use for this application?')
-        db_name = os.environ['DATABASE_NAME']
+        db_name = os.environ['ALHAZEN_DB_NAME']
 
         try: 
             
@@ -98,16 +98,14 @@ class EMPCSearchTool(BaseTool):
                 c_id = str(int(float(max_id)) + 1)
 
             cdf1 = pd.DataFrame([{'ID': c_id, 'NAME': name, 'QUERY': query}])        
-            qs1 = QuerySpec(db_name, 'ID', 'QUERY', 'NAME', {}, ['TITLE','ABSTRACT'])
             qt1 = QueryTranslator(cdf1.sort_values('ID'), 'ID', 'QUERY', 'NAME')
 
             if(date_query is not None):
                 cdf2 = pd.DataFrame([{'ID': None, 'NAME': None, 'QUERY': date_query}])        
-                qs2 = QuerySpec(db_name, 'ID', 'QUERY', 'NAME', {}, ['FIRST_PDATE'])
                 qt2 = QueryTranslator(cdf2.sort_values('ID'), 'ID', 'QUERY', 'NAME')
-                self.db.add_corpus_from_epmc(qt1, qt2, sections=qs1.sections, sections2=qs2.sections, page_size=100)
+                self.db.add_corpus_from_epmc(qt1, qt2, sections=['TITLE','ABSTRACT'], sections2=['FIRST_PDATE'], page_size=100)
             else: 
-                self.db.add_corpus_from_epmc(qt1, None, sections=qs1.sections, page_size=100)
+                self.db.add_corpus_from_epmc(qt1, None, sections=['TITLE','ABSTRACT'], page_size=100)
 
             r2 = self.db.session.query(func.count(ScientificKnowledgeExpression.id)) \
                     .filter(ScientificKnowledgeCollection.id == ScientificKnowledgeCollectionHasMembers.ScientificKnowledgeCollection_id) \
@@ -153,9 +151,9 @@ class FullTextRetrievalTool(BaseTool):
             raise Exception('Where are you storing your local literature database?')
         loc = os.environ['LOCAL_FILE_PATH']
         path = os.path.join(loc, 'ft')
-        if os.environ.get('DATABASE_NAME') is None: 
+        if os.environ.get('ALHAZEN_DB_NAME') is None: 
             raise Exception('Which database do you want to use for this application?')
-        db_name = os.environ['DATABASE_NAME']
+        db_name = os.environ['ALHAZEN_DB_NAME']
 
         # Iterate over the papers in the collection and search for their DOIs
         count = 0

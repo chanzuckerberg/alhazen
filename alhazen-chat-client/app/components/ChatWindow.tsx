@@ -249,7 +249,7 @@ export function ChatWindow(props: {
       {messages.length === 0 ? (
         <footer className="flex justify-center absolute bottom-8">
           <a
-            href="https://github.com/langchain-ai/chat-langchain"
+            href="https://github.com/chanzuckerberg/alhazen"
             target="_blank"
             className="text-white flex items-center"
           >

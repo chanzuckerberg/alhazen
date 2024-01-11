@@ -6,7 +6,6 @@ __all__ = ['AlhazenToolkit']
 # %% ../nbs/20_toolkit.ipynb 3
 import local_resources.linkml as linkml
 
-
 from .core import OllamaRunner
 from .tools.basic import EMPCSearchTool
 from .tools.metadata_extraction_tool import MetadataExtractionTool
@@ -22,14 +21,12 @@ import local_resources.prompt_elements as prompt_elements
 from sqlalchemy.orm import sessionmaker
 from typing import List
 
-
-
 # %% ../nbs/20_toolkit.ipynb 4
 # NOTE - Use LangChain's SQL_DATABASE TOOLKIT AS A MODEL 
 # https://github.com/langchain-ai/langchain/blob/535db72607c4ae308566ede4af65295967bb33a8/libs/community/langchain_community/agent_toolkits/sql/toolkit.py#L18
 #
 # Use environment variables to denote the database name + base file location
-# os.environ['DATABASE_NAME'] = 'em_tech'
+# os.environ['ALHAZEN_DB_NAME'] = 'em_tech'
 # os.environ['LOCAL_FILE_PATH'] = '/Users/gburns/alhazen/'
 
 class AlhazenToolkit(BaseModel):
