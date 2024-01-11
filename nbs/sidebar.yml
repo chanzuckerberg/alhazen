@@ -3,19 +3,16 @@ website:
     style: "docked"
     search: true
     contents:
-      - section: "CEIFiNS Database"
+      - index.ipynb
+      - docnb1_use_cases.ipynb
+      - docnb2_architecture.ipynb
+      - section: "API Docs"
         contents:
           - 35_ceifns_db.ipynb
-      - section: "Apps + Demos"
-        contents:
           - 01_apps.ipynb
-      - section: "Agents + Tools"
-        contents:
           - 20_toolkit.ipynb
           - 21_basic_tools.ipynb
           - 22_metadata_extraction_tool.ipynb
-      - section: "Utilities"
-        contents:
           - 36_search_engine_eutils.ipynb
           - 37_jats_text_extractor.ipynb
           - 37_pdf_text_extractor.ipynb

@@ -154,6 +154,7 @@ if os.environ.get('ALHAZEN_DB_NAME') is not None:
             config_keys=["metadata"])
 
 # %% ../nbs/10_backend.ipynb 6
+#| output: false
 if __name__ == "__main__" and os.environ.get('ALHAZEN_DB_NAME') is not None:
     import uvicorn
     uvicorn.run(app, host="localhost", port=8080)
