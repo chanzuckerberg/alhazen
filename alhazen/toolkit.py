@@ -7,8 +7,9 @@ __all__ = ['AlhazenToolkit']
 import local_resources.linkml as linkml
 
 from .core import OllamaRunner
-from .tools.basic import EMPCSearchTool
-from .tools.metadata_extraction_tool import MetadataExtractionTool
+from .tools.basic import *
+from .tools.metadata_extraction_tool import MetadataExtractionTool, MetadataExtractionWithRAGTool 
+from .tools.paperqa_emulation_tool import PaperQAEmulationTool 
 from .utils.ceifns_db import *
 
 from langchain.tools import BaseTool
@@ -43,18 +44,44 @@ class AlhazenToolkit(BaseModel):
 
     def get_tools(self) -> List[BaseTool]:
         """Get the tools in the toolkit."""
-        epmc_search_tool_description = (
+        add_collection_tool_description = (
             "This tool executes a search for scientific papers in the EPMC database based on a query"
             " and then builds a collection out of the papers returned. "
             "Input to this tool has three parameters: \n"
+            "- 'id' which is string that denotes the identifier of the collection in the database.\n"
             "- 'query' which is string that defines a query using Boolean logic for search terms.\n"
             "- 'name' which is a string that defines a descriptive name for the collection.\n"
-            "- 'date_query' which is an optional string that defines range of dates over which the returned papers should have been published.\n"
             "The tool will execute an query over the remote database, create the collection and add papers to the collection to our local database."
             "If successful, it will return 'Final Answer'. If not, it will return an error report."
         )
-        epmc_search_tool = EMPCSearchTool(db=self.db, description=epmc_search_tool_description)
+        add_collection_tool = AddCollectionFromEPMCTool(db=self.db, description=add_collection_tool_description)
         
+        describe_collection_tool_description = (
+            "This tool describes the contents of a collection in the database. "
+            "Input to this tool has one parameters: \n"
+            "- 'id' which is string that denotes the identifier of the collection in the database.\n"
+            "If successful, it will return 'Final Answer'. If not, it will return an error report."
+        )
+        describe_collection_tool = DescribeCollectionCompositionTool(db=self.db, description=describe_collection_tool_description)
+
+        delete_collection_tool_description = (
+            "This tool deletes a collection from the database. "
+            "Input to this tool has one parameters: \n"
+            "- 'id' which is string that denotes the identifier of the collection in the database.\n"
+            "The tool will delete the collection from our local database."
+            "If successful, it will return 'Final Answer'. If not, it will return an error report."
+        )
+        delete_collection_tool = DeleteCollectionTool(db=self.db, description=delete_collection_tool_description)
+
+        retrieve_full_text_tool_description = (
+            "This tool invokes a web search for a copy of a full text paper from the web given a doi identifier. "
+            "Input to this tool has one parameters: \n"
+            "- 'paper_id' which is a string that denotes the doi identifier of the paper in question.\n"
+            "The tool will search online for the paper, return it and add it's text to the database."
+            "If successful, it will return 'Final Answer'. If not, it will return an error report."
+        )
+        retrieve_full_text_tool = RetrieveFullTextTool(db=self.db, description=retrieve_full_text_tool_description)
+
         metadata_extraction_tool_description = (
             "Input to this tool is a doi identifier, a search term for section titles in "
             "the paper, and the name of a type of experiment (drawn from a predefined list). "
@@ -65,10 +92,25 @@ class AlhazenToolkit(BaseModel):
         metadata_extraction_tool = MetadataExtractionTool(
             db=self.db, ollr=self.ollr, llm=self.ollr.llm, description=metadata_extraction_tool_description
         )
+
+        paperqa_emulation_tool_description = (
+            "Input to this tool is a question, the ID value for the collection that the question "
+            "will be asked over (collection_id), the number of documents to be sampled (n_sample_size), "
+            "the number of documents to be synthesized in the final analysis."
+            "The tool will execute an Map-Reduce RAG pipeline to query the vector store, and then "
+            "summarize the information returned to write a response to the question."
+        )
+        paperqa_emulation_tool = PaperQAEmulationTool(
+            db=self.db, ollr=self.ollr, llm=self.ollr.llm, description=paperqa_emulation_tool_description
+        )
                 
         return [
-            epmc_search_tool,
-            metadata_extraction_tool
+            add_collection_tool,
+            describe_collection_tool,
+            delete_collection_tool,
+            retrieve_full_text_tool,
+            metadata_extraction_tool,
+            paperqa_emulation_tool
         ]
 
     def __init__(self, **kwargs):

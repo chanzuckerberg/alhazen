@@ -10,12 +10,14 @@ import dataclasses
 from enum import auto, Enum
 from importlib_resources import files
 
+from langchain.schema import SystemMessage, HumanMessage
 from langchain.callbacks.manager import CallbackManager
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.embeddings import LlamaCppEmbeddings, OpenAIEmbeddings
 from langchain.chat_models.ollama import ChatOllama
+
 from langchain.llms import LlamaCpp as LlamaCppLangChain, OpenAI as OpenAILangChain, Ollama
-from langchain.prompts import PromptTemplate
+from langchain.prompts import ChatPromptTemplate, PromptTemplate
 
 import local_resources.prompts as prompts
 
@@ -76,6 +78,12 @@ class PromptTemplateSpec:
                 '''+self.instruction+'''
                 [/INST]</s>'''
         )
+
+    def generate_chat_prompt_template(self) -> ChatPromptTemplate:
+        template = ChatPromptTemplate.from_messages([
+            ("system", self.system),
+            ("human", self.instruction)])
+        return template
 
     def generate_simple_instruction(self, input_map) -> str:
         pt = self.generate_prompt_template(self)
