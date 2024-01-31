@@ -209,10 +209,14 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#esearchquery" id="toc-esearchquery" class="nav-link" data-scroll-target="#esearchquery">ESearchQuery</a></li>
   <li><a href="#ncbi_database_type" id="toc-ncbi_database_type" class="nav-link" data-scroll-target="#ncbi_database_type">NCBI_Database_Type</a></li>
   <li><a href="#efetchquery" id="toc-efetchquery" class="nav-link" data-scroll-target="#efetchquery">EFetchQuery</a></li>
+  <li><a href="#get_pdf_from_pubmed_doi" id="toc-get_pdf_from_pubmed_doi" class="nav-link" data-scroll-target="#get_pdf_from_pubmed_doi">get_pdf_from_pubmed_doi</a></li>
+  <li><a href="#get_nxml_from_pubmed_doi" id="toc-get_nxml_from_pubmed_doi" class="nav-link" data-scroll-target="#get_nxml_from_pubmed_doi">get_nxml_from_pubmed_doi</a></li>
+  <li><a href="#download_file" id="toc-download_file" class="nav-link" data-scroll-target="#download_file">download_file</a></li>
   </ul></li>
   <li><a href="#europmcquery" id="toc-europmcquery" class="nav-link" data-scroll-target="#europmcquery">EuroPMCQuery</a>
   <ul class="collapse">
   <li><a href="#europmcquery-1" id="toc-europmcquery-1" class="nav-link" data-scroll-target="#europmcquery-1">EuroPMCQuery</a></li>
+  <li><a href="#download_full_text_paper_for_doi" id="toc-download_full_text_paper_for_doi" class="nav-link" data-scroll-target="#download_full_text_paper_for_doi">download_full_text_paper_for_doi</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -241,7 +245,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="ncbi-tools" class="level2">
 <h2 class="anchored" data-anchor-id="ncbi-tools">NCBI Tools</h2>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L35" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L41" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="esearchquery" class="level3">
 <h3 class="anchored" data-anchor-id="esearchquery">ESearchQuery</h3>
 <blockquote class="blockquote">
@@ -249,7 +253,7 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <p>Class to provide query interface for ESearch (i.e., query terms in elaborate ways, return a list of ids) Each instance of this class executes queries of a given type</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L28" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L34" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="ncbi_database_type" class="level3">
 <h3 class="anchored" data-anchor-id="ncbi_database_type">NCBI_Database_Type</h3>
@@ -259,7 +263,7 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <p>Simple enumeration of the different NCBI databases supported by this tool</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L194" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L200" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="efetchquery" class="level3">
 <h3 class="anchored" data-anchor-id="efetchquery">EFetchQuery</h3>
@@ -267,18 +271,53 @@ ul.task-list li input[type="checkbox"] {
 <pre><code> EFetchQuery (api_key=None, db='pubmed')</code></pre>
 </blockquote>
 <p>Class to provide query interface for EFetch (i.e., query based on a list of ids) Each instance of this class executes queries of a given type</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L431" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_pdf_from_pubmed_doi" class="level3">
+<h3 class="anchored" data-anchor-id="get_pdf_from_pubmed_doi">get_pdf_from_pubmed_doi</h3>
+<blockquote class="blockquote">
+<pre><code> get_pdf_from_pubmed_doi (doi, base_file_path)</code></pre>
+</blockquote>
+<p>Executes a query on the target database and returns a count of papers</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L393" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="get_nxml_from_pubmed_doi" class="level3">
+<h3 class="anchored" data-anchor-id="get_nxml_from_pubmed_doi">get_nxml_from_pubmed_doi</h3>
+<blockquote class="blockquote">
+<pre><code> get_nxml_from_pubmed_doi (doi, base_file_path)</code></pre>
+</blockquote>
+<p>Executes a query on the target database and returns a count of papers</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L384" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="download_file" class="level3">
+<h3 class="anchored" data-anchor-id="download_file">download_file</h3>
+<blockquote class="blockquote">
+<pre><code> download_file (url, local_filename)</code></pre>
+</blockquote>
+<p>Downloads a file from an URL to a local disk</p>
 </section>
 </section>
 <section id="europmcquery" class="level2">
 <h2 class="anchored" data-anchor-id="europmcquery">EuroPMCQuery</h2>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L378" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L475" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="europmcquery-1" class="level3">
 <h3 class="anchored" data-anchor-id="europmcquery-1">EuroPMCQuery</h3>
 <blockquote class="blockquote">
 <pre><code> EuroPMCQuery (oa=False, db='pubmed')</code></pre>
 </blockquote>
 <p>A class that executes search queries on the European PMC API</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/searchEngineUtils.py#L580" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="download_full_text_paper_for_doi" class="level3">
+<h3 class="anchored" data-anchor-id="download_full_text_paper_for_doi">download_full_text_paper_for_doi</h3>
+<blockquote class="blockquote">
+<pre><code> download_full_text_paper_for_doi (doi, path)</code></pre>
+</blockquote>
 
 
 </section>

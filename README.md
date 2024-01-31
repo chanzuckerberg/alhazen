@@ -44,6 +44,16 @@ $ brew services start postgresql@14
 $ brew services list
 ```
 
+If you install Postgresql via homebrew, you will need to create a
+`postgres` superuser to run the `psql` command.
+
+    $ createuser -s postgres
+
+Note that the [`Postgres.app`](https://postgresapp.com/) system also
+provides a nice GUI interface for Postgres but installing the
+[`pgvector`](https://github.com/pgvector/pgvector) package is a little
+more involved.
+
 #### Ollama
 
 The tool uses the [Ollama](https://ollama.ai/) library to execute large

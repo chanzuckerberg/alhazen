@@ -13,6 +13,7 @@ website:
           - 20_toolkit.ipynb
           - 21_basic_tools.ipynb
           - 22_metadata_extraction_tool.ipynb
+          - 23_PaperQA_emulation_tool.ipynb
           - 36_search_engine_eutils.ipynb
           - 37_jats_text_extractor.ipynb
           - 37_pdf_text_extractor.ipynb

@@ -1,7 +1,7 @@
 cryoet: 
   methodology: Cryo-Electron Tomography (CryoET)
   method goal: study the microscopic structure of a biological sample
-  all protocol steps:    
+  all protocol steps:
     (A) the preparation of a biological sample for imaging (such as cells, tissue, a virus, a microorganism, etc.),
     (B) vitrification (freezing) of the sample,
     (C) milling the sample using a focussed ion beam (FIB) to create a used to prepare a thin, electron-transparent lamella.
@@ -10,64 +10,93 @@ cryoet:
     (F) annotating the 3D model of the sample to identify structures of interest.
     (G) other protocol steps, not listed above. 
   all protocol step codes: A, B, C, D, E, F, or G
+  dataset_publication_path: dataset.cross_references.dataset_publications
   metadata specs: 
     - name: biological_sample_type
       step: AB
-      spec: What is the type of biological sample being used? Select from the following list:- cell culture, tissue, organoid, organ, whole organism, virus, micro-organism, other.
+      spec: List the different types of biological sample being used? Select from the following list:- cell culture, tissue, organoid, organ, whole organism, virus, micro-organism, other.
+      path: dataset.sample_type 
     - name: organism_name
       step: AB
       spec: If the biological sample was taken from an organism, provide the scientific name of the organism. If the biological sample is not from an organism, return none.
+      path: dataset.organism.name 
     - name: cell_strain
       step: AB
       spec: If the biological sample described in the text is a cell or cell culture, what was the strain?
+      path: dataset.cell_strain.name
     - name: sample_preparation
       step: AB
       spec: Provide a summary of any actions performed on the biological sample.
+      path: dataset.sample_preparation
     - name: grid_preparation
       step: C
       spec: Provide a summary of how grids were prepared for electron microscopy.
+      path: dataset.grid_preparation
     - name: cryoet_pixel_spacing 
       step: D
       spec: What was the pixel spacing the CryoET step?
+      path: tiltseries.pixel_spacing
     - name: cryoet_acceleration_voltage
       step: D
       spec: What was the acceleration voltage?
+      path: tiltseries.acceleration_voltage
     - name: microscope_name
       step: D
       spec: What was the name of the type of electron microscope being used?
-    - name: microscope_setup
-      step : D
-      spec: Which, if any, of the following electron microscopy methods were used:- (A) an energy filter, (B) a phase plate, or (C) an image corrector?
+      path: tiltseries.microscope.model
+    - name: microscope_setup_energy_filter
+      step: D
+      spec: If an energy filter was used (in the electron microscope setup), describe the type of filter used?
+      path: tiltseries.microscope_optical_setup.energy_filter
+    - name: microscope_setup_phase_plate
+      step: D
+      spec: If a phase plate was used (in the electron microscope setup), describe the type of phase plate used?
+      path: tiltseries.microscope_optical_setup.phase_plate
+    - name: microscope_setup_image_corrector
+      step: D
+      spec: If an image corrector was used (in the electron microscope setup), describe the type of image corrector used?
+      path: tiltseries.microscope_optical_setup.image_corrector
     - name: camera_manufacturer
       step: D
       spec: Which company made the camera used to capture tilt images?
+      path: tiltseries.camera.manufacturer
     - name: camera_model
       step: D
       spec: What model of camera was used to capture tilt images?
+      path: tiltseries.camera.model
     - name: tilt_minimum
       step: D
       spec: What was the minimum angle used in the tilt-series?
+      path: tiltseries.tilt_range.min
     - name: tilt_maximum
       step: D
       spec: What was the maximum angle used in the tilt-series?
+      path: tiltseries.tilt_range.max
     - name: total_flux
       step: D
       spec: What was the total flux or total exposure dose?
+      path: tiltseries.total_flux
     - name: reconstruction_software
       step: E
       spec: What software or computational methods were used to perform the tomogram reconstruction?
+      path: tomograms.reconstruction_software
     - name: tomogram_size
       step: E
       spec: What are the dimensions of the tomogram dataset (measured in numbers of pixels)?
+      path: tomograms.voxel_spacing
     - name: reconstruction_method
       step: E
       spec: What computational methods / algorithms were used (e.g., weighted back propagation, etc)?
+      path: tomograms.reconstruction_method
     - name: annotated_entities
       step: F
       spec: What organelles or subcellular components were annotated in the images?
+      path: annotations[*].metadata.annotation_object.name
     - name: annotation_methods
       step: F
       spec: List all the methods describing how annotations were generated (manually, computational analysis, machine learning, etc)?
-    - name: annotated_software
+      path: annotations[*].metadata.annotation_method
+    - name: annotation_software
       step: F
       spec: What software was used to make the annotations?
+      path: annotations[*].metadata.annotation_software

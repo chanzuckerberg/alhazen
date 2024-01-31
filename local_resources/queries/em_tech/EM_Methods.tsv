@@ -1,0 +1,4 @@
+ID	CORPUS_NAME	QUERY
+1	Hierarchical phase-contrast tomography	Hierarchical phase-contrast tomography | HIP-CT | Hierarchical phase contrast tomography
+2	Cryo-Electron Tomography	"Cryoelectron Tomography | Cryo Electron Tomography | Cryo-Electron Tomography | Cryo-ET | CryoET"
+3	Volume Electron Microscopy	Volume Electron Microscopy | Volume EM | (serial section & (electron microscopy | EM | transmission electron microscopy | TEM | scanning electron microscopy | SEM | electron tomography )) | (serial block-face & (SEM | scanning electron microscopy)) | (focused ion beam & (SEM | scanning electron microscopy)) | (automated serial & (TEM | transmission electron microscopy)) | ( massively parallel imaging & (SEM | scanning electron microscopy)) | multibeam SEM | FAST-SEM | cryo-TEM

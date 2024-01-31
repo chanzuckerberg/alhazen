@@ -212,6 +212,8 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#ceifns_literaturedb" id="toc-ceifns_literaturedb" class="nav-link active" data-scroll-target="#ceifns_literaturedb">Ceifns_LiteratureDb</a></li>
+  <li><a href="#drop_ceifns_database" id="toc-drop_ceifns_database" class="nav-link" data-scroll-target="#drop_ceifns_database">drop_ceifns_database</a></li>
+  <li><a href="#create_ceifns_database" id="toc-create_ceifns_database" class="nav-link" data-scroll-target="#create_ceifns_database">create_ceifns_database</a></li>
   <li><a href="#read_information_content_entity_iri" id="toc-read_information_content_entity_iri" class="nav-link" data-scroll-target="#read_information_content_entity_iri">read_information_content_entity_iri</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
@@ -269,7 +271,7 @@ ul.task-list li input[type="checkbox"] {
 <p>Our definitions are inspired by <a href="http://www.sparontologies.net/ontologies/fabio">FABIO</a>, but only differentiate between ‘<em>expression</em>’ (as the reference to an scientific underlying work product, e.g., a paper or database record) and ‘<em>item</em>’ (as the actual data that delivers on that expression). The system is coded in LinkML and generated as a Postgresql database and a SQLAlchemy ORM.</p>
 </blockquote>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L67" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L120" target="_blank" style="float:right; font-size:smaller">source</a></p>
 <section id="ceifns_literaturedb" class="level3">
 <h3 class="anchored" data-anchor-id="ceifns_literaturedb">Ceifns_LiteratureDb</h3>
 <blockquote class="blockquote">
@@ -277,7 +279,8 @@ ul.task-list li input[type="checkbox"] {
                       engine:sqlalchemy.engine.base.Engine=None,
                       session:sqlalchemy.orm.session.Session=None, sent_de
                       tector:nltk.tokenize.punkt.PunktSentenceTokenizer=No
-                      ne)</code></pre>
+                      ne, embed_model:langchain.schema.embeddings.Embeddin
+                      gs=None)</code></pre>
 </blockquote>
 <p>This class runs a set of queries on external literature databases to build a local database of linked corpora and papers.</p>
 <p>Functionality includes:</p>
@@ -294,7 +297,23 @@ ul.task-list li input[type="checkbox"] {
 <li>Permits user to download a local copy of full text papers in NXML(JATS), PDF, and HTML format.</li>
 </ul>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L506" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L105" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="drop_ceifns_database" class="level3">
+<h3 class="anchored" data-anchor-id="drop_ceifns_database">drop_ceifns_database</h3>
+<blockquote class="blockquote">
+<pre><code> drop_ceifns_database (db_name)</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L71" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="create_ceifns_database" class="level3">
+<h3 class="anchored" data-anchor-id="create_ceifns_database">create_ceifns_database</h3>
+<blockquote class="blockquote">
+<pre><code> create_ceifns_database (db_name)</code></pre>
+</blockquote>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L678" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="read_information_content_entity_iri" class="level3">
 <h3 class="anchored" data-anchor-id="read_information_content_entity_iri">read_information_content_entity_iri</h3>
