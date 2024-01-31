@@ -1,0 +1,71 @@
+summarize paper set: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Run through a number of papers, write a summary of each paper in relation to the question and provide a score from 1-10 for relevancy
+  system: 
+    Answer in a direct and concise tone. Your audience is an expert, so be highly specific. If there are ambiguous terms or acronyms, first define them.
+  instruction: >
+    Read through the following JSON encoding of {k} research articles: 
+
+    Each document has three attributes: (A) a digital object identifier ('DOI') code, (B) a CITATION string containing the authors, publication year, title and publication location, and the (C) CONTENT field with the title and abstract of the paper.  
+
+    ```CONTEXT:{context}```
+
+    If CONTEXT is provided, generate a JSON list of summaries of each article in order to help answer the following question:
+
+    Question: {question}
+
+    Do NOT directly answer the question, instead summarize to give evidence to help answer the question. 
+    Focus on specific details, including numbers, equations, or specific quotes. 
+    Reply "Not applicable" if text is irrelevant. 
+    Restrict each summary to {summary_length} words. 
+    Also, provide a score from 1-10 indicating relevance to question. Do not explain your score. 
+
+    Write this answer as JSON formatted output. Provide a list of {k} dict objects with the following fields: DOI, SUMMARY, RELEVANCE SCORE. 
+
+    Do not provide additional explanation for the answer.
+    Do not include any other response other than a JSON object.
+  input_variables: 
+    - k
+    - question
+    - context
+  output_variables:
+    - summary
+
+write synthesis: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Write a overall synthesis over a number of papers in the context. Be careful of hallucinations.
+  system: 
+    Answer in a direct and concise tone. Your audience is an expert, so be highly specific. If there are ambiguous terms or acronyms, first define them.
+  instruction: > 
+    First, read through the following CONTEXT of summaries of research articles.  
+
+    The CONTEXT is provided as a list of research articles, each of which is described with four attributes: 
+        (A) a numerical ID  
+        (B) a CITATION of the paper that describes who wrote it, when it was written, and what the title of the study was. 
+        (B) a relevant SUMMARY
+        (C) a RELEVANCE SCORE
+
+    CONTEXT: {context}
+
+    Write an short essay that describes how each article in the context studied the following question:
+
+    QUESTION: {question}
+
+    ONLY USE THE CONTEXT PROVIDED. DO NOT INCLUDE ANY INFORMATION FROM ANY OTHER SOURCES. 
+
+    Describe how each article addressed the question. What methods did they use? What were their findings? What conclusions did they draw? 
+
+    Write a concluding paragraph at the end of the essay that summarizes your argument.
+
+    For each part of your answer, indicate which sources most support it via valid citation markers at the end of sentences, like [1], [2], [3]. 
+    Provide a concluding paragraph at the end of the essay. 
+
+    REMEMBER, ONLY REFER TO SUMMARIES FROM THE PROVIDED CONTEXT.
+
+  input_variables: 
+    - question
+    - context
+  output_variables:
+    - answer

@@ -14,6 +14,8 @@ import re
 from typing import Optional, List, Iterator, Mapping, Any, Dict
 from dataclasses import field
 import requests
+import nltk
+
 
 # %% ../../nbs/37_pdf_text_extractor.ipynb 3
 @dataclasses.dataclass
@@ -301,7 +303,7 @@ class HuridocsPDFParser(BaseBlobParser):
     def lazy_parse(self, blob: Blob) -> Iterator[Document]:
         """Lazily parse the blob."""
         import fitz
-        sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
+        #sent_detector = nltk.data.load('tokenizers/punkt/english.pickle')
 
         with blob.as_bytes_io() as file_path:
 

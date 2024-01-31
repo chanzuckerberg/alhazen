@@ -306,6 +306,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>which can be run as a service:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> brew services start postgresql@14</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> brew services list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If you install Postgresql via homebrew, you will need to create a <code>postgres</code> superuser to run the <code>psql</code> command.</p>
+<pre><code>$ createuser -s postgres</code></pre>
+<p>Note that the <a href="https://postgresapp.com/"><code>Postgres.app</code></a> system also provides a nice GUI interface for Postgres but installing the <a href="https://github.com/pgvector/pgvector"><code>pgvector</code></a> package is a little more involved.</p>
 </section>
 <section id="ollama" class="level4">
 <h4 class="anchored" data-anchor-id="ollama">Ollama</h4>
@@ -314,11 +317,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="install-alhazen-source-code" class="level3">
 <h3 class="anchored" data-anchor-id="install-alhazen-source-code">Install Alhazen source code</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/chanzuckerberg/alzhazen</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> alhazen python=3.11</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate alhazen</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> alhazen</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/chanzuckerberg/alzhazen</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> create <span class="at">-n</span> alhazen python=3.11</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate alhazen</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> alhazen</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-e</span> .</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="how-to-use" class="level2">
@@ -331,9 +334,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="command-line-interface" class="level3">
 <h3 class="anchored" data-anchor-id="command-line-interface">Command Line Interface</h3>
 <p>We use the <code>fire</code> library to create a modular command line interface (CLI) for Alhazen. Use the following command structure to execute specific demo applications:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen.apps <span class="op">&lt;</span>tool_name<span class="op">&gt;</span> <span class="op">&lt;</span>tool_args<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen.apps <span class="op">&lt;</span>tool_name<span class="op">&gt;</span> <span class="op">&lt;</span>tool_args<span class="op">&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>for example, run the following command to chat with the single paper QA chatbot:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen.apps single_paper_chatbot <span class="st">'/path/to/pdf/or/nxml/files/'</span> <span class="st">'mistral-7b-instruct'</span><span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">python</span> <span class="at">-m</span> fire alhazen.apps single_paper_chatbot <span class="st">'/path/to/pdf/or/nxml/files/'</span> <span class="st">'mistral-7b-instruct'</span><span class="kw">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="code-status-and-capabilities" class="level2">

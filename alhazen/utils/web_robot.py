@@ -26,7 +26,7 @@ from pathlib import Path
 
 # %% ../../nbs/36_web_robot.ipynb 4
 def retrieve_pdf_from_doidotorg(doi, base_dir):
-    browser = Browser()#, headless=True)
+    browser = Browser(headless=True)
     doi = doi.replace('https://doi.org/', '').replace('doi', '')
     stem = doi.split('/')[0]
     if os.path.exists(base_dir+'/'+stem) is False:
@@ -54,7 +54,7 @@ def retrieve_pdf_from_doidotorg(doi, base_dir):
 
 # %% ../../nbs/36_web_robot.ipynb 5
 def retrieve_full_text_links_from_biorxiv(doi, base_dir):
-    browser = Browser()#, headless=True)
+    browser = Browser(headless=True)
     doi = doi.replace('https://doi.org/', '').replace('doi', '')
     if doi.startswith('10.1101/') is False:
         print('Not a BioRxiv DOI')
@@ -92,7 +92,7 @@ def retrieve_full_text_links_from_biorxiv(doi, base_dir):
 
 # %% ../../nbs/36_web_robot.ipynb 6
 def execute_search_on_biorxiv(search_term):
-    browser = Browser()#, headless=True)
+    browser = Browser(headless=True)
     all_dois = []
 
     try:
@@ -177,10 +177,10 @@ def get_html_from_pmc_doi(doi, base_file_path):
 
     # navigate to the PMC HTML page (https://www.ncbi.nlm.nih.gov/pmc/articles/<PMC_ID>/)
     try:
-        browser = Browser()#, headless=True)
+        browser = Browser(headless=True)
         browser.visit('https://www.ncbi.nlm.nih.gov/pmc/articles/'+pmc_id+'/')
         screenshot_path = browser.html_snapshot(base_file_path)
-        temp_html = base_file_path + 'ft/' + doi + '.html'
+        temp_html = base_file_path + '/' + doi + '.html'
         p = Path(temp_html)
         d = p.parent
         if d.exists is False:
