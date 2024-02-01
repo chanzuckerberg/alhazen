@@ -7,7 +7,7 @@ summarize paper set:
   instruction: >
     Read through the following JSON encoding of {k} research articles: 
 
-    Each document has three attributes: (A) a digital object identifier ('DOI') code, (B) a CITATION string containing the authors, publication year, title and publication location, and the (C) CONTENT field with the title and abstract of the paper.  
+    Each document has three attributes: (A) an integer ID for the paper, (B) a CITATION string containing the authors, publication year, title and publication location, and the (C) CONTENT field with the title and abstract of the paper.  
 
     ```CONTEXT:{context}```
 
@@ -21,7 +21,7 @@ summarize paper set:
     Restrict each summary to {summary_length} words. 
     Also, provide a score from 1-10 indicating relevance to question. Do not explain your score. 
 
-    Write this answer as JSON formatted output. Provide a list of {k} dict objects with the following fields: DOI, SUMMARY, RELEVANCE SCORE. 
+    Write this answer as JSON formatted output. Provide a list of {k} dict objects with the following fields: ID, SUMMARY, RELEVANCE SCORE. 
 
     Do not provide additional explanation for the answer.
     Do not include any other response other than a JSON object.

@@ -74,7 +74,7 @@ class AlhazenToolkit(BaseModel):
         delete_collection_tool = DeleteCollectionTool(db=self.db, description=delete_collection_tool_description)
 
         retrieve_full_text_tool_description = (
-            "This tool invokes a web search for a copy of a full text paper from the web given a doi identifier. "
+            "This tool invokes a web search for single full text paper from the web given a doi identifier. "
             "Input to this tool has one parameters: \n"
             "- 'paper_id' which is a string that denotes the doi identifier of the paper in question.\n"
             "The tool will search online for the paper, return it and add it's text to the database."
@@ -83,6 +83,7 @@ class AlhazenToolkit(BaseModel):
         retrieve_full_text_tool = RetrieveFullTextTool(db=self.db, description=retrieve_full_text_tool_description)
 
         metadata_extraction_tool_description = (
+            "This tool extracts experimental metadata for an experiment from a single full text paper.   "
             "Input to this tool is a doi identifier, a search term for section titles in "
             "the paper, and the name of a type of experiment (drawn from a predefined list). "
             "The tool will execute an LLM over the paper to extract metadata from available text "
@@ -94,6 +95,9 @@ class AlhazenToolkit(BaseModel):
         )
 
         paperqa_emulation_tool_description = (
+            "This tool answers scientific questions by searching for papers from Alhazen's database, "
+            "reading a small subset of them and then synthesizing a response in the form of an essay. "
+            "Only use this tool to respond to scientific questions that you already have built a database for."
             "Input to this tool is a question, the ID value for the collection that the question "
             "will be asked over (collection_id), the number of documents to be sampled (n_sample_size), "
             "the number of documents to be synthesized in the final analysis."
@@ -103,7 +107,7 @@ class AlhazenToolkit(BaseModel):
         paperqa_emulation_tool = PaperQAEmulationTool(
             db=self.db, ollr=self.ollr, llm=self.ollr.llm, description=paperqa_emulation_tool_description
         )
-                
+
         return [
             add_collection_tool,
             describe_collection_tool,
