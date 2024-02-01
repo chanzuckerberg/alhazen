@@ -38,7 +38,9 @@ from langchain.tools import BaseTool, StructuredTool, Tool, tool
 from langchain.llms import Ollama
 from langchain.utilities import SerpAPIWrapper
 from langchain.pydantic_v1 import BaseModel, Field
+from langchain.schema.runnable import RunnableParallel, RunnablePassthrough, RunnableLambda
 
+from operator import itemgetter
 import pandas as pd
 
 from sqlalchemy import create_engine, exists, func
@@ -68,8 +70,6 @@ class AddCollectionFromEPMCToolSchema(BaseModel):
     id: str = Field(description="A code that serves as the id of the collection we will add papers to.")
     name: str = Field(description="A human-readable name of the collection we will add papers to.")
     query: str = Field(description="A search query (using AND/OR/NOT statements) to be executed on the European PMC online literature repository for scientific publications.")
-    full_text: bool = Field(description="A boolean parameter which is set to 'True' for the tool to search available online sources for each " + \
-                            "individual paper and set to 'False' to only search for the citation record. This significantly adds to execution time.")
 
 class AddCollectionFromEPMCTool(AlhazenToolMixin, BaseTool): 
     name = "add_collection_from_epmc_query"
@@ -81,7 +81,6 @@ class AddCollectionFromEPMCTool(AlhazenToolMixin, BaseTool):
         id: str, 
         name: str,
         query: str,
-        full_text: bool,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         
@@ -116,14 +115,14 @@ class AddCollectionFromEPMCTool(AlhazenToolMixin, BaseTool):
                     .filter(skc.id == skc_hm.ScientificKnowledgeCollection_id) \
                     .filter(skc_hm.has_members_id == ske.id) \
                     .filter(skc.id == str(id)) 
-            for e in q2.all():
-                n_papers_added += 1
-                doi = e.id.replace('doi:', '')
-                if full_text:
-                    path = loc+db_name+'/ft/'
-                    ft_exist = download_full_text_paper_for_doi(doi, path)
-                    if ft_exist:
-                        self.db.add_full_text_for_expression(e)
+            #for e in q2.all():
+            #    n_papers_added += 1
+            #    doi = e.id.replace('doi:', '')
+            #    if full_text:
+            #        path = loc+db_name+'/ft/'
+            #        ft_exist = download_full_text_paper_for_doi(doi, path)
+            #        if ft_exist:
+            #            self.db.add_full_text_for_expression(e)
             
             expression_q = self.db.session.query(func.count(ske.id)) \
                     .filter(skc_hm.has_members_id == ske.id) \
@@ -178,19 +177,18 @@ class DescribeCollectionCompositionToolSchema(BaseModel):
     id: str = Field(description="should be the id of the collection we wish to describe")
     
 class DescribeCollectionCompositionTool(AlhazenToolMixin, BaseTool): 
-    name = "add_collection_from_epmc_query"
+    name = "describe_collection_in_local_database"
     description = "This tool describes the contents of a Collection, in terms of counts of papers"
     args_schema: Type[DescribeCollectionCompositionToolSchema] = DescribeCollectionCompositionToolSchema
 
     def _run(
         self,
         id: str, 
-        name: str,
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         
         if os.environ.get('LOCAL_FILE_PATH') is None: 
-            raise Exception('Where are you storing your local literature database?')
+            raise Exception('Where are you storing your local database?')
         loc = os.environ['LOCAL_FILE_PATH']
         if loc[-1:] != '/':
             loc += '/'
