@@ -6,24 +6,17 @@ __all__ = ['skc', 'skc_hm', 'ske', 'ske_hr', 'ski', 'ski_hp', 'skf', 'n', 'skc_h
 
 # %% ../../nbs/23_PaperQA_emulation_tool.ipynb 3
 from ..core import OllamaRunner, PromptTemplateRegistry, get_langchain_llm, get_cached_gguf, \
-    get_langchain_embeddings, GGUF_LOOKUP_URL, MODEL_TYPE
+    get_langchain_embeddings, GGUF_LOOKUP_URL, MODEL_TYPE, load_alhazen_tool_environment, get_langchain_chatmodel
 from .basic import AlhazenToolMixin
 from ..utils.output_parsers import JsonEnclosedByTextOutputParser
 from ..utils.ceifns_db import *
-from ..schema_sqla import ScientificKnowledgeCollection, \
-    ScientificKnowledgeExpression, ScientificKnowledgeCollectionHasMembers, \
-    ScientificKnowledgeItem, ScientificKnowledgeExpressionHasRepresentation, \
-    ScientificKnowledgeFragment, ScientificKnowledgeItemHasPart, \
-    InformationResource, Note, \
-    ScientificKnowledgeCollectionHasNotes, ScientificKnowledgeExpressionHasNotes, \
-    ScientificKnowledgeItemHasNotes, ScientificKnowledgeFragmentHasNotes 
+from ..schema_sqla import *
 from datetime import datetime
 from importlib_resources import files
 import json
 
 from langchain.callbacks.tracers import ConsoleCallbackHandler
-from langchain.chat_models import ChatOllama
-from langchain.embeddings import HuggingFaceBgeEmbeddings
+from langchain_community.embeddings.huggingface import HuggingFaceBgeEmbeddings
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import PromptTemplate, ChatPromptTemplate
 from langchain.pydantic_v1 import BaseModel, Field, root_validator
@@ -70,10 +63,11 @@ class PaperQAEmulationToolSchema(BaseModel):
     collection_id: Optional[int] = Field(None, description="The identifier of the collection to be used to answer the question.")
 
 class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
-    '''Runs a Map-Reduce model where we write a short essay to answer a scientific question based on a set of supporting documents.'''
+    '''Write a short essay to answer a scientific question based documents from a preset collection.'''
     name = 'simple_qa_over_papers'
     description = '''Runs a Map-Reduce model where we write a short essay to answer a scientific question based on a set of supporting documents.'''
     args_schema = PaperQAEmulationToolSchema
+    return_direct:bool = True
     
     def _run(self, question, n_sample_size=15, n_summary_size=5, collection_id=-1):
         '''Runs the metadata extraction pipeline over a specified paper.'''
@@ -86,14 +80,8 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
         #~~~~~~~~~~~~~~~~~~~~~~
         # 1. Set up environment
         #~~~~~~~~~~~~~~~~~~~~~~
-        if os.environ.get('LOCAL_FILE_PATH') is None: 
-            raise Exception('Where are you storing your local literature database?')
-        loc = os.environ['LOCAL_FILE_PATH']
-        if loc[-1:] != '/':
-            loc += '/'
-        if os.environ.get('ALHAZEN_DB_NAME') is None: 
-            raise Exception('Which database do you want to use for this application?')
-        db_name = os.environ['ALHAZEN_DB_NAME']
+        loc, db_name, model_type, model_name = load_alhazen_tool_environment()
+
         os.environ['PGVECTOR_CONNECTION_STRING'] = "postgresql+psycopg2:///"+db_name
             
         vectorstore = PGVector.from_existing_index(
@@ -130,7 +118,7 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
                 "context": itemgetter("context"),
             })
             | {
-                "summary": pt | ChatOllama(model='mixtral') | JsonEnclosedByTextOutputParser(),
+                "summary": pt | self.llm | JsonEnclosedByTextOutputParser(),
                 "context": itemgetter("context"),
             }
         )
@@ -140,7 +128,7 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
         context = json.loads(out.get('context'))
         citation_lookup = {d.get('DOI'):d.get('CITATION') for d in context}
 
-        page_size = 5
+        page_size = 3
         page_count = int(n_sample_size / page_size)
         summaries = []
         for pg in range(page_count):
@@ -160,13 +148,14 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
             if summs:
                 for m in out2.get('summary', []):
                     id = m.get('ID')
-                    n = {}
-                    n['SUMMARY'] = m['SUMMARY']
-                    n['RELEVANCE SCORE'] = m['RELEVANCE SCORE']
-                    n['CITATION'] = paged_citation_lookup[id]
-                    n['DOI'] = paged_doi_lookup[id]
-                    summaries.append(n)
-
+                    if paged_citation_lookup.get(id):
+                        n = {}
+                        n['SUMMARY'] = m['SUMMARY']
+                        n['RELEVANCE SCORE'] = m['RELEVANCE SCORE']
+                        n['CITATION'] = paged_citation_lookup[id]
+                        n['DOI'] = paged_doi_lookup[id]
+                        summaries.append(n)
+                        
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         # 3. Order sumaries in terms of 'RELEVANCE'
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -204,7 +193,7 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
                 "context": itemgetter("context"),
             })
             | {
-                "answer": pt2 | ChatOllama(model='mixtral'),
+                "answer": pt2 | self.llm,
                 "context": itemgetter("context"),
             }
         )
@@ -212,8 +201,20 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
         input = {'question': question, 'context': ordered_summaries[:n_summary_size]}    
         out3 = qa_synthesis_chain.invoke(input, config={'callbacks': [ConsoleCallbackHandler()]})
 
-        response = out3.get('answer').content
-        response += "\n\n\nREFERENCES\n" 
-        response += '\n'.join(['[%d] %s (%s)'%(s['ID'],s['CITATION'],doi_lookup[s['ID']]) for s in ordered_summaries[:n_summary_size]])
+        essay = out3.get('answer').content
+        essay += "\n\n\nREFERENCES\n" 
+        essay += '\n'.join(['[%d] %s (%s)'%(s['ID'],s['CITATION'],doi_lookup[s['ID']]) for s in ordered_summaries[:n_summary_size]])
+
+        if collection_id != 1:
+            response = {'report': "I answered this question: `%s` based on content from the collection with id: %s."%(question, collection_id),
+                    "data": essay }
+        else:
+            response = {'report': "I answered this question: `%s` based on all content in our database. "%(question),
+                    "data": essay }
+
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # 5. Add Notes to represent the Questions / Answer Generation
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # NEED TO ADD AN INFORMATION CONTENT ENTITY FOR A SCIENTIFIC QUESTION.
 
         return response
