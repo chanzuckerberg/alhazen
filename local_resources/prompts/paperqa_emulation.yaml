@@ -15,7 +15,8 @@ summarize paper set:
 
     Question: {question}
 
-    Do NOT directly answer the question, instead summarize to give evidence to help answer the question. 
+    Do NOT directly answer the question, instead summarize the text from each paper's CONTENT to provide evidence to help answer the question. 
+    Do not include information that does not appear directly in the CONTENT of each paper.
     Focus on specific details, including numbers, equations, or specific quotes. 
     Reply "Not applicable" if text is irrelevant. 
     Restrict each summary to {summary_length} words. 
@@ -53,7 +54,8 @@ write synthesis:
 
     QUESTION: {question}
 
-    ONLY USE THE CONTEXT PROVIDED. DO NOT INCLUDE ANY INFORMATION FROM ANY OTHER SOURCES. 
+    ONLY USE THE CONTEXT PROVIDED BY THE SUMMARIES FROM THE ARTICLES LISTED.  
+    DO NOT INCLUDE ANY INFORMATION FROM ANY OTHER SOURCES. 
 
     Describe how each article addressed the question. What methods did they use? What were their findings? What conclusions did they draw? 
 
