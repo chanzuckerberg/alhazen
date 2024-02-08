@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -252,9 +218,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#tools-under-development" id="toc-tools-under-development" class="nav-link" data-scroll-target="#tools-under-development">Tools under development:</a>
   <ul class="collapse">
+  <li><a href="#introspectiontoolmixin" id="toc-introspectiontoolmixin" class="nav-link" data-scroll-target="#introspectiontoolmixin">IntrospectionToolMixin</a></li>
   <li><a href="#alhazentoolmixin" id="toc-alhazentoolmixin" class="nav-link" data-scroll-target="#alhazentoolmixin">AlhazenToolMixin</a></li>
+  <li><a href="#introspectiontool" id="toc-introspectiontool" class="nav-link" data-scroll-target="#introspectiontool">IntrospectionTool</a></li>
+  <li><a href="#introspectiontoolschema" id="toc-introspectiontoolschema" class="nav-link" data-scroll-target="#introspectiontoolschema">IntrospectionToolSchema</a></li>
   <li><a href="#addcollectionfromepmctool" id="toc-addcollectionfromepmctool" class="nav-link" data-scroll-target="#addcollectionfromepmctool">AddCollectionFromEPMCTool</a></li>
   <li><a href="#addcollectionfromepmctoolschema" id="toc-addcollectionfromepmctoolschema" class="nav-link" data-scroll-target="#addcollectionfromepmctoolschema">AddCollectionFromEPMCToolSchema</a></li>
+  <li><a href="#checkexpressiontool" id="toc-checkexpressiontool" class="nav-link" data-scroll-target="#checkexpressiontool">CheckExpressionTool</a></li>
+  <li><a href="#checkexpressiontoolschema" id="toc-checkexpressiontoolschema" class="nav-link" data-scroll-target="#checkexpressiontoolschema">CheckExpressionToolSchema</a></li>
   <li><a href="#describecollectioncompositiontool" id="toc-describecollectioncompositiontool" class="nav-link" data-scroll-target="#describecollectioncompositiontool">DescribeCollectionCompositionTool</a></li>
   <li><a href="#describecollectioncompositiontoolschema" id="toc-describecollectioncompositiontoolschema" class="nav-link" data-scroll-target="#describecollectioncompositiontoolschema">DescribeCollectionCompositionToolSchema</a></li>
   <li><a href="#deletecollectiontool" id="toc-deletecollectiontool" class="nav-link" data-scroll-target="#deletecollectiontool">DeleteCollectionTool</a></li>
@@ -318,94 +289,168 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Prepare a report over a core research question by collecting a number of notes and synthesizing them into a report</li>
 </ol>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L53" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L69" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="introspectiontoolmixin" class="level3">
+<h3 class="anchored" data-anchor-id="introspectiontoolmixin">IntrospectionToolMixin</h3>
+<blockquote class="blockquote">
+<pre><code> IntrospectionToolMixin
+                         (agent:Optional[langchain.agents.agent.RunnableAg
+                         ent]=None)</code></pre>
+</blockquote>
+<p>Base class for providing information about Alhazen’s capabilities.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L58" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
 <section id="alhazentoolmixin" class="level3">
 <h3 class="anchored" data-anchor-id="alhazentoolmixin">AlhazenToolMixin</h3>
 <blockquote class="blockquote">
-<pre><code> AlhazenToolMixin (db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb,
-                   ollr:Optional[alhazen.core.OllamaRunner]=None,
-                   llm:Optional[langchain.llms.ollama.Ollama]=None,
-                   llm_model:str='mixtral')</code></pre>
+<pre><code> AlhazenToolMixin (db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb, llm:Opt
+                   ional[langchain_core.language_models.chat_models.BaseCh
+                   atModel]=None)</code></pre>
 </blockquote>
 <p>Base tool for interacting with an Alhazen CEIFNS (pron. ‘SAI-FiNS’) database (CEIFNS = Collection-Expression-Item-Fragment-Note-Summary).</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L74" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L82" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="introspectiontool" class="level3">
+<h3 class="anchored" data-anchor-id="introspectiontool">IntrospectionTool</h3>
+<blockquote class="blockquote">
+<pre><code> IntrospectionTool (name:str='introspect', description:str='This tool
+                    permits Alhazen to answer questions how its agent
+                    would plan to answer specific questions.', args_schema
+                    :Type[__main__.IntrospectionToolSchema]=&lt;class
+                    '__main__.IntrospectionToolSchema'&gt;,
+                    return_direct:bool=False, verbose:bool=False, callback
+                    s:Union[List[langchain_core.callbacks.base.BaseCallbac
+                    kHandler],langchain_core.callbacks.base.BaseCallbackMa
+                    nager,NoneType]=None, callback_manager:Optional[langch
+                    ain_core.callbacks.base.BaseCallbackManager]=None,
+                    tags:Optional[List[str]]=None,
+                    metadata:Optional[Dict[str,Any]]=None, handle_tool_err
+                    or:Union[bool,str,Callable[[langchain_core.tools.ToolE
+                    xception],str],NoneType]=False, agent:Optional[langcha
+                    in.agents.agent.RunnableAgent]=None)</code></pre>
+</blockquote>
+<p>Base class for providing information about Alhazen’s capabilities.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L79" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="introspectiontoolschema" class="level3">
+<h3 class="anchored" data-anchor-id="introspectiontoolschema">IntrospectionToolSchema</h3>
+<blockquote class="blockquote">
+<pre><code> IntrospectionToolSchema (input:str)</code></pre>
+</blockquote>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L125" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="addcollectionfromepmctool" class="level3">
 <h3 class="anchored" data-anchor-id="addcollectionfromepmctool">AddCollectionFromEPMCTool</h3>
 <blockquote class="blockquote">
 <pre><code> AddCollectionFromEPMCTool (name:str='add_collection_from_epmc_query',
-                            description:str='This tool searches the
-                            European PMC literature database for
-                            references to biomedical scientific papers.', 
-                            args_schema:Type[__main__.AddCollectionFromEPM
-                            CToolSchema]=&lt;class
+                            description:str='This tool constructs a
+                            collection in the database from an external
+                            source based on a search query .', args_schema
+                            :Type[__main__.AddCollectionFromEPMCToolSchema
+                            ]=&lt;class
                             '__main__.AddCollectionFromEPMCToolSchema'&gt;,
-                            return_direct:bool=False, verbose:bool=False, 
-                            callbacks:Union[List[langchain.schema.callback
-                            s.base.BaseCallbackHandler],langchain.schema.c
-                            allbacks.base.BaseCallbackManager,NoneType]=No
-                            ne, callback_manager:Optional[langchain.schema
-                            .callbacks.base.BaseCallbackManager]=None,
+                            return_direct:bool=True, verbose:bool=False, c
+                            allbacks:Union[List[langchain_core.callbacks.b
+                            ase.BaseCallbackHandler],langchain_core.callba
+                            cks.base.BaseCallbackManager,NoneType]=None, c
+                            allback_manager:Optional[langchain_core.callba
+                            cks.base.BaseCallbackManager]=None,
                             tags:Optional[List[str]]=None,
                             metadata:Optional[Dict[str,Any]]=None, handle_
-                            tool_error:Union[bool,str,Callable[[langchain.
-                            tools.base.ToolException],str],NoneType]=False
+                            tool_error:Union[bool,str,Callable[[langchain_
+                            core.tools.ToolException],str],NoneType]=False
                             , db:alhazen.utils.ceifns_db.Ceifns_Literature
-                            Db,
-                            ollr:Optional[alhazen.core.OllamaRunner]=None,
-                            llm:Optional[langchain.llms.ollama.Ollama]=Non
-                            e, llm_model:str='mixtral')</code></pre>
+                            Db, llm:Optional[langchain_core.language_model
+                            s.chat_models.BaseChatModel]=None)</code></pre>
 </blockquote>
 <p>Base tool for interacting with an Alhazen CEIFNS (pron. ‘SAI-FiNS’) database (CEIFNS = Collection-Expression-Item-Fragment-Note-Summary).</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L67" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L120" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="addcollectionfromepmctoolschema" class="level3">
 <h3 class="anchored" data-anchor-id="addcollectionfromepmctoolschema">AddCollectionFromEPMCToolSchema</h3>
 <blockquote class="blockquote">
-<pre><code> AddCollectionFromEPMCToolSchema (id:str, name:str, query:str,
-                                  full_text:bool)</code></pre>
+<pre><code> AddCollectionFromEPMCToolSchema (id:str, name:str, query:str)</code></pre>
 </blockquote>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L180" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L211" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="checkexpressiontool" class="level3">
+<h3 class="anchored" data-anchor-id="checkexpressiontool">CheckExpressionTool</h3>
+<blockquote class="blockquote">
+<pre><code> CheckExpressionTool (name:str='describe_expression_in_local_database',
+                      description:str='This tool searches for a paper in
+                      the database and reports if we have full text
+                      version of it.', args_schema:Type[__main__.CheckExpr
+                      essionToolSchema]=&lt;class
+                      '__main__.CheckExpressionToolSchema'&gt;,
+                      return_direct:bool=True, verbose:bool=False, callbac
+                      ks:Union[List[langchain_core.callbacks.base.BaseCall
+                      backHandler],langchain_core.callbacks.base.BaseCallb
+                      ackManager,NoneType]=None, callback_manager:Optional
+                      [langchain_core.callbacks.base.BaseCallbackManager]=
+                      None, tags:Optional[List[str]]=None,
+                      metadata:Optional[Dict[str,Any]]=None, handle_tool_e
+                      rror:Union[bool,str,Callable[[langchain_core.tools.T
+                      oolException],str],NoneType]=False,
+                      db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb, llm:
+                      Optional[langchain_core.language_models.chat_models.
+                      BaseChatModel]=None)</code></pre>
+</blockquote>
+<p>Base tool for interacting with an Alhazen CEIFNS (pron. ‘SAI-FiNS’) database (CEIFNS = Collection-Expression-Item-Fragment-Note-Summary).</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L208" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="checkexpressiontoolschema" class="level3">
+<h3 class="anchored" data-anchor-id="checkexpressiontoolschema">CheckExpressionToolSchema</h3>
+<blockquote class="blockquote">
+<pre><code> CheckExpressionToolSchema (query:str)</code></pre>
+</blockquote>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L267" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="describecollectioncompositiontool" class="level3">
 <h3 class="anchored" data-anchor-id="describecollectioncompositiontool">DescribeCollectionCompositionTool</h3>
 <blockquote class="blockquote">
 <pre><code> DescribeCollectionCompositionTool
-                                    (name:str='add_collection_from_epmc_qu
-                                    ery', description:str='This tool
-                                    describes the contents of a
+                                    (name:str='describe_collection_in_loca
+                                    l_database', description:str='This
+                                    tool describes the contents of a
                                     Collection, in terms of counts of
                                     papers', args_schema:Type[__main__.Des
                                     cribeCollectionCompositionToolSchema]=
                                     &lt;class '__main__.DescribeCollectionCom
                                     positionToolSchema'&gt;,
-                                    return_direct:bool=False,
+                                    return_direct:bool=True,
                                     verbose:bool=False, callbacks:Union[Li
-                                    st[langchain.schema.callbacks.base.Bas
-                                    eCallbackHandler],langchain.schema.cal
-                                    lbacks.base.BaseCallbackManager,NoneTy
-                                    pe]=None, callback_manager:Optional[la
-                                    ngchain.schema.callbacks.base.BaseCall
-                                    backManager]=None,
+                                    st[langchain_core.callbacks.base.BaseC
+                                    allbackHandler],langchain_core.callbac
+                                    ks.base.BaseCallbackManager,NoneType]=
+                                    None, callback_manager:Optional[langch
+                                    ain_core.callbacks.base.BaseCallbackMa
+                                    nager]=None,
                                     tags:Optional[List[str]]=None,
                                     metadata:Optional[Dict[str,Any]]=None,
                                     handle_tool_error:Union[bool,str,Calla
-                                    ble[[langchain.tools.base.ToolExceptio
+                                    ble[[langchain_core.tools.ToolExceptio
                                     n],str],NoneType]=False, db:alhazen.ut
-                                    ils.ceifns_db.Ceifns_LiteratureDb, oll
-                                    r:Optional[alhazen.core.OllamaRunner]=
-                                    None, llm:Optional[langchain.llms.olla
-                                    ma.Ollama]=None,
-                                    llm_model:str='mixtral')</code></pre>
+                                    ils.ceifns_db.Ceifns_LiteratureDb, llm
+                                    :Optional[langchain_core.language_mode
+                                    ls.chat_models.BaseChatModel]=None)</code></pre>
 </blockquote>
 <p>Base tool for interacting with an Alhazen CEIFNS (pron. ‘SAI-FiNS’) database (CEIFNS = Collection-Expression-Item-Fragment-Note-Summary).</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L177" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L264" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="describecollectioncompositiontoolschema" class="level3">
 <h3 class="anchored" data-anchor-id="describecollectioncompositiontoolschema">DescribeCollectionCompositionToolSchema</h3>
@@ -415,43 +460,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L252" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L329" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="deletecollectiontool" class="level3">
 <h3 class="anchored" data-anchor-id="deletecollectiontool">DeleteCollectionTool</h3>
 <blockquote class="blockquote">
 <pre><code> DeleteCollectionTool (name:str='delete_collection', description:str='This
                        deletes a collection from the database based on an
-                       id value.', args_schema:Type[__main__.DeleteCollect
-                       ionToolSchema]=&lt;class
+                       collection_id value.', args_schema:Type[__main__.De
+                       leteCollectionToolSchema]=&lt;class
                        '__main__.DeleteCollectionToolSchema'&gt;,
-                       return_direct:bool=False, verbose:bool=False, callb
-                       acks:Union[List[langchain.schema.callbacks.base.Bas
-                       eCallbackHandler],langchain.schema.callbacks.base.B
-                       aseCallbackManager,NoneType]=None, callback_manager
-                       :Optional[langchain.schema.callbacks.base.BaseCallb
-                       ackManager]=None, tags:Optional[List[str]]=None,
+                       return_direct:bool=True, verbose:bool=False, callba
+                       cks:Union[List[langchain_core.callbacks.base.BaseCa
+                       llbackHandler],langchain_core.callbacks.base.BaseCa
+                       llbackManager,NoneType]=None, callback_manager:Opti
+                       onal[langchain_core.callbacks.base.BaseCallbackMana
+                       ger]=None, tags:Optional[List[str]]=None,
                        metadata:Optional[Dict[str,Any]]=None, handle_tool_
-                       error:Union[bool,str,Callable[[langchain.tools.base
+                       error:Union[bool,str,Callable[[langchain_core.tools
                        .ToolException],str],NoneType]=False,
-                       db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb,
-                       ollr:Optional[alhazen.core.OllamaRunner]=None,
-                       llm:Optional[langchain.llms.ollama.Ollama]=None,
-                       llm_model:str='mixtral')</code></pre>
+                       db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb, llm
+                       :Optional[langchain_core.language_models.chat_model
+                       s.BaseChatModel]=None)</code></pre>
 </blockquote>
 <p>Base tool for interacting with an Alhazen CEIFNS (pron. ‘SAI-FiNS’) database (CEIFNS = Collection-Expression-Item-Fragment-Note-Summary).</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L249" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L326" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="deletecollectiontoolschema" class="level3">
 <h3 class="anchored" data-anchor-id="deletecollectiontoolschema">DeleteCollectionToolSchema</h3>
 <blockquote class="blockquote">
-<pre><code> DeleteCollectionToolSchema (id:str)</code></pre>
+<pre><code> DeleteCollectionToolSchema (collection_id:str)</code></pre>
 </blockquote>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L296" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L363" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="retrievefulltexttool" class="level3">
 <h3 class="anchored" data-anchor-id="retrievefulltexttool">RetrieveFullTextTool</h3>
@@ -462,23 +506,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
                        it the database.', args_schema:Type[__main__.Retrie
                        veFullTextToolSchema]=&lt;class
                        '__main__.RetrieveFullTextToolSchema'&gt;,
-                       return_direct:bool=False, verbose:bool=False, callb
-                       acks:Union[List[langchain.schema.callbacks.base.Bas
-                       eCallbackHandler],langchain.schema.callbacks.base.B
-                       aseCallbackManager,NoneType]=None, callback_manager
-                       :Optional[langchain.schema.callbacks.base.BaseCallb
-                       ackManager]=None, tags:Optional[List[str]]=None,
+                       return_direct:bool=True, verbose:bool=False, callba
+                       cks:Union[List[langchain_core.callbacks.base.BaseCa
+                       llbackHandler],langchain_core.callbacks.base.BaseCa
+                       llbackManager,NoneType]=None, callback_manager:Opti
+                       onal[langchain_core.callbacks.base.BaseCallbackMana
+                       ger]=None, tags:Optional[List[str]]=None,
                        metadata:Optional[Dict[str,Any]]=None, handle_tool_
-                       error:Union[bool,str,Callable[[langchain.tools.base
+                       error:Union[bool,str,Callable[[langchain_core.tools
                        .ToolException],str],NoneType]=False,
-                       db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb,
-                       ollr:Optional[alhazen.core.OllamaRunner]=None,
-                       llm:Optional[langchain.llms.ollama.Ollama]=None,
-                       llm_model:str='mixtral')</code></pre>
+                       db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb, llm
+                       :Optional[langchain_core.language_models.chat_model
+                       s.BaseChatModel]=None)</code></pre>
 </blockquote>
 <p>Base tool for interacting with an Alhazen CEIFNS (pron. ‘SAI-FiNS’) database (CEIFNS = Collection-Expression-Item-Fragment-Note-Summary).</p>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L293" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/basic.py#L360" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="retrievefulltexttoolschema" class="level3">
 <h3 class="anchored" data-anchor-id="retrievefulltexttoolschema">RetrieveFullTextToolSchema</h3>
@@ -487,32 +530,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#os.environ['LOCAL_FILE_PATH'] = '/Users/gburns/alhazen/'</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">#os.environ['ALHAZEN_DB_NAME'] = 'temp'</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">#t = EMPCSearchTool()</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">#t._run(name='Stuff', </span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">#       query='Cryoelectron Tomography | Cryo Electron Tomography | Cryo-Electron Tomography | Cryo-ET | CryoE')</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#db_name = os.environ['DB_NAME']</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#loc = os.environ['LLMS_TEMP_DIR']</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">#db = Ceifns_LiteratureDb(loc, db_name)</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">#if db.session is None:</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">#    session_class = sessionmaker(bind=db.engine)</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">#    db.session = session_class()</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">#r2 = db.session.query(func.count(ScientificKnowledgeExpression.id)) \</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                    .filter(ScientificKnowledgeCollection.id == ScientificKnowledgeCollectionHasMembers.ScientificKnowledgeCollection_id) \</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">#                    .filter(ScientificKnowledgeCollectionHasMembers.has_members_id == ScientificKnowledgeExpression.id) \</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">#                    .filter(ScientificKnowledgeCollection.id == str(0.0))</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">#print(str(r2.first()[0]))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>1853</code></pre>
-</div>
-</div>
 
 
 </section>

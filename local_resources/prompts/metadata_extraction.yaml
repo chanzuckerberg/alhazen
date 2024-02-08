@@ -163,3 +163,34 @@ metadata extraction (full cryoet example):
     
   input_variables: 
     - section_text
+
+simple extraction: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Given a specific paper, read the most relevant sections, and answer the given question. 
+  system: 
+    Answer in a direct and concise tone. Your audience is an expert, so be highly specific. If there are ambiguous terms or acronyms, first define them.
+  instruction: >
+    Read through the following CONTEXT taken from a research paper: 
+
+    ```CONTEXT:{context}```
+
+    Answer the followng question:
+
+    Question: {question}
+
+    Do not include information that does not appear directly in the CONTEXT provided.
+    Focus on specific details, including numbers, equations, or specific quotes. 
+    Reply "Not applicable" if you cannot answer the question based on the text from the CONTEXT provided. 
+    Restrict each answer to a maximum of {answer_length} words. 
+
+    Write this answer as JSON formatted output. Provide a dict object with the following fields: ANSWER, SUMMARY, RELEVANCE SCORE. 
+
+    Do not provide additional explanation for the answer.
+    Do not include any other response other than a JSON object.
+  input_variables: 
+    - k
+    - question
+    - context
+  output_variables:
+    - summary

@@ -8,10 +8,13 @@ import local_resources.linkml as linkml
 
 from .core import OllamaRunner
 from .tools.basic import *
-from .tools.metadata_extraction_tool import MetadataExtractionTool, MetadataExtractionWithRAGTool 
+from .tools.metadata_extraction_tool import * 
+from .tools.paperqa_emulation_tool import PaperQAEmulationTool 
 from .tools.paperqa_emulation_tool import PaperQAEmulationTool 
 from .utils.ceifns_db import *
 
+from langchain.chat_models.base import BaseChatModel
+from langchain.agents.agent import RunnableAgent
 from langchain.tools import BaseTool
 from langchain.pydantic_v1 import BaseModel, Extra, Field, root_validator
 from langchain.schema.prompt_template import format_document
@@ -20,7 +23,7 @@ from importlib_resources import files
 import local_resources.prompt_elements as prompt_elements
 
 from sqlalchemy.orm import sessionmaker
-from typing import List
+from typing import List, Any, Optional
 
 # %% ../nbs/20_toolkit.ipynb 4
 # NOTE - Use LangChain's SQL_DATABASE TOOLKIT AS A MODEL 
@@ -36,7 +39,8 @@ class AlhazenToolkit(BaseModel):
 
     # The local literature database (Collections, Expressions, Items, and Fragments)
     db: Ceifns_LiteratureDb = Field(exclude=True)
-    ollr : OllamaRunner = Field(exclude=True)
+    llm : BaseChatModel = Field(exclude=True)
+    agent : Optional[RunnableAgent] = Field(exclude=True) 
     
     class Config:
         """Configuration for this pydantic object."""
@@ -44,6 +48,7 @@ class AlhazenToolkit(BaseModel):
 
     def get_tools(self) -> List[BaseTool]:
         """Get the tools in the toolkit."""
+
         add_collection_tool_description = (
             "This tool executes a search for scientific papers in the EPMC database based on a query"
             " and then builds a collection out of the papers returned. "
@@ -65,33 +70,56 @@ class AlhazenToolkit(BaseModel):
         describe_collection_tool = DescribeCollectionCompositionTool(db=self.db, description=describe_collection_tool_description)
 
         delete_collection_tool_description = (
-            "This tool deletes a collection from the database. "
-            "Input to this tool has one parameters: \n"
-            "- 'id' which is string that denotes the identifier of the collection in the database.\n"
-            "The tool will delete the collection from our local database."
-            "If successful, it will return 'Final Answer'. If not, it will return an error report."
+            "This tool deletes a collection from the database."
         )
         delete_collection_tool = DeleteCollectionTool(db=self.db, description=delete_collection_tool_description)
 
+        check_expression_tool_description = (
+            "This tool checks if the database contains a paper. "
+            "Input to this tool has one parameter: \n"
+            "- 'query' which is a search string for the paper (based on either the id or title).\n"
+            "The tool will query the database and report its findings."
+        )
+        check_expression_tool = CheckExpressionTool(db=self.db, description=check_expression_tool_description)
+
         retrieve_full_text_tool_description = (
             "This tool invokes a web search for single full text paper from the web given a doi identifier. "
-            "Input to this tool has one parameters: \n"
-            "- 'paper_id' which is a string that denotes the doi identifier of the paper in question.\n"
+            "Input to this tool has one parameter: \n"
+            "- 'paper_id' which is a string that denotes the doi identifier of the paper in question. This must start with the string 'doi:'\n"
             "The tool will search online for the paper, return it and add it's text to the database."
             "If successful, it will return 'Final Answer'. If not, it will return an error report."
         )
         retrieve_full_text_tool = RetrieveFullTextTool(db=self.db, description=retrieve_full_text_tool_description)
 
         metadata_extraction_tool_description = (
-            "This tool extracts experimental metadata for an experiment from a single full text paper.   "
-            "Input to this tool is a doi identifier, a search term for section titles in "
-            "the paper, and the name of a type of experiment (drawn from a predefined list). "
+            "This tool extracts experimental metadata for an experiment from a single full text paper."
+            "In order to use this tool, you need to know if there is a full text version of the paper in the database"
+            "If there is not, you need to retrieve a copy of the full text before using this" 
+            "Input to this tool has two parameters: \n"
+            "- 'paper_id' which is a string that denotes the doi identifier of the paper in question. This must start with the string 'doi:'.\n"
+            "- 'extraction_type' which denotes the type of experiment being analysed. This should be set to the string 'cryoet'.\n"
             "The tool will execute an LLM over the paper to extract metadata from available text "
             " and then insert the metadata into the database. The output is a "
             "string that returns a completion message (either positive or an error report)."
         )
         metadata_extraction_tool = MetadataExtractionTool(
-            db=self.db, ollr=self.ollr, llm=self.ollr.llm, description=metadata_extraction_tool_description
+            db=self.db, llm=self.llm, description=metadata_extraction_tool_description
+        )
+
+        simple_extraction_tool_description = (
+            "This tool extracts information from a single full text paper."
+            "In order to use this tool, you need to know if there is a full text version of the paper in the database"
+            "If there is not, you need to retrieve a copy of the full text before using this." 
+            "Input to this tool has three parameters: \n"
+            "- 'paper_id' which is a string that denotes the doi identifier of the paper in question. This must start with the string 'doi:'.\n"
+            "- 'variable_name' which denotes the name of the variable that the question is attempting to describe (e.g. 'species_name', 'sample_preparation_method').\n"
+            "- 'question' which is the question that must be answered to provide a value for the specified variable (e.g., 'Rat', 'Plunge Vitrificiation').\n"
+            "The tool will execute an LLM over the paper to extract answers to the specified question. "
+            "Output from the tool will be a JSON-formatted string with two fields: 'report' and 'data'." 
+            "Text in the report field specifies how the tool performed this task."
+        )
+        simple_extraction_tool = SimpleExtractionWithRAGTool(
+            db=self.db, llm=self.llm, description=simple_extraction_tool_description
         )
 
         paperqa_emulation_tool_description = (
@@ -105,17 +133,29 @@ class AlhazenToolkit(BaseModel):
             "summarize the information returned to write a response to the question."
         )
         paperqa_emulation_tool = PaperQAEmulationTool(
-            db=self.db, ollr=self.ollr, llm=self.ollr.llm, description=paperqa_emulation_tool_description
+            db=self.db, llm=self.llm, description=paperqa_emulation_tool_description
         )
-
-        return [
+        tool_list = [
             add_collection_tool,
             describe_collection_tool,
             delete_collection_tool,
             retrieve_full_text_tool,
             metadata_extraction_tool,
-            paperqa_emulation_tool
+            simple_extraction_tool,
+            paperqa_emulation_tool,
+            check_expression_tool
         ]
+
+        introspection_tool_description = (
+            "This tool answers questions about the tools I have access to and what they do."
+            "Always call this tool when a user asks 'How might you ...?'"
+            "Call the tool with the description of the task being asked about."
+        )
+        introspection_tool = IntrospectionTool(description=introspection_tool_description)
+        #tool_list.append(introspection_tool)
+
+        return tool_list
+    
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
