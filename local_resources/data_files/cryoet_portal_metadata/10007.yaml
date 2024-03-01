@@ -1,0 +1,139 @@
+dataset:
+  dataset_identifier: 10007
+  dataset_title: S. cerevisiae
+  dataset_description: Cryo-electron tomograms of S.cerevisiae of plasma FIB-SEM lamella. with CryoDRGN reconstructed 80S ribosome.
+  authors: &dataset_authors
+    - name: Rangan R
+    - name: Khavnekar S
+    - name: Lerer A
+    - name: Johnston J
+    - name: Kelley R
+    - name: Obr M
+    - name: Kotecha A
+    - name: Zhong ED
+  funding:
+    - funding_agency_name: Max Planck Society
+      grant_id: null
+    - funding_agency_name: Other private
+      grant_id: null
+  sample_preparation: 'buffer_ph: 7.0, vitrification_cryogen_name: ETHANE, instance_type: subtomogram_averaging_preparation'
+  grid_preparation: "Grid\nModel: Quantifoil R1.2/3\nMaterial: COPPER\n\nPretreatment: Type: GLOW DISCHARGE\nAtmosphere: Air\n\nSupport Film:\nMaterial: Carbon \nTopology: Holey\nThickness: –\n\nVitrification:\nCryogen Name: ETHANE \nInstrument: Vitrobot Mark IV\n"
+  sample_type: Organism
+  dates: &repo-dates
+    deposition_date: 2023-09-01
+    release_date: 2023-11-30
+    last_modified_date: 2023-11-15
+  cell_strain:
+    name: ~
+    id: ~
+  cross_references:
+    dataset_publications: EMPIAR-11658
+  cell_component:
+    name: ~
+    id: ~
+  organism:
+    name: Saccharomyces cerevisiae
+  key_photos:
+    snapshot: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/11658-l.gif
+    thumbnail: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/11658.gif
+annotations:
+  - metadata:
+      annotation_object:
+        id: GO_0009326
+        name: Cytosolic ribosome
+        description: Cytosolic ribosome
+        state: ~
+      dates: *repo-dates
+      annotation_method: crYOLO picking
+      annotation_publications: ~
+      ground_truth_status: False
+      authors:
+        - name: Abhay Kotecha
+          ORCID: 0000-0002-4480-5439
+          primary_annotator_status: true
+          corresponding_author_status: ~
+      annotation_software: ~
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: OrientedPoint
+        file_format: tomoman_relion_star
+        binning: 4
+        order: zyx
+        glob_string: '{run_name}/metadata/particles/*.star'
+        filter_value: ~
+runs: {}
+tiltseries:
+  scales: []
+  microscope:
+    manufacturer: FEI
+    model: TITAN KRIOS
+  spherical_aberration_constant: 2.7
+  microscope_optical_setup:
+    energy_filter: null
+    phase_plate: null
+    image_corrector: null
+  camera:
+    manufacturer: FEI
+    model: FALCON IV
+  acceleration_voltage: 300000
+  tilting_scheme: Dose symmetric from 0.0 degrees
+  tilt_axis: ~
+  tilt_step: 3
+  tilt_range:
+    min: -60
+    max: 60
+  total_flux: 143.5
+  data_acquisition_software: TEM Tomography 5
+  binning_from_frames: 4
+  tilt_series_quality: 5
+  related_empiar_entry: EMPIAR-11658
+  pixel_spacing: 1.96
+  is_aligned: false
+  alignment_binning_factor: ~
+tomograms:
+  voxel_spacing: 7.84
+  fiducial_alignment_status: NON_FIDUCIAL
+  offset:
+    x: 0
+    y: 0
+    z: 0
+  affine_transformation_matrix: [[1, 0, 0, 0], [0, 1, 0, 0 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+  reconstruction_method: Weighted back projection
+  reconstruction_software: cryoDRGN
+  ctf_corrected: false
+  processing: denoised
+  authors: *dataset_authors
+  tomogram_version: 1
+standardization_config:
+  destination_prefix: '10007'
+  source_prefix: 'Abhay_yeast'
+  frames_glob: '{run_name}/frames/*.eer'
+  gain_glob: '{run_name}/*.gain'
+  rawtlt_files:
+    - '{run_name}/*_dose-filt.rawtlt'
+    - '{run_name}/AreTomo/*_dose-filt.xf'
+    - '{run_name}/*.mdoc'
+  run_to_tomo_map_csv: 'run_to_tomo_map.csv'
+  tiltseries_glob: '{run_name}/*.st'
+  tomo_format: mrc
+  tomo_glob: 'bin4_cryocare/{mapped_tomo_name}.rec'
+  tomo_voxel_size: '13.48'
+  run_glob: '*_pos*'
+  run_regex: .*
+  run_name_regex: (.*)
+# skip_runs:
+#  - ay08102021_grid_3_lamella3_pos12
+#  - ay18112021_grid2_lamella1_position2
+#  - ay18112021_grid2_lamella4_position11
+#  - ay18112021_grid2_lamella4_position13
+#  - ay18112021_grid2_lamella5_position15
+#  - ay18112021_grid2_lamella5_position16
+#  - ay18112021_gridX_lamella1_pos5
+#  - ay18112021_gridX_lamella8_pos6
+#  - ay19102021_grid_2_atc_lamella1_position4
+#  - ay19102021_grid_2_atc_lamella1_position5
+#  - ay19102021_grid_2_atc_lamella1_position6

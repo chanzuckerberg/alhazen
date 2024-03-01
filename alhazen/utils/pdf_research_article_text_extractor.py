@@ -371,4 +371,3 @@ class HuridocsPDFParser(BaseBlobParser):
                     continue
                 docs.append(Document(page_content=p.get('text')+'\n', metadata=self.text_kwargs))
             return docs
-    

@@ -1,0 +1,190 @@
+dataset:
+  authors: &dataset_authors
+    - name: Irene de Teresa Trueba
+      ORCID: 0000-0002-4691-9501
+    - name: Sara Goetz
+      ORCID: 0000-0002-9903-3667
+    - name: Alexander Mattausch
+      ORCID: 0000-0003-0901-8701
+    - name: Frosina Stojanovska
+      ORCID: 0000-0002-4327-1068
+    - name: Christian Eugen Zimmerli
+      ORCID: 0000-0003-4388-1349
+    - name: Mauricio Toro-Nahuelpan
+      ORCID: 0000-0001-5333-3640
+    - name: Cheng DWC
+    - name: Tollervey F
+    - name: Constantin Pape
+      ORCID: 0000-0001-6562-7187
+    - name: Martin Beck
+      ORCID: 0000-0002-7397-1321
+    - name: Alba Diz-Munoz
+      ORCID: 0000-0001-6864-8901
+    - name: Anna Kreshuk
+      ORCID: 0000-0003-1334-6388
+    - name: Julia Mahamid
+      ORCID: 0000-0001-6968-041X
+    - name: Judith B. Zaugg
+      ORCID: 0000-0001-8324-4040
+  cross_references:
+    dataset_publications: doi:10.1038/s41592-022-01746-2
+    related_database_entries: EMPIAR-10989
+  cell_component:
+    name: ~
+    id: ~
+  cell_type:
+    id: CL:0002586
+    name: Retinal pigment epithelial-1
+  dataset_identifier: 10002
+  dataset_description: "Cryo-electron tomograms of RPE1 cells. Comprehensive annotation of actin filaments and microtubules"
+  dataset_title: RPE1 cytosol with actin stress fiber
+  dates: &repo-dates
+    deposition_date: 2023-05-01
+    last_modified_date: 2023-11-08
+    release_date: 2023-11-30
+  funding:
+    - funding_agency_name: European Research Council (ERC)
+      grant_id: '760067'
+  grid_preparation: 'model: Quantifoil, material: GOLD, support_film_film_type_id: 1, support_film_film_topology: HOLEY, support_film_instance_type: support_film, pretreatment_type_: PLASMA CLEANING'
+  key_photos:
+    snapshot: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/10989-l.gif
+    thumbnail: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/10989.gif
+  organism:
+    name: Homo sapiens
+    taxonomy_id: 9606
+  sample_preparation: 'buffer_ph: 7.4, vitrification_cryogen_name: ETHANE, cryo_protectant: None, instance_type: tomography_preparation'
+  sample_type: cell
+  tissue:
+    id: BTO:0001175
+    name: retina
+runs: {}
+tiltseries:
+  acceleration_voltage: 300000
+  binning_from_frames: 1
+  camera:
+    manufacturer: GATAN
+    model: K2 SUMMIT
+  data_acquisition_software: SerialEM
+  microscope:
+    manufacturer: TFS
+    model: KRIOS
+  microscope_optical_setup:
+    energy_filter: GIF Quantum LS
+    phase_plate: VOLTA PHASE PLATE
+    image_corrector: null
+  pixel_spacing: 3.3702
+  related_empiar_entry: ~
+  scales: []
+  spherical_aberration_constant: 2.7
+  tilting_scheme: Dose symmetric from 0.0 degrees
+  tilt_axis: 79
+  tilt_range:
+    min: -60
+    max: 60
+  tilt_step: 3
+  tilt_series_quality: 5
+  total_flux: 125
+  is_aligned: false
+  alignment_binning_factor: ~ # We may need to calculate this for each tilt if we can identify aligned & unaligned files in the bucket.
+tomograms:
+  ctf_corrected: false
+  fiducial_alignment_status: false
+  offset:
+    x: 0
+    y: 0
+    z: 0
+  affine_transformation_matrix: [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, -1, 0], [0, 0, 625, 1]] # TODO - this is different per tomo
+  processing: raw
+  reconstruction_method: Weighted back projection
+  reconstruction_software: IMOD
+  tomogram_version: 1
+  authors: *dataset_authors
+  voxel_spacing: 13.48
+annotations:
+  - metadata:
+      annotation_object:
+        id: GO_0005884
+        name: Actin filament
+        description: Actin ground truth
+        state: ~
+      dates: *repo-dates
+      annotation_method: 2D CNN + 3D CNN hyperparameter tuning
+      annotation_publications: OPTIONAL
+      ground_truth_status: False
+      authors: &annotation_authors
+        - name: Sara Goetz
+          ORCID: 0000-0002-9903-3667
+        - name: Judith B. Zaugg
+          ORCID: 0000-0001-8324-4040
+        - name: Julia Mahamid
+          ORCID: 0000-0001-6968-041X
+        - name: Alexander Mattausch
+          ORCID: 0000-0003-0901-8701
+        - name: Mauricio Toro-Nahuelpan
+          ORCID: 0000-0001-5333-3640
+        - name: Alba Diz-Munoz
+          ORCID: 0000-0001-6864-8901
+        - name: Christian Eugen Zimmerli
+          ORCID: 0000-0003-4388-1349
+        - name: Martin Beck
+          ORCID: 0000-0002-7397-1321
+        - name: Irene de Teresa Trueba
+          ORCID: 0000-0002-4691-9501
+        - name: Anna Kreshuk
+          ORCID: 0000-0003-1334-6388
+        - name: Constantin Pape
+          ORCID: 0000-0001-6562-7187
+        - name: Frosina Stojanovska
+          ORCID: 0000-0002-4327-1068
+      annotation_software: DeePiCt
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: Ground truth from related paper
+    sources:
+      - file_format: mrc
+        shape: SegmentationMask
+        glob_string: prediction/{run_name}_*.mrc
+  - metadata:
+      dates: *repo-dates
+      annotation_method: manual
+      annotation_publications: OPTIONAL
+      ground_truth_status: True
+      authors: *annotation_authors
+      annotation_software: Amira
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+      annotation_object:
+        id: GO_0005884
+        name: Actin filament
+        description: Actin DeePiCt training prediction
+        state: ~
+    sources:
+      - file_format: mrc
+        shape: SegmentationMask
+        glob_string: labels/{run_name}_actin_ground_truth.mrc
+#     - columns: zyx
+#       file_format: xml
+#       glob_string: actin_ground_truth_coordinates/{run_name}_*.xml
+#       shape: Point
+#       delimiter: OPTIONAL
+standardization_config:
+  destination_prefix: '10002'
+  source_prefix: julia/RPE1
+  run_to_frame_map_csv: run_to_frame_name_map.csv
+  gain_glob: CountRef_{mapped_frame_name}-range.dm4
+  frames_glob: frames/{mapped_frame_name}_*.tif
+  rawtlt_files:
+    - metadata/{run_name}_sq_df_sorted_fid.xf
+    - metadata/{run_name}.mdoc
+  tiltseries_glob: stack/{run_name}_sq_df_sorted_orig.st
+  tomo_format: mrc
+  tomo_glob: tomograms/{run_name}_*.rec
+  tomo_voxel_size: '13.48'
+  run_glob: tomograms/*.rec
+  run_regex: .*
+  run_name_regex: (.*)_sq_df_sorted.rec

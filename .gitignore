@@ -158,4 +158,4 @@ dist/
 .git.bfg-report
 
 # protected datafiles
-local_resources/data_files/cryoet_portal_metadata/
+#local_resources/data_files/cryoet_portal_metadata/

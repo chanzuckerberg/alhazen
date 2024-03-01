@@ -13,7 +13,6 @@ from urllib.request import urlopen
 import pickle as pkl
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-
 from splinter import Browser
 from selenium.webdriver.chrome.service import Service
 import re
@@ -22,39 +21,54 @@ from time import sleep
 import requests
 import os
 from pathlib import Path
+import fitz
 
 
 # %% ../../nbs/36_web_robot.ipynb 4
-def retrieve_pdf_from_doidotorg(doi, base_dir):
-    browser = Browser(headless=True)
+def retrieve_pdf_from_doidotorg(doi, base_dir, headless=False):
+
+    if headless:
+        browser = Browser(headless=True)
+    else:
+        browser = Browser()
     doi = doi.replace('https://doi.org/', '').replace('doi', '')
-    stem = doi.split('/')[0]
+    stem_list = doi.split('/')
+    stem = '/'.join(stem_list[0:len(stem_list)-1])
     if os.path.exists(base_dir+'/'+stem) is False:
         os.makedirs(base_dir+'/'+stem)
     hrefs = set()
     try:
-        # visit bioRxiv's paper page
+        # visit doi.org page
         browser.visit('https://doi.org/'+doi)
         sleep(randint(5,10)*0.1)
+
         for link in browser.find_by_css('a'):
             if link['href'] is not None and 'pdf' in link['href']:
                 hrefs.add(link['href'])
-                        
+
+        for link in sorted(list(hrefs), key=len):
+            response = requests.get(link)
+            with open(base_dir+'/'+doi+'.pdf', 'wb') as f:
+                f.write(response.content)
+            try: 
+                with fitz.open(base_dir+'/'+doi+'.pdf') as doc:  # open document
+                    n_pages = len([page for page in doc])
+            except Exception as e2:
+                os.remove(base_dir+'/'+doi+'.pdf')
+                continue
+            # If we can open the pdf, we are done
+            break
     except Exception as e:
         print(e)
+    finally:
+        browser.quit()
 
-    browser.quit()
-
-    link = min(hrefs, key=len) # prints "i"
-    response = requests.get(link)
-    with open(base_dir+'/'+doi+'.pdf', 'wb') as f:
-        f.write(response.content)
 
 #retrieve_pdf_from_doidotorg('10.1083/jcb.202204093', '/Users/gburns/alhazen/em_tech/temp/')
 
 # %% ../../nbs/36_web_robot.ipynb 5
 def retrieve_full_text_links_from_biorxiv(doi, base_dir):
-    browser = Browser(headless=True)
+    browser = Browser()#headless=True)
     doi = doi.replace('https://doi.org/', '').replace('doi', '')
     if doi.startswith('10.1101/') is False:
         print('Not a BioRxiv DOI')
@@ -92,7 +106,7 @@ def retrieve_full_text_links_from_biorxiv(doi, base_dir):
 
 # %% ../../nbs/36_web_robot.ipynb 6
 def execute_search_on_biorxiv(search_term):
-    browser = Browser(headless=True)
+    browser = Browser()#headless=True)
     all_dois = []
 
     try:
@@ -177,7 +191,7 @@ def get_html_from_pmc_doi(doi, base_file_path):
 
     # navigate to the PMC HTML page (https://www.ncbi.nlm.nih.gov/pmc/articles/<PMC_ID>/)
     try:
-        browser = Browser(headless=True)
+        browser = Browser()#headless=True)
         browser.visit('https://www.ncbi.nlm.nih.gov/pmc/articles/'+pmc_id+'/')
         screenshot_path = browser.html_snapshot(base_file_path)
         temp_html = base_file_path + '/' + doi + '.html'

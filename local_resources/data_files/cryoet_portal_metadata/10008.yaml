@@ -1,0 +1,188 @@
+dataset:
+  dataset_identifier: 10008
+  dataset_title: Hydrogen-dependent CO2 reductase
+  dataset_description: Cryo-electron tomograms of T. kivui of FIB-SEM lamella.
+  authors: &dataset_authors
+    - name: Helge Markus Dietrich
+      ORCID: 0000-0002-4416-0271
+      primary_author_status: True
+    - name: Righetto RD
+    - name: Anuj Kumar
+      ORCID: 0000-0002-7237-3119
+    - name: Wojciech Wietrzynski
+      ORCID: 0000-0001-8898-2392
+    - name: Trischler R
+    - name: Sandra Katharina Schuller
+      ORCID: 0000-0002-1800-8014
+    - name: Jonathan Wagner
+      ORCID: 0000-0003-0932-7600
+    - name: Schwarz FM
+    - name: Benjamin D. Engel
+      ORCID: 0000-0002-0941-4387
+    - name: "Volker Müller"
+      ORCID: 0000-0001-7955-5508
+    - name: Jan Michael Schuller
+      ORCID: 0000-0002-9121-1764
+  funding:
+    - funding_agency_name: German Research Foundation (DFG)
+      grant_id: SCHU 3364/1-1
+    - funding_agency_name: European Research Council (ERC)
+      grant_id: '741791'
+    - funding_agency_name: German Research Foundation (DFG)
+      grant_id: FOR 2092
+    - funding_agency_name: Alexander von Humboldt Foundation
+      grant_id: null
+    - funding_agency_name: German Research Foundation (DFG)
+      grant_id: 20016/446
+  sample_preparation: 'buffer_ph: 7.0, vitrification_cryogen_name: ETHANE-PROPANE, vitrification_instrument: FEI VITROBOT MARK IV, instance_type: subtomogram_averaging_preparation'
+  grid_preparation: 'model: Quantifoil R2/1, material: COPPER, support_film_film_type_id: 1, support_film_film_material: CARBON, support_film_film_topology: HOLEY, support_film_instance_type: support_film, pretreatment_type_: GLOW DISCHARGE, pretreatment_atmosphere: AIR'
+  sample_type: Organism
+  dates: &repo-dates
+    deposition_date: 2022-05-29
+    release_date: 2022-06-07
+    last_modified_date: 2023-11-21
+  cell_strain:
+    name: LKT-1
+    id: NCBI:txid2325
+  cross_references:
+    dataset_publications: &publications doi:10.1038/s41586-022-04971-z
+    related_database_entries: EMPIAR-11058
+  cell_component:
+    name: ~
+    id: ~
+  organism:
+    name: Thermoanaerobacter kivui
+    id: 'NCBITaxon:2325'
+  key_photos:
+    snapshot: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/11058-l.gif
+    thumbnail: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/11058.gif
+annotations:
+  - metadata:
+      annotation_object:
+        id: GO_0009326
+        name: Hydrogen-Dependent CO2 Reductase Filament
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: Template matching + manual filtering + 3D classification filtering
+      annotation_publications: *publications
+      ground_truth_status: true
+      authors: &annotation_authors
+        - name: Benjamin D. Engel
+          ORCID: 0000-0002-0941-4387
+        - name: "Volker Müller"
+          ORCID: 0000-0001-7955-5508
+        - name: Jonathan Wagner
+          ORCID: 0000-0003-0932-7600
+        - name: Jan Michael Schuller
+          ORCID: 0000-0002-9121-1764
+        - name: Helge Markus Dietrich
+          ORCID: 0000-0002-4416-0271
+        - name: Benjamin D. Engel
+          ORCID: 0000-0002-0941-4387
+        - name: Anuj Kumar
+          ORCID: 0000-0002-7237-3119
+        - name: Wojciech Wietrzynski
+          ORCID: 0000-0001-8898-2392
+        - name: Sandra Katharina Schuller
+          ORCID: 0000-0002-1800-8014
+        - name: Jan Michael Schuller
+          ORCID: 0000-0002-9121-1764
+      annotation_software: STOPGAP
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: OrientedPoint
+        file_format: stopgap_star
+        binning: 2
+        order: zyx
+        glob_string: 'subtomo/hdcr/hdcr_tm_bin2_motl_12.star'
+        filter_value: "{run_name}"
+  - metadata:
+      annotation_object:
+        id: GO_0022626
+        name: Cytosolic Ribosome
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: Template matching + manual filtering + 3D classification filtering
+      annotation_publications: *publications
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: STOPGAP
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: OrientedPoint
+        file_format: stopgap_star
+        binning: 4
+        order: zyx
+        glob_string: 'subtomo/ribo/ribo_tm_bin1_motl_12.star'
+        filter_value: "{run_name}"
+runs: {}
+tiltseries:
+  scales: []
+  microscope:
+    manufacturer: TFS
+    model: KRIOS
+  spherical_aberration_constant: 2.7
+  microscope_optical_setup:
+    energy_filter: GIF Quantum LS
+    phase_plate: null
+    image_corrector: null
+  camera:
+    manufacturer: GATAN
+    model: K2 SUMMIT
+  acceleration_voltage: 300000
+  tilting_scheme: Dose symmetric from lamella pre-tilt
+  tilt_axis: 1.36
+  tilt_step: 2
+  tilt_range:
+    min: -50
+    max: 70
+  total_flux: 120
+  data_acquisition_software: SerialEM
+  binning_from_frames: 14.08
+  tilt_series_quality: 5
+  related_empiar_entry: EMD-15053
+  pixel_spacing: 3.52
+  is_aligned: false
+  alignment_binning_factor: ~
+tomograms:
+  voxel_spacing: null
+  fiducial_alignment_status: FIDUCIAL
+  offset:
+    x: 0
+    y: 0
+    z: 0
+#  affine_transformation_matrix: [[1, 0, 0, 0], [0, 1, 0, 0 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+  reconstruction_method: Weighted back projection
+  reconstruction_software: STOPGAP
+  ctf_corrected: false
+  processing: denoised
+  authors: *dataset_authors
+  tomogram_version: 1
+standardization_config:
+  destination_prefix: '10008'
+  source_prefix: Ben_T_kivui
+  frames_glob: 'tomo/raw_stacks/{mapped_ts_name}/frames/*{mapped_frame_name}_*.tif'
+  gain_glob: ~
+  rawtlt_files:
+    - 'tomo/raw_stacks/{mapped_ts_name}/imod/{mapped_frame_name}-.*.tlt'
+    - 'tomo/raw_stacks/{mapped_ts_name}/imod/{mapped_frame_name}-.*.xf'
+    - 'tomo/raw_stacks/{mapped_ts_name}/SerialEM/{mapped_frame_name}.st.mdoc'
+  run_to_frame_map_csv: 'tomo_frame_map.csv'
+  run_to_ts_map_csv: 'tomo_ts_map.csv'
+  tiltseries_glob: 'tomo/raw_stacks/{mapped_ts_name}/SerialEM/{mapped_frame_name}.st'
+  tomo_format: mrc
+  tomo_glob: 'tomo/bin4_denoised/{run_name}.rec'
+  tomo_voxel_size: '14.08'
+  run_glob: 'tomo/bin4_denoised/*.rec'
+  run_regex: '.*'
+  run_name_regex: '(.*).rec'

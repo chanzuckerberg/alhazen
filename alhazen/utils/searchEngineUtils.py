@@ -2,7 +2,8 @@
 
 # %% auto 0
 __all__ = ['PAGE_SIZE', 'TIME_THRESHOLD', 'NCBI_Database_Type', 'ESearchQuery', 'EFetchQuery', 'download_file',
-           'get_nxml_from_pubmed_doi', 'get_pdf_from_pubmed_doi', 'EuroPMCQuery', 'download_full_text_paper_for_doi']
+           'get_nxml_from_pubmed_doi', 'get_pdf_from_pubmed_doi', 'EuroPMCQuery',
+           'read_authors_and_institutions_from_openalex', 'download_full_text_paper_for_doi']
 
 # %% ../../nbs/36_search_engine_eutils.ipynb 4
 import alhazen.schema_python as linkml_py
@@ -18,6 +19,7 @@ import json
 import os
 import pandas as pd
 from pathlib import Path
+from pyalex import Works, Authors, Sources, Institutions, Concepts, Publishers, Funders
 import re
 import requests
 from time import time,sleep
@@ -400,25 +402,26 @@ def get_nxml_from_pubmed_doi(doi, base_file_path):
 
     esearch_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?api_key='+api_key+'&db=pmc&term='+doi+'[doi]&retmode=xml'
     sleep(0.1)
-    print(esearch_url)
+    #print(esearch_url)
     esearch_response = urlopen(esearch_url)
     esearch_data = esearch_response.read().decode('utf-8')
     esearch_soup = BeautifulSoup(esearch_data, "lxml-xml")
     id_tag = esearch_soup.find('Id')    
     if id_tag is None:
-      print('No paper found with that DOI')
+      print('\t{} does not exist'.format(doi))
       return
       # raise Exception('Could not find "' + doi + '" in PMC')
     pmc_id = id_tag.string
     
     efetch_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?api_key='+api_key+'&db=pmc&id='+pmc_id+'&retmode=xml'
     sleep(0.1)
-    print(efetch_url)
+    #print(efetch_url)
     efetch_response = urlopen(efetch_url)
     efetch_data = efetch_response.read().decode('utf-8')
     xml = BeautifulSoup(efetch_data, "lxml-xml")
     body_tag = xml.findAll('body')
     if body_tag is None:
+        print('\t{} no full text as NXML file.'.format(doi))
         return    
     
     file_path = Path(base_file_path + '/' + doi + '.nxml')
@@ -438,14 +441,14 @@ def get_pdf_from_pubmed_doi(doi, base_file_path):
 
     esearch_url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?api_key='+api_key+'&db=pmc&term='+doi+'[doi]&retmode=xml'
     sleep(0.1)
-    print(esearch_url)
+    #print(esearch_url)
     esearch_response = urlopen(esearch_url)
     esearch_data = esearch_response.read().decode('utf-8')
     esearch_soup = BeautifulSoup(esearch_data, "lxml-xml")
     id_tag = esearch_soup.find('Id')    
     if id_tag is None:
-      print('No paper found with that DOI')
-      return
+        print('\t{} does not exist'.format(doi))
+        return
       # raise Exception('Could not find "' + doi + '" in PMC')
     pmc_id = id_tag.string
 
@@ -459,7 +462,7 @@ def get_pdf_from_pubmed_doi(doi, base_file_path):
     
     pdf_link_tag = oapi_soup.find('link')
     if(pdf_link_tag is None):
-        print('No PDF found for that DOI')
+        print('\t{} no full text as PDF file.'.format(doi))
         return
     
     pdf_url = pdf_link_tag['href']
@@ -576,43 +579,62 @@ class EuroPMCQuery():
         print(' Returning '+str(len(publications)))
         return (numFound, publications)
 
-# %% ../../nbs/36_search_engine_eutils.ipynb 10
-def download_full_text_paper_for_doi(doi, path): 
+# %% ../../nbs/36_search_engine_eutils.ipynb 11
+def read_authors_and_institutions_from_openalex(doi_list):
+    oa_works = []
+    for doi in doi_list:
+        w = Works()[doi]        
+        oa_works.append(w)
+    return oa_works
+
+# %% ../../nbs/36_search_engine_eutils.ipynb 13
+def download_full_text_paper_for_doi(doi, path, headless=True): 
+    """Attempts to download full text for a given DOI if the paper is listed as open access."""
 
     if path[-1:] != '/':
         path += '/'
-    nxml_file_path = path+'/'+doi+'.nxml'
-    pdf_file_path = path+'/'+doi+'.pdf'
-    html_file_path = path+'/'+doi+'.html'
+    nxml_file_path = path+doi+'.nxml'
+    pdf_file_path = path+doi+'.pdf'
+    html_file_path = path+doi+'.html'
     
     if os.path.exists(nxml_file_path) or os.path.exists(pdf_file_path) or os.path.exists(html_file_path):
         return True
-                
-    # Try NCBI open access NXML first
-    ft_path = get_nxml_from_pubmed_doi(doi, path)
-    if ft_path is not None:
-        return True
+    
+    # Check if the paper is open access from UnPayWall
+    dev_email = os.environ.get('DEV_EMAIL', 'gully.burns@chanzuckerberg.com') 
+    stem_url = 'https://api.unpaywall.org/v2/'
+    resp = requests.get(stem_url+doi+'?email='+dev_email).json()
+    if resp.get('is_oa', False) is False:
+        return False
 
-    # If the DOI starts with, '10.1101/', it's a bioRxiv paper, so go get it there. 
-    if doi.startswith('10.1101/'):
-        ft_path = retrieve_full_text_links_from_biorxiv(doi, path)
+    try:
+        # Try NCBI open access NXML first
+        ft_path = get_nxml_from_pubmed_doi(doi, path)
+        if ft_path is not None:
+            return True
+
+        # If the DOI starts with, '10.1101/', it's a bioRxiv paper, so go get it there. 
+        if doi.startswith('10.1101/'):
+            ft_path = retrieve_full_text_links_from_biorxiv(doi, path)
+            if ft_path is not None:
+                return True
+            
+        # Try NCBI open access PDF
+        ft_path = get_pdf_from_pubmed_doi(doi, path)
+        if ft_path is not None:
+            return True
+
+        # Try to get the pdf from the doi
+        ft_path = retrieve_pdf_from_doidotorg(doi, path, headless=headless)
         if ft_path is not None:
             return True
         
-    # Try NCBI open access PDF
-    ft_path = get_pdf_from_pubmed_doi(doi, path)
-    if ft_path is not None:
-        return True
-
-    # Try to get the pdf from the doi
-    ft_path = retrieve_pdf_from_doidotorg(doi, path)
-    if ft_path is not None:
-        return True
-    
-    # Finally, try to find an NCBI HTML page for the paper 
-    ft_path = get_html_from_pmc_doi(doi, path)
-    if ft_path is not None:
-        return True
-
-    
+        # Finally, try to find an NCBI HTML page for the paper 
+        ft_path = get_html_from_pmc_doi(doi, path)
+        if ft_path is not None:
+            return True
+        
+    except Exception as e:
+        print(e)
+        
     return False

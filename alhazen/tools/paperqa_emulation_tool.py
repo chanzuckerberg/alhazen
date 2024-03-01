@@ -204,6 +204,8 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
         essay = out3.get('answer').content
         essay += "\n\n\nREFERENCES\n" 
         essay += '\n'.join(['[%d] %s (%s)'%(s['ID'],s['CITATION'],doi_lookup[s['ID']]) for s in ordered_summaries[:n_summary_size]])
+        
+        dois_to_record = [doi_lookup[s['ID']] for s in ordered_summaries[:n_summary_size]]
 
         if collection_id != 1:
             response = {'report': "I answered this question: `%s` based on content from the collection with id: %s."%(question, collection_id),
@@ -212,9 +214,42 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
             response = {'report': "I answered this question: `%s` based on all content in our database. "%(question),
                     "data": essay }
 
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # 5. Add Notes to represent the Questions / Answer Generation
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        # NEED TO ADD AN INFORMATION CONTENT ENTITY FOR A SCIENTIFIC QUESTION.
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # 5. Add Question + Notes to represent the Questions / Answer Generation
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        prov1 = json.dumps([{'action_type': 'user_input', 
+                    'action': {'question': question}}])
+        q = UserQuestion(id=uuid.uuid4().hex[0:10],
+                    content=question,
+                    provenance=prov1,
+                    format='json',
+                    type='NoteAboutCollection')
+        self.db.session.add(q)
+        prov = json.dumps([{'action_type': self.name, 
+                            'action': {'id': id, 
+                                       'n_sample_size': n_sample_size, 
+                                       'n_summary_size': n_summary_size, 
+                                       'collection_id': collection_id,
+                                       'question': question}}])            
+        n = Note(id=uuid.uuid4().hex[0:10],
+                name='skc:%s.counts'%(id),
+                content=json.dumps(response),
+                provenance=prov,
+                format='json',
+                type='NoteAboutFragment')
+        self.db.session.add(n)
+        
+        if collection_id != -1:
+            c = self.db.session.query(SKC).filter(SKC.id == collection_id).all()[0]
+            n.is_about.append(c)
+            c.has_notes.append(n)
+
+        q.has_notes.append(n)
+        for doi in dois_to_record:
+            t, a = self.db.list_fragments_for_paper(doi, 'CitationRecord')
+            t.has_notes.append(n)
+            a.has_notes.append(n)
+        
+        self.db.session.commit()
 
         return response

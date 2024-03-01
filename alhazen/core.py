@@ -169,6 +169,8 @@ def load_alhazen_tool_environment():
         mt = os.environ.get('ALHAZEN_MODEL_TYPE') 
         if mt == 'openai':
             model_type = MODEL_TYPE.OpenAI
+        if mt == 'ollama':
+            model_type = MODEL_TYPE.Ollama
         else: 
             raise Exception('Model type %s not recognized.'%(mt))
 
