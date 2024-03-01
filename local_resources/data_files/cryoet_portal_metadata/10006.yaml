@@ -1,0 +1,169 @@
+dataset:
+  dataset_identifier: 10006
+  dataset_title: Severe acute respiratory syndrome coronavirus 2
+  dataset_description: Cryo-electron tomograms of SARS-CoV-2 spike proteins on intact virions.
+  authors: &dataset_authors
+    - name: Zunlong Ke
+      ORCID: 0000-0002-8408-850X
+    - name: Joaquin Oton
+      ORCID: 0000-0002-2195-4730
+    - name: Kun Qu
+      ORCID: 0000-0002-3152-2237
+    - name: Mirko Cortese
+      ORCID: 0000-0003-1786-4211
+    - name: Vojtech Zila
+      ORCID: 0000-0003-2032-3600
+    - name: McKeane L
+    - name: Takanori Nakane
+      ORCID: 0000-0003-2697-2767
+    - name: Zivanov J
+    - name: Christopher Neufeldt
+      ORCID: 0000-0002-4551-1811
+    - name: Cerikan B
+    - name: John Lu
+      ORCID: 0000-0002-3972-8854
+    - name: Julia Peukes
+      ORCID: 0000-0001-8560-7407
+    - name: Xiaoli Xiong
+      ORCID: 0000-0002-4632-9122
+    - name: Krausslich HG
+    - name: Sjors Scheres
+      ORCID: 0000-0002-0462-6540
+    - name: Ralf Bartenschlager
+      ORCID: 0000-0001-5601-9307
+    - name: John Briggs
+      ORCID: 0000-0003-3990-6910
+  funding:
+    - funding_agency_name: European Research Council (ERC)
+      grant_id: ERC-CoG-648432
+    - funding_agency_name: Medical Research Council (MRC, United Kingdom)
+      grant_id: MC_UP_A025_1013
+    - funding_agency_name: Medical Research Council (MRC, United Kingdom)
+      grant_id: MC_UP_1201/16
+    - funding_agency_name: Japan Society for the Promotion of Science (JSPS)
+      grant_id: null
+    - funding_agency_name: German Research Foundation (DFG)
+      grant_id: 240245660-SFB 1129
+  sample_preparation: 'buffer_ph: 7.4, vitrification_cryogen_name: ETHANE, vitrification_instrument: LEICA EM GP, instance_type: subtomogram_averaging_preparation'
+  grid_preparation: 'model: C-flat-2/2, support_film_film_type_id: 1, support_film_film_material: CARBON, support_film_film_topology: HOLEY ARRAY, support_film_instance_type: support_film, pretreatment_type_: GLOW DISCHARGE'
+  sample_type: Virus
+  dates: &repo-dates
+    deposition_date: 2023-10-11
+    release_date: 2023-12-10
+    last_modified_date: 2023-11-20
+  cell_strain:
+    name: Germany/BavPat1/2020
+  cross_references:
+    dataset_publications: doi:10.1038/s41586-020-2665-2
+    related_database_entries: EMPIAR-10493
+  cell_component:
+    name: ~
+    id: ~
+  organism:
+    name: Severe acute respiratory syndrome coronavirus 2
+    id: 'NCBITaxon: 2697049'
+  key_photos:
+    snapshot: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/10493-l.gif
+    thumbnail: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/10493.gif
+annotations:
+  - metadata:
+      annotation_object:
+        id: GO_0019062
+        name: SARS-CoV2 Spike protein
+        description: SARS-CoV2 Spike protein
+      dates: *repo-dates
+      annotation_method: Template matching + 3D classification filtering
+#      annotation_publications: OPTIONAL
+      ground_truth_status: true
+      authors:
+        - name: Kun Qu
+          ORCID: 0000-0002-3152-2237
+        - name: Christopher Neufeldt
+          ORCID: 0000-0002-4551-1811
+        - name: Sjors Scheres
+          ORCID: 0000-0002-0462-6540
+        - name: Joaquin Oton
+          ORCID: 0000-0002-2195-4730
+        - name: Zunlong Ke
+          ORCID: 0000-0002-8408-850X
+        - name: John Lu
+          ORCID: 0000-0002-3972-8854
+        - name: Ralf Bartenschlager
+          ORCID: 0000-0001-5601-9307
+        - name: John Briggs
+          ORCID: 0000-0003-3990-6910
+        - name: Takanori Nakane
+          ORCID: 0000-0003-2697-2767
+        - name: Julia Peukes
+          ORCID: 0000-0001-8560-7407
+        - name: Mirko Cortese
+          ORCID: 0000-0003-1786-4211
+        - name: Vojtech Zila
+          ORCID: 0000-0003-2032-3600
+        - name: Xiaoli Xiong
+          ORCID: 0000-0002-4632-9122
+      annotation_software: TOM/AV3 + RELION
+      version: '1.0'
+      confidence:
+#        precision: REQUIRED IF ground_truth_used is specified
+#        recall: REQUIRED IF ground_truth_used is specified
+        ground_truth_used: author estimation
+    sources: []
+#      - file_format: relion4_star
+#        glob_string: motl_star/recRelion_normVectorTiltBelow90.star
+#        shape: OrientedPoint
+#        binning: REQUIRED
+runs: {}
+tiltseries:
+  scales: []
+  microscope:
+    manufacturer: FEI
+    model: TITAN
+    optical_setup: GIF Bioquantum
+  spherical_aberration_constant: 2.7
+  microscope_optical_setup:
+    energy_filter: GIF Bioquantum
+    phase_plate: null
+    image_corrector: null
+  camera:
+    manufacturer: GATAN
+    model: K2 SUMMIT
+  acceleration_voltage: 300000
+  tilting_scheme: Dose symmetric from 0.0 degrees
+  tilt_axis: 85.6°
+  tilt_step: 3
+  tilt_range:
+    min: -60
+    max: 60
+  total_flux: 120
+  data_acquisition_software: SerialEM
+  binning_from_frames: 1
+  tilt_series_quality: 5
+  pixel_spacing: 1.532
+  is_aligned: false
+tomograms:
+  voxel_spacing: 6.128
+  fiducial_alignment_status: FIDUCIAL
+  offset:
+    x: 0
+    y: 0
+    z: 0
+  reconstruction_method: Weighted back projection
+  reconstruction_software: novaCTF
+  ctf_corrected: true
+  processing: raw
+  authors: *dataset_authors
+  tomogram_version: 1
+standardization_config:
+  destination_prefix: '10006'
+  source_prefix: jbriggs-sc2
+  frames_glob: Frames/{run_name}_acquisition-order_angle.tif
+  gain_glob: gainRef/CountRef_mapped-{run_name}_acquisition-order_-0.0.dm4
+  tiltseries_glob: null
+  rawtlt_files: null
+  tomo_format: mrc
+  tomo_glob: 'tomos_bin4/{run_name}_dose-filt_lp50.rec'
+  tomo_voxel_size: '6.128'
+  run_glob: 'tomos_bin4/*'
+  run_regex: '/TS_\d\d\d_dose-filt_lp50.rec$'
+  run_name_regex: '(.*)_dose-filt_lp50\.rec'

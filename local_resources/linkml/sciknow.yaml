@@ -195,8 +195,7 @@ slots:
       Expressed as a list of commands describing how the collection was built.
       This should involve describing the operation to generate the collection in 
       sufficient detail that that could be replicated by an LLM agent with 
-      the appropriate tooling.             
-    multivalued: true
+      the appropriate tooling.  
     
   publication date:
     range: date
@@ -272,7 +271,7 @@ classes:
     aliases: ['information', 'information artefact', 'information entity']
     abstract: true
     is_a: NamedThing
-    description: >-
+    description: >
       A piece of information that is represented in the typically describes some topic of discourse or is used as support.
     slots:
       - creation date
@@ -284,10 +283,15 @@ classes:
       - license
       - has notes
 
+  UserQuestion:
+    is_a: InformationContentEntity
+    description: >
+      A question, inquiry, or instruction from an user of the Alhazen system.
+
   InformationResource:
     is_a: InformationContentEntity
     aliases: ['knowledgebase']
-    description: >-
+    description: 
       A database or knowledgebase and its supporting ecosystem of interfaces 
       and services that deliver content to consumers (e.g. web portals, APIs, 
       query endpoints, streaming services, data downloads, etc.).
@@ -348,9 +352,9 @@ classes:
       - is about
       - format
       - type
-    slot_usage:
-      type:
-        range: NoteType
+    #slot_usage:
+    #  type:
+    #    range: NoteType
     
   Author:
     is_a: InformationContentEntity
@@ -473,17 +477,20 @@ enums:
       excerpt:
         description:
           A single quoted text excerpt.  
-  NoteType:
-    permissible_values:
-      NoteAboutCollection:
-        description:
-          A structured note about a collection of scientific knowledge.  
-      NoteAboutExpression:
-        description:
-          A structured note about an expression of scientific knowledge.  
-      NoteAboutFragment:
-        description:
-          A structured note about a fragment of scientific knowledge.  
+  #NoteType:
+  #  permissible_values:
+  #    NoteAboutCollection:
+  #      description:
+  #        A structured note about a collection of scientific knowledge.  
+  #    NoteAboutExpression:
+  #      description:
+  #        A structured note about an expression of scientific knowledge.  
+  #    NoteAboutFragment:
+  #      description:
+  #        A structured note about a fragment of scientific knowledge.  
+  #    NoteAboutUserQuestion:
+  #      description:
+  #        A structured note about a Users Question.        
   IdType:
     permissible_values:
       PMID:
@@ -492,7 +499,7 @@ enums:
       PMCID:
         description:
           PubmedCentral ID - numeric identifier for a publication in PubmedCentral. When used in PMC directly, the numbers usually have a prefix of PMC
-      EPMCID:pg_du
+      EPMCID:
         description:
           European PubmedCentral ID - alphanumeric string used within Europe PMC.
       DOI:
@@ -501,6 +508,26 @@ enums:
       ORCID:
         description:
           ORCID Identifier for scientists.  
+  UserQuestionType:
+    permissible_values:
+      ProgramLevelQuestion:
+        description:
+          A very broad scientific question that would typically be addressed by a large-scale program.    
+      ProjectLevelQuestion:
+        description:
+          A  broad scientific question that would typically be the focus of a multi-year research project.    
+      StudyLevelQuestion:
+        description:
+          A  broad scientific question that would typically be the focus of a single study or publication.
+      ExperimentLevelQuestion:
+        description:
+          A question that would be addressed by performing a single scientific experiments.  
+      MethodologicalLevelQuestion:
+        description:
+          A question concerning underlying methodology of how to execute an experiment.  
+      AgentInstruction:
+        description:
+          Description of an instruction issued to the agent.  
 
   
   

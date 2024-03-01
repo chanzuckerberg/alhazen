@@ -68,24 +68,6 @@ class NamedThingIri(Base):
     
 
 
-class InformationContentEntityProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'InformationContentEntity_provenance'
-
-    InformationContentEntity_id = Column(Text(), ForeignKey('InformationContentEntity.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"InformationContentEntity_provenance(InformationContentEntity_id={self.InformationContentEntity_id},provenance={self.provenance},)"
-
-
-
-    
-
-
 class InformationContentEntityXref(Base):
     """
     
@@ -140,18 +122,54 @@ class InformationContentEntityIri(Base):
     
 
 
-class InformationResourceProvenance(Base):
+class UserQuestionXref(Base):
     """
     
     """
-    __tablename__ = 'InformationResource_provenance'
+    __tablename__ = 'UserQuestion_xref'
 
-    InformationResource_id = Column(Text(), ForeignKey('InformationResource.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
+    UserQuestion_id = Column(Text(), ForeignKey('UserQuestion.id'), primary_key=True)
+    xref = Column(Text(), primary_key=True)
     
 
     def __repr__(self):
-        return f"InformationResource_provenance(InformationResource_id={self.InformationResource_id},provenance={self.provenance},)"
+        return f"UserQuestion_xref(UserQuestion_id={self.UserQuestion_id},xref={self.xref},)"
+
+
+
+    
+
+
+class UserQuestionHasNotes(Base):
+    """
+    
+    """
+    __tablename__ = 'UserQuestion_has_notes'
+
+    UserQuestion_id = Column(Text(), ForeignKey('UserQuestion.id'), primary_key=True)
+    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"UserQuestion_has_notes(UserQuestion_id={self.UserQuestion_id},has_notes_id={self.has_notes_id},)"
+
+
+
+    
+
+
+class UserQuestionIri(Base):
+    """
+    
+    """
+    __tablename__ = 'UserQuestion_iri'
+
+    UserQuestion_id = Column(Text(), ForeignKey('UserQuestion.id'), primary_key=True)
+    iri = Column(Text(), primary_key=True)
+    
+
+    def __repr__(self):
+        return f"UserQuestion_iri(UserQuestion_id={self.UserQuestion_id},iri={self.iri},)"
 
 
 
@@ -224,24 +242,6 @@ class ScientificKnowledgeCollectionHasMembers(Base):
 
     def __repr__(self):
         return f"ScientificKnowledgeCollection_has_members(ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},has_members_id={self.has_members_id},)"
-
-
-
-    
-
-
-class ScientificKnowledgeCollectionProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificKnowledgeCollection_provenance'
-
-    ScientificKnowledgeCollection_id = Column(Text(), ForeignKey('ScientificKnowledgeCollection.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificKnowledgeCollection_provenance(ScientificKnowledgeCollection_id={self.ScientificKnowledgeCollection_id},provenance={self.provenance},)"
 
 
 
@@ -356,24 +356,6 @@ class ScientificKnowledgeExpressionHasAuthors(Base):
     
 
 
-class ScientificKnowledgeExpressionProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificKnowledgeExpression_provenance'
-
-    ScientificKnowledgeExpression_id = Column(Text(), ForeignKey('ScientificKnowledgeExpression.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificKnowledgeExpression_provenance(ScientificKnowledgeExpression_id={self.ScientificKnowledgeExpression_id},provenance={self.provenance},)"
-
-
-
-    
-
-
 class ScientificKnowledgeExpressionXref(Base):
     """
     
@@ -446,24 +428,6 @@ class ScientificKnowledgeItemHasPart(Base):
     
 
 
-class ScientificKnowledgeItemProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificKnowledgeItem_provenance'
-
-    ScientificKnowledgeItem_id = Column(Text(), ForeignKey('ScientificKnowledgeItem.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificKnowledgeItem_provenance(ScientificKnowledgeItem_id={self.ScientificKnowledgeItem_id},provenance={self.provenance},)"
-
-
-
-    
-
-
 class ScientificKnowledgeItemXref(Base):
     """
     
@@ -512,24 +476,6 @@ class ScientificKnowledgeItemIri(Base):
 
     def __repr__(self):
         return f"ScientificKnowledgeItem_iri(ScientificKnowledgeItem_id={self.ScientificKnowledgeItem_id},iri={self.iri},)"
-
-
-
-    
-
-
-class ScientificKnowledgeFragmentProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'ScientificKnowledgeFragment_provenance'
-
-    ScientificKnowledgeFragment_id = Column(Text(), ForeignKey('ScientificKnowledgeFragment.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"ScientificKnowledgeFragment_provenance(ScientificKnowledgeFragment_id={self.ScientificKnowledgeFragment_id},provenance={self.provenance},)"
 
 
 
@@ -602,24 +548,6 @@ class NoteIsAbout(Base):
 
     def __repr__(self):
         return f"Note_is_about(Note_id={self.Note_id},is_about_id={self.is_about_id},)"
-
-
-
-    
-
-
-class NoteProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'Note_provenance'
-
-    Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"Note_provenance(Note_id={self.Note_id},provenance={self.provenance},)"
 
 
 
@@ -716,24 +644,6 @@ class AuthorIsAuthorOf(Base):
     
 
 
-class AuthorProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'Author_provenance'
-
-    Author_id = Column(Text(), ForeignKey('Author.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"Author_provenance(Author_id={self.Author_id},provenance={self.provenance},)"
-
-
-
-    
-
-
 class AuthorXref(Base):
     """
     
@@ -818,24 +728,6 @@ class OrganizationCountry(Base):
 
     def __repr__(self):
         return f"Organization_country(Organization_id={self.Organization_id},country_id={self.country_id},)"
-
-
-
-    
-
-
-class OrganizationProvenance(Base):
-    """
-    
-    """
-    __tablename__ = 'Organization_provenance'
-
-    Organization_id = Column(Text(), ForeignKey('Organization.id'), primary_key=True)
-    provenance = Column(Text(), primary_key=True)
-    
-
-    def __repr__(self):
-        return f"Organization_provenance(Organization_id={self.Organization_id},provenance={self.provenance},)"
 
 
 
@@ -964,6 +856,7 @@ class NamedThing(Entity):
 class InformationContentEntity(NamedThing):
     """
     A piece of information that is represented in the typically describes some topic of discourse or is used as support.
+
     """
     __tablename__ = 'InformationContentEntity'
 
@@ -971,15 +864,11 @@ class InformationContentEntity(NamedThing):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
-    
-    
-    provenance_rel = relationship( "InformationContentEntityProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: InformationContentEntityProvenance(provenance=x_))
     
     
     xref_rel = relationship( "InformationContentEntityXref" )
@@ -997,7 +886,7 @@ class InformationContentEntity(NamedThing):
     
 
     def __repr__(self):
-        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
+        return f"InformationContentEntity(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1072,9 +961,54 @@ class Country(NamedThing):
     
 
 
+class UserQuestion(InformationContentEntity):
+    """
+    A question, inquiry, or instruction from an user of the Alhazen system.
+
+    """
+    __tablename__ = 'UserQuestion'
+
+    creation_date = Column(Date())
+    content = Column(Text())
+    token_count = Column(Integer())
+    format = Column(Text())
+    provenance = Column(Text())
+    license = Column(Text())
+    name = Column(Text())
+    id = Column(Text(), primary_key=True, nullable=False )
+    type = Column(Text(), nullable=False )
+    
+    
+    xref_rel = relationship( "UserQuestionXref" )
+    xref = association_proxy("xref_rel", "xref",
+                                  creator=lambda x_: UserQuestionXref(xref=x_))
+    
+    
+    # ManyToMany
+    has_notes = relationship( "Note", secondary="UserQuestion_has_notes")
+    
+    
+    iri_rel = relationship( "UserQuestionIri" )
+    iri = association_proxy("iri_rel", "iri",
+                                  creator=lambda x_: UserQuestionIri(iri=x_))
+    
+
+    def __repr__(self):
+        return f"UserQuestion(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},type={self.type},)"
+
+
+
+    
+    # Using concrete inheritance: see https://docs.sqlalchemy.org/en/14/orm/inheritance.html
+    __mapper_args__ = {
+        'concrete': True
+    }
+    
+
+
 class InformationResource(InformationContentEntity):
     """
-    A database or knowledgebase and its supporting ecosystem of interfaces  and services that deliver content to consumers (e.g. web portals, APIs,  query endpoints, streaming services, data downloads, etc.). A single Information Resource by this definition may span many different datasets or databases, and include many access endpoints and user interfaces. Information Resources include project-specific resources such as a Translator Knowledge Provider, and community knowledgebases like ChemBL, OMIM, or DGIdb.
+    A database or knowledgebase and its supporting ecosystem of interfaces and services that deliver content to consumers (e.g. web portals, APIs, query endpoints, streaming services, data downloads, etc.). A single Information Resource by this definition may span many different datasets or databases, and include many access endpoints and user interfaces. Information Resources include project-specific resources such as a Translator Knowledge Provider, and community knowledgebases like ChemBL, OMIM, or DGIdb.
     """
     __tablename__ = 'InformationResource'
 
@@ -1082,15 +1016,11 @@ class InformationResource(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
-    
-    
-    provenance_rel = relationship( "InformationResourceProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: InformationResourceProvenance(provenance=x_))
     
     
     xref_rel = relationship( "InformationResourceXref" )
@@ -1108,7 +1038,7 @@ class InformationResource(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"InformationResource(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
+        return f"InformationResource(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1130,6 +1060,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1138,11 +1069,6 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
     # ManyToMany
     has_members = relationship( "ScientificKnowledgeExpression", secondary="ScientificKnowledgeCollection_has_members")
-    
-    
-    provenance_rel = relationship( "ScientificKnowledgeCollectionProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: ScientificKnowledgeCollectionProvenance(provenance=x_))
     
     
     xref_rel = relationship( "ScientificKnowledgeCollectionXref" )
@@ -1160,7 +1086,7 @@ class ScientificKnowledgeCollection(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeCollection(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1184,6 +1110,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1201,11 +1128,6 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     has_authors = relationship( "Author", secondary="ScientificKnowledgeExpression_has_authors")
     
     
-    provenance_rel = relationship( "ScientificKnowledgeExpressionProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: ScientificKnowledgeExpressionProvenance(provenance=x_))
-    
-    
     xref_rel = relationship( "ScientificKnowledgeExpressionXref" )
     xref = association_proxy("xref_rel", "xref",
                                   creator=lambda x_: ScientificKnowledgeExpressionXref(xref=x_))
@@ -1221,7 +1143,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},)"
+        return f"ScientificKnowledgeExpression(publication_date={self.publication_date},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},)"
 
 
 
@@ -1244,6 +1166,7 @@ class ScientificKnowledgeItem(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1252,11 +1175,6 @@ class ScientificKnowledgeItem(InformationContentEntity):
     
     # ManyToMany
     has_part = relationship( "ScientificKnowledgeFragment", secondary="ScientificKnowledgeItem_has_part")
-    
-    
-    provenance_rel = relationship( "ScientificKnowledgeItemProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: ScientificKnowledgeItemProvenance(provenance=x_))
     
     
     xref_rel = relationship( "ScientificKnowledgeItemXref" )
@@ -1274,7 +1192,7 @@ class ScientificKnowledgeItem(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeItem(representation_of={self.representation_of},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1299,15 +1217,11 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
     type = Column(Text(), nullable=False )
-    
-    
-    provenance_rel = relationship( "ScientificKnowledgeFragmentProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: ScientificKnowledgeFragmentProvenance(provenance=x_))
     
     
     xref_rel = relationship( "ScientificKnowledgeFragmentXref" )
@@ -1325,7 +1239,7 @@ class ScientificKnowledgeFragment(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
+        return f"ScientificKnowledgeFragment(part_of={self.part_of},offset={self.offset},length={self.length},creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1344,10 +1258,11 @@ class Note(InformationContentEntity):
     __tablename__ = 'Note'
 
     format = Column(Text())
-    type = Column(Enum('NoteAboutCollection', 'NoteAboutExpression', 'NoteAboutFragment', name='NoteType'), nullable=False )
+    type = Column(Text(), nullable=False )
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1355,11 +1270,6 @@ class Note(InformationContentEntity):
     
     # ManyToMany
     is_about = relationship( "InformationContentEntity", secondary="Note_is_about", back_populates="has_notes")
-    
-    
-    provenance_rel = relationship( "NoteProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: NoteProvenance(provenance=x_))
     
     
     xref_rel = relationship( "NoteXref" )
@@ -1381,7 +1291,7 @@ class Note(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},license={self.license},name={self.name},id={self.id},)"
+        return f"Note(format={self.format},type={self.type},creation_date={self.creation_date},content={self.content},token_count={self.token_count},provenance={self.provenance},license={self.license},name={self.name},id={self.id},)"
 
 
 
@@ -1403,6 +1313,7 @@ class Author(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1415,11 +1326,6 @@ class Author(InformationContentEntity):
     
     # ManyToMany
     is_author_of = relationship( "ScientificKnowledgeExpression", secondary="Author_is_author_of")
-    
-    
-    provenance_rel = relationship( "AuthorProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: AuthorProvenance(provenance=x_))
     
     
     xref_rel = relationship( "AuthorXref" )
@@ -1437,7 +1343,7 @@ class Author(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Author(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
+        return f"Author(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 
@@ -1459,6 +1365,7 @@ class Organization(InformationContentEntity):
     content = Column(Text())
     token_count = Column(Integer())
     format = Column(Text())
+    provenance = Column(Text())
     license = Column(Text())
     name = Column(Text())
     id = Column(Text(), primary_key=True, nullable=False )
@@ -1471,11 +1378,6 @@ class Organization(InformationContentEntity):
     
     # ManyToMany
     country = relationship( "Country", secondary="Organization_country")
-    
-    
-    provenance_rel = relationship( "OrganizationProvenance" )
-    provenance = association_proxy("provenance_rel", "provenance",
-                                  creator=lambda x_: OrganizationProvenance(provenance=x_))
     
     
     xref_rel = relationship( "OrganizationXref" )
@@ -1493,7 +1395,7 @@ class Organization(InformationContentEntity):
     
 
     def __repr__(self):
-        return f"Organization(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},license={self.license},name={self.name},id={self.id},type={self.type},)"
+        return f"Organization(creation_date={self.creation_date},content={self.content},token_count={self.token_count},format={self.format},provenance={self.provenance},license={self.license},name={self.name},id={self.id},type={self.type},)"
 
 
 

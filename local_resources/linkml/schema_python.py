@@ -1,5 +1,5 @@
 # Auto generated from sciknow.yaml by pythongen.py version: 0.0.1
-# Generation date: 2024-01-08T14:33:45
+# Generation date: 2024-02-28T14:16:39
 # Schema: ScientificKnowledgeExpressionModel
 #
 # id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
@@ -63,6 +63,10 @@ class NamedThingId(EntityId):
 
 
 class InformationContentEntityId(NamedThingId):
+    pass
+
+
+class UserQuestionId(InformationContentEntityId):
     pass
 
 
@@ -182,7 +186,7 @@ class InformationContentEntity(NamedThing):
     content: Optional[str] = None
     token_count: Optional[int] = None
     format: Optional[str] = None
-    provenance: Optional[Union[str, List[str]]] = empty_list()
+    provenance: Optional[str] = None
     xref: Optional[Union[Union[str, URIorCURIE], List[Union[str, URIorCURIE]]]] = empty_list()
     license: Optional[str] = None
     has_notes: Optional[Union[Union[str, NoteId], List[Union[str, NoteId]]]] = empty_list()
@@ -200,9 +204,8 @@ class InformationContentEntity(NamedThing):
         if self.format is not None and not isinstance(self.format, str):
             self.format = str(self.format)
 
-        if not isinstance(self.provenance, list):
-            self.provenance = [self.provenance] if self.provenance is not None else []
-        self.provenance = [v if isinstance(v, str) else str(v) for v in self.provenance]
+        if self.provenance is not None and not isinstance(self.provenance, str):
+            self.provenance = str(self.provenance)
 
         if not isinstance(self.xref, list):
             self.xref = [self.xref] if self.xref is not None else []
@@ -214,6 +217,30 @@ class InformationContentEntity(NamedThing):
         if not isinstance(self.has_notes, list):
             self.has_notes = [self.has_notes] if self.has_notes is not None else []
         self.has_notes = [v if isinstance(v, NoteId) else NoteId(v) for v in self.has_notes]
+
+        super().__post_init__(**kwargs)
+
+
+@dataclass
+class UserQuestion(InformationContentEntity):
+    """
+    A question, inquiry, or instruction from an user of the Alhazen system.
+    """
+    _inherited_slots: ClassVar[List[str]] = []
+
+    class_class_uri: ClassVar[URIRef] = SKEM["UserQuestion"]
+    class_class_curie: ClassVar[str] = "skem:UserQuestion"
+    class_name: ClassVar[str] = "UserQuestion"
+    class_model_uri: ClassVar[URIRef] = SKEM.UserQuestion
+
+    id: Union[str, UserQuestionId] = None
+    type: str = None
+
+    def __post_init__(self, *_: List[str], **kwargs: Dict[str, Any]):
+        if self._is_empty(self.id):
+            self.MissingRequiredField("id")
+        if not isinstance(self.id, UserQuestionId):
+            self.id = UserQuestionId(self.id)
 
         super().__post_init__(**kwargs)
 
@@ -406,7 +433,7 @@ class Note(InformationContentEntity):
     class_model_uri: ClassVar[URIRef] = SKEM.Note
 
     id: Union[str, NoteId] = None
-    type: Union[str, "NoteType"] = None
+    type: str = None
     is_about: Optional[Union[Union[str, InformationContentEntityId], List[Union[str, InformationContentEntityId]]]] = empty_list()
     format: Optional[str] = None
 
@@ -418,8 +445,8 @@ class Note(InformationContentEntity):
 
         if self._is_empty(self.type):
             self.MissingRequiredField("type")
-        if not isinstance(self.type, NoteType):
-            self.type = NoteType(self.type)
+        if not isinstance(self.type, str):
+            self.type = str(self.type)
 
         if not isinstance(self.is_about, list):
             self.is_about = [self.is_about] if self.is_about is not None else []
@@ -639,22 +666,6 @@ class FragmentType(EnumDefinitionImpl):
         name="FragmentType",
     )
 
-class NoteType(EnumDefinitionImpl):
-
-    NoteAboutCollection = PermissibleValue(
-        text="NoteAboutCollection",
-        description="A structured note about a collection of scientific knowledge.")
-    NoteAboutExpression = PermissibleValue(
-        text="NoteAboutExpression",
-        description="A structured note about an expression of scientific knowledge.")
-    NoteAboutFragment = PermissibleValue(
-        text="NoteAboutFragment",
-        description="A structured note about a fragment of scientific knowledge.")
-
-    _defn = EnumDefinition(
-        name="NoteType",
-    )
-
 class IdType(EnumDefinitionImpl):
 
     PMID = PermissibleValue(
@@ -675,6 +686,31 @@ class IdType(EnumDefinitionImpl):
 
     _defn = EnumDefinition(
         name="IdType",
+    )
+
+class UserQuestionType(EnumDefinitionImpl):
+
+    ProgramLevelQuestion = PermissibleValue(
+        text="ProgramLevelQuestion",
+        description="A very broad scientific question that would typically be addressed by a large-scale program.")
+    ProjectLevelQuestion = PermissibleValue(
+        text="ProjectLevelQuestion",
+        description="""A  broad scientific question that would typically be the focus of a multi-year research project.""")
+    StudyLevelQuestion = PermissibleValue(
+        text="StudyLevelQuestion",
+        description="""A  broad scientific question that would typically be the focus of a single study or publication.""")
+    ExperimentLevelQuestion = PermissibleValue(
+        text="ExperimentLevelQuestion",
+        description="A question that would be addressed by performing a single scientific experiments.")
+    MethodologicalLevelQuestion = PermissibleValue(
+        text="MethodologicalLevelQuestion",
+        description="A question concerning underlying methodology of how to execute an experiment.")
+    AgentInstruction = PermissibleValue(
+        text="AgentInstruction",
+        description="Description of an instruction issued to the agent.")
+
+    _defn = EnumDefinition(
+        name="UserQuestionType",
     )
 
 # Slots
@@ -745,7 +781,7 @@ slots.part_of = Slot(uri=SKEM.part_of, name="part of", curie=SKEM.curie('part_of
                    model_uri=SKEM.part_of, domain=ScientificKnowledgeFragment, range=Optional[Union[str, ScientificKnowledgeItemId]])
 
 slots.provenance = Slot(uri=SKEM.provenance, name="provenance", curie=SKEM.curie('provenance'),
-                   model_uri=SKEM.provenance, domain=InformationContentEntity, range=Optional[Union[str, List[str]]])
+                   model_uri=SKEM.provenance, domain=InformationContentEntity, range=Optional[str])
 
 slots.publication_date = Slot(uri=SKEM.publication_date, name="publication date", curie=SKEM.curie('publication_date'),
                    model_uri=SKEM.publication_date, domain=None, range=Optional[Union[str, XSDDate]])
@@ -788,6 +824,3 @@ slots.country__income = Slot(uri=SKEM.income, name="country__income", curie=SKEM
 
 slots.ScientificKnowledgeExpression_type = Slot(uri=SKEM.type, name="ScientificKnowledgeExpression_type", curie=SKEM.curie('type'),
                    model_uri=SKEM.ScientificKnowledgeExpression_type, domain=ScientificKnowledgeExpression, range=Union[str, "ScientificKnowledgeExpressionType"])
-
-slots.Note_type = Slot(uri=SKEM.type, name="Note_type", curie=SKEM.curie('type'),
-                   model_uri=SKEM.Note_type, domain=Note, range=Union[str, "NoteType"])
