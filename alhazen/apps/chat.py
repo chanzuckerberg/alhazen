@@ -8,7 +8,7 @@ from ..core import MODEL_TYPE, PromptTemplateRegistry, load_alhazen_tool_environ
 from ..schema_sqla import *
 from ..tools.basic import IntrospectionTool
 from ..tools.paperqa_emulation_tool import PaperQAEmulationTool
-from ..tools.metadata_extraction_tool import MetadataExtractionTool, MetadataExtractionWithRAGTool 
+from ..tools.metadata_extraction_tool import * 
 from ..toolkit import AlhazenToolkit
 from ..utils.jats_text_extractor import NxmlDoc
 from ..utils.ceifns_db import Ceifns_LiteratureDb, create_ceifns_database, drop_ceifns_database
@@ -169,9 +169,18 @@ class JSONAgentOutputParser_withFixes(AgentOutputParser):
 
     def parse(self, text: str) -> Union[AgentAction, AgentFinish]:
         try:
+            text = text.strip()
+
             # Hack to remove escaped underscores.
             text = re.sub('\\\\_', '_', text)
             text = re.sub('\\\\_', '_', text)
+
+            # Hack to look for the JSON code fragment 
+            # inside other text inside the 
+            m = re.search('.*?([\[\{](.|\n)*[\}\]]).*?', text, flags=re.M)
+            if m:
+                text = m.group(1)
+
             response = parse_json_markdown(text)
             if isinstance(response, list):
                 # gpt turbo frequently ignores the directive to emit a single action
