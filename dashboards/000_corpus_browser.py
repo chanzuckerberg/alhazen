@@ -1,16 +1,19 @@
 import marimo
 
 __generated_with = "0.2.13"
-app = marimo.App()
+app = marimo.App(
+    width="full",
+    layout_file="layouts/001a_CryoET_Metadata_Marimo.grid.json",
+)
 
 
 @app.cell
 def _(mo):
     mo.md(
         r"""
-        # CryoET Literature Dashboard  
+        # Alhazen Literature Dashboard  
 
-        > Data dashboards, visualizations and tools to explore the CryoET Literature.
+        > Simple dashboard access to all local Alhazen databases.
         """
     )
     return
@@ -39,6 +42,7 @@ def _():
     from alhazen.utils.ceifns_db import Ceifns_LiteratureDb
 
     import altair as alt
+    import json
 
     from langchain.callbacks.tracers import ConsoleCallbackHandler
     from langchain.docstore.document import Document
@@ -55,7 +59,7 @@ def _():
     import re
     import requests
 
-    from sqlalchemy import create_engine, exists, func, or_, and_, not_, desc, asc
+    from sqlalchemy import create_engine, text, exists, func, or_, and_, not_, desc, asc
     from sqlalchemy.orm import sessionmaker, aliased
 
     from time import time,sleep
@@ -104,6 +108,7 @@ def _():
         exists,
         func,
         get_langchain_chatmodel,
+        json,
         mo,
         not_,
         or_,
@@ -115,6 +120,7 @@ def _():
         requests,
         sessionmaker,
         sleep,
+        text,
         time,
         tqdm,
         unquote,
@@ -186,8 +192,25 @@ def _(
 
 
 @app.cell
-def _(os):
-    os.environ['ALHAZEN_DB_NAME'] = 'em_tech'
+def __(create_engine, mo, text):
+    engine = create_engine('postgresql+psycopg2:///postgres')
+    connection = engine.connect()
+    result = connection.execute(text("SELECT datname FROM pg_database;"))
+    dbn = [row[0] for row in result if row[0] != 'postgres']
+    connection.close()
+
+    dropdown = mo.ui.dropdown(
+      options={n:n for n in dbn},
+      value=dbn[0],
+      label='Available Databases: '
+    )
+    dropdown
+    return connection, dbn, dropdown, engine, result
+
+
+@app.cell
+def _(dropdown, os):
+    os.environ['ALHAZEN_DB_NAME'] = dropdown.value
     os.environ['LOCAL_FILE_PATH'] = '/users/gully.burns/alhazen/'
 
     if os.path.exists(os.environ['LOCAL_FILE_PATH']) is False:
@@ -222,12 +245,13 @@ def _(mo):
 
 
 @app.cell
-def _(SKC, SKC_HM, SKE, SKE_HR, SKI, ldb, mo, pd):
+def _(SKC, SKC_HM, SKE, SKE_HR, SKI, ldb, mo, or_, pd):
     q = ldb.session.query(SKC.id, SKC.name, SKE.id, SKI.type) \
             .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
             .filter(SKC_HM.has_members_id==SKE.id) \
             .filter(SKE.id==SKE_HR.ScientificKnowledgeExpression_id) \
-            .filter(SKE_HR.has_representation_id==SKI.id) 
+            .filter(SKE_HR.has_representation_id==SKI.id) \
+            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', SKE.type=='ScientificPrimaryResearchPreprint'))
     df1 = pd.DataFrame(q.all(), columns=['ID', 'collection', 'doi', 'type'])    
     df2 = df1.pivot_table(index=['ID', 'collection'], 
                           columns='type', values='doi', 
@@ -238,9 +262,46 @@ def _(SKC, SKC_HM, SKE, SKE_HR, SKI, ldb, mo, pd):
 
 
 @app.cell
-def __(collection_counts):
-    collection_counts.value
-    return
+def __(SKC, SKC_HM, SKE, collection_counts, ldb, mo, or_, pd):
+    c_id = -1
+    papers_table = None
+    if len(collection_counts.value) > 0:
+        c_id = collection_counts.value.reset_index().iloc[0]['ID']
+        q2 = ldb.session.query(SKE.id, SKE.content) \
+                .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+                .filter(SKC_HM.has_members_id==SKE.id) \
+                .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
+                            SKE.type=='ScientificPrimaryResearchPreprint')) \
+                .filter(SKC.id==c_id) 
+        papers_df = pd.DataFrame(q2.all(), columns=['DOI', 'Reference'])
+        papers_table = mo.ui.table(papers_df, selection='single')
+    papers_table
+    return c_id, papers_df, papers_table, q2
+
+
+@app.cell
+def __(N, NIA, json, ldb, mo, papers_table, pd):
+    p_id = -1
+    report_df = None
+    if papers_table is not None and len(papers_table.value) > 0:
+        p_id = papers_table.value.iloc[0]['DOI']
+        l = []
+        q3 = ldb.session.query(N) \
+            .filter(N.id == NIA.Note_id) \
+            .filter(NIA.is_about_id == p_id) \
+            .filter(N.type == 'MetadataExtractionNote__cryoet') 
+        for n in q3.all():
+            tup = json.loads(n.content)
+            tup.pop('original_text')
+            tup.pop('question')
+            deets = n.name.split('__')
+            tup['variable'] = deets[-1]  
+            l.append(tup)
+        report_df = pd.DataFrame(l)
+        report_df = report_df[['variable', 'answer', 'gold_standard']]
+        report_table = mo.ui.table(report_df)
+    report_table
+    return deets, l, n, p_id, q3, report_df, report_table, tup
 
 
 if __name__ == "__main__":

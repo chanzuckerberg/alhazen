@@ -1,38 +1,3 @@
-protocol step identification: 
-  programmer_notes: NOT COMPLETE STILL TESTING
-  description: 
-    Identify what protocol step of an experiment is being described, given an existing model of the protocol steps.
-  system: 
-    You are an expert biological scientist, skilled at reading scientific papers.
-  instruction: 
-    Read the text of a section of a research paper shown below 
-    (delimited with triple backticks).
-
-    Section Text:- '''{section_text}'''
-
-    The text is taken from a scientific paper that uses {methodology} to {method_goal}.
-
-    The text may describe the procedures followed as part of the protocol or some other aspect of the work. 
-    
-    If the text describes the protocol being used, identify which of the following steps is being described - 
-    {all_protocol_steps} 
-
-    If the text describes other aspects of the work, record 'not present' in the 'protocol_step' field of the output.
-    
-    Generate only JSON formatted output with one field 'protocol_step'. 
-    Do not include any other response other than a JSON object.
-    
-    Identify which of these parts of the protocol are described in the text, and record
-    the corresponding value of {all_protocol_step_codes} in the 'protocol_step' field of the output.
-  input_variables: 
-    - section_text
-    - methodology
-    - method_goal
-    - all_protocol_steps
-    - all_protocol_step_codes
-  output_variables:
-    - protocol_step
-
 metadata extraction (RAG over full text snippets): 
   programmer_notes: NOT COMPLETE STILL TESTING
   description: 

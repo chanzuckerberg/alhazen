@@ -73,6 +73,7 @@ class AlhazenToolMixin(BaseModel):
 
     db: Ceifns_LiteratureDb = Field(exclude=True)
     llm: Optional[BaseChatModel] = Field(exclude=True)
+    slm: Optional[BaseChatModel] = Field(exclude=True)
 
     class Config:
         """Configuration for this pydantic object."""
