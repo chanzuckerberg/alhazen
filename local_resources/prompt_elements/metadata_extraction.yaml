@@ -10,6 +10,14 @@ cryoet:
     (F) annotating the 3D model of the sample to identify structures of interest.
     (G) other protocol steps, not listed above. 
   all protocol step codes: A, B, C, D, E, F, or G
+  all entities:
+    (A) the biological sample, 
+    (B) the frozen biological sample, 
+    (C) the lamella, 
+    (D) the mounted sample, 
+    (E) the tilt series, 
+    (F) the tomogram, 
+    (G) the annotation set
   dataset_publication_path: dataset.cross_references.dataset_publications
   metadata specs: 
     - name: biological_sample_type

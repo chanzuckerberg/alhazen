@@ -50,7 +50,6 @@ full text paper section classification:
 
     Section Text:- '''{section_text}'''
 
-    What kind of paper is this?  
 
     Select an answer from the following list:
     - BACKGROUND 
@@ -67,7 +66,7 @@ full text paper section classification:
     Classify the section as a 'REFERENCES' if the text of the section lists cited references from the rest of the paper
     Classify the section as a 'OTHER' in all other cases (such as references if the text likely originates from the introduction of the paper, describing a broad field of investigation and others' work. 
     
-    Generate only JSON formatted output with a single field: 'section_type' and the selected answer as the value.
+    Generate only JSON formatted output with a single field: 'section_type'.
 
     Do not provide additional explanation or context for the answer.
    
