@@ -1,0 +1,92 @@
+protocol diagram extraction: 
+  programmer_notes: Likely going to try to run this on methods sections of papers using OpenAI's GPT-4 API
+  description: 
+    Draw Mermaid Diagrams directly from descriptions of protocols .
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: >
+    Read the text of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    The text is taken from a scientific paper that uses {methodology} to {method_goal}.
+
+    In general, the protocol can be represented as a directed bipartite graph, where each node in the graph is either a protocol step or an entity and edges either connect a protocol step to an entity or an entity to a protocol step. 
+    
+    First, read the text of the methods section and break it into subsections based on the different protocol steps being applied. 
+    Second, identify which protocol step corresponds to the steps described in the text and compute what entities act as inputs and outputs to each protocol step. 
+    Thirdly, design a directed graph of the described protocol consisting of entities, protocol steps and links between them.
+    Finally, write out the directed graph as Mermaid.js code where each protocol step is written as `p_ID([Name])` format and each entity is written with the `e_ID[Name]` format.
+
+    For example, if the text describes an experiment with the following steps:
+    * A sample of S. Pombe cells are vitirified to provide frozen sections
+    * The thick sections are then milled using a Focussed Ion Beam (FIB) to create a Lamella
+    * This Lamella is then mounted on a grid
+    * The grid is imaged using CryoET under various tilt angles to generate a tilt series
+    * The tilt series dataset is then analyzed with tomography to generate a 3D tomogram. 
+    * The tomogram is then manually examined and annotated with organelles and other structures of interest.
+
+    Then the entities involved would be: A[S. Pombe cells], B[Frozen S. Pombe cells], C[Lamella], D[Mounted Sample], E[Tilt Series], F[Tomogram], and G[Annotation Set] 
+    Then the protocol steps would be: U([Vitrification]), V([FIB Milling]), X([Mount on grid]), Y([CryoET Imaging]), and Z([Tomogram Generation]), and W([Tomogram Annotation])
+    Finally, this would lead to generation of the following Mermaid.js code:
+    ```mermaid:
+    graph TD
+      A[S. Pombe cells] -->  U([Vitrification]),
+      U --> B[Frozen S. Pombe cells],
+      B --> V([FIB Milling]),
+      V --> C[Mounted Sample], 
+      C --> X([Mount on grid]),
+      X --> D[Mounted Sample],
+      D --> Y([CryoET Imaging]),
+      Y --> E([Tilt Series]),
+      E --> Z([Tomogram Generation]),
+      Z --> F[Tomogram],
+      F --> W([Tomogram Annotation])
+      W --> G([Annotation Set])
+    ```
+  
+    Generate only Mermaid.js code . 
+    Do not include any other response.
+    
+  input_variables: 
+    - section_text
+    - methodology
+    - method_goal
+  output_variables:
+    - Mermaid diagram code
+
+protocol step identification: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Identify what protocol step of an experiment is being described, given an existing model of the protocol steps.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: 
+    Read the text of a section of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    The text is taken from a scientific paper that uses {methodology} to {method_goal}.
+
+    The text may describe the procedures followed as part of the protocol or some other aspect of the work. 
+    
+    If the text describes the protocol being used, identify which of the following steps is being described - 
+    {all_protocol_steps} 
+
+    If the text describes other aspects of the work, record 'not present' in the 'protocol_step' field of the output.
+    
+    Generate only JSON formatted output with one field 'protocol_step'. 
+    Do not include any other response other than a JSON object.
+    
+    Identify which of these parts of the protocol are described in the text, and record
+    the corresponding value of {all_protocol_step_codes} in the 'protocol_step' field of the output.
+  input_variables: 
+    - section_text
+    - methodology
+    - method_goal
+    - all_protocol_steps
+    - all_protocol_step_codes
+  output_variables:
+    - protocol_step

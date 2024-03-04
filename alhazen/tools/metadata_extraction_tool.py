@@ -39,6 +39,7 @@ import regex
 from sqlalchemy import create_engine, exists
 from sqlalchemy.orm import sessionmaker, aliased
 from time import time,sleep
+import tiktoken
 from urllib.request import urlopen
 from urllib.parse import quote_plus, quote, unquote
 import uuid
@@ -291,7 +292,7 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
         
         pts.load_prompts_from_yaml('document_structure.yaml')
         section_classifier_prompt_template = pts.get_prompt_template('full text paper section classification').generate_chat_prompt_template()
-        section_classifier_lcel = section_classifier_prompt_template | self.llm | JsonEnclosedByTextOutputParser()
+        section_classifier_lcel = section_classifier_prompt_template | self.slm | JsonEnclosedByTextOutputParser()
 
         pts.load_prompts_from_yaml('metadata_extraction.yaml')
         prompt_elements_yaml = files(prompt_elements).joinpath('metadata_extraction.yaml').read_text()

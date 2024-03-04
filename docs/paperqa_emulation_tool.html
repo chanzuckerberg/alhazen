@@ -249,7 +249,8 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <pre><code> PaperQAEmulationTool (db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb, llm
                        :Optional[langchain_core.language_models.chat_model
-                       s.BaseChatModel]=None,
+                       s.BaseChatModel]=None, slm:Optional[langchain_core.
+                       language_models.chat_models.BaseChatModel]=None,
                        name:str='simple_qa_over_papers',
                        description:str='Runs a Map-Reduce model where we
                        write a short essay to answer a scientific question
@@ -263,7 +264,9 @@ ul.task-list li input[type="checkbox"] {
                        ger]=None, tags:Optional[List[str]]=None,
                        metadata:Optional[Dict[str,Any]]=None, handle_tool_
                        error:Union[bool,str,Callable[[langchain_core.tools
-                       .ToolException],str],NoneType]=False)</code></pre>
+                       .ToolException],str],NoneType]=False, handle_valida
+                       tion_error:Union[bool,str,Callable[[pydantic.v1.err
+                       or_wrappers.ValidationError],str],NoneType]=False)</code></pre>
 </blockquote>
 <p>Write a short essay to answer a scientific question based documents from a preset collection.</p>
 <hr>

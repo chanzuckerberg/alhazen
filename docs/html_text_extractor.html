@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A set of Langchain tools that populate and query a CEIFNS database by (1) Build collections of expressions; (2) locate and load items that represent expressions; (3) segregate the parts of items as ‘fragments’; (4) analyze the fragments to generate notes that can then be summarized to provide summaries.">
+<meta name="description" content="Extracts unstructured text from scientific papers published as HTML files .">
 
-<title>alhazen - Alhazen Toolkit</title>
+<title>alhazen - HTML Text Extractor Utility</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,11 +63,11 @@ ul.task-list li input[type="checkbox"] {
 
 
 <link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="alhazen - Alhazen Toolkit">
-<meta property="og:description" content="A set of Langchain tools that populate and query a CEIFNS database by (1) Build collections of expressions; (2) locate and load items that represent expressions; (3) segregate the parts of items as ‘fragments’; (4) analyze the fragments to generate notes that can then be summarized to provide summaries.">
+<meta property="og:title" content="alhazen - HTML Text Extractor Utility">
+<meta property="og:description" content="Extracts unstructured text from scientific papers published as HTML files .">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Alhazen Toolkit">
-<meta name="twitter:description" content="A set of Langchain tools that populate and query a CEIFNS database by (1) Build collections of expressions; (2) locate and load items that represent expressions; (3) segregate the parts of items as ‘fragments’; (4) analyze the fragments to generate notes that can then be summarized to provide summaries.">
+<meta name="twitter:title" content="alhazen - HTML Text Extractor Utility">
+<meta name="twitter:description" content="Extracts unstructured text from scientific papers published as HTML files .">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -92,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ceifns_db.html">API Docs</a></li><li class="breadcrumb-item"><a href="./toolkit.html">Alhazen Toolkit</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">HTML Text Extractor Utility</li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -153,7 +153,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./toolkit.html" class="sidebar-item-text sidebar-link active">
+  <a href="./toolkit.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Alhazen Toolkit</span></a>
   </div>
 </li>
@@ -211,15 +211,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#base-toolkit-for-the" id="toc-base-toolkit-for-the" class="nav-link active" data-scroll-target="#base-toolkit-for-the">Base Toolkit for the</a></li>
-  <li><a href="#primary-agent-toolkit" id="toc-primary-agent-toolkit" class="nav-link" data-scroll-target="#primary-agent-toolkit">Primary Agent Toolkit</a>
-  <ul class="collapse">
-  <li><a href="#alhazentoolkit" id="toc-alhazentoolkit" class="nav-link" data-scroll-target="#alhazentoolkit">AlhazenToolkit</a></li>
-  </ul></li>
-  <li><a href="#metadata-extraction-toolkit-for-experimentation" id="toc-metadata-extraction-toolkit-for-experimentation" class="nav-link" data-scroll-target="#metadata-extraction-toolkit-for-experimentation">Metadata Extraction Toolkit for Experimentation</a>
-  <ul class="collapse">
-  <li><a href="#metadataextractiontoolkit" id="toc-metadataextractiontoolkit" class="nav-link" data-scroll-target="#metadataextractiontoolkit">MetadataExtractionToolkit</a></li>
-  </ul></li>
+  <li><a href="#trafilaturasectionloader" id="toc-trafilaturasectionloader" class="nav-link active" data-scroll-target="#trafilaturasectionloader">TrafilaturaSectionLoader</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -228,12 +220,12 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Alhazen Toolkit</h1>
+<h1 class="title">HTML Text Extractor Utility</h1>
 </div>
 
 <div>
   <div class="description">
-    A set of Langchain tools that populate and query a CEIFNS database by (1) Build collections of expressions; (2) locate and load items that represent expressions; (3) segregate the parts of items as ‘fragments’; (4) analyze the fragments to generate notes that can then be summarized to provide summaries.
+    Extracts unstructured text from scientific papers published as HTML files .
   </div>
 </div>
 
@@ -249,41 +241,16 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
-<section id="base-toolkit-for-the" class="level1">
-<h1>Base Toolkit for the</h1>
-</section>
-<section id="primary-agent-toolkit" class="level1">
-<h1>Primary Agent Toolkit</h1>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/toolkit.py#L36" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="alhazentoolkit" class="level3">
-<h3 class="anchored" data-anchor-id="alhazentoolkit">AlhazenToolkit</h3>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/html_research_article_text_extractor.py#L21" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="trafilaturasectionloader" class="level3">
+<h3 class="anchored" data-anchor-id="trafilaturasectionloader">TrafilaturaSectionLoader</h3>
 <blockquote class="blockquote">
-<pre><code> AlhazenToolkit (db:alhazen.utils.ceifns_db.Ceifns_LiteratureDb,
-                 llm:langchain_core.language_models.chat_models.BaseChatMo
-                 del, agent:Optional[langchain.agents.agent.RunnableAgent]
-                 =None)</code></pre>
+<pre><code> TrafilaturaSectionLoader (file_path:str)</code></pre>
 </blockquote>
-<p>Toolkit for building and querying an Alhazen CEIFNS (pron. ‘SAI-FiNS’) database (CEIFNS = Collection-Expression-Item-Fragment-Note-Summary).</p>
-</section>
-</section>
-<section id="metadata-extraction-toolkit-for-experimentation" class="level1">
-<h1>Metadata Extraction Toolkit for Experimentation</h1>
-<hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/toolkit.py#L145" target="_blank" style="float:right; font-size:smaller">source</a></p>
-<section id="metadataextractiontoolkit" class="level3">
-<h3 class="anchored" data-anchor-id="metadataextractiontoolkit">MetadataExtractionToolkit</h3>
-<blockquote class="blockquote">
-<pre><code> MetadataExtractionToolkit
-                            (db:alhazen.utils.ceifns_db.Ceifns_LiteratureD
-                            b, llm:langchain_core.language_models.chat_mod
-                            els.BaseChatModel, agent:Optional[langchain.ag
-                            ents.agent.RunnableAgent]=None)</code></pre>
-</blockquote>
-<p>Toolkit for running and testing Alhazen Metadata Extraction Tools</p>
+<p>Load <code>HTML</code> files and parse them with <code>trafilatura</code> into sections.</p>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

@@ -9,6 +9,7 @@ import local_resources.linkml as linkml
 from .core import OllamaRunner
 from .tools.basic import *
 from .tools.metadata_extraction_tool import * 
+from .tools.protocol_extraction_tool import * 
 from .tools.paperqa_emulation_tool import PaperQAEmulationTool 
 from .utils.ceifns_db import *
 
@@ -90,6 +91,13 @@ class AlhazenToolkit(BaseModel):
             db=self.db, llm=self.llm, description=metadata_extraction_tool_description
         )
 
+        protocol_extraction_tool_description = (
+            "This tool draws a flowchart of the protocol described in a single full text paper."
+        )
+        protocol_extraction_tool = ProcotolExtractionTool(
+            db=self.db, llm=self.llm, description=protocol_extraction_tool_description
+        )
+
         simple_extraction_tool_description = (
             "This tool extracts information from a single full text paper based on a specific question."
         )
@@ -113,6 +121,7 @@ class AlhazenToolkit(BaseModel):
             metadata_extraction_tool,
             simple_extraction_tool,
             paperqa_emulation_tool,
+            protocol_extraction_tool,
             check_expression_tool
         ]
 
