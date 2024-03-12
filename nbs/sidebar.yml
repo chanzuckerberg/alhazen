@@ -9,7 +9,6 @@ website:
       - section: "API Docs"
         contents:
           - 35_ceifns_db.ipynb
-          - 01_apps.ipynb
           - 20_toolkit.ipynb
           - 21_basic_tools.ipynb
           - 22_metadata_extraction_tool.ipynb
