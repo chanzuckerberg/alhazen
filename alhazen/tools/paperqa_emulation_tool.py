@@ -5,7 +5,7 @@ __all__ = ['skc', 'skc_hm', 'ske', 'ske_hr', 'ski', 'ski_hp', 'skf', 'n', 'skc_h
            'PaperQAEmulationToolSchema', 'PaperQAEmulationTool']
 
 # %% ../../nbs/24_PaperQA_emulation_tool.ipynb 3
-from ..core import OllamaRunner, PromptTemplateRegistry, get_langchain_llm, get_cached_gguf, \
+from ..core import PromptTemplateRegistry, get_langchain_llm, get_cached_gguf, \
     get_langchain_embeddings, GGUF_LOOKUP_URL, MODEL_TYPE, load_alhazen_tool_environment, get_langchain_chatmodel
 from .basic import AlhazenToolMixin
 from ..utils.output_parsers import JsonEnclosedByTextOutputParser
@@ -80,7 +80,7 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
         #~~~~~~~~~~~~~~~~~~~~~~
         # 1. Set up environment
         #~~~~~~~~~~~~~~~~~~~~~~
-        loc, db_name, model_type, model_name = load_alhazen_tool_environment()
+        loc, db_name = load_alhazen_tool_environment()
 
         os.environ['PGVECTOR_CONNECTION_STRING'] = "postgresql+psycopg2:///"+db_name
             
@@ -207,11 +207,11 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
         
         dois_to_record = [doi_lookup[s['ID']] for s in ordered_summaries[:n_summary_size]]
 
-        if collection_id != 1:
-            response = {'report': "I answered this question: `%s` based on content from the collection with id: %s."%(question, collection_id),
+        if collection_id != -1:
+            response = {'response': "I answered this question: `%s` based on content from the collection with id: %s."%(question, collection_id),
                     "data": essay }
         else:
-            response = {'report': "I answered this question: `%s` based on all content in our database. "%(question),
+            response = {'response': "I answered this question: `%s` based on all content in our database. "%(question),
                     "data": essay }
 
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

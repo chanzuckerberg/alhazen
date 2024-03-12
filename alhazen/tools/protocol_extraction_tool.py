@@ -5,8 +5,7 @@ __all__ = ['skc', 'skc_hm', 'ske', 'ske_hr', 'ski', 'ski_hp', 'skf', 'n', 'skc_h
            'ProtocolExtractionToolSchema', 'BaseProtocolExtractionTool', 'ProcotolExtractionTool']
 
 # %% ../../nbs/23_protocol_extraction_tool.ipynb 3
-from ..core import OllamaRunner, PromptTemplateRegistry, get_langchain_llm, get_cached_gguf, \
-    get_langchain_embeddings, GGUF_LOOKUP_URL, MODEL_TYPE, load_alhazen_tool_environment, get_langchain_chatmodel
+from ..core import PromptTemplateRegistry
 from .basic import AlhazenToolMixin
 from ..utils.output_parsers import *
 from ..utils.ceifns_db import *
@@ -102,7 +101,7 @@ class ProcotolExtractionTool(BaseProtocolExtractionTool):
             item_type = i_type
             break
         if item_type is None:
-            return {'report': "Could not retrieve full text of the paper: %s."%(paper_id),
+            return {'response': "Could not retrieve full text of the paper: %s."%(paper_id),
                 "data": {'list_of_answers': None, 'run_name': run_name} }
 
         # 1. Build LangChain elements
@@ -124,7 +123,7 @@ class ProcotolExtractionTool(BaseProtocolExtractionTool):
         text = '\n\n'.join([f.content for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section'])])
 
         if len(text) == 0:
-            return {'report': "Could not retrieve full text of the paper: %s."%(paper_id),
+            return {'response': "Could not retrieve full text of the paper: %s."%(paper_id),
                 "data": {'list_of_answers': None, 'run_name': run_name} }
 
         # 4. Assemble chain input
@@ -140,8 +139,8 @@ class ProcotolExtractionTool(BaseProtocolExtractionTool):
         time_per_variable = total_execution_time / len(metadata_specs)
 
         if output is None:
-            return {'report': "attempted and failed protocol extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
+            return {'response': "attempted and failed protocol extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
                 "data": {'mermaid_code': None, 'run_name': run_name} }
         
-        return {'report': "completed protocol extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
+        return {'response': "completed protocol extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
                 "data": {'mermaid_code': output, 'run_name': run_name} }

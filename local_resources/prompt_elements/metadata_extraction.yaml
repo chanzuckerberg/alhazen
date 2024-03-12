@@ -1,4 +1,4 @@
-cryoet: 
+cryoet_full: 
   methodology: Cryo-Electron Tomography (CryoET)
   method goal: study the microscopic structure of a biological sample
   all protocol steps:
@@ -108,3 +108,89 @@ cryoet:
       step: F
       spec: What software was used to make the annotations?
       path: annotations[*].metadata.annotation_software
+cryoet: 
+  notes: "This is a simplified version of the full CryoET metadata extraction prompt. It is designed to be used in cases where the full prompt is not necessary."
+  methodology: Cryo-Electron Tomography (CryoET)
+  method goal: study the microscopic structure of a biological sample
+  all protocol steps:
+    (A) the preparation of a biological sample for imaging (such as cells, tissue, a virus, a microorganism, etc.),
+    (B) vitrification (freezing) of the sample,
+    (C) milling the sample using a focussed ion beam (FIB) to create a used to prepare a thin, electron-transparent lamella.
+    (D) imaging the lamella using CryoET by collecting a tilt series of images of the lamella at different angles.
+    (E) reconstructing 3-D tomograms in by aligning tilt series and performing reconstruction computations.
+    (F) annotating the 3D model of the sample to identify structures of interest.
+    (G) other protocol steps, not listed above. 
+  all protocol step codes: A, B, C, D, E, F, or G
+  all entities:
+    (A) the biological sample, 
+    (B) the frozen biological sample, 
+    (C) the lamella, 
+    (D) the mounted sample, 
+    (E) the tilt series, 
+    (F) the tomogram, 
+    (G) the annotation set
+  dataset_publication_path: dataset.cross_references.dataset_publications
+  metadata specs: >
+    - name: sample_type
+      step: AB
+      spec: List all different types of biological sample being imaged using CryoEM (i.e., any biological samples that were mounted on grids and subsequently imaged). Select values from the following list: cell, tissue, organoid, organ, whole organism, virus, micro-organism, other.
+      path: dataset.sample_type 
+    - name: sample_preparation_buffer_ph
+      step: AB
+      spec: What was the pH of the buffer used to store the sample being imaged?
+      path: dataset.sample_preparation[buffer_ph]
+    - name: sample_preparation_vitrification_cryogen_name
+      step: AB
+      spec: What combination of gases acted as the medium used to vitrify the sample? Select any combination of the following: ETHANE, PROPANE, NITROGEN, OXYGEN, ARGON. Write the answer as a list. 
+      path: dataset.sample_preparation[vitrification_cryogen_name]
+    - name: sample_preparation_cryo_protectant
+      step: AB
+      spec: What cryo-protectant was used to prepare the sample for vitrification? If no cryo-protectant was used, return none.
+      path: dataset.sample_preparation[cryo_protectant]
+    - name: sample_preparation_type
+      step: AB
+      spec: Was the sample prepared for subtomogram averaging or tomography, or other? If other, please specify.
+      path: dataset.sample_preparation[instance_type]
+    - name: grid_preparation_model
+      step: C
+      spec: ???
+      path: dataset.grid_preparation[model]
+    - name: grid_preparation_material
+      step: C
+      spec: ???
+      path: dataset.grid_preparation[material]
+    - name: grid_preparation_mesh
+      step: C
+      spec: ???
+      path: dataset.grid_preparation[mesh]
+    - name: grid_preparation_support_film_film_topology
+      step: C
+      spec: ???
+      path: dataset.grid_preparation[support_film_film_topology]
+    - name: grid_preparation_pretreatment_type
+      step: C
+      spec: ???
+      path: dataset.grid_preparation[pretreatment_type_]
+    - name: other_preparation
+      step: G
+      spec: ???
+    - name: organism
+      step: AB
+      spec: If the biological sample was taken from an organism, provide the scientific name of the organism. If the biological sample is not from an organism, return none.
+      path: dataset.organism.name 
+    - name: tissue
+      step: AB
+      spec: ???
+      path: dataset.tissue.name 
+    - name: cell_type
+      step: AB
+      spec: ???
+      path: dataset.cell_type.name
+    - name: cell_strain
+      step: AB
+      spec: If the biological sample described in the text is a cell or cell culture, what was the strain?
+      path: dataset.cell_strain.name
+    - name: cell_component
+      step: AB
+      spec: ???
+      path: dataset.cell_component.name

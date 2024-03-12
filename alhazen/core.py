@@ -163,22 +163,8 @@ def load_alhazen_tool_environment():
     loc = os.environ['LOCAL_FILE_PATH']
     if loc[-1:] != '/':
         loc += '/'
-
-    model_type = MODEL_TYPE.Ollama
-    if os.environ.get('ALHAZEN_MODEL_TYPE'): 
-        mt = os.environ.get('ALHAZEN_MODEL_TYPE') 
-        if mt == 'openai':
-            model_type = MODEL_TYPE.OpenAI
-        if mt == 'ollama':
-            model_type = MODEL_TYPE.Ollama
-        else: 
-            raise Exception('Model type %s not recognized.'%(mt))
-
-    model_name = 'mixtral:instruct'
-    if os.environ.get('ALHAZEN_MODEL_NAME'): 
-        model_name = os.environ.get('ALHAZEN_MODEL_NAME')
     
-    return loc, db_name, model_type, model_name
+    return loc, db_name
 
 
 # download GGUF files from HuggingFace URL and save it to disk in defined directory, return local file path
