@@ -7,8 +7,7 @@ __all__ = ['skc', 'skc_hm', 'ske', 'ske_hr', 'ski', 'ski_hp', 'skf', 'n', 'skc_h
            'SimpleExtractionWithRAGToolSchema', 'SimpleExtractionWithRAGTool']
 
 # %% ../../nbs/22_metadata_extraction_tool.ipynb 3
-from ..core import OllamaRunner, PromptTemplateRegistry, get_langchain_llm, get_cached_gguf, \
-    get_langchain_embeddings, GGUF_LOOKUP_URL, MODEL_TYPE, load_alhazen_tool_environment, get_langchain_chatmodel
+from ..core import PromptTemplateRegistry
 from .basic import AlhazenToolMixin
 from ..utils.output_parsers import JsonEnclosedByTextOutputParser
 from ..utils.ceifns_db import *
@@ -117,7 +116,7 @@ class BaseMetadataExtractionTool(BaseTool, AlhazenToolMixin):
                         examples[q.get('name')][doi.strip()] = list(set(answer))
         self.examples = examples
 
-    def build_report(self, paper_id, extraction_type):    
+    def build_answer(self, paper_id, extraction_type):    
         l = []
         q = self.db.session.query(N) \
             .filter(N.id == NIA.Note_id) \
@@ -132,8 +131,8 @@ class BaseMetadataExtractionTool(BaseTool, AlhazenToolMixin):
             tup['llm_desc'] = deets[-2]  
             tup['variable'] = deets[-1]  
             l.append(tup)
-        df_report = pd.DataFrame(l)
-        return df_report 
+        df_answer = pd.DataFrame(l)
+        return df_answer 
 
 
 # %% ../../nbs/22_metadata_extraction_tool.ipynb 7
@@ -169,7 +168,7 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
             item_type = i_type
             break
         if item_type is None:
-            return {'report': "Could not retrieve full text of the paper: %s."%(paper_id),
+            return {'answer': "Could not retrieve full text of the paper: %s."%(paper_id),
                 "data": {'list_of_answers': None, 'run_name': run_name} }
 
         # 1. Build LangChain elements
@@ -190,7 +189,7 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
         text = '\n\n'.join([f.content for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section'])])
 
         if len(text) == 0:
-            return {'report': "Could not retrieve full text of the paper: %s."%(paper_id),
+            return {'answer': "Could not retrieve full text of the paper: %s."%(paper_id),
                 "data": {'list_of_answers': None, 'run_name': run_name} }
 
         # 3. Compile the extraction questions
@@ -216,7 +215,7 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
         time_per_variable = total_execution_time / len(metadata_specs)
 
         if output is None:
-            return {'report': "attempted and failed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
+            return {'answer': "attempted and failed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
                 "data": {'list_of_answers': None, 'run_name': run_name} }
 
         for spec in metadata_specs:
@@ -254,7 +253,7 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
         # commit the changes to the database
         self.db.session.commit()
         
-        return {'report': "completed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
+        return {'answer': "completed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
                 "data": {'list_of_answers': full_answer, 'run_name': run_name} }
 
 # %% ../../nbs/22_metadata_extraction_tool.ipynb 8
@@ -316,7 +315,7 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
                 text += f.content + '\n\n'
 
         if len(text) == 0:
-            return {'report': "Could not retrieve full text of the paper: %s."%(paper_id),
+            return {'answer': "Could not retrieve full text of the paper: %s."%(paper_id),
                 "data": {'list_of_answers': None, 'run_name': run_name} }
 
         # 3. Compile the extraction questions
@@ -342,7 +341,7 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
         time_per_variable = total_execution_time / len(metadata_specs)
 
         if output is None:
-            return {'report': "attempted and failed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
+            return {'answer': "attempted and failed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
                 "data": {'list_of_answers': None, 'run_name': run_name} }
 
         for spec in metadata_specs:
@@ -380,7 +379,7 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
         # commit the changes to the database
         self.db.session.commit()
         
-        return {'report': "completed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
+        return {'response': "completed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
                 "data": {'list_of_answers': full_answer, 'run_name': run_name} }
 
 # %% ../../nbs/22_metadata_extraction_tool.ipynb 9
@@ -470,7 +469,7 @@ class MetadataExtraction_RAGOnSections_Tool(BaseMetadataExtractionTool):
             self.db.session.commit()
             full_answer.append({'variable_name': vname, 'question': question, 'fragment_ids': fragment_ids})
         
-        return {'report': "completed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
+        return {'response': "completed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
                 "data": {'list_of_answers': full_answer, 'run_name': run_name} }
 
 # %% ../../nbs/22_metadata_extraction_tool.ipynb 10
@@ -549,5 +548,5 @@ class SimpleExtractionWithRAGTool(BaseTool, AlhazenToolMixin):
         self.db.session.commit()
         full_answer = {'variable_name': variable_name, 'question': question, 'fragment_ids': fragment_ids}
     
-        return {'report': "I answered this question: `%s` concerning this variable: `%s` from %s."%(question, variable_name, paper_id),
+        return {'response': "I answered this question: `%s` concerning this variable: `%s` from %s."%(question, variable_name, paper_id),
                 "data": {'answer': full_answer }}

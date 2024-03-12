@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['IR', 'SKC', 'SKC_HM', 'SKE', 'SKE_XREF', 'SKE_IRI', 'SKE_HR', 'SKE_MO', 'SKI', 'SKI_HP', 'SKF', 'N', 'NIA', 'SKC_HN',
            'SKE_HN', 'SKI_HN', 'SKF_HN', 'create_ceifns_database', 'drop_ceifns_database', 'backup_ceifns_database',
-           'restore_ceifns_database', 'Ceifns_LiteratureDb', 'read_information_content_entity_iri']
+           'restore_ceifns_database', 'list_databases', 'Ceifns_LiteratureDb', 'read_information_content_entity_iri']
 
 # %% ../../nbs/35_ceifns_db.ipynb 5
 from .airtableUtils import AirtableUtils
@@ -254,6 +254,17 @@ def restore_ceifns_database(db_name, backup_file, verbose=False):
     except Exception as e:
       print("Issue with the db restore : {}".format(e))
 
+def list_databases():
+  """
+  List all databases in the postgres server
+  """
+  engine = create_engine('postgresql+psycopg2:///postgres')
+  connection = engine.connect()
+  result = connection.execute(text("SELECT datname FROM pg_database;"))
+  dbn = [row[0] for row in result if row[0] != 'postgres']
+  connection.close()
+  return dbn
+
 # %% ../../nbs/35_ceifns_db.ipynb 8
 class Ceifns_LiteratureDb(BaseModel):
   """This class runs a set of queries on external literature databases to build a local database of linked corpora and papers.
@@ -382,10 +393,12 @@ class Ceifns_LiteratureDb(BaseModel):
     # does this collection already exist?  
     corpus_id = str(corpus_id)
     all_existing_query = self.session.query(SKC).filter(SKC.id==corpus_id)
+    
+    corpus = None
     for c in all_existing_query.all():
-      return c
-        
-    corpus = ScientificKnowledgeCollection(id=corpus_id,
+      corpus = c
+    if corpus is None:      
+      corpus = ScientificKnowledgeCollection(id=corpus_id,
                                            type='skem:ScientificKnowledgeCollection',
                                            name=corpus_name,
                                            has_members=[])

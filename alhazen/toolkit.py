@@ -125,11 +125,11 @@ class AlhazenToolkit(BaseModel):
             check_expression_tool
         ]
 
-        trial_run_tool_description = (
-            "This tool executes my planning chain for a given user instruction and reports back on what I plan do."
-        )
-        trial_run_tool = IntrospectionTool(description=trial_run_tool_description)
-        tool_list.append(trial_run_tool)
+        #trial_run_tool_description = (
+        #    "This tool executes my planning chain for a given user instruction and reports back on what I plan do."
+        #)
+        #trial_run_tool = IntrospectionTool(description=trial_run_tool_description)
+        #tool_list.append(trial_run_tool)
 
         return tool_list
     

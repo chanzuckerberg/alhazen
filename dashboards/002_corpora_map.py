@@ -21,7 +21,6 @@ def _(mo):
 
 @app.cell
 def _():
-    from alhazen.apps.chat import  AlhazenAgentChatBot
     from alhazen.core import get_langchain_chatmodel, MODEL_TYPE
     from alhazen.schema_sqla import InformationResource, \
             ScientificKnowledgeCollection, \
@@ -69,7 +68,6 @@ def _():
     from urllib.error import URLError, HTTPError
     import yaml
     return (
-        AlhazenAgentChatBot,
         Ceifns_LiteratureDb,
         CharacterTextSplitter,
         ChatOllama,
@@ -199,13 +197,25 @@ def __(create_engine, mo, text):
     dbn = [row[0] for row in result if row[0] != 'postgres']
     connection.close()
 
-    dropdown = mo.ui.dropdown(
-      options={n:n for n in dbn},
-      value=dbn[0],
-      label='Available Databases: '
-    )
-    dropdown
-    return connection, dbn, dropdown, engine, result
+    ah_dbs = []
+    for db in dbn:
+        engine = create_engine('postgresql+psycopg2:///'+db)
+        try: 
+            connection = engine.connect()
+            result = connection.execute(text('SELECT * FROM "ScientificKnowledgeCollection" LIMIT 1;'))
+        except Exception as e:
+            continue
+        connection.close()    
+        ah_dbs.append(db)
+
+    if len(ah_dbs)>0:
+        dropdown = mo.ui.dropdown(
+            options={n:n for n in ah_dbs},
+            value=ah_dbs[0],
+            label='Available Databases: '
+        )
+        mo.output.replace(dropdown)
+    return ah_dbs, connection, db, dbn, dropdown, engine, result
 
 
 @app.cell
@@ -245,63 +255,49 @@ def _(mo):
 
 
 @app.cell
-def _(SKC, SKC_HM, SKE, SKE_HR, SKI, ldb, mo, or_, pd):
-    q = ldb.session.query(SKC.id, SKC.name, SKE.id, SKI.type) \
-            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-            .filter(SKC_HM.has_members_id==SKE.id) \
-            .filter(SKE.id==SKE_HR.ScientificKnowledgeExpression_id) \
-            .filter(SKE_HR.has_representation_id==SKI.id) \
-            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', SKE.type=='ScientificPrimaryResearchPreprint'))
-    df1 = pd.DataFrame(q.all(), columns=['ID', 'collection', 'doi', 'type'])    
-    df2 = df1.pivot_table(index=['ID', 'collection'], 
+def _(SKC, SKC_HM, SKE, SKE_HR, SKI, ldb, mo, pd):
+    try:
+        q = ldb.session.query(SKC.id, SKC.name, SKE.id, SKI.type) \
+                .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+                .filter(SKC_HM.has_members_id==SKE.id) \
+                .filter(SKE.id==SKE_HR.ScientificKnowledgeExpression_id) \
+                .filter(SKE_HR.has_representation_id==SKI.id) 
+        df1 = pd.DataFrame(q.all(), columns=['ID', 'collection', 'doi', 'type'])
+        #ids = []
+        #for i, row in df1.iterrows():
+        #    try: 
+        #        ids.append(row.ID.zfill(5))
+        #    except: 
+        #        ids.append(row.ID)
+        #df1['ID'] = ids
+        df2 = df1.pivot_table(index=['ID', 'collection'], 
                           columns='type', values='doi', 
                           aggfunc=lambda x: len(x.unique()))
-    collection_counts = mo.ui.table(df2, selection='single')
-    collection_counts
+        collection_counts = mo.ui.table(df2, selection='single')
+        mo.output.replace(collection_counts)
+    except:
+        print("Database not instantiated")
     return collection_counts, df1, df2, q
 
 
 @app.cell
 def __(SKC, SKC_HM, SKE, collection_counts, ldb, mo, or_, pd):
-    c_id = -1
     papers_table = None
-    if len(collection_counts.value) > 0:
-        c_id = collection_counts.value.reset_index().iloc[0]['ID']
-        q2 = ldb.session.query(SKE.id, SKE.content) \
-                .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                .filter(SKC_HM.has_members_id==SKE.id) \
-                .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                            SKE.type=='ScientificPrimaryResearchPreprint')) \
-                .filter(SKC.id==c_id) 
-        papers_df = pd.DataFrame(q2.all(), columns=['DOI', 'Reference'])
-        papers_table = mo.ui.table(papers_df, selection='single')
-    papers_table
+    if collection_counts:
+        c_id = -1
+        papers_table = None
+        if len(collection_counts.value) > 0:
+            c_id = collection_counts.value.reset_index().iloc[0]['ID']
+            q2 = ldb.session.query(SKE.id, SKE.content) \
+                    .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+                    .filter(SKC_HM.has_members_id==SKE.id) \
+                    .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
+                                SKE.type=='ScientificPrimaryResearchPreprint')) \
+                    .filter(SKC.id==c_id) 
+            papers_df = pd.DataFrame(q2.all(), columns=['DOI', 'Reference'])
+            papers_table = mo.ui.table(papers_df, selection='single')
+            mo.output.replace(papers_table)
     return c_id, papers_df, papers_table, q2
-
-
-@app.cell
-def __(N, NIA, json, ldb, mo, papers_table, pd):
-    p_id = -1
-    report_df = None
-    if papers_table is not None and len(papers_table.value) > 0:
-        p_id = papers_table.value.iloc[0]['DOI']
-        l = []
-        q3 = ldb.session.query(N) \
-            .filter(N.id == NIA.Note_id) \
-            .filter(NIA.is_about_id == p_id) \
-            .filter(N.type == 'MetadataExtractionNote__cryoet') 
-        for n in q3.all():
-            tup = json.loads(n.content)
-            tup.pop('original_text')
-            tup.pop('question')
-            deets = n.name.split('__')
-            tup['variable'] = deets[-1]  
-            l.append(tup)
-        report_df = pd.DataFrame(l)
-        report_df = report_df[['variable', 'answer', 'gold_standard']]
-        report_table = mo.ui.table(report_df)
-    report_table
-    return deets, l, n, p_id, q3, report_df, report_table, tup
 
 
 if __name__ == "__main__":

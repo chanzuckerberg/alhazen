@@ -3,12 +3,12 @@
 # %% auto 0
 __all__ = ['PAGE_SIZE', 'TIME_THRESHOLD', 'NCBI_Database_Type', 'ESearchQuery', 'EFetchQuery', 'download_file',
            'get_nxml_from_pubmed_doi', 'get_pdf_from_pubmed_doi', 'EuroPMCQuery',
-           'read_authors_and_institutions_from_openalex', 'download_full_text_paper_for_doi']
+           'read_authors_and_institutions_from_openalex', 'load_paper_from_openalex', 'read_references_from_openalex',
+           'download_full_text_paper_for_doi']
 
 # %% ../../nbs/36_search_engine_eutils.ipynb 4
 import alhazen.schema_python as linkml_py
-from ..schema_sqla import ScientificKnowledgeExpression, \
-        ScientificKnowledgeItem, ScientificKnowledgeFragment
+from ..schema_sqla import *
 from .web_robot import retrieve_full_text_links_from_biorxiv, \
                 retrieve_pdf_from_doidotorg, \
                 get_html_from_pmc_doi
@@ -19,7 +19,7 @@ import json
 import os
 import pandas as pd
 from pathlib import Path
-from pyalex import Works, Authors, Sources, Institutions, Concepts, Publishers, Funders
+from pyalex import Works, Authors, Sources, Institutions, Concepts, Publishers, Funders, config
 import re
 import requests
 from time import time,sleep
@@ -586,6 +586,144 @@ def read_authors_and_institutions_from_openalex(doi_list):
         w = Works()[doi]        
         oa_works.append(w)
     return oa_works
+
+# Map the OpenAlex data to the Alhazen schema
+def load_paper_from_openalex(doi_or_oa_id):
+
+    if doi_or_oa_id.startswith('https://doi.org/'):
+        doi_or_oa_id = re.sub('https://doi.org/', 'doi:', doi_or_oa_id)
+    elif doi_or_oa_id.startswith('doi:') is False:
+        doi_or_oa_id = 'doi:'+ doi_or_oa_id
+    elif doi_or_oa_id.startswith('https://openalex.org/'):
+        doi_or_oa_id = re.sub('https://openalex.org/', '', doi_or_oa_id)
+
+    w = Works()[doi_or_oa_id]
+
+    if w is None:
+        return None
+
+    doi = re.sub('https://doi.org/', 'doi:', w.get('doi'))
+    
+    authors = [] 
+    orgs = set()
+
+    content = ''
+    first_author = None
+    last_author = None
+    middle_author = None
+
+    for aa in w['authorships']:
+        if aa.get('author_position') == 'first':
+            first_author = aa
+        elif aa.get('author_position') == 'last':
+            last_author = aa
+        elif aa.get('author_position') == 'middle':
+            middle_author = aa
+
+        a = aa.get('author', {})
+        a_id = a.get('id', '')
+        a_name = a.get('display_name', '')
+        orcid = a.get('orcid')
+        author_ice = Author(id=a_id, name=a_name, type='Author')
+        authors.append(author_ice)
+        if orcid:
+            author_ice.xref.append(orcid)
+
+        for inst in aa.get('institutions', []):
+            inst_id = inst.get('id', '')
+            inst_country = inst.get('country_code', '')
+            inst_name = inst.get('display_name', '')
+            ror = inst.get('ror')        
+            org_ice = Organization(id=inst_id, 
+                                    name=inst_name,
+                                    type='Organization',
+                                    country=[inst_country])
+            if ror:
+                org_ice.xref.append(ror)
+            author_ice.affiliations.append(org_ice)
+            orgs.add(org_ice)
+
+    # First author only    
+    if first_author and middle_author is None and last_author is None:
+        content = first_author.get('raw_author_name') + ' (' + str(w.get('publication_year')) + ') ' + w.get('title')
+    # First and second author only    
+    elif first_author and middle_author is None and last_author:
+        content = first_author.get('raw_author_name')+' and '+last_author.get('raw_author_name')+' ('+str(w.get('publication_year'))+') '+w.get('title')
+    # 'et al.'    
+    else:
+        content = first_author.get('raw_author_name')+' et al. ('+str(w.get('publication_year'))+') '+w.get('title')
+    
+    xrefs = set()
+    oa = w.get('ids',{}).get('openalex')
+    if oa:
+        xrefs.add(oa)
+    doi2 = w.get('ids',{}).get('doi')
+    if doi2:
+        xrefs.add(doi2)
+    pmid = w.get('ids',{}).get('pmid')
+    if pmid:
+        xrefs.add(pmid)        
+    pmcid = w.get('ids',{}).get('pmcid')
+    if pmcid:
+        xrefs.add(pmcid)
+
+    title = w.get('title')
+    abstract = w['abstract']
+
+    # How to match the type of the paper to the Alhazen schema? 
+    e = ScientificKnowledgeExpression(id=doi,    
+                                 xref=list(xrefs), 
+                                 publication_date=w.get('publication_date'), 
+                                 content=content,
+                                 type='ScientificPrimaryResearchArticle')
+    
+    for a in authors:
+        e.has_authors.append(a)
+        a.is_author_of.append(e)
+
+    item = ScientificKnowledgeItem(
+            id=uuid.uuid4().hex[0:10], 
+            content=content, 
+            type='CitationRecord')
+    e.has_representation.append(item)
+    item.representation_of = e.id
+    frg1 = ScientificKnowledgeFragment( 
+        id=item.id+'.0',
+        content=title,
+        offset=0,
+        length=len(title),
+        type='title')
+    frg1.part_of = item
+    frg2 = ScientificKnowledgeFragment( 
+        id=item.id+'.1',
+        content=abstract,
+        offset=len(title)+1,
+        length=len(abstract),
+        type='abstract')
+    frg2.part_of = item
+    item.has_part = [frg1, frg2]
+
+    return e
+
+# Read a papers references fromv OpenAlex
+def read_references_from_openalex(doi_or_oa_id):
+
+    if doi_or_oa_id.startswith('https://doi.org/'):
+        doi_or_oa_id = re.sub('https://doi.org/', 'doi:', doi_or_oa_id)
+    elif doi_or_oa_id.startswith('doi:') is False:
+        doi_or_oa_id = 'doi:'+ doi_or_oa_id
+    elif doi_or_oa_id.startswith('https://openalex.org/'):
+        doi_or_oa_id = re.sub('https://openalex.org/', '', doi_or_oa_id)
+
+    w = Works()[doi_or_oa_id]
+
+    if w is None:
+        return None
+    
+    referenced_works = w.get('referenced_works')
+
+    return referenced_works
+
 
 # %% ../../nbs/36_search_engine_eutils.ipynb 13
 def download_full_text_paper_for_doi(doi, path, headless=True): 
