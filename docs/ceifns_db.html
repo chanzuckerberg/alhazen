@@ -152,11 +152,8 @@ ul.task-list li input[type="checkbox"] {
   </div>
 </li>
           <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./apps.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Apps</span></a>
-  </div>
-</li>
+ <span class="menu-text">01_apps.ipynb</span>
+  </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./toolkit.html" class="sidebar-item-text sidebar-link">
@@ -217,7 +214,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#restore_ceifns_database" id="toc-restore_ceifns_database" class="nav-link active" data-scroll-target="#restore_ceifns_database">restore_ceifns_database</a></li>
+  <li><a href="#list_databases" id="toc-list_databases" class="nav-link active" data-scroll-target="#list_databases">list_databases</a></li>
+  <li><a href="#restore_ceifns_database" id="toc-restore_ceifns_database" class="nav-link" data-scroll-target="#restore_ceifns_database">restore_ceifns_database</a></li>
   <li><a href="#backup_ceifns_database" id="toc-backup_ceifns_database" class="nav-link" data-scroll-target="#backup_ceifns_database">backup_ceifns_database</a></li>
   <li><a href="#drop_ceifns_database" id="toc-drop_ceifns_database" class="nav-link" data-scroll-target="#drop_ceifns_database">drop_ceifns_database</a></li>
   <li><a href="#create_ceifns_database" id="toc-create_ceifns_database" class="nav-link" data-scroll-target="#create_ceifns_database">create_ceifns_database</a></li>
@@ -279,7 +277,16 @@ ul.task-list li input[type="checkbox"] {
 <p>Our definitions are inspired by <a href="http://www.sparontologies.net/ontologies/fabio">FABIO</a>, but only differentiate between ‘<em>expression</em>’ (as the reference to an scientific underlying work product, e.g., a paper or database record) and ‘<em>item</em>’ (as the actual data that delivers on that expression). The system is coded in LinkML and generated as a Postgresql database and a SQLAlchemy ORM.</p>
 </blockquote>
 <hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L257" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="list_databases" class="level3">
+<h3 class="anchored" data-anchor-id="list_databases">list_databases</h3>
+<blockquote class="blockquote">
+<pre><code> list_databases ()</code></pre>
+</blockquote>
+<p>List all databases in the postgres server</p>
+<hr>
 <p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L220" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
 <section id="restore_ceifns_database" class="level3">
 <h3 class="anchored" data-anchor-id="restore_ceifns_database">restore_ceifns_database</h3>
 <blockquote class="blockquote">
@@ -312,7 +319,7 @@ ul.task-list li input[type="checkbox"] {
 <pre><code> create_ceifns_database (db_name)</code></pre>
 </blockquote>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L258" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L269" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="ceifns_literaturedb" class="level3">
 <h3 class="anchored" data-anchor-id="ceifns_literaturedb">Ceifns_LiteratureDb</h3>
@@ -339,7 +346,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Permits user to download a local copy of full text papers in NXML(JATS), PDF, and HTML format.</li>
 </ul>
 <hr>
-<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L1188" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/utils/ceifns_db.py#L1199" target="_blank" style="float:right; font-size:smaller">source</a></p>
 </section>
 <section id="read_information_content_entity_iri" class="level3">
 <h3 class="anchored" data-anchor-id="read_information_content_entity_iri">read_information_content_entity_iri</h3>

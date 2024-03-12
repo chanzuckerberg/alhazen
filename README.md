@@ -105,8 +105,9 @@ We provide a number of low-level interfaces to work with Alhazen.
 
 We have developed numerous worked examples of corpora that can generated
 by running queries on public sources and then processing the results
-with LLM-enabled workflows. See the `nbs/cookbook` subdirectory for
-examples.
+with LLM-enabled workflows. See the
+[`nbs/cookbook`](https://github.com/chanzuckerberg/alhazen/tree/main/nbs/cookbook)
+subdirectory for examples.
 
 ### Marimo Dashboards
 
@@ -120,7 +121,7 @@ current machine, run
 
     marimo run dashboards/000_corpus_browser.py 
 
-### Command Line Interface
+### Applications
 
 We use simple python modules to run applications. To generate a simple
 gradio chatbot to interact with the \`\` library to create a modular

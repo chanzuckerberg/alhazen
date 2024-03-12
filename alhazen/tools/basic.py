@@ -3,10 +3,11 @@
 # %% auto 0
 __all__ = ['skc', 'skc_hm', 'ske', 'ske_ha', 'ske_hr', 'ski', 'ski_hp', 'skf', 'aut_iao', 'aut', 'aut_aff', 'org',
            'AlhazenToolMixin', 'IntrospectionToolMixin', 'IntrospectionToolSchema', 'IntrospectionTool',
-           'AddCollectionFromEPMCToolSchema', 'AddCollectionFromEPMCTool', 'AddAuthorsToCollectionToolSchema',
-           'AddAuthorsToCollectionTool', 'CheckExpressionToolSchema', 'CheckExpressionTool',
-           'DescribeCollectionCompositionToolSchema', 'DescribeCollectionCompositionTool', 'DeleteCollectionToolSchema',
-           'DeleteCollectionTool', 'RetrieveFullTextToolForACollectionSchema', 'RetrieveFullTextToolForACollection',
+           'AddCollectionFromEPMCToolSchema', 'AddCollectionFromEPMCTool', 'ListCollectionsToolSchema',
+           'ListCollectionsTool', 'AddAuthorsToCollectionToolSchema', 'AddAuthorsToCollectionTool',
+           'CheckExpressionToolSchema', 'CheckExpressionTool', 'DescribeCollectionCompositionToolSchema',
+           'DescribeCollectionCompositionTool', 'DeleteCollectionToolSchema', 'DeleteCollectionTool',
+           'RetrieveFullTextToolForACollectionSchema', 'RetrieveFullTextToolForACollection',
            'RetrieveFullTextToolSchema', 'RetrieveFullTextTool']
 
 # %% ../../nbs/21_basic_tools.ipynb 3
@@ -202,7 +203,7 @@ class AddCollectionFromEPMCTool(AlhazenToolMixin, BaseTool):
         finally:  
             self.db.session.close()
 
-        return {'report': 'We added a collection to the database called `{}` containing {} papers from this query: `{}`.'.format(name, n_papers_added, query)}
+        return {'response': 'We added a collection to the database called `{}` containing {} papers from this query: `{}`.'.format(name, n_papers_added, query)}
 
     async def _arun(
         self,
@@ -214,6 +215,43 @@ class AddCollectionFromEPMCTool(AlhazenToolMixin, BaseTool):
         raise NotImplementedError("add_collection_from_epmc_query does not support async")
 
 # %% ../../nbs/21_basic_tools.ipynb 8
+class ListCollectionsToolSchema(BaseModel):
+    name_filter: str = Field(description="A search string to filter the names of collections by.")
+
+class ListCollectionsTool(AlhazenToolMixin, BaseTool): 
+    name = "list_collections"
+    description = "This tool lists available collections in the database."
+    args_schema: Type[ListCollectionsToolSchema] = ListCollectionsToolSchema
+    return_direct:bool = True
+
+    def _run(
+        self,
+        search_string: str = '', 
+        run_manager: Optional[CallbackManagerForToolRun] = None,
+    ) -> str:
+        
+        try: 
+            if search_string != '':
+                collections = self.db.session.query(skc) \
+                    .filter(skc.name.like('%'+search_string+'%')).all()
+            else:
+                collections = self.db.session.query(skc).all()
+
+        except Exception as e:
+            return {'response': 'Error, cannot list available collections.', 'data': []}
+
+        return {'response': 'Tool listed available {} collections.'.format(len(collections)),
+                'data': collections}
+
+    async def _arun(
+        self,
+        search_string: str = '', 
+        run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
+    ) -> str:
+        """Use the tool asynchronously."""
+        raise NotImplementedError("delete_collection does not support async")
+
+# %% ../../nbs/21_basic_tools.ipynb 9
 class AddAuthorsToCollectionToolSchema(BaseModel):
     id: str = Field(description="A code that serves as the id of the collection we will add papers to.")
 
@@ -310,7 +348,7 @@ class AddAuthorsToCollectionTool(AlhazenToolMixin, BaseTool):
         finally:  
             self.db.session.close()
 
-        return {'report': 'We added authors and institutions to the collection with the id=`{}`.'.format(id)}
+        return {'response': 'We added authors and institutions to the collection with the id=`{}`.'.format(id)}
 
     async def _arun(
         self,
@@ -321,7 +359,7 @@ class AddAuthorsToCollectionTool(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("add_collection_from_epmc_query does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 9
+# %% ../../nbs/21_basic_tools.ipynb 10
 class CheckExpressionToolSchema(BaseModel):
     query: str = Field(description="a search query for the paper in the database")
     
@@ -355,9 +393,9 @@ class CheckExpressionTool(AlhazenToolMixin, BaseTool):
             self.db.session.close()
 
         if len(df) == 0:
-            return {'report': 'Could not find a match to query `{}`'.format(query)}
+            return {'response': 'Could not find a match to query `{}`'.format(query)}
         elif len(df) > 1:
-            return {'report': 'Found more than one match to query `{}`'.format(query)}
+            return {'response': 'Found more than one match to query `{}`'.format(query)}
             
         p_id = None
         ft_available = False
@@ -366,7 +404,7 @@ class CheckExpressionTool(AlhazenToolMixin, BaseTool):
                 p_id = row.e_id
                 ft_available = True
 
-        return {'report': 'Found one match to query `{}` with paper_id={}, full_text_available={}'.format(query, p_id, ft_available)}
+        return {'response': 'Found one match to query `{}` with paper_id={}, full_text_available={}'.format(query, p_id, ft_available)}
         
     async def _arun(
         self,
@@ -377,7 +415,7 @@ class CheckExpressionTool(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("describe_expression_in_local_database does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 10
+# %% ../../nbs/21_basic_tools.ipynb 11
 class DescribeCollectionCompositionToolSchema(BaseModel):
     id: str = Field(description="should be the id of the collection we wish to describe")
     
@@ -398,7 +436,7 @@ class DescribeCollectionCompositionTool(AlhazenToolMixin, BaseTool):
                     .filter(skc.id == str(id)) 
             df = pd.DataFrame(collection_q.all(), columns=['collection_name'])
             if len(df) == 0:
-                return {'report': 'The collection with the id `{}` does not exist.'.format(id)}
+                return {'response': 'The collection with the id `{}` does not exist.'.format(id)}
 
             name = collection_q.first()[0]
 
@@ -428,7 +466,7 @@ class DescribeCollectionCompositionTool(AlhazenToolMixin, BaseTool):
         finally:  
             self.db.session.close()
 
-        return {'report': 'The collection with the id `{}` is called `{}`. It contains {} papers; including {} PDF and {} JATS full text papers.'.format(id, name, expression_count, pdf_ft_count, jats_ft_count)}
+        return {'response': 'The collection with the id `{}` is called `{}`. It contains {} papers; including {} PDF and {} JATS full text papers.'.format(id, name, expression_count, pdf_ft_count, jats_ft_count)}
 
     async def _arun(
         self,
@@ -439,7 +477,7 @@ class DescribeCollectionCompositionTool(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("add_collection_from_epmc_query does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 11
+# %% ../../nbs/21_basic_tools.ipynb 12
 class DeleteCollectionToolSchema(BaseModel):
     collection_id: str = Field(description="should be the collection_id of the collection we will add papers to")
 
@@ -462,7 +500,7 @@ class DeleteCollectionTool(AlhazenToolMixin, BaseTool):
         finally:  
             self.db.session.close()
 
-        return {'report': 'Successfully deleted a collection with collection_id:`{}`.'.format(collection_id)}
+        return {'response': 'Successfully deleted a collection with collection_id:`{}`.'.format(collection_id)}
 
     async def _arun(
         self,
@@ -473,7 +511,7 @@ class DeleteCollectionTool(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("delete_collection does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 12
+# %% ../../nbs/21_basic_tools.ipynb 13
 class RetrieveFullTextToolForACollectionSchema(BaseModel):
     collection_id: str = Field(description="the identifier of the collection containing papers to be retrieved")
 
@@ -536,7 +574,7 @@ class RetrieveFullTextToolForACollection(AlhazenToolMixin, BaseTool):
                     print(ex)
                     self.db.write_note_about_x(e, 'errored whilst adding full text for %s'%(e.id), ex, 'log', 'NoteAboutExpression', commit_this=True)
             
-        return {'report': 'I retrieved full text papers for the collection named `{}` (id=`{}).'.format(c.name, c.id)}
+        return {'response': 'I retrieved full text papers for the collection named `{}` (id=`{}).'.format(c.name, c.id)}
 
     async def _arun(
         self,
@@ -547,7 +585,7 @@ class RetrieveFullTextToolForACollection(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("retrieve_full_text_for_papers_in_collection does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 13
+# %% ../../nbs/21_basic_tools.ipynb 14
 class RetrieveFullTextToolSchema(BaseModel):
     paper_id: str = Field(description="the digitial objecty identifier (doi) of the paper being retrieved from external sources")
 
@@ -581,7 +619,7 @@ class RetrieveFullTextTool(AlhazenToolMixin, BaseTool):
         finally:  
             self.db.session.close()
 
-        return {'report': 'The full text paper with doi:`{}` is available in the database.'.format(paper_id)}
+        return {'response': 'The full text paper with doi:`{}` is available in the database.'.format(paper_id)}
 
     async def _arun(
         self,
