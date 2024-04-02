@@ -2,12 +2,13 @@
 
 # %% auto 0
 __all__ = ['IR', 'SKC', 'SKC_HM', 'SKE', 'SKE_XREF', 'SKE_IRI', 'SKE_HR', 'SKE_MO', 'SKI', 'SKI_HP', 'SKF', 'N', 'NIA', 'SKC_HN',
-           'SKE_HN', 'SKI_HN', 'SKF_HN', 'create_ceifns_database', 'drop_ceifns_database', 'backup_ceifns_database',
-           'restore_ceifns_database', 'list_databases', 'Ceifns_LiteratureDb', 'read_information_content_entity_iri']
+           'SKE_HN', 'SKI_HN', 'SKF_HN', 'N_HN', 'create_ceifns_database', 'drop_ceifns_database',
+           'backup_ceifns_database', 'restore_ceifns_database', 'list_databases', 'Ceifns_LiteratureDb',
+           'read_information_content_entity_iri']
 
 # %% ../../nbs/35_ceifns_db.ipynb 5
 from .airtableUtils import AirtableUtils
-from .searchEngineUtils import ESearchQuery, EuroPMCQuery
+from .searchEngineUtils import ESearchQuery, EuroPMCQuery, load_paper_from_openalex, read_references_from_openalex 
 from .pdf_research_article_text_extractor import LAPDFBlockLoader, HuridocsPDFLoader
 from .html_research_article_text_extractor import TrafilaturaSectionLoader
 
@@ -34,6 +35,7 @@ from langchain.vectorstores.pgvector import PGVector
 import local_resources.linkml as linkml
 import local_resources.data_files.world_bank_wdi as wdi
 
+
 import nltk.data
 import os
 
@@ -42,6 +44,7 @@ from pathlib import Path
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
+import random
 import re
 import requests
 from sqlalchemy import create_engine, exists, Engine, text, func, or_, desc
@@ -76,9 +79,11 @@ SKC_HN = aliased(ScientificKnowledgeCollectionHasNotes)
 SKE_HN = aliased(ScientificKnowledgeExpressionHasNotes)
 SKI_HN = aliased(ScientificKnowledgeItemHasNotes)
 SKF_HN = aliased(ScientificKnowledgeFragmentHasNotes)
+N_HN = aliased(NoteHasNotes)
 
 # %% ../../nbs/35_ceifns_db.ipynb 7
 def create_ceifns_database(db_name):
+  """Use this function to create a CEIFNS database within the local postgres server."""
   conn = psycopg2.connect(
     database="postgres",
       user='postgres',
@@ -152,7 +157,7 @@ def create_ceifns_database(db_name):
   conn.close()
 
 def drop_ceifns_database(db_name, backupFirst=True):
-
+  """Use this function to delete a CEIFNS database from the local postgres server. Set the backupFirst flag to True to backup the database before deletion."""
   if backupFirst:
     loc = os.environ['LOCAL_FILE_PATH']
     current_date_time = datetime.now()
@@ -177,7 +182,7 @@ def drop_ceifns_database(db_name, backupFirst=True):
 # ADAPTED FROM https://gist.github.com/valferon/4d6ebfa8a7f3d4e84085183609d10f14
 def backup_ceifns_database(db_name, dest_file, verbose=False):
   """
-  Backup postgres db to a file.
+  Backup postgres db to a local file. Note that this
   """
   "postgresql://localhost:5432/"+db_name
 
@@ -448,6 +453,126 @@ class Ceifns_LiteratureDb(BaseModel):
         check_table[t] = (is_ok, c)
     return check_table
 
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Add corpus based on a list of dois using OpenAlex
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  def add_collection_from_dois_using_openalex(self, corpus_id, corpus_name, dois, commit_this=True):
+    
+    # does this collection already exist?  
+    corpus_id = str(corpus_id)
+    all_existing_query = self.session.query(SKC).filter(SKC.id==corpus_id)
+    
+    corpus = None
+    for c in all_existing_query.all():
+      corpus = c
+    if corpus is None:      
+      corpus = ScientificKnowledgeCollection(id=corpus_id,
+                                           type='skem:ScientificKnowledgeCollection',
+                                           name=corpus_name,
+                                           has_members=[])
+    self.session.add(corpus)
+
+    papers_to_index = []
+    for doi in tqdm(dois):
+        p = load_paper_from_openalex(doi)
+        if p is None:
+          continue
+        p_id = str(p.id)
+        p_check = self.session.query(SKE) \
+            .filter(SKE.id==p_id).first()
+        if p_check is not None:
+          p = p_check
+
+        self.session.add(p)
+        corpus.has_members.append(p)
+        p.member_of.append(corpus)
+        for item in p.has_representation:
+            for f in item.has_part:
+                #f.content = '\n'.join(self.sent_detector.tokenize(f.content))
+                f.part_of = item.id
+                self.session.add(f)
+            item.represented_by = p.id
+            self.session.add(item)
+        papers_to_index.append(p)
+        self.session.flush()
+
+    self.embed_expression_list(papers_to_index)
+
+    if commit_this:
+      self.session.commit()
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Manipulating + Combining Collections
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  def rename_collection(self, collection_id, new_collection_name, commit_this=True):
+    """Renames a collection."""
+    
+    c = self.session.query(SKC).filter(SKC.id==collection_id).first()
+    if c is None:
+      raise Exception('Collection does not exist')
+    c.name = new_collection_name
+    if commit_this:
+      self.session.commit()
+    return c
+
+  def create_new_collection_from_intersection(self, collection_id, collection_name, c1_id, c2_id, commit_this=True):
+    """Creates a new collection based on the intersection of two existing collections."""
+    
+    c1 = self.session.query(SKC).filter(SKC.id==c1_id).first()
+    c2 = self.session.query(SKC).filter(SKC.id==c2_id).first()
+    
+    if c1 is None or c2 is None:
+      raise Exception('One or both of the collections do not exist')
+    
+    c1_items = set([m.id for m in c1.has_members])
+    c2_items = set([m.id for m in c2.has_members])
+    
+    intersection = c1_items.intersection(c2_items)
+    
+    new_collection = ScientificKnowledgeCollection(id=collection_id,
+                                                   type='skem:ScientificKnowledgeCollection',
+                                                   name=collection_name,
+                                                   has_members=[])
+    self.session.add(new_collection)
+    
+    for i in intersection:
+      item = self.session.query(SKE).filter(SKE.id==i).first()
+      new_collection.has_members.append(item)
+      item.member_of.append(new_collection)
+    
+    if commit_this:
+      self.session.commit()
+
+    return new_collection
+
+  def create_new_collection_from_sample(self, collection_id, collection_name, c_id, count, subtypes=[], commit_this=True):
+    """Creates a new collection based on the intersection of two existing collections."""
+    
+    q = self.session.query(SKE) \
+      .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+      .filter(SKC_HM.has_members_id==SKE.id) \
+      .filter(SKC.id==c_id)
+    
+    if len(subtypes)>0:
+      q = q.filter(SKE.type.in_(subtypes))
+
+    items = q.all()
+    sample = random.sample(items, count)
+        
+    new_collection = ScientificKnowledgeCollection(id=collection_id,
+                                                   type='skem:ScientificKnowledgeCollection',
+                                                   name=collection_name,
+                                                   has_members=[])
+    self.session.add(new_collection)
+    
+    for e in sample:
+      new_collection.has_members.append(e)
+      e.member_of.append(new_collection)
+    
+    if commit_this:
+      self.session.commit()
+
+    return new_collection
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Deleting Collections, Expressions, Items, and Fragments.
@@ -683,6 +808,12 @@ class Ceifns_LiteratureDb(BaseModel):
         self.session.delete(cp)
         self.session.flush()
 
+      q6 = self.session.query(N_HN) \
+          .filter(N_HN.has_notes_id==note_id) 
+      for cp in q6.all():
+        self.session.delete(cp)
+        self.session.flush()
+
       q6 = self.session.query(Note) \
         .filter(Note.id==note_id)
       for nia in q6.all():
@@ -729,15 +860,29 @@ class Ceifns_LiteratureDb(BaseModel):
     nxml_file_path = base_file_path+doi+'.nxml'
     pdf_file_path = base_file_path+doi+'.pdf'
     html_file_path = base_file_path+doi+'.html'
-    
+
+    self.add_full_text_for_expression_nxml(e, nxml_file_path)
+    self.add_full_text_for_expression_pdf(e, pdf_file_path)
+    self.add_full_text_for_expression_html(e, html_file_path)
+    self.session.commit() 
+
+
+  def add_full_text_for_expression_nxml(self, e, nxml_file_path, update_existing=False):
+    """Adds Full Text Item data to expression if *.nxml full text is already downloaded in the `{loc}/ft/{doi}` directory."""
+
+    doi = re.sub('doi:','',e.id)
+
     q = self.session.query(SKI) \
         .filter(SKE_HR.ScientificKnowledgeExpression_id == e.id) \
         .filter(SKE_HR.has_representation_id == SKI.id) \
-        .filter(or_(SKI.type == 'JATSFullText', 
-                    SKI.type == 'PDFFullText',  
-                    SKI.type == 'HTMLFullText'))
-    for e2 in q.all():
-      return
+        .filter(or_(SKI.type == 'JATSFullText'))
+    if update_existing is False:
+      for i in q.all():
+        return
+    else:
+      for i in q.all():
+        self.delete_item(i.id, commit_this=False)
+        self.session.commit()
 
     if os.path.exists(nxml_file_path):
       with open(nxml_file_path, 'r') as f:
@@ -760,9 +905,26 @@ class Ceifns_LiteratureDb(BaseModel):
         self.session.add(ski)
         self.session.flush()
         self.add_sections_as_fragments_from_nxmldoc(ski, d)
+        self.session.commit()
+      
+  def add_full_text_for_expression_pdf(self, e, pdf_file_path, update_existing=False):
+    """Adds Full Text Item data to expression if *.pdf full text is already downloaded in the `{loc}/ft/{doi}` directory."""
 
-    elif os.path.exists(pdf_file_path):
+    doi = re.sub('doi:','',e.id)
 
+    q = self.session.query(SKI) \
+        .filter(SKE_HR.ScientificKnowledgeExpression_id == e.id) \
+        .filter(SKE_HR.has_representation_id == SKI.id) \
+        .filter(or_(SKI.type == 'PDFFullText'))
+    if update_existing is False:
+      for i in q.all():
+        return
+    else:
+      for i in q.all():
+        self.delete_item(i.id, commit_this=False)
+        self.session.commit()
+
+    if os.path.exists(pdf_file_path):
       loader = HuridocsPDFLoader(pdf_file_path)
       #loader = LAPDFBlockLoader(pdf_file_path)
       docs = loader.load(curi_id='doi:'+doi)
@@ -798,9 +960,25 @@ class Ceifns_LiteratureDb(BaseModel):
         ski.has_part.append(skf)
         skf.part_of = ski.id
         self.session.flush()
-    
-    elif os.path.exists(html_file_path):
-      
+  
+  def add_full_text_for_expression_html(self, e, html_file_path, update_existing=False):
+    """Adds Full Text Item data to expression if *.html full text is already downloaded in the `{loc}/ft/{doi}` directory."""
+
+    doi = re.sub('doi:','',e.id)
+
+    q = self.session.query(SKI) \
+        .filter(SKE_HR.ScientificKnowledgeExpression_id == e.id) \
+        .filter(SKE_HR.has_representation_id == SKI.id) \
+        .filter(or_(SKI.type == 'HTMLFullText'))
+    if update_existing is False:
+      for i in q.all():
+        return
+    else:
+      for i in q.all():
+        self.delete_item(i.id, commit_this=False)
+        self.session.commit()
+
+    if os.path.exists(html_file_path):
       loader = TrafilaturaSectionLoader(html_file_path)
       #loader = LAPDFBlockLoader(pdf_file_path)
       try: 
@@ -831,7 +1009,7 @@ class Ceifns_LiteratureDb(BaseModel):
         skfs.append(skf)
       ski = ScientificKnowledgeItem(id=ski_id, 
                                     content=doc_text,
-                                    xref=['file:'+pdf_file_path],
+                                    xref=['file:'+html_file_path],
                                     type=ski_type,)
       e.has_representation.append(ski)
       self.session.add(ski)
@@ -940,6 +1118,12 @@ class Ceifns_LiteratureDb(BaseModel):
         except Exception as ex:
           html_readable = False
 
+      prior_attempts = False
+      for n in self.read_notes_about_x(e):
+        if 'download' in n.name:
+          prior_attempts = True
+          break
+
       report = {'doi': doi, 
                 'nxml_item_present': nxml_item_present,
                 'nxml_present': nxml_present,
@@ -948,7 +1132,8 @@ class Ceifns_LiteratureDb(BaseModel):
                 'pdf_present': pdf_present,
                 'pdf_readable': pdf_readable,
                 'html_present': html_present,
-                'html_readable': html_readable}
+                'html_readable': html_readable,
+                'prior_attempts': prior_attempts}
       
       return report
 
@@ -980,6 +1165,19 @@ class Ceifns_LiteratureDb(BaseModel):
         .filter(NIA.is_about_id == x.id)
     for n in q.all():
       yield(n)
+
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Quick reports
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  def report_collection_composition(self):
+    q = self.session.query(SKC.id, SKC.name, SKE.id, SKI.type) \
+            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+            .filter(SKC_HM.has_members_id==SKE.id) \
+            .filter(SKE.id==SKE_HR.ScientificKnowledgeExpression_id) \
+            .filter(SKE_HR.has_representation_id==SKI.id) 
+    df = pd.DataFrame(q.all(), columns=['id', 'collection name', 'doi', 'item type'])
+    piv_df = df.pivot_table(index=['id', 'collection name'], columns='item type', values='doi', aggfunc=lambda x: len(x.unique())).fillna(0)
+    return piv_df
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Query Collections, Expressions, Items, and Fragments

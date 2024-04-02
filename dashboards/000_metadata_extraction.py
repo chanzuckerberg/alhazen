@@ -417,6 +417,7 @@ def __(
 
 @app.cell
 def __(N, NIA, json, ldb, mo, papers_table, pd):
+
     p_id = -1
     report_df = None
     if papers_table is not None and len(papers_table.value) > 0:
@@ -428,17 +429,20 @@ def __(N, NIA, json, ldb, mo, papers_table, pd):
             .filter(N.type == 'MetadataExtractionNote__cryoet') 
         for n in q3.all():
             tup = json.loads(n.content)
-            tup.pop('original_text')
             tup.pop('question')
-            deets = n.name.split('__')
-            tup['variable'] = deets[-1]  
+            run_desc = json.loads(n.name)
+            tup['variable'] = run_desc.get('variable')
+            tup['run'] = n.creation_date
             l.append(tup)
+
         report_df = pd.DataFrame(l)
         if len(report_df)>0:
-            report_df = report_df[['variable', 'answer', 'gold_standard']]
-            report_table = mo.ui.table(report_df)
-            mo.output.replace(report_table)
-    return deets, l, n, p_id, q3, report_df, report_table, tup
+            #report_df = report_df[['variable', 'answer', 'gold_standard', 'run']]
+            #report_table = mo.ui.table(report_df)
+            
+            with pd.option_context('display.max_rows', None,):
+                mo.output.replace(report_df)
+    return l, n, p_id, q3, report_df, run_desc, tup
 
 
 if __name__ == "__main__":

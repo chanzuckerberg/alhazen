@@ -1,0 +1,11 @@
+---
+order: 1
+title: Question Answering
+listing:
+  fields: [title, description]
+  type: table
+  sort-ui: false
+  filter-ui: false
+---
+
+Click through to any of these notebooks to run tools over digital libraries that permit question answering over corpora of documents. 

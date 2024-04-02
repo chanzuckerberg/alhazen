@@ -69,6 +69,9 @@ class PromptTemplateSpec:
     # The input variables that this instruction template requires
     input_variables: List[str] = dataclasses.field(default_factory=list)
 
+    # The output variables that this instruction template generates
+    output_variables: List[str] = dataclasses.field(default_factory=list)
+
     def generate_prompt_template(self) -> PromptTemplate:
         return PromptTemplate(
             input_variables=self.input_variables, 
@@ -113,6 +116,7 @@ class PromptTemplateRegistry:
         system = dict['system']
         instruction = dict['instruction']
         input_variables = dict['input_variables']
+        output_variables = dict.get('output_variables')
 
         self.register_instruction_template( PromptTemplateSpec(name, description, system, instruction, input_variables), override=override)
 

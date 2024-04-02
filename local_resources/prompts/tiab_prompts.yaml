@@ -79,7 +79,8 @@ technology_type method extraction 2:
     - name 
     - technology_type
 
-methods papers binary classifier:
+
+is_method_paper:
   description: Classifier to determine if a paper is a methods paper or not.
   system: Your job is to read the title and abstract of a scientific paper and perform the task described below.
   instruction: 
@@ -96,16 +97,73 @@ methods papers binary classifier:
       - the methods used by the scientists,
       - the results of the work, and
       - the conclusions of the work.
-    Third, using only the goal and method sentences, decide if the work is concerned with
+    Third, using only sentences that describe the papers' goals and conclusions , decide if the work is concerned with
     (A) developing new technology or methods or
-    (B) investigating how biological systems work. 
-    Be careful about this decision and only answer 'true' if you are confident that the main goal of the published work was to create or test a new technique or method.  
+    (B) investigating how biological systems work.
     If paper describes the development of a new method, technique or approach, record a true value in a variable called is_method_paper in the output. 
     If the goal of the work is understanding biological phenomena, record a false value in a variable called is_method_paper in the output. 
+    Be careful about this decision and only answer 'true' if you are confident that the main goal of the published work was to create or test a new technique or method.  
     Format your response as a JSON object with "is_method_paper" as the key.  
-    Briefly explain your reasoning for your decision in one or two sentences.
+    Briefly explain your reasoning for your decision in one or two sentences and include it in the JSON object with 'explanation' as the key.
   input_variables: 
     - title
     - abstract
   output_variables:
     - is_method_paper
+    - explanation
+        
+top_level_imaging_categories:
+  description: Classifier to determine what high level type of technology is being used, from a list of 16 candidates
+  system: Your job is to read the title and abstract of a scientific paper and perform the task described below.
+  instruction: >
+    The text of the title and the text of the abstract will be delimited with triple backticks.
+
+    Article 
+    title: '''{title}''' 
+    abstract: '''{abstract}'''
+
+    First, split the text of the title and abstract into separate sentences.
+    Second, classify each sentence as describing
+      - background information about the work,
+      - the goals of the paper,
+      - the methods used by the scientists,
+      - the results of the work, and
+      - the conclusions of the work.
+    Third, using only sentences that describe the context of the work, decide which broad category of imaging technology is primarily being used by the paper. 
+    Only pick one category from the following list of 16 candidates:
+    (A) Hierarchical phase-contrast tomography (also known as "HiP-CT" or "X-ray phase contrast tomography")
+    (B) Photoacoustic imaging (also known as "Photoacoustic microscopy", "Photoacoustic tomography", "Optoacoustic imaging")
+    (C) Near infrared imaging (also known as "Shortwave infrared", "NIR", "NIR-II", "SWIR", "IR imaging", “Mid-IR imaging”)
+    (D) Ultrasound
+    (E) Nonlinear microscopy (also known as Multiphoton microscopy, "Second harmonic generation", "SHG", "Two-photon excitation fluorescence", "TPEF")
+    (F) Super-resolution (also known as "Superresolution", "Localization microscopy", "STED", "SIM", "Structured illumination")
+    (G) Other fluorescence microscopy (also known as “one-photon fluorescence microscopy”, “light-sheet fluorescence microscopy”, “fluorescence lifetime”, “FLIM”)
+    (H) Cryo-electron tomography (also known as "Cryo-ET", “Cryo-EM”, “Cryo-electron microscopy”, “Cryo-CLEM”)
+    (I) Volume electron microscopy (also known as "VolumeEM", "Array tomography", or "Serial block face EM")
+    (J) Other electron microscopy (also known as "Transmission EM", "Scanning EM", "SEM", "TEM", “CLEM”)
+    (K) Magnetic resonance imaging (also known as “MRI”, “MR microscopy”)
+    (L) Mass-Spectrometry 
+    (M) Other imaging hardware technology (if the paper describes optical hardware for generating image data that does not fit into any of the above categories)
+    (N) Computational analysis systems (methods where there is very tight integration of the sensing system with computation. Examples include adaptive optics, wavefront shaping, solving inverse problems, or compressed sensing.)
+    (O) Molecular imaging probes, stains, antibodies (or any other way of manipulating biomedical samples to generate a visual signal).
+    (P) Other computational analysis (or any other computational methodology to analyze image data)
+    Record the letter of the category in the output variable called "imaging_technology_code".
+    Record the name of the category in the output variable called "imaging_technology_name".
+    Be careful about this decision and only include the paper in one of the subtypes if you are confident that the paper primarily uses that technology. 
+    Briefly explain your reasoning for your decision in one or two sentences and include it in the JSON object with 'explanation' as the key.
+    Use the following format for the output JSON object: 
+    ```json
+    {{
+      "imaging_technology_code":  A single classification code from this list: A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P
+      "imaging_technology_name": the name of the technology selected from the list above,
+      "explanation": "A brief explanation of your reasoning for your classification decision.
+    }}
+    ``` 
+    Remember, format your response as a JSON object and do not include any other response other than the JSON object.
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - imaging_technology_type
+    - imaging_technology_name 
+    - explanation

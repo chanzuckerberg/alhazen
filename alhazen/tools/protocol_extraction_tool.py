@@ -2,7 +2,8 @@
 
 # %% auto 0
 __all__ = ['skc', 'skc_hm', 'ske', 'ske_hr', 'ski', 'ski_hp', 'skf', 'n', 'skc_hn', 'ske_hn', 'ski_hn', 'skf_hn',
-           'ProtocolExtractionToolSchema', 'BaseProtocolExtractionTool', 'ProcotolExtractionTool']
+           'ProtocolExtractionToolSchema', 'BaseProtocolExtractionTool', 'ProcotolDiagramExtractionTool',
+           'ProcotolEntitiesExtractionTool', 'ProcotolProcessesExtractionTool']
 
 # %% ../../nbs/23_protocol_extraction_tool.ipynb 3
 from ..core import PromptTemplateRegistry
@@ -21,6 +22,7 @@ from langchain.pydantic_v1 import BaseModel, Field, root_validator
 from langchain.schema import get_buffer_string, StrOutputParser, OutputParserException, format_document
 from langchain.schema.runnable import RunnableParallel, RunnablePassthrough, RunnableLambda
 from langchain.tools import BaseTool, StructuredTool
+from langchain_core.output_parsers import JsonOutputParser
 from langchain.vectorstores.pgvector import PGVector
 
 import local_resources.prompt_elements as prompt_elements
@@ -55,8 +57,7 @@ skf_hn = aliased(ScientificKnowledgeFragmentHasNotes)
 # %% ../../nbs/23_protocol_extraction_tool.ipynb 5
 class ProtocolExtractionToolSchema(BaseModel):
     paper_id: str = Field(description="the doi of the paper being analyzed, must start with the string 'doi:'")
-    extraction_type: str = Field(description="This is the name of the type of extraction and must be one of the following strings: ['cryoet']")
-
+    
 class BaseProtocolExtractionTool(BaseTool, AlhazenToolMixin):
     '''Runs a specified protocol extraction pipeline over a research paper that has been loaded in the local literature database.'''
     name = 'protocol_workflow_extraction'
@@ -69,26 +70,27 @@ class BaseProtocolExtractionTool(BaseTool, AlhazenToolMixin):
         raise NotImplementedError('This method must be implemented by a subclass.')
 
 # %% ../../nbs/23_protocol_extraction_tool.ipynb 6
-class ProcotolExtractionTool(BaseProtocolExtractionTool):
-    '''Runs a specified metadata extraction pipeline over a research paper that has been loaded in the local literature database.'''
-    name = 'protocol_extraction_over_methods_section'
-    description = 'Runs a specified metadata extraction pipeline over a research paper that has been loaded in the local literature database.'
+class ProcotolDiagramExtractionTool(BaseProtocolExtractionTool):
+    '''Extracts a mermaid diagram of the protocol from a paper.'''
+    name = 'protocol_diagram_extraction'
+    description = 'Extracts a mermaid diagram of the protocol from a paper.'
 
-    def _run(self, paper_id, extraction_type):
-        '''Runs the metadata extraction pipeline over a specified paper.'''
+    def _run(self, paper_id):
+        '''Extracts a mermaid diagram of the protocol from a paper.'''
 
         if self.db.session is None:
             session_class = sessionmaker(bind=self.db.engine)
             self.db.session = session_class()
 
-        ske = self.db.session.query(ScientificKnowledgeExpression) \
-                .filter(ScientificKnowledgeExpression.id.like('%'+paper_id+'%')).first()    
-
         # Introspect the class name of the llm model for notes and logging
         llm_class_name = self.llm.__class__.__name__
         llm_model_desc = str(self.llm)
 
-        run_name = self.__class__.__name__ + '__' + re.sub(' ','_',extraction_type) + '__' + paper_id + '__' + llm_class_name + '__' + llm_model_desc
+        run_metadata = {
+            'tool': self.__class__.__name__,
+            'doi': paper_id,
+            'llm_class': llm_class_name,
+            'llm_desc': llm_model_desc}
 
         # 0. Use the first available full text item type
         item_types = set()
@@ -102,45 +104,221 @@ class ProcotolExtractionTool(BaseProtocolExtractionTool):
             break
         if item_type is None:
             return {'response': "Could not retrieve full text of the paper: %s."%(paper_id),
-                "data": {'list_of_answers': None, 'run_name': run_name} }
+                "data": {'mermaid_code': None, 'run': run_metadata} }
 
         # 1. Build LangChain elements
         pts = PromptTemplateRegistry()
         
         pts.load_prompts_from_yaml('protocol_extraction.yaml')
-        prompt_elements_yaml = files(prompt_elements).joinpath('metadata_extraction.yaml').read_text()
-        prompt_elements_dict = yaml.safe_load(prompt_elements_yaml).get(extraction_type)
-        all_protocol_steps = prompt_elements_dict['all protocol steps']
-        all_entities = prompt_elements_dict['all entities']
-        method_goal = prompt_elements_dict['method goal']
-        methodology = prompt_elements_dict['methodology']
-        metadata_specs = prompt_elements_dict.get('metadata specs',[])
-        metadata_extraction_prompt_template = pts.get_prompt_template('protocol diagram extraction').generate_chat_prompt_template()
-        extract_lcel = metadata_extraction_prompt_template | self.llm | MermaidExtractionOutputParser()
+        pt = pts.get_prompt_template('protocol diagram extraction').generate_chat_prompt_template()
+        extract_lcel = pt | self.llm | MermaidExtractionOutputParser()
         
         # 2. Run through all available sections of the paper and identify only those that are predominantly methods sections.
         start = datetime.now()
-        text = '\n\n'.join([f.content for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section'])])
+        fragments = [f.content for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section'])]
+        on_off = False
+        text = ''
+        for t in fragments:
+            l1 = t.split('\n')[0].lower()
+            if 'method' in l1:
+                on_off = True
+            elif 'results' in l1 or 'discussion' in l1 or 'conclusion' in l1 or 'acknowledgements' in l1 \
+                    or 'references' in l1 or 'supplementary' in l1 or 'appendix' in l1 or 'introduction' in l1 or 'abstract' in l1 or 'cited' in l1:
+                on_off = False
+            if on_off:
+                if len(text) > 0:
+                    text += '\n\n'
+                text += t
 
         if len(text) == 0:
-            return {'response': "Could not retrieve full text of the paper: %s."%(paper_id),
-                "data": {'list_of_answers': None, 'run_name': run_name} }
+            return {'response': "No text generated for the paper: %s."%(paper_id),
+                "data": {'mermaid_code': None, 'run': run_metadata} }
 
         # 4. Assemble chain input
-        s1 = {'section_text': text,
-                'methodology': methodology,
-                'method_goal': method_goal}
+        s1 = {'section_text': text}
         
         # 5. Run the chain with a MermaidExtractionOutputParser 
         output = None
-        full_answer = []
-        output = extract_lcel.invoke(s1, config={'callbacks': [ConsoleCallbackHandler()]})
+        output = extract_lcel.invoke(s1)#, config={'callbacks': [ConsoleCallbackHandler()]})
         total_execution_time = datetime.now() - start
-        time_per_variable = total_execution_time / len(metadata_specs)
 
         if output is None:
-            return {'response': "attempted and failed protocol extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
-                "data": {'mermaid_code': None, 'run_name': run_name} }
+            return {'response': "attempted and failed protocol extraction for an experiment from %s."%(paper_id),
+                "data": None, 
+                'run': run_metadata}
         
-        return {'response': "completed protocol extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
-                "data": {'mermaid_code': output, 'run_name': run_name} }
+        return {'response': "completed protocol extraction for an experiment from %s."%(paper_id),
+                "data": output, 
+                'run': run_metadata}
+
+# %% ../../nbs/23_protocol_extraction_tool.ipynb 7
+class ProcotolEntitiesExtractionTool(BaseProtocolExtractionTool):
+    '''Extracts all entities used in a protocol.'''
+    name = 'protocol_entities_extraction'
+    description = 'Extracts all entities used in a protocol.'
+
+    def _run(self, paper_id):
+        '''Extracts all entities used in a protocol.'''
+
+        if self.db.session is None:
+            session_class = sessionmaker(bind=self.db.engine)
+            self.db.session = session_class()
+
+        # Introspect the class name of the llm model for notes and logging
+        llm_class_name = self.llm.__class__.__name__
+        llm_model_desc = str(self.llm)
+
+        run_metadata = {
+            'tool': self.__class__.__name__,
+            'doi': paper_id,
+            'llm_class': llm_class_name,
+            'llm_desc': llm_model_desc}
+
+        # 0. Use the first available full text item type
+        item_types = set()
+        item_type = None
+        for i in self.db.list_items_for_expression(paper_id):
+            item_types.add(i.type)
+        for i_type in item_types:
+            if i_type == 'CitationRecord':
+                continue
+            item_type = i_type
+            break
+        if item_type is None:
+            return {'response': "Could not retrieve full text of the paper: %s."%(paper_id),
+                "data": None, 
+                'run': run_metadata}
+
+        # 1. Build LangChain elements
+        pts = PromptTemplateRegistry()
+        
+        pts.load_prompts_from_yaml('protocol_extraction.yaml')
+        pt = pts.get_prompt_template('entity extraction').generate_chat_prompt_template()
+        parser = JsonOutputParser()
+
+        extract_lcel = pt | self.llm | parser
+        
+        # 2. Use heuristics to find the start of the methods section and run through until you find the next top-level section
+        # Very ugly hack, need to update based on better reading of section headings
+        start = datetime.now()
+        fragments = [f.content for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section'])]
+        on_off = False
+        text = ''
+        for t in fragments:
+            l1 = t.split('\n')[0].lower()
+            if 'method' in l1:
+                on_off = True
+            elif 'results' in l1 or 'discussion' in l1 or 'conclusion' in l1 or 'acknowledgements' in l1 \
+                    or 'references' in l1 or 'supplementary' in l1 or 'appendix' in l1 or 'introduction' in l1 or 'abstract' in l1 or 'cited' in l1:
+                on_off = False
+            if on_off:
+                if len(text) > 0:
+                    text += '\n\n'
+                text += t
+
+        if len(text) == 0:
+            return {'response': "No text extracted for the paper: %s."%(paper_id),
+                "data": None, 
+                'run': run_metadata} 
+
+        # 4. Assemble chain input
+        s1 = {'section_text': text}
+        
+        # 5. Run the chain with a MermaidExtractionOutputParser 
+        output = None
+        output = extract_lcel.invoke(s1)#, config={'callbacks': [ConsoleCallbackHandler()]})
+        total_execution_time = datetime.now() - start
+
+        if output is None:
+            return {'response': "attempted and failed to list entitles for proctocol from %s."%(paper_id),
+                "data": None,
+                'run': run_metadata}
+        
+        return {'response': "completed list of entitles for proctocol from %s."%(paper_id),
+                "data": output, 
+                'run': run_metadata}
+
+# %% ../../nbs/23_protocol_extraction_tool.ipynb 8
+class ProcotolProcessesExtractionTool(BaseProtocolExtractionTool):
+    '''Extracts all processes used in a protocol.'''
+    name = 'protocol_processes_extraction'
+    description = 'Extracts all processes used in a protocol.'
+
+    def _run(self, paper_id):
+        '''Extracts all processes used in a protocol.'''
+
+        if self.db.session is None:
+            session_class = sessionmaker(bind=self.db.engine)
+            self.db.session = session_class()
+
+        # Introspect the class name of the llm model for notes and logging
+        llm_class_name = self.llm.__class__.__name__
+        llm_model_desc = str(self.llm)
+
+        run_metadata = {
+            'tool': self.__class__.__name__,
+            'doi': paper_id,
+            'llm_class': llm_class_name,
+            'llm_desc': llm_model_desc}
+
+        # 0. Use the first available full text item type
+        item_types = set()
+        item_type = None
+        for i in self.db.list_items_for_expression(paper_id):
+            item_types.add(i.type)
+        for i_type in item_types:
+            if i_type == 'CitationRecord':
+                continue
+            item_type = i_type
+            break
+        if item_type is None:
+            return {'response': "Could not retrieve full text of the paper: %s."%(paper_id),
+                "data": {'entities': None, 'run': run_metadata} }
+
+        # 1. Build LangChain elements
+        pts = PromptTemplateRegistry()
+        
+        pts.load_prompts_from_yaml('protocol_extraction.yaml')
+        pt = pts.get_prompt_template('process extraction').generate_chat_prompt_template()
+        parser = JsonOutputParser()
+
+        extract_lcel = pt | self.llm | parser
+        
+        # 2. Use heuristics to find the start of the methods section and run through until you find the next top-level section
+        # Very ugly hack, need to update based on better reading of section headings
+        start = datetime.now()
+        fragments = [f.content for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section'])]
+        on_off = False
+        text = ''
+        for t in fragments:
+            l1 = t.split('\n')[0].lower()
+            if 'method' in l1:
+                on_off = True
+            elif 'results' in l1 or 'discussion' in l1 or 'conclusion' in l1 or 'acknowledgements' in l1 \
+                    or 'references' in l1 or 'supplementary' in l1 or 'appendix' in l1 or 'introduction' in l1 or 'abstract' in l1 or 'cited' in l1:
+                on_off = False
+            if on_off:
+                if len(text) > 0:
+                    text += '\n\n'
+                text += t
+
+        if len(text) == 0:
+            return {'response': "No text extracted for the paper: %s."%(paper_id),
+                "data": {'list_of_answers': None, 'run': run_metadata} }
+
+        # 4. Assemble chain input
+        s1 = {'section_text': text}
+        
+        # 5. Run the chain with a MermaidExtractionOutputParser 
+        output = None
+        output = extract_lcel.invoke(s1)#, config={'callbacks': [ConsoleCallbackHandler()]})
+        total_execution_time = datetime.now() - start
+
+        if output is None:
+            return {'response': "attempted and failed to list entitles for proctocol from %s."%(paper_id),
+                "data": None, 
+                'run': run_metadata} 
+        
+        return {'response': "completed list of entitles for proctocol from %s."%(paper_id),
+                "data": output, 
+                'run': run_metadata}

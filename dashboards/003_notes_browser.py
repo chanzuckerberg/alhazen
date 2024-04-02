@@ -294,22 +294,16 @@ def __(mo):
 
 
 @app.cell
-def __(mo):
-    extraction_complete = mo.ui.checkbox(label='Metadata Extraction Complete')
-    return extraction_complete,
-
-
-@app.cell
 def __(
     N,
     NIA,
     SKC,
     SKC_HM,
     SKE,
+    SKE_HN,
     citation_filter,
     collection_counts,
     doi_filter,
-    extraction_complete,
     ldb,
     mo,
     or_,
@@ -321,96 +315,54 @@ def __(
         papers_table = None
         if len(collection_counts.value) > 0:
             c_id = collection_counts.value.reset_index().iloc[0]['ID']
-            if extraction_complete.value:
-                if doi_filter.value and citation_filter.value is None:
-                    q2 = ldb.session.query(SKE.id, SKE.content) \
-                            .distinct() \
-                            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                            .filter(SKC_HM.has_members_id==SKE.id) \
-                            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                                        SKE.type=='ScientificPrimaryResearchPreprint')) \
-                            .filter(SKC.id==c_id) \
-                            .filter(NIA.is_about_id == SKE.id) \
-                            .filter(N.id == NIA.Note_id) \
-                            .filter(N.type == 'MetadataExtractionNote__cryoet') \
-                            .filter(SKE.id.like('%'+doi_filter.value+'%'))
-                elif doi_filter.value is None and citation_filter.value is None: 
-                    q2 = ldb.session.query(SKE.id, SKE.content) \
-                            .distinct() \
-                            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                            .filter(SKC_HM.has_members_id==SKE.id) \
-                            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                                        SKE.type=='ScientificPrimaryResearchPreprint')) \
-                            .filter(NIA.is_about_id == SKE.id) \
-                            .filter(N.id == NIA.Note_id) \
-                            .filter(N.type == 'MetadataExtractionNote__cryoet') \
-                            .filter(SKC.id==c_id)
-                elif doi_filter.value is None and citation_filter.value: 
-                    q2 = ldb.session.query(SKE.id, SKE.content) \
-                            .distinct() \
-                            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                            .filter(SKC_HM.has_members_id==SKE.id) \
-                            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                                        SKE.type=='ScientificPrimaryResearchPreprint')) \
-                            .filter(NIA.is_about_id == SKE.id) \
-                            .filter(N.id == NIA.Note_id) \
-                            .filter(N.type == 'MetadataExtractionNote__cryoet') \
-                            .filter(SKC.id==c_id) \
-                            .filter(SKE.content.like('%'+citation_filter.value+'%'))
-                else: 
-                    q2 = ldb.session.query(SKE.id, SKE.content) \
-                            .distinct() \
-                            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                            .filter(SKC_HM.has_members_id==SKE.id) \
-                            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                                        SKE.type=='ScientificPrimaryResearchPreprint')) \
-                            .filter(NIA.is_about_id == SKE.id) \
-                            .filter(N.id == NIA.Note_id) \
-                            .filter(N.type == 'MetadataExtractionNote__cryoet') \
-                            .filter(SKC.id==c_id) \
-                            .filter(SKE.id.like('%'+doi_filter.value+'%')) \
-                            .filter(SKE.content.like('%'+citation_filter.value+'%'))
-            else:
-                if doi_filter.value and citation_filter.value is None:
-                    q2 = ldb.session.query(SKE.id, SKE.content) \
-                            .distinct() \
-                            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                            .filter(SKC_HM.has_members_id==SKE.id) \
-                            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                                        SKE.type=='ScientificPrimaryResearchPreprint')) \
-                            .filter(SKC.id==c_id) \
-                            .filter(SKE.id.like('%'+doi_filter.value+'%'))
-                elif doi_filter.value is None and citation_filter.value is None: 
-                    q2 = ldb.session.query(SKE.id, SKE.content) \
-                            .distinct() \
-                            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                            .filter(SKC_HM.has_members_id==SKE.id) \
-                            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                                        SKE.type=='ScientificPrimaryResearchPreprint')) \
-                            .filter(SKC.id==c_id)
-                elif doi_filter.value is None and citation_filter.value: 
-                    q2 = ldb.session.query(SKE.id, SKE.content) \
-                            .distinct() \
-                            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                            .filter(SKC_HM.has_members_id==SKE.id) \
-                            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                                        SKE.type=='ScientificPrimaryResearchPreprint')) \
-                            .filter(SKC.id==c_id) \
-                            .filter(SKE.content.like('%'+citation_filter.value+'%'))
-                else: 
-                    q2 = ldb.session.query(SKE.id, SKE.content) \
-                            .distinct() \
-                            .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
-                            .filter(SKC_HM.has_members_id==SKE.id) \
-                            .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
-                                        SKE.type=='ScientificPrimaryResearchPreprint')) \
-                            .filter(SKC.id==c_id) \
-                            .filter(SKE.id.like('%'+doi_filter.value+'%')) \
-                            .filter(SKE.content.like('%'+citation_filter.value+'%'))
+            if doi_filter.value and citation_filter.value is None:
+                q2 = ldb.session.query(SKE.id, SKE.content, N.content) \
+                        .distinct() \
+                        .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+                        .filter(SKC_HM.has_members_id==SKE.id) \
+                        .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
+                                    SKE.type=='ScientificPrimaryResearchPreprint')) \
+                        .filter(SKC.id==c_id) \
+                        .filter(NIA.is_about_id == SKE.id) \
+                        .filter(N.id == NIA.Note_id) \
+                        .filter(SKE.id.like('%'+doi_filter.value+'%'))
+            elif doi_filter.value is None and citation_filter.value is None: 
+                q2 = ldb.session.query(SKE.id, SKE.content, N.content) \
+                        .distinct() \
+                        .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+                        .filter(SKC_HM.has_members_id==SKE.id) \
+                        .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
+                                    SKE.type=='ScientificPrimaryResearchPreprint')) \
+                        .filter(SKE_HN.ScientificKnowledgeExpression_id == SKE.id) \
+                        .filter(N.id == SKE_HN.has_notes_id) \
+                        .filter(SKC.id==c_id)
+            elif doi_filter.value is None and citation_filter.value: 
+                q2 = ldb.session.query(SKE.id, SKE.content, N.content) \
+                        .distinct() \
+                        .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+                        .filter(SKC_HM.has_members_id==SKE.id) \
+                        .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
+                                    SKE.type=='ScientificPrimaryResearchPreprint')) \
+                        .filter(NIA.is_about_id == SKE.id) \
+                        .filter(N.id == NIA.Note_id) \
+                        .filter(SKC.id==c_id) \
+                        .filter(SKE.content.like('%'+citation_filter.value+'%'))
+            else: 
+                q2 = ldb.session.query(SKE.id, SKE.content, N.content) \
+                        .distinct() \
+                        .filter(SKC.id==SKC_HM.ScientificKnowledgeCollection_id) \
+                        .filter(SKC_HM.has_members_id==SKE.id) \
+                        .filter(or_(SKE.type=='ScientificPrimaryResearchArticle', \
+                                    SKE.type=='ScientificPrimaryResearchPreprint')) \
+                        .filter(NIA.is_about_id == SKE.id) \
+                        .filter(N.id == NIA.Note_id) \
+                        .filter(SKC.id==c_id) \
+                        .filter(SKE.id.like('%'+doi_filter.value+'%')) \
+                        .filter(SKE.content.like('%'+citation_filter.value+'%'))
 
-            papers_df = pd.DataFrame(q2.all(), columns=['DOI', 'Reference'])
+            papers_df = pd.DataFrame(q2.all(), columns=['DOI', 'Reference', 'Note'])
             papers_table = mo.ui.table(papers_df, selection='single')
-            components = mo.vstack([doi_filter, citation_filter, extraction_complete, papers_table])
+            components = mo.vstack([doi_filter, citation_filter, papers_table])
             mo.output.replace(components)
     return c_id, components, papers_df, papers_table, q2
 
@@ -424,21 +376,15 @@ def __(N, NIA, json, ldb, mo, papers_table, pd):
         l = []
         q3 = ldb.session.query(N) \
             .filter(N.id == NIA.Note_id) \
-            .filter(NIA.is_about_id == p_id) \
-            .filter(N.type == 'MetadataExtractionNote__cryoet') 
+            .filter(NIA.is_about_id == p_id) 
         for n in q3.all():
             tup = json.loads(n.content)
-            tup.pop('original_text')
-            tup.pop('question')
-            deets = n.name.split('__')
-            tup['variable'] = deets[-1]  
             l.append(tup)
         report_df = pd.DataFrame(l)
         if len(report_df)>0:
-            report_df = report_df[['variable', 'answer', 'gold_standard']]
             report_table = mo.ui.table(report_df)
             mo.output.replace(report_table)
-    return deets, l, n, p_id, q3, report_df, report_table, tup
+    return l, n, p_id, q3, report_df, report_table, tup
 
 
 if __name__ == "__main__":
