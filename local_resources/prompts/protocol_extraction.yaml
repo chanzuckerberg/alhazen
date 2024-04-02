@@ -1,3 +1,128 @@
+entity extraction: 
+  programmer_notes: Likely going to try to run this on methods sections of papers using OpenAI's GPT-4 API
+  description: 
+    Generate a structured description of an experimental protocol from a paper.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: >
+    Read the text of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    The text is taken from a scientific paper.
+
+    Focus on the design of the experimental protocol. 
+    Your job is to extract a representation of the entities and processes described in the text. 
+    Entities can be either material entities (like experimental subjects, samples, reagents, equipment, etc.) or information entities (like images, image stacks, tomograms, or data sets). 
+    Processes can be one of experimental manipulations (which have material entities as inputs and outputs), assays (which have material entities as inputs and information entities as outputs) and data transformations (which have information entities as inputs and outputs). 
+    
+    First, read the text of the methods section and break it into subsections based on the different protocol steps being applied. 
+    Second, identify every entity (material or information) that is mentioned in the text. 
+    Third: Generate a list of all entities described in the protocol in the following JSON format:
+    
+    ```json
+    [{{
+      "Entity_ID": "E1",
+      "Entity_Name": "Name of the entity",
+      "Entity_Type": "Type of entity being described",
+      "Entity_Description": "Short, one-or-two sentence description of the entity"
+    }}, ...]
+    ```
+    Generate only the JSON-formatted data as a list. 
+    Do not include any other response.
+  input_variables: 
+    - section_text
+  output_variables:
+    - protocol_description
+
+process extraction: 
+  programmer_notes: Likely going to try to run this on methods sections of papers using OpenAI's GPT-4 API
+  description: 
+    Generate a structured description of an experimental protocol from a paper.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: >
+    Read the text of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    The text is taken from a scientific paper.
+
+    Focus on the design of the experimental protocol. 
+    Your job is to extract a representation of the entities and processes described in the text. 
+    Entities can be either material entities (like experimental subjects, samples, reagents, equipment, etc.) or information entities (like images, image stacks, tomograms, or data sets). 
+    Processes can be one of experimental manipulations (which have material entities as inputs and outputs), assays (which have material entities as inputs and information entities as outputs) and data transformations (which have information entities as inputs and outputs). 
+    
+    First, read the text of the methods section and break it into subsections based on the different protocol steps being applied. 
+    Second, identify every entity (material or information) that is mentioned in the text. 
+    Third, identify every process (experimental manipulation, assay, or data tranformation) that is mentioned in the text. 
+    Fourth: Generate a list all processes described in the protocol, formatted as a list of objects in JSON, where each object has the following structure:
+    
+    - Process_ID as a unique identifier for the process (formatted as 'P' followed by a number).
+    - Process_Name as the name of the process.
+    - Process_Type as the type of process being described. 
+    - Process_Description as a short, one-or-two sentence description of the process.
+    - Input_Entities as a list of entities (referred to by name) that this process uses either as equipment, reagents, samples, data or other inputs. 
+    - Output_Entities as a list of entities (referred to by name) that this process creates, generates, or modifies.
+
+    Generate only the JSON-formatted data. 
+    Do not include any other response.
+  input_variables: 
+    - section_text
+  output_variables:
+    - protocol_description
+
+protocol analysis: 
+  programmer_notes: Likely going to try to run this on methods sections of papers using OpenAI's GPT-4 API
+  description: 
+    Generate a structured description of an experimental protocol from a paper.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: >
+    Read the text of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    The text is taken from a scientific paper.
+
+    Focus on the design of the experimental protocol. 
+    Your job is to extract a representation of the entities and processes described in the text. 
+    Entities can be either material entities (like experimental subjects, samples, reagents, equipment, etc.) or information entities (like images, image stacks, tomograms, or data sets). 
+    Processes can be one of experimental manipulations (which have material entities as inputs and outputs), assays (which have material entities as inputs and information entities as outputs) and data transformations (which have information entities as inputs and outputs). 
+    
+    First, read the text of the methods section and break it into subsections based on the different protocol steps being applied. 
+    Second, identify every entity (material or information) that is mentioned in the text. 
+    Third, identify every process (experimental manipulation, assay, or data tranformation) that is mentioned in the text. 
+    Fourth: Generate a list all entities described in the protocol formatted as a list of objects in JSON, with the following structure.
+    
+    - Entity_ID as a unique identifier for the entity (formatted as 'E' followed by a number)
+    - Entity_Name as the name of the entity
+    - Entity_Type as the type of entity being described 
+    - Entity_Description as a short, one-or-two sentence description of the entity
+
+    Fifth: Generate a list all processes described in the protocol, formatted as a list of objects in JSON, with the following structure.
+    
+    - Process_ID as a unique identifier for the process (formatted as 'P' followed by a number)
+    - Process_Name as the name of the process
+    - Process_Type as the type of process being described 
+    - Process_Description as a short, one-or-two sentence description of the process
+    - Input_Entities as a list of all the entities that form the inputs to this process
+    - Output_Entities as a list of all the entities that form the inputs to this process
+
+    Finally, package the entities and processes into a JSON object with the following structure:
+    - "entities": [list of entities],
+    - "processes": [list of processes]
+
+    Generate only the JSON-formatted data. 
+    Do not include any other response.
+  input_variables: 
+    - section_text
+  output_variables:
+    - protocol_description
+
 protocol diagram extraction: 
   programmer_notes: Likely going to try to run this on methods sections of papers using OpenAI's GPT-4 API
   description: 
@@ -9,8 +134,6 @@ protocol diagram extraction:
     (delimited with triple backticks).
 
     Section Text:- '''{section_text}'''
-
-    The text is taken from a scientific paper that uses {methodology} to {method_goal}.
 
     In general, the protocol can be represented as a directed bipartite graph, where each node in the graph is either a protocol step or an entity and edges either connect a protocol step to an entity or an entity to a protocol step. 
     
@@ -84,9 +207,32 @@ protocol step identification:
     the corresponding value of {all_protocol_step_codes} in the 'protocol_step' field of the output.
   input_variables: 
     - section_text
-    - methodology
-    - method_goal
-    - all_protocol_steps
-    - all_protocol_step_codes
   output_variables:
     - protocol_step
+
+methods section identification: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Identify what protocol step of an experiment is being described, given an existing model of the protocol steps.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: 
+    Read the text of a section of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    If this section primarily describing the protocol of the scientific experiment being used in the study, record 'True' in the 'methods_section' field of the output.
+    If this section is from one of the other possible sections of the paper, record 'False' in the 'methods_section' field of the output. 
+    Other sections could include the abstract which is a short summary of the whole paper; the introduction which provides background for the scientific work;
+    the results section which describes the results of having done the experiment; the discussion where the authors contextualize the results of the experiment;
+    or finally, the references (or other administrative sections) where cited papers are listed or funding is acknowledged etc. 
+    
+    If the section text primarily describes how the scientific protocol was carried out, record 'True' in the 'methods_section' field of the output, otherwise record 'False'.
+    
+    Generate only JSON formatted output with one field 'methods_section'. 
+    Do not include any other response other than a JSON object.
+  input_variables: 
+    - section_text
+  output_variables:
+    - is_methods_section

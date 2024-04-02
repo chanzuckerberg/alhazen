@@ -62,6 +62,7 @@ skf_hn = aliased(ScientificKnowledgeFragmentHasNotes)
 class MetadataExtractionToolSchema(BaseModel):
     paper_id: str = Field(description="the doi of the paper being analyzed, must start with the string 'doi:'")
     extraction_type: str = Field(description="This is the name of the type of extraction and must be one of the following strings: ['cryoet']")
+    run_label: Optional[str] = Field(description="This is a label that will be used to identify the run of the metadata extraction tool in the database.")
 
 class BaseMetadataExtractionTool(BaseTool, AlhazenToolMixin):
     '''Runs a specified metadata extraction pipeline over a research paper that has been loaded in the local literature database.'''
@@ -85,23 +86,25 @@ class BaseMetadataExtractionTool(BaseTool, AlhazenToolMixin):
         metadata_specs = prompt_elements_dict.get('metadata specs',[])
         dataset_publication_path = prompt_elements_dict['dataset_publication_path']
         
-        examples = {} 
-        for q in metadata_specs:
-            examples[q.get('name')] = {}   
-            path = q.get('path')
-            
-            # walk over the directory tree underneath data_file_path
-            # and compile the answers to the metadata extraction questions
-            # for each file in the directory tree
-            yaml_files = []
-            for root, dirs, file_list in os.walk(data_file_path):
-                for file in file_list:
-                    if file.endswith(".yaml"):
-                        yaml_files.append((root, file))
-            for root, file in yaml_files:
-                with open(os.path.join(root, file), 'r') as f:
-                    d = yaml.safe_load(f)
-                    dois = jmespath.search(dataset_publication_path, d).split(',')
+        # walk over the directory tree underneath data_file_path
+        # and compile the answers to the metadata extraction questions
+        # for each file in the directory tree
+        yaml_files = []
+        tsv_files = []
+        for root, dirs, file_list in os.walk(data_file_path):
+            for file in file_list:
+                if file.endswith(".yaml"):
+                    yaml_files.append((root, file))
+                if file.endswith(".tsv"):
+                    tsv_files.append((root, file))
+
+        self.examples = {} 
+        for root, file in yaml_files:
+            with open(os.path.join(root, file), 'r') as f:
+                d = yaml.safe_load(f)
+                for q in metadata_specs:
+                    path = q.get('path')
+                    dois = jmespath.search(dataset_publication_path, d).split(',')             
                     answer = jmespath.search(path, d)
                     if answer is None:
                         answer = []
@@ -113,26 +116,70 @@ class BaseMetadataExtractionTool(BaseTool, AlhazenToolMixin):
                     for doi in dois:
                         if doi[0:4] != 'doi:' or len(answer) == 0:
                             continue
-                        examples[q.get('name')][doi.strip()] = list(set(answer))
-        self.examples = examples
+                        self.examples[q.get('name')][doi.strip()] = list(set(answer))
 
-    def build_answer(self, paper_id, extraction_type):    
+        for root, file in tsv_files:
+            df = pd.read_csv(os.path.join(root, file), sep='\t')
+            for i, row in df.iterrows():
+                doi = row.doi
+                if doi[0:4] != 'doi:':
+                    doi = 'doi:'+doi
+                for q in metadata_specs:
+                    if self.examples.get(q.get('name'), None) is None:
+                        self.examples[q.get('name')] = {}
+                    if doi not in self.examples.get(q.get('name'), []):
+                        self.examples[q.get('name')][doi] = []
+                    if q.get('name') in list(row.keys()):
+                        v = str(row[str(q.get('name'))])
+                        if v == v and v != 'nan':
+                            self.examples[q.get('name')][doi].append(str(row[str(q.get('name'))]))
+        
+        for q in self.examples:
+            for doi in self.examples[q]:
+                self.examples[q][doi] = ', '.join(sorted(set(self.examples[q][doi])))
+
+    def write_answers_as_notes(self, extraction_type, data_file_path): 
+        dois = sorted(list(set([doi for q in self.examples for doi in self.examples[q]])))
+        for doi in dois:
+            ske = self.db.session.query(SKE) \
+                .filter(SKE.id == doi).first() 
+            if ske is None:
+                continue
+            content = {q:self.examples[q].get(doi) for q in self.examples}
+            n = Note(
+                id=uuid.uuid4().hex[0:10],
+                type='MetadataExtractionNote', 
+                name = extraction_type+'__'+doi+'__gold',
+                provenance='gold standard data loaded from '+data_file_path,
+                content=json.dumps(content, indent=4), 
+                creation_date=datetime.now(), 
+                format='json')
+            n.is_about.append(ske)
+            self.db.session.add(n)
+            self.db.session.flush()
+        self.db.session.commit()
+
+    def read_metadata_extraction_notes(self, paper_id, extraction_type, run_label = 'test'):    
         l = []
         q = self.db.session.query(N) \
             .filter(N.id == NIA.Note_id) \
             .filter(NIA.is_about_id == paper_id) \
-            .filter(N.type == 'MetadataExtractionNote__'+extraction_type) 
+            .filter(N.type == 'MetadataExtractionNote') \
+            .filter(N.name.like(extraction_type+'_%_'+run_label)) 
+
         for n in q.all():
             tup = json.loads(n.content)
             tup['doi'] = paper_id
-            deets = n.name.split('__')
-            tup['tool_name'] = deets[0]
-            tup['llm_name'] = deets[-3]
-            tup['llm_desc'] = deets[-2]  
-            tup['variable'] = deets[-1]  
+            tup['extraction_type'] = extraction_type
+            tup['run_label'] = run_label
+            #deets = json.loads(n.provenance)
+            #tup['tool_name'] = deets.get('tool')
+            #tup['llm_name'] = deets.get('llm_class')
+            #tup['llm_desc'] = deets.get('llm_desc')  
+            #tup['variable'] = deets.get('variable')
             l.append(tup)
-        df_answer = pd.DataFrame(l)
-        return df_answer 
+
+        return l 
 
 
 # %% ../../nbs/22_metadata_extraction_tool.ipynb 7
@@ -141,7 +188,7 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
     name = 'metadata_extraction'
     description = 'Runs a specified metadata extraction pipeline over a research paper that has been loaded in the local literature database.'
 
-    def _run(self, paper_id, extraction_type):
+    def _run(self, paper_id, extraction_type, run_label='test'):
         '''Runs the metadata extraction pipeline over a specified paper.'''
 
         if self.db.session is None:
@@ -155,7 +202,12 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
         llm_class_name = self.llm.__class__.__name__
         llm_model_desc = str(self.llm)
 
-        run_name = self.__class__.__name__ + '__' + re.sub(' ','_',extraction_type) + '__' + paper_id + '__' + llm_class_name + '__' + llm_model_desc
+        run_metadata = {
+            'tool': self.__class__.__name__,
+            'extraction_type': extraction_type,
+            'doi': paper_id,
+            'llm_class': llm_class_name,
+            'llm_desc': llm_model_desc}
 
         # 0. Use the first available full text item type
         item_types = set()
@@ -169,7 +221,7 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
             break
         if item_type is None:
             return {'answer': "Could not retrieve full text of the paper: %s."%(paper_id),
-                "data": {'list_of_answers': None, 'run_name': run_name} }
+                "data": {'list_of_answers': None, 'run': run_metadata} }
 
         # 1. Build LangChain elements
         pts = PromptTemplateRegistry()
@@ -183,14 +235,13 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
         metadata_extraction_prompt_template = pts.get_prompt_template('metadata extraction (all questions, whole paper)').generate_chat_prompt_template()
         extract_lcel = metadata_extraction_prompt_template | self.llm | JsonEnclosedByTextOutputParser()
         
-        
         # 2. Run through all available sections of the paper and identify only those that are predominantly methods sections.
         start = datetime.now()
         text = '\n\n'.join([f.content for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section'])])
 
         if len(text) == 0:
             return {'answer': "Could not retrieve full text of the paper: %s."%(paper_id),
-                "data": {'list_of_answers': None, 'run_name': run_name} }
+                "data": {'list_of_answers': None, 'run': run_metadata} }
 
         # 3. Compile the extraction questions
         question_text_list = [("%d. %s Record this value in the '%s' field of the output.")
@@ -216,45 +267,30 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
 
         if output is None:
             return {'answer': "attempted and failed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
-                "data": {'list_of_answers': None, 'run_name': run_name} }
+                "data": {'list_of_answers': None, 'run': run_metadata} }
+        
+        run_metadata['timestamp'] = start.strftime('%Y-%m-%d %H:%M:%S')
+        run_metadata['time_taken'] = str(total_execution_time)
+        run_name = extraction_type+'__'+paper_id+'__'+run_label
+        n = Note(
+            id=uuid.uuid4().hex[0:10],
+            type='MetadataExtractionNote', 
+            name=run_name,
+            provenance=json.dumps(run_metadata, indent=4),
+            content=json.dumps(output, indent=4), 
+            creation_date=datetime.now(), 
+            format='json')
 
-        for spec in metadata_specs:
-            if spec.get('name') in output is False or spec.get('name')+'_original_text' in output is False:
-                continue
-            vname = spec.get('name')
-            question = spec.get('spec')
-            answer = output.get(vname) 
-            original_text = output.get(vname+'_original_text')
-            note_content = {
-                'question': question,
-                'answer': answer,
-                'original_text': original_text}
-            
-            # Do we have gold standard data for this variable?
-            if self.examples is not None and vname in self.examples:
-                if paper_id in self.examples[vname]:
-                    gold_standard = self.examples[vname][paper_id]
-                    note_content['gold_standard'] = gold_standard 
-
-            # add a note to the fragment
-            n = Note(
-                id=uuid.uuid4().hex[0:10],
-                type='MetadataExtractionNote__'+extraction_type, 
-                name=run_name+'__'+vname,
-                provenance='time_taken: %s'%(str(time_per_variable)),
-                content=json.dumps(note_content, indent=4), 
-                creation_date=datetime.now(), 
-                format='json')
-            n.is_about.append(ske)
-            self.db.session.add(n)
-            self.db.session.flush()
-            full_answer.append({'variable_name': vname, 'question': question})
+        n.is_about.append(ske)
+        self.db.session.add(n)
+        self.db.session.flush()
                     
         # commit the changes to the database
         self.db.session.commit()
         
         return {'answer': "completed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
-                "data": {'list_of_answers': full_answer, 'run_name': run_name} }
+                "data": output, 
+                'run': run_metadata}
 
 # %% ../../nbs/22_metadata_extraction_tool.ipynb 8
 class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
@@ -262,7 +298,7 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
     name = 'metadata_extraction'
     description = 'Runs a specified metadata extraction pipeline over a research paper that has been loaded in the local literature database.'
 
-    def _run(self, paper_id, extraction_type):
+    def _run(self, paper_id, extraction_type, run_label='test'):
         '''Runs the metadata extraction pipeline over a specified paper.'''
 
         if self.db.session is None:
@@ -286,12 +322,18 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
         llm_class_name = self.llm.__class__.__name__
         llm_model_desc = str(self.llm)
 
+        run_metadata = {
+            'tool': self.__class__.__name__,
+            'doi': paper_id,
+            'llm_class': llm_class_name,
+            'llm_desc': llm_model_desc}
+
         # 1. Build LangChain elements
         pts = PromptTemplateRegistry()
         
-        pts.load_prompts_from_yaml('document_structure.yaml')
-        section_classifier_prompt_template = pts.get_prompt_template('full text paper section classification').generate_chat_prompt_template()
-        section_classifier_lcel = section_classifier_prompt_template | self.slm | JsonEnclosedByTextOutputParser()
+        #pts.load_prompts_from_yaml('document_structure.yaml')
+        #section_classifier_prompt_template = pts.get_prompt_template('full text paper section classification').generate_chat_prompt_template()
+        #section_classifier_lcel = section_classifier_prompt_template | self.slm | JsonEnclosedByTextOutputParser()
 
         pts.load_prompts_from_yaml('metadata_extraction.yaml')
         prompt_elements_yaml = files(prompt_elements).joinpath('metadata_extraction.yaml').read_text()
@@ -301,22 +343,27 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
         metadata_specs = prompt_elements_dict.get('metadata specs',[])
         metadata_extraction_prompt_template = pts.get_prompt_template('metadata extraction (all questions, whole paper)').generate_chat_prompt_template()
         extract_lcel = metadata_extraction_prompt_template | self.llm | JsonEnclosedByTextOutputParser()
-        
-        run_name = self.__class__.__name__ + '__' + re.sub(' ','_',extraction_type) + '__' + paper_id + '__' + llm_class_name + '__' + llm_model_desc
-        
+                
         # 2. Run through all available sections of the paper and identify only those that are predominantly methods sections.
         start = datetime.now()
+        fragments = [f.content for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section'])]
+        on_off = False
         text = ''
-        for f in self.db.list_fragments_for_paper(paper_id, item_type, fragment_types=['section']):
-            output = section_classifier_lcel.invoke({'section_text': f.content}, config={'callbacks': [ConsoleCallbackHandler()]})
-            if output.get('section_type') is None:
-                continue
-            if output.get('section_type') == 'METHODS':   
-                text += f.content + '\n\n'
+        for t in fragments:
+            l1 = t.split('\n')[0].lower()
+            if 'method' in l1:
+                on_off = True
+            elif 'results' in l1 or 'discussion' in l1 or 'conclusion' in l1 or 'acknowledgements' in l1 \
+                    or 'references' in l1 or 'supplementary' in l1 or 'appendix' in l1 or 'introduction' in l1 or 'abstract' in l1 or 'cited' in l1:
+                on_off = False
+            if on_off:
+                if len(text) > 0:
+                    text += '\n\n'
+                text += t
 
         if len(text) == 0:
             return {'answer': "Could not retrieve full text of the paper: %s."%(paper_id),
-                "data": {'list_of_answers': None, 'run_name': run_name} }
+                "data": {'list_of_answers': None, 'run': run_metadata} }
 
         # 3. Compile the extraction questions
         question_text_list = [("%d. %s Record this value in the '%s' field of the output.")
@@ -342,45 +389,28 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
 
         if output is None:
             return {'answer': "attempted and failed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
-                "data": {'list_of_answers': None, 'run_name': run_name} }
+                "data": {'list_of_answers': None, 'run': run_metadata} }
 
-        for spec in metadata_specs:
-            if spec.get('name') in output is False or spec.get('name')+'_original_text' in output is False:
-                continue
-            vname = spec.get('name')
-            question = spec.get('spec')
-            answer = output.get(vname) 
-            original_text = output.get(vname+'_original_text')
-            note_content = {
-                'question': question,
-                'answer': answer,
-                'original_text': original_text}
-            
-            # Do we have gold standard data for this variable?
-            if self.examples is not None and vname in self.examples:
-                if paper_id in self.examples[vname]:
-                    gold_standard = self.examples[vname][paper_id]
-                    note_content['gold_standard'] = gold_standard 
+        run_name = extraction_type+'__'+paper_id+'__'+run_label
 
-            # add a note to the fragment
-            n = Note(
-                id=uuid.uuid4().hex[0:10],
-                type='MetadataExtractionNote__'+extraction_type, 
-                name=run_name+'__'+vname,
-                provenance='time_taken: %s'%(str(time_per_variable)),
-                content=json.dumps(note_content, indent=4), 
-                creation_date=datetime.now(), 
-                format='json')
-            n.is_about.append(ske)
-            self.db.session.add(n)
-            self.db.session.flush()
-            full_answer.append({'variable_name': vname, 'question': question})
+        n = Note(
+            id=uuid.uuid4().hex[0:10],
+            type='MetadataExtractionNote', 
+            name=run_name,
+            provenance=json.dumps(run_metadata, indent=4),
+            content=json.dumps(output, indent=4), 
+            creation_date=datetime.now(), 
+            format='json')
+        n.is_about.append(ske)
+        self.db.session.add(n)
+        self.db.session.flush()
                     
         # commit the changes to the database
         self.db.session.commit()
         
         return {'response': "completed metadata extraction for an experiment of type '%s' from %s."%(methodology, paper_id),
-                "data": {'list_of_answers': full_answer, 'run_name': run_name} }
+                "data": output, 
+                'run': run_metadata} 
 
 # %% ../../nbs/22_metadata_extraction_tool.ipynb 9
 class MetadataExtraction_RAGOnSections_Tool(BaseMetadataExtractionTool):

@@ -10,7 +10,8 @@ from .core import OllamaRunner
 from .tools.basic import *
 from .tools.metadata_extraction_tool import * 
 from .tools.protocol_extraction_tool import * 
-from .tools.paperqa_emulation_tool import PaperQAEmulationTool 
+from .tools.paperqa_emulation_tool import * 
+from .tools.tiab_classifier_tool import * 
 from .utils.ceifns_db import *
 
 from langchain.chat_models.base import BaseChatModel
@@ -94,7 +95,7 @@ class AlhazenToolkit(BaseModel):
         protocol_extraction_tool_description = (
             "This tool draws a flowchart of the protocol described in a single full text paper."
         )
-        protocol_extraction_tool = ProcotolExtractionTool(
+        protocol_extraction_tool = ProcotolEntitiesExtractionTool(
             db=self.db, llm=self.llm, description=protocol_extraction_tool_description
         )
 
@@ -111,6 +112,14 @@ class AlhazenToolkit(BaseModel):
         paperqa_emulation_tool = PaperQAEmulationTool(
             db=self.db, llm=self.llm, description=paperqa_emulation_tool_description
         )
+
+        tiab_classifier_tool_description = (
+            "This tool classifies a paper as a trial, intervention, analysis, or background paper."
+        )
+        tiab_classifier_tool = TitleAbstractClassifier_OneDocAtATime_Tool(
+            db=self.db, llm=self.llm, description=tiab_classifier_tool_description
+        )
+
         tool_list = [
             add_collection_tool,
             add_authors_to_collection_tool,
@@ -122,7 +131,8 @@ class AlhazenToolkit(BaseModel):
             simple_extraction_tool,
             paperqa_emulation_tool,
             protocol_extraction_tool,
-            check_expression_tool
+            check_expression_tool,
+            tiab_classifier_tool
         ]
 
         #trial_run_tool_description = (
@@ -164,6 +174,13 @@ class MetadataExtractionToolkit(BaseModel):
             db=self.db, llm=self.llm, description=metadata_extraction_everything_everywhere_tool_description
         )
 
+        metadata_extraction_MethodsSectionOnly_tool_description = (
+            "This tool asks all metadata questions in a single shot over the methods section only."
+        )
+        metadata_extraction_MethodsSectionOnly_tool = MetadataExtraction_MethodsSectionOnly_Tool(
+            db=self.db, llm=self.llm, description=metadata_extraction_MethodsSectionOnly_tool_description
+        )
+
         metadata_extraction_rag_on_sections_tool_description = (
             "This tool asks each question separately over whole sections selected by RAG."
         )
@@ -180,6 +197,7 @@ class MetadataExtractionToolkit(BaseModel):
 
         tool_list = [
             metadata_extraction_everything_everywhere_tool,
+            metadata_extraction_MethodsSectionOnly_tool,
             metadata_extraction_rag_on_sections_tool,
             metadata_extraction_simple_extraction_tool
         ]

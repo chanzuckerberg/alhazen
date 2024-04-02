@@ -6,7 +6,7 @@ website:
       - index.ipynb
       - docnb1_use_cases.ipynb
       - docnb2_architecture.ipynb
-      - section: "API Docs"
+      - section: "Tech Elements"
         contents:
           - 35_ceifns_db.ipynb
           - 20_toolkit.ipynb
@@ -17,3 +17,13 @@ website:
           - 37_jats_text_extractor.ipynb
           - 37_pdf_text_extractor.ipynb
           - 36_web_robot.ipynb
+      - section: "Example Notebooks"
+        contents:
+          - section: "Metadata Extraction"
+            contents: cookbook/single_doc_extraction/*
+          - section: "Trend Analysis"
+            contents: cookbook/trend_analysis/*
+          - section: "Key Opinion Leaders"
+            contents: cookbook/key_opinion_leaders/*
+          - section: "Question Answering"
+            contents: cookbook/question_answering/*

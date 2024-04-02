@@ -1,0 +1,48 @@
+{
+"Single-cell transformers": [
+    "scMulan: Bian et al. 2024\t10.1101/2024.01.25.577152",
+	"BioFormers: Belgadi and Li et al. 2023\t10.1101/2023.11.29.569320",
+	"Geneformer: Theodoris et al. 2023\t10.1038/s41586-023-06139-9",
+	"Universal Cell Embedding: Rosen et al. 2023\t10.1101/2023.11.28.568918",
+	"scGPT: Cui et al. 2024\t10.1038/s41592-024-02201-0",
+	"TOSICA: Chen et al. 2023\t10.1038/s41467-023-35923-4",
+	"scMoFormer: Tang et al. 2023\t10.1145/3583780.3615061",
+	"tGPT: Shen et al. 2023\t10.1016/j.isci.2023.106536",
+	"SpaFormer: Wen et al. 2023\t 10.48550/arXiv.2302.03038",
+	"scFoundation: Hao et al. 2023\t10.1101/2023.05.29.542705",
+	"scFoundation: Gong et al. 2023\t10.1101/2023.03.24.534055",
+	"CellLM: Zhao et al. 2023\t 10.48550/arXiv.2306.04371",
+	"scCLIP: Xiong et al. 2023\thttps://openreview.net/forum?id=KMtM5ZHxct",
+	"GeneCompass: Yang et al. 2023\t10.1101/2023.09.26.559542",
+	"CellPLM: Wen et al. 2023\t10.1101/2023.10.03.560734",
+	"scMAE: Kim et al. 2023\t10.1101/2024.02.13.580114",
+	"CAN/CGRAN: Wang et al. 2023\thttps://openreview.net/forum?id=QFm186CbBp",
+	"scTranslator: Liu et al. 2023\t10.1101/2023.07.04.547619",
+	"scTransSort: Jiao et al. 2023\t10.3390/biom13040611",
+	"STGRNS: Xu et al. 2023\t10.1093/bioinformatics/btad165",
+	"CIForm: Xu et al. 2023\t10.1093/bib/bbad195",
+	"scFormer: Cui et al. 2023\t10.1101/2022.11.20.517285",
+	"Exceiver: Connell et al. 2022\t 10.48550/arXiv.2210.14330",
+	"TransCluster: Song et al. 2022\t10.3389/fgene.2022.1038919",
+	"scBERT: Yang et al. 2022\t10.1038/s42256-022-00534-z",
+	"iSEEEK: Shen et al. 2022\t10.1093/bib/bbab573",
+	"Multitask learning: Pang et Aal 2020\t10.1101/2020.02.05.935239"
+	],
+"Transformer LLMs for single-cell": [
+	"scInterpreter: Li et al. 2024\t 10.48550/arXiv.2402.12405",
+	"ChatCell: Fang et al. 2024\t10.48550/arXiv.2402.08303",
+	"MarkerGeneBERT: Cheng et al. 2023\t10.1101/2024.01.30.578115",
+	"scELMo: Liu, Chen and Zheng 2023\t10.1101/2023.12.07.569910",
+	"GenePT: Chen and Zou 2023\t10.1101/2023.10.16.562533",
+	"GPT-4: Z. Ji and Hou 2023\t10.1101/2023.04.16.537094",
+	"Cell2Sentence: Levine et al. 2023\t10.1101/2023.09.11.557287"
+	],
+"Single-cell transformer evaluation": [
+	"He et al. 2024\t10.1101/2024.01.27.577455\tEvaluation of Parameter-Efficient Fine-Tuning (PEFT) for scGPT. Indicates that PEFT not only is more compute-efficient, but also results in better cell type prediction.",
+	"Khan et al. 2023\t10.1038/s42256-023-00757-8\tFocused on imbalanced cell type classification. scBERT is sensitive to class imbalance. scBERT outperforms Seurat. scBERT doesn't perform well in unseen cell type detection. It benefits from SSL pretraining. ",
+	"Liu et al. 2023\t10.1101/2023.09.08.555192\tModels aren't trained on the same datasets. scGPT is positioned as most versatile in terms of task diversity that it can tackle. Models other than transformer appear to be at least as good as transformers in most tasks. Transformers were shown to be sensitive to the choice of hyperparameters, such as learning rate and epochs. ",
+	"Boiarsky et al. 2023\t10.1101/2023.10.19.563100\tLogistic regression appears to be as good as transformers in cell type annotation, even in low-data scenarios.",
+	"Kedzierska et al. 2023\t10.1101/2023.10.16.561085\tZero-shot performance only. Both models appear unreliable.",
+	"Alsabbagh et al. 2023\t10.1101/2023.10.24.563625\tFocused on imbalanced cell type classification. Geneformer appears to be outperformed by scGPT and scBERT, where the two latter perform similarly."
+	]
+}

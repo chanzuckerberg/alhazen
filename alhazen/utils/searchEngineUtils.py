@@ -597,7 +597,10 @@ def load_paper_from_openalex(doi_or_oa_id):
     elif doi_or_oa_id.startswith('https://openalex.org/'):
         doi_or_oa_id = re.sub('https://openalex.org/', '', doi_or_oa_id)
 
-    w = Works()[doi_or_oa_id]
+    try:
+        w = Works()[doi_or_oa_id]
+    except:
+        w = None
 
     if w is None:
         return None
@@ -645,14 +648,16 @@ def load_paper_from_openalex(doi_or_oa_id):
 
     # First author only    
     if first_author and middle_author is None and last_author is None:
-        content = first_author.get('raw_author_name') + ' (' + str(w.get('publication_year')) + ') ' + w.get('title')
+        content = str(first_author.get('raw_author_name','')) + ' (' + str(w.get('publication_year', '')) + ') ' + str(w.get('title', ''))
     # First and second author only    
     elif first_author and middle_author is None and last_author:
-        content = first_author.get('raw_author_name')+' and '+last_author.get('raw_author_name')+' ('+str(w.get('publication_year'))+') '+w.get('title')
+        content = str(first_author.get('raw_author_name',''))+' and '+str(last_author.get('raw_author_name', ''))+' ('+str(w.get('publication_year', ''))+') '+str(w.get('title', ''))
     # 'et al.'    
+    elif first_author:
+        content = str(first_author.get('raw_author_name', ''))+' et al. ('+str(w.get('publication_year', ''))+') '+str(w.get('title', ''))
     else:
-        content = first_author.get('raw_author_name')+' et al. ('+str(w.get('publication_year'))+') '+w.get('title')
-    
+        return None
+
     xrefs = set()
     oa = w.get('ids',{}).get('openalex')
     if oa:
@@ -669,6 +674,8 @@ def load_paper_from_openalex(doi_or_oa_id):
 
     title = w.get('title')
     abstract = w['abstract']
+    if abstract is None:
+        abstract = ''  
 
     # How to match the type of the paper to the Alhazen schema? 
     e = ScientificKnowledgeExpression(id=doi,    
@@ -677,9 +684,9 @@ def load_paper_from_openalex(doi_or_oa_id):
                                  content=content,
                                  type='ScientificPrimaryResearchArticle')
     
-    for a in authors:
-        e.has_authors.append(a)
-        a.is_author_of.append(e)
+    #for a in authors:
+    #    e.has_authors.append(a)
+    #    a.is_author_of.append(e)
 
     item = ScientificKnowledgeItem(
             id=uuid.uuid4().hex[0:10], 

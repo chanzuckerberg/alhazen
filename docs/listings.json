@@ -1,0 +1,31 @@
+[
+  {
+    "listing": "/cookbook/trend_analysis/index.html",
+    "items": [
+      "/cookbook/trend_analysis/rare_disease_literature.html",
+      "/cookbook/trend_analysis/pathogen_landscaping.html",
+      "/cookbook/trend_analysis/imaging_tech_innovation.html"
+    ]
+  },
+  {
+    "listing": "/cookbook/key_opinion_leaders/index.html",
+    "items": [
+      "/cookbook/key_opinion_leaders/keyopinionleaders_africanmicroscopy.html"
+    ]
+  },
+  {
+    "listing": "/cookbook/question_answering/index.html",
+    "items": [
+      "/cookbook/question_answering/virtualcell_corepapers.html"
+    ]
+  },
+  {
+    "listing": "/cookbook/single_doc_extraction/index.html",
+    "items": [
+      "/cookbook/single_doc_extraction/cellxgene_datasets.html",
+      "/cookbook/single_doc_extraction/cryoet.html",
+      "/cookbook/single_doc_extraction/ncats_natural_history_studies.html",
+      "/cookbook/single_doc_extraction/rnaquarium.html"
+    ]
+  }
+]

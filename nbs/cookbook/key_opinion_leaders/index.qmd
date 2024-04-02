@@ -1,0 +1,11 @@
+---
+order: 1
+title: Key Opinion Leaders
+listing:
+  fields: [title, description]
+  type: table
+  sort-ui: false
+  filter-ui: false
+---
+
+Studies that enable analysis of Key Opinion Leaders over a corpus of papers based on citation metrics and underlying searches of researcher-centred resources. 

@@ -4,11 +4,11 @@
 __all__ = ['skc', 'skc_hm', 'ske', 'ske_ha', 'ske_hr', 'ski', 'ski_hp', 'skf', 'aut_iao', 'aut', 'aut_aff', 'org',
            'AlhazenToolMixin', 'IntrospectionToolMixin', 'IntrospectionToolSchema', 'IntrospectionTool',
            'AddCollectionFromEPMCToolSchema', 'AddCollectionFromEPMCTool', 'ListCollectionsToolSchema',
-           'ListCollectionsTool', 'AddAuthorsToCollectionToolSchema', 'AddAuthorsToCollectionTool',
-           'CheckExpressionToolSchema', 'CheckExpressionTool', 'DescribeCollectionCompositionToolSchema',
-           'DescribeCollectionCompositionTool', 'DeleteCollectionToolSchema', 'DeleteCollectionTool',
-           'RetrieveFullTextToolForACollectionSchema', 'RetrieveFullTextToolForACollection',
-           'RetrieveFullTextToolSchema', 'RetrieveFullTextTool']
+           'ListCollectionsTool', 'AddCollectionFromOpenAlexToolSchema', 'AddCollectionFromOpenAlexTool',
+           'AddAuthorsToCollectionToolSchema', 'AddAuthorsToCollectionTool', 'CheckExpressionToolSchema',
+           'CheckExpressionTool', 'DescribeCollectionCompositionToolSchema', 'DescribeCollectionCompositionTool',
+           'DeleteCollectionToolSchema', 'DeleteCollectionTool', 'RetrieveFullTextToolForACollectionSchema',
+           'RetrieveFullTextToolForACollection', 'RetrieveFullTextToolSchema', 'RetrieveFullTextTool']
 
 # %% ../../nbs/21_basic_tools.ipynb 3
 import os
@@ -252,6 +252,90 @@ class ListCollectionsTool(AlhazenToolMixin, BaseTool):
         raise NotImplementedError("delete_collection does not support async")
 
 # %% ../../nbs/21_basic_tools.ipynb 9
+class AddCollectionFromOpenAlexToolSchema(BaseModel):
+    id: str = Field(description="A code that serves as the id of the collection we will add papers to.")
+    name: str = Field(description="A human-readable name of the collection we will add papers to.")
+    dois: List[str] = Field(description="A list of dois to be added separately to the named collection.")
+
+class AddCollectionFromOpenAlexTool(AlhazenToolMixin, BaseTool): 
+    name = "add_collection_from_openalex_dois"
+    description = "This tool constructs a collection in the database from an external source based on a list of dois."
+    args_schema: Type[AddCollectionFromOpenAlexToolSchema] = AddCollectionFromOpenAlexToolSchema
+    return_direct:bool = True
+
+    def _run(
+        self,
+        id: str, 
+        name: str,
+        query: str,
+        run_manager: Optional[CallbackManagerForToolRun] = None,
+    ) -> str:
+        
+        n_papers_added = 0
+
+        try: 
+            
+            c = self.db.add_corpus_from_epmc_query(id, name, query, commit_this=False)
+            
+            # Need to add provenance for the data we have added to the model. 
+            c.provenance = json.dumps([{'action_type': self.name, 'action': {'id': id, 'name': name, 'query': query} }])
+            self.db.session.flush()
+
+            #    if full_text:
+            #        path = loc+db_name+'/ft/'
+            #        ft_exist = download_full_text_paper_for_doi(doi, path)
+            #        if ft_exist:
+            #            self.db.add_full_text_for_expression(e)
+            
+            expression_q = self.db.session.query(func.count(ske.id)) \
+                    .filter(skc_hm.has_members_id == ske.id) \
+                    .filter(skc_hm.ScientificKnowledgeCollection_id == str(id)) 
+            expression_count = expression_q.first()[0]
+
+            jats_ft_q = self.db.session.query(func.count(ske.id)) \
+                    .filter(skc_hm.has_members_id == ske.id) \
+                    .filter(skc_hm.ScientificKnowledgeCollection_id == str(id)) \
+                    .filter(ske.id == ske_hr.ScientificKnowledgeExpression_id) \
+                    .filter(ske_hr.has_representation_id == ski.id) \
+                    .filter(ski.type == 'JATSFullText')
+            jats_ft_count = jats_ft_q.first()[0]
+            
+            pdf_ft_q = self.db.session.query(func.count(ske.id)) \
+                    .filter(skc_hm.has_members_id == ske.id) \
+                    .filter(skc_hm.ScientificKnowledgeCollection_id == str(id)) \
+                    .filter(ske.id == ske_hr.ScientificKnowledgeExpression_id) \
+                    .filter(ske_hr.has_representation_id == ski.id) \
+                    .filter(ski.type == 'PDFFullText')
+            pdf_ft_count = pdf_ft_q.first()[0]
+
+            n = Note(id=uuid.uuid4().hex[0:10],
+                    name='skc:%s.counts'%(id),
+                    content='{"ske_count": %s, "jats_ft_count": %s, "pdf_ft_count": %s}' \
+                        %(expression_count, jats_ft_count, pdf_ft_count),
+                    format='json',
+                    type='NoteAboutCollection')
+            c.has_notes.append(n)        
+            self.db.session.add(n)
+
+            self.db.session.commit()
+            
+        except Exception as e:
+            raise e
+        finally:  
+            self.db.session.close()
+
+        return {'response': 'We added a collection to the database called `{}` containing {} papers from this query: `{}`.'.format(name, n_papers_added, query)}
+
+    async def _arun(
+        self,
+        name: str,
+        query: str,
+        run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
+    ) -> str:
+        """Use the tool asynchronously."""
+        raise NotImplementedError("add_collection_from_epmc_query does not support async")
+
+# %% ../../nbs/21_basic_tools.ipynb 10
 class AddAuthorsToCollectionToolSchema(BaseModel):
     id: str = Field(description="A code that serves as the id of the collection we will add papers to.")
 
@@ -359,7 +443,7 @@ class AddAuthorsToCollectionTool(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("add_collection_from_epmc_query does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 10
+# %% ../../nbs/21_basic_tools.ipynb 11
 class CheckExpressionToolSchema(BaseModel):
     query: str = Field(description="a search query for the paper in the database")
     
@@ -415,7 +499,7 @@ class CheckExpressionTool(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("describe_expression_in_local_database does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 11
+# %% ../../nbs/21_basic_tools.ipynb 12
 class DescribeCollectionCompositionToolSchema(BaseModel):
     id: str = Field(description="should be the id of the collection we wish to describe")
     
@@ -477,7 +561,7 @@ class DescribeCollectionCompositionTool(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("add_collection_from_epmc_query does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 12
+# %% ../../nbs/21_basic_tools.ipynb 13
 class DeleteCollectionToolSchema(BaseModel):
     collection_id: str = Field(description="should be the collection_id of the collection we will add papers to")
 
@@ -511,7 +595,7 @@ class DeleteCollectionTool(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("delete_collection does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 13
+# %% ../../nbs/21_basic_tools.ipynb 14
 class RetrieveFullTextToolForACollectionSchema(BaseModel):
     collection_id: str = Field(description="the identifier of the collection containing papers to be retrieved")
 
@@ -527,7 +611,7 @@ class RetrieveFullTextToolForACollection(AlhazenToolMixin, BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         
-        loc, db_name, model_type, model_name = load_alhazen_tool_environment()
+        loc, db_name = load_alhazen_tool_environment()
 
         skc = aliased(ScientificKnowledgeCollection)
         for c in self.db.session.query(skc) \
@@ -547,7 +631,8 @@ class RetrieveFullTextToolForACollection(AlhazenToolMixin, BaseTool):
             check = self.db.check_full_text(e)
             if check.get('nxml_present') is False and \
                     check.get('pdf_present') is False and \
-                    check.get('html_present') is False:
+                    check.get('html_present') is False and \
+                    check.get('prior_attempts') is False:
                 try:
                     ft_exist = download_full_text_paper_for_doi(doi, path, headless=True)  
                     if ft_exist: 
@@ -556,7 +641,8 @@ class RetrieveFullTextToolForACollection(AlhazenToolMixin, BaseTool):
                         self.db.write_note_about_x(e, 'failed to download full text for %s'%(e.id), '', 'log', 'NoteAboutExpression', commit_this=True)                    
                 except Exception as ex:
                     print(ex)
-                    self.db.write_note_about_x(e, 'errored whilst download full text for %s'%(e.id), ex, 'log', 'NoteAboutExpression', commit_this=True)                    
+                    content = repr(ex)
+                    self.db.write_note_about_x(e, 'errored whilst downloading full text for %s'%(e.id), content, 'log', 'NoteAboutExpression', commit_this=True)                    
      
             check2 = self.db.check_full_text(e)
             if check2.get('nxml_present') or check2.get('pdf_present') or check2.get('html_present') and \
@@ -572,7 +658,9 @@ class RetrieveFullTextToolForACollection(AlhazenToolMixin, BaseTool):
                         self.db.write_note_about_x(e, 'failed to add full text for %s'%(e.id), '', 'log', 'NoteAboutExpression', commit_this=True)
                 except Exception as ex:
                     print(ex)
-                    self.db.write_note_about_x(e, 'errored whilst adding full text for %s'%(e.id), ex, 'log', 'NoteAboutExpression', commit_this=True)
+                    self.db.session.rollback()
+                    content = repr(ex)
+                    self.db.write_note_about_x(e, 'errored whilst adding full text for %s'%(e.id), content, 'log', 'NoteAboutExpression', commit_this=True)
             
         return {'response': 'I retrieved full text papers for the collection named `{}` (id=`{}).'.format(c.name, c.id)}
 
@@ -585,7 +673,7 @@ class RetrieveFullTextToolForACollection(AlhazenToolMixin, BaseTool):
         """Use the tool asynchronously."""
         raise NotImplementedError("retrieve_full_text_for_papers_in_collection does not support async")
 
-# %% ../../nbs/21_basic_tools.ipynb 14
+# %% ../../nbs/21_basic_tools.ipynb 15
 class RetrieveFullTextToolSchema(BaseModel):
     paper_id: str = Field(description="the digitial objecty identifier (doi) of the paper being retrieved from external sources")
 
@@ -601,7 +689,7 @@ class RetrieveFullTextTool(AlhazenToolMixin, BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         
-        loc, db_name, model_type, model_name = load_alhazen_tool_environment()
+        loc, db_name = load_alhazen_tool_environment()
 
         try: 
             ske = aliased(ScientificKnowledgeExpression)
@@ -609,10 +697,42 @@ class RetrieveFullTextTool(AlhazenToolMixin, BaseTool):
                     .filter(ske.id == str(paper_id)).first()
             doi = e.id.replace('doi:', '')
             path = loc+db_name+'/ft/'
-            ft_exist = download_full_text_paper_for_doi(doi, path)
-            if ft_exist:
-                self.db.add_full_text_for_expression(e)
-                self.db.session.commit()
+
+                        # Check if we have already downloaded the full text for the paper
+            check = self.db.check_full_text(e)
+            if check.get('nxml_present') is False and \
+                    check.get('pdf_present') is False and \
+                    check.get('html_present') is False and \
+                    check.get('prior_attempts') is False:
+                try:
+                    ft_exist = download_full_text_paper_for_doi(doi, path, headless=True)  
+                    if ft_exist: 
+                        self.db.write_note_about_x(e, 'successfully downloaded full text for %s'%(e.id), '', 'log', 'NoteAboutExpression', commit_this=True)
+                    else:
+                        self.db.write_note_about_x(e, 'failed to download full text for %s'%(e.id), '', 'log', 'NoteAboutExpression', commit_this=True)                    
+                except Exception as ex:
+                    print(ex)
+                    self.db.session.rollback()
+                    content = repr(ex)
+                    self.db.write_note_about_x(e, 'errored whilst downloading full text for %s'%(e.id), content, 'log', 'NoteAboutExpression', commit_this=True)                    
+     
+            check2 = self.db.check_full_text(e)
+            if check2.get('nxml_present') or check2.get('pdf_present') or check2.get('html_present') and \
+                (check2.get('pdf_item_present') is False and check2.get('nxml_item_present') is False):
+                try:
+                    self.db.add_full_text_for_expression(e)
+                    self.db.session.commit()
+
+                    check3 = self.db.check_full_text(e)
+                    if check3.get('pdf_item_present') or check3.get('nxml_item_present'):
+                        self.db.write_note_about_x(e, 'successfully added full text for %s'%(e.id), '', 'log', 'NoteAboutExpression', commit_this=True)
+                    else:
+                        self.db.write_note_about_x(e, 'failed to add full text for %s'%(e.id), '', 'log', 'NoteAboutExpression', commit_this=True)
+                except Exception as ex:
+                    print(ex)
+                    self.db.session.rollback()
+                    content = repr(ex)
+                    self.db.write_note_about_x(e, 'errored whilst adding full text for %s'%(e.id), content, 'log', 'NoteAboutExpression', commit_this=True)
 
         except Exception as e:
             raise e

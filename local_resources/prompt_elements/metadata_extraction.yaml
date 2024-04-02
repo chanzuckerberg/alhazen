@@ -111,7 +111,7 @@ cryoet_full:
 cryoet: 
   notes: "This is a simplified version of the full CryoET metadata extraction prompt. It is designed to be used in cases where the full prompt is not necessary."
   methodology: Cryo-Electron Tomography (CryoET)
-  method goal: study the microscopic structure of a biological sample
+  method goal: study the structure of a biological sample at near atomic resolution after rapid vitrification to preseve the sample in a near-native state
   all protocol steps:
     (A) the preparation of a biological sample for imaging (such as cells, tissue, a virus, a microorganism, etc.),
     (B) vitrification (freezing) of the sample,
@@ -130,67 +130,115 @@ cryoet:
     (F) the tomogram, 
     (G) the annotation set
   dataset_publication_path: dataset.cross_references.dataset_publications
-  metadata specs: >
+  metadata specs: 
     - name: sample_type
       step: AB
-      spec: List all different types of biological sample being imaged using CryoEM (i.e., any biological samples that were mounted on grids and subsequently imaged). Select values from the following list: cell, tissue, organoid, organ, whole organism, virus, micro-organism, other.
+      spec: > 
+        List all different types of biological sample being imaged using CryoEM (i.e., any biological samples that were mounted on grids and subsequently imaged). Select values from the following list: cell, tissue, organoid, organ, whole organism, virus, micro-organism, other.
       path: dataset.sample_type 
+    - name: sample_preparation_type
+      step: B
+      spec: >
+        What is the type sample/gird preparation being developed? Choose from one of the following types: 'subtomogram averaging', 'tomography', 'helical', or 'singleParticle'. If you are unsure, please specify 'Unknown'.
+      path: dataset.sample_preparation[instance_type]
     - name: sample_preparation_buffer_ph
       step: AB
-      spec: What was the pH of the buffer used to store the sample being imaged?
+      spec: >
+        What was the pH of the buffer used to store the sample being imaged? If you cannot find the pH used, respond 'Unknown'.
       path: dataset.sample_preparation[buffer_ph]
-    - name: sample_preparation_vitrification_cryogen_name
+    - name: grid_vitrification_cryogen
       step: AB
-      spec: What combination of gases acted as the medium used to vitrify the sample? Select any combination of the following: ETHANE, PROPANE, NITROGEN, OXYGEN, ARGON. Write the answer as a list. 
+      spec: >
+        What combination of gases acted as the medium used to vitrify the sample? Select any combination of the following: ETHANE, PROPANE, NITROGEN, OXYGEN, ARGON. Write the answer as a list. 
       path: dataset.sample_preparation[vitrification_cryogen_name]
     - name: sample_preparation_cryo_protectant
       step: AB
-      spec: What cryo-protectant was used to prepare the sample for vitrification? If no cryo-protectant was used, return none.
+      spec: >
+        What cryo-protectant was used to prepare the sample for vitrification? If no cryo-protectant was used, respond 'None'.
       path: dataset.sample_preparation[cryo_protectant]
-    - name: sample_preparation_type
-      step: AB
-      spec: Was the sample prepared for subtomogram averaging or tomography, or other? If other, please specify.
-      path: dataset.sample_preparation[instance_type]
-    - name: grid_preparation_model
+    - name: grid_model
       step: C
-      spec: ???
+      spec: >
+        What model was used to prepare the grid for imaging? These models are specified as different types of UltrAuFoil, C-flat, Quantifoil, Homemade and include a short string like 'R 2/2' to denote the dimensions of holes. Records might be 'C-Flat R 2/2' or 'UltrAuFoil R 3/2' Please include all details as written in the paper. If you cannot find the model, respond 'Unknown'. 
       path: dataset.grid_preparation[model]
-    - name: grid_preparation_material
+    - name: grid_material
       step: C
-      spec: ???
+      spec: >
+        What metal or combination of metals was used to make the grid? Select from the following list of metals: COPPER, GOLD, RHODIUM, MOLYBDENUM, PALLADIUM. If a grid is made of more than one material, captialize the metals and separate them with a forward slash (e.g., 'COPPER/PALLADIUM'). The paper may use chemical symbols such as 'Cu' for copper and 'Au' for gold. 
       path: dataset.grid_preparation[material]
-    - name: grid_preparation_mesh
+    - name: grid_mesh
       step: C
-      spec: ???
+      spec: >
+        What is the mesh number of the grid used to prepare the sample for imaging? If you cannot find the mesh number, respond 'Unknown'.
       path: dataset.grid_preparation[mesh]
-    - name: grid_preparation_support_film_film_topology
+    - name: grid_support_topology
       step: C
-      spec: ???
+      spec: >
+        What topology is used in the grid. Select from the following list: HOLEY, CONTINUOUS, HOLEY ARRAY, or LACEY. If the grid topology is not described, respond 'Unknown'.
       path: dataset.grid_preparation[support_film_film_topology]
-    - name: grid_preparation_pretreatment_type
-      step: C
-      spec: ???
-      path: dataset.grid_preparation[pretreatment_type_]
-    - name: other_preparation
-      step: G
-      spec: ???
-    - name: organism
-      step: AB
-      spec: If the biological sample was taken from an organism, provide the scientific name of the organism. If the biological sample is not from an organism, return none.
+    - name: grid_vit_ctemp
+      step: B
+      spec: >
+        What was the temperature of the grid during vitrification? Include the temperature scale used in the paper (e.g., Kelvin). If you cannot find the temperature, respond 'Unknown'.
+      path: 
+    - name: grid_vit_chumid
+      step: B
+      spec: What was the humidity used in the grid chamber during vitrification? If you cannot find the humidity, respond 'Unknown'.
+      path: 
+    - name: organism_name
+      spec: >
+        If the biological sample was taken from an organism, provide the scientific name of the organism. If the biological sample is not from an organism, respond 'None'.
       path: dataset.organism.name 
     - name: tissue
       step: AB
-      spec: ???
+      spec: >
+        If the sample being imaged originates from specified tissue from a multicellular animal, provide the name of the tissue? If the sample originates from another source, respond 'None'.
       path: dataset.tissue.name 
     - name: cell_type
       step: AB
-      spec: ???
+      spec: >
+        If the biological sample described in the text is a cell or cell culture, what was the cell type, if known? If not known, respond 'Unknown'.
       path: dataset.cell_type.name
     - name: cell_strain
       step: AB
-      spec: If the biological sample described in the text is a cell or cell culture, what was the strain?
+      spec: >
+        If the biological sample described in the text is a cell or cell culture, what was the cell strain, if known? If not known, respond 'Unknown'.
       path: dataset.cell_strain.name
     - name: cell_component
       step: AB
-      spec: ???
+      spec: >
+        If the preparation or imaging process involves named subcellular structures (ribosomes, cellular nuclei, cell membranes, specific vesicles, etc), please list them here. If cellular subcomponents are not mentioned, respond 'None'.
       path: dataset.cell_component.name
+
+natural history studies:
+  notes: "This is based on collaborative work between CZI and NCATS. Approach is in development."
+  methodology: General Natural History Studies 
+  method goal: study the timecourse of a disease to understand natural progression of disease pathology without intervention beyond current standard medical practice 
+  metadata specs: 
+    - name: study_purpose
+      spec: > 
+        What is the purpose of the study?
+    - name: study_type
+      spec: >
+        What type of study is this?
+    - name: study_duration
+      spec: >
+        What is the duration of the study?
+    - name: participant_count
+      spec: >
+        How many participants are in the study?
+    - name: data_collection_time
+      spec: >
+        When does data collection occur?
+    - name: inclusion_criteria
+      spec: >
+        What are the inclusion criteria for the study?
+    - name: exclusion_criteria
+      spec: >
+        What are the exclusion criteria for the study?
+    - name: clinical_outcomes
+      spec: >
+        What were the clinical outcomes?
+    - name: treatments_difference
+      spec: >
+        What differed between the treatments?
