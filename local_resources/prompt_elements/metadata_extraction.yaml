@@ -109,30 +109,40 @@ cryoet_full:
       spec: What software was used to make the annotations?
       path: annotations[*].metadata.annotation_software
 cryoet: 
-  notes: "This is a simplified version of the full CryoET metadata extraction prompt. It is designed to be used in cases where the full prompt is not necessary."
+  notes: >
+    This is the working data model to be used for metadata extraction using LLMs from CryoET papers. 
+    We are using EMPIAR and EMDB data to create a distance-supervised model (whenever paramaeters are expressed in EMPIAR).
+    This model is intended to support extraction from textual protocol descriptions of CryoET experiments
   methodology: Cryo-Electron Tomography (CryoET)
-  method goal: study the structure of a biological sample at near atomic resolution after rapid vitrification to preseve the sample in a near-native state
+  method goal: Study the structure of a biological sample at near atomic resolution after rapid vitrification to preseve the sample in a near-native state.
   all protocol steps:
     (A) the preparation of a biological sample for imaging (such as cells, tissue, a virus, a microorganism, etc.),
-    (B) vitrification (freezing) of the sample,
-    (C) milling the sample using a focussed ion beam (FIB) to create a used to prepare a thin, electron-transparent lamella.
-    (D) imaging the lamella using CryoET by collecting a tilt series of images of the lamella at different angles.
-    (E) reconstructing 3-D tomograms in by aligning tilt series and performing reconstruction computations.
-    (F) annotating the 3D model of the sample to identify structures of interest.
-    (G) other protocol steps, not listed above. 
+    (B) 'Mounting specimen on TEM Grid',
+    (C) 'Vitrification for Electron Microscopy',
+    (C.1) 'High Pressure Freezing',
+    (C.2) 'Plunge Vitrification',
+    (D) 'Focussed Ion Beam Milling',
+    (D.1) 'FIB Milled Lamella lift-out and remount',
+    (E) 'CryoET imaging assay',
+    (E.1) 'Image Motion Correction Process'
+    (E.2) 'Tomographic Alignment Process'
+    (F) 'Tomogram Reconstruction Process'
+    (G) 'TEM Tomogram Annotation Process'.
+    (H) other protocol steps, not listed above. 
   all protocol step codes: A, B, C, D, E, F, or G
   all entities:
-    (A) the biological sample, 
-    (B) the frozen biological sample, 
-    (C) the lamella, 
-    (D) the mounted sample, 
-    (E) the tilt series, 
-    (F) the tomogram, 
-    (G) the annotation set
+    (A) Processed Specimen, 
+    (B) TEM Grid, 
+    (C) Focussed Ion Beam Milled Lamella, 
+    (D) TEM Grid-mounted specimen, 
+    (E) TEM Tilt Series, 
+    (E.1) Aligned TEM Tilt Series, 
+    (F) TEM Tomogram
+    (G) TEM Tomogram Annotation Set
   dataset_publication_path: dataset.cross_references.dataset_publications
   metadata specs: 
     - name: sample_type
-      step: AB
+      step: A
       spec: > 
         List all different types of biological sample being imaged using CryoEM (i.e., any biological samples that were mounted on grids and subsequently imaged). Select values from the following list: cell, tissue, organoid, organ, whole organism, virus, micro-organism, other.
       path: dataset.sample_type 
@@ -142,76 +152,77 @@ cryoet:
         What is the type sample/gird preparation being developed? Choose from one of the following types: 'subtomogram averaging', 'tomography', 'helical', or 'singleParticle'. If you are unsure, please specify 'Unknown'.
       path: dataset.sample_preparation[instance_type]
     - name: sample_preparation_buffer_ph
-      step: AB
+      step: A
       spec: >
         What was the pH of the buffer used to store the sample being imaged? If you cannot find the pH used, respond 'Unknown'.
       path: dataset.sample_preparation[buffer_ph]
     - name: grid_vitrification_cryogen
-      step: AB
+      step: C
       spec: >
         What combination of gases acted as the medium used to vitrify the sample? Select any combination of the following: ETHANE, PROPANE, NITROGEN, OXYGEN, ARGON. Write the answer as a list. 
       path: dataset.sample_preparation[vitrification_cryogen_name]
     - name: sample_preparation_cryo_protectant
-      step: AB
+      step: ABC
       spec: >
         What cryo-protectant was used to prepare the sample for vitrification? If no cryo-protectant was used, respond 'None'.
       path: dataset.sample_preparation[cryo_protectant]
     - name: grid_model
-      step: C
+      step: B
       spec: >
         What model was used to prepare the grid for imaging? These models are specified as different types of UltrAuFoil, C-flat, Quantifoil, Homemade and include a short string like 'R 2/2' to denote the dimensions of holes. Records might be 'C-Flat R 2/2' or 'UltrAuFoil R 3/2' Please include all details as written in the paper. If you cannot find the model, respond 'Unknown'. 
       path: dataset.grid_preparation[model]
     - name: grid_material
-      step: C
+      step: B
       spec: >
         What metal or combination of metals was used to make the grid? Select from the following list of metals: COPPER, GOLD, RHODIUM, MOLYBDENUM, PALLADIUM. If a grid is made of more than one material, captialize the metals and separate them with a forward slash (e.g., 'COPPER/PALLADIUM'). The paper may use chemical symbols such as 'Cu' for copper and 'Au' for gold. 
       path: dataset.grid_preparation[material]
     - name: grid_mesh
-      step: C
+      step: B
       spec: >
         What is the mesh number of the grid used to prepare the sample for imaging? If you cannot find the mesh number, respond 'Unknown'.
       path: dataset.grid_preparation[mesh]
     - name: grid_support_topology
-      step: C
+      step: B
       spec: >
         What topology is used in the grid. Select from the following list: HOLEY, CONTINUOUS, HOLEY ARRAY, or LACEY. If the grid topology is not described, respond 'Unknown'.
       path: dataset.grid_preparation[support_film_film_topology]
     - name: grid_vit_ctemp
-      step: B
+      step: C
       spec: >
         What was the temperature of the grid during vitrification? Include the temperature scale used in the paper (e.g., Kelvin). If you cannot find the temperature, respond 'Unknown'.
       path: 
     - name: grid_vit_chumid
-      step: B
+      step: C
       spec: What was the humidity used in the grid chamber during vitrification? If you cannot find the humidity, respond 'Unknown'.
       path: 
     - name: organism_name
+      step: A
       spec: >
         If the biological sample was taken from an organism, provide the scientific name of the organism. If the biological sample is not from an organism, respond 'None'.
       path: dataset.organism.name 
     - name: tissue
-      step: AB
+      step: A
       spec: >
         If the sample being imaged originates from specified tissue from a multicellular animal, provide the name of the tissue? If the sample originates from another source, respond 'None'.
       path: dataset.tissue.name 
     - name: cell_type
-      step: AB
+      step: A
       spec: >
         If the biological sample described in the text is a cell or cell culture, what was the cell type, if known? If not known, respond 'Unknown'.
       path: dataset.cell_type.name
     - name: cell_strain
-      step: AB
+      step: A
       spec: >
         If the biological sample described in the text is a cell or cell culture, what was the cell strain, if known? If not known, respond 'Unknown'.
       path: dataset.cell_strain.name
     - name: cell_component
-      step: AB
+      step: A
       spec: >
         If the preparation or imaging process involves named subcellular structures (ribosomes, cellular nuclei, cell membranes, specific vesicles, etc), please list them here. If cellular subcomponents are not mentioned, respond 'None'.
       path: dataset.cell_component.name
 
 natural history studies:
-  notes: "This is based on collaborative work between CZI and NCATS. Approach is in development."
+  notes: "This is based on collaborative work between CZI and NCATS. This approach is in development."
   methodology: General Natural History Studies 
   method goal: study the timecourse of a disease to understand natural progression of disease pathology without intervention beyond current standard medical practice 
   metadata specs: 
@@ -242,3 +253,64 @@ natural history studies:
     - name: treatments_difference
       spec: >
         What differed between the treatments?
+
+rnaquarium:
+  notes: >
+    "This is based on collaborative work between CZI and BioHub. approach is under development."
+    1. What organism was studied?            
+    2. where was this study performed?
+    3. assign the answer to number 2 to a coarse grain geo location.
+    4. assign the answer to number 2 to a fine grain geo location?
+    5. what tissue was studied?
+    6. assign the answer to number 5 to a tissue in the 2023 tissue list.
+    7. what developmental stage were the fish in?
+    8. assign the answer to number 7 to a coarse grain dev stage.
+    9. assign the answer to number 7 to a zfin dev stage.
+    10. What year was this published?
+    11. Did they generate single cell RNA data?
+
+  methodology: RNAseq in Zebrafish 
+  method goal: Studies of RNA expression in Zebrafish in a variety of experimental conditions 
+  metadata specs: 
+    - name: organism_name
+      spec: > 
+        What organism was studied?
+    - name: tissue_name_text
+      spec: >
+        What tissue was studied?
+    - name: tissue_name_structured
+      spec: >
+        What tissue was studied? 
+        Provide a list of answers drawn from the following tissues: 
+        'aorta', 'blood', 'brain', 'caudal fin', 'cell line', 'endothelial', 'eye', 'fat', 
+        'full embryo', 'germline', 'gill', 'gonad', 'gut', 'head', 'heart', 'hypothalamus', 
+        'kidney marrow', 'kidney', 'liver', 'melanoma', 'muscle', 'neural crest', 'olfactory bulb', 
+        'pancreas', 'retina', 'skin', 'spinal cord', 'spleen', 'tail', 'telencephalon', 'testis', 
+        'thymocytes', 'thymus', 'trunk', 'tumor', or 'zebrafish neuromast hair cells'. 
+        If the tissue is not listed, respond 'Other'. 
+        If no tissue is mentioned, respond 'Unknown'.
+    - name: developmental_stage_text
+      spec: >
+        What developmental stage were the fish in? 
+        If fish are not used as an experimental subject, respond 'Not Applicable'. 
+        If fish are used, but the developmental stage is not mentioned, respond 'Unknown'.
+    - name: developmental_stage_coarse
+      spec: >
+        What developmental stage were the fish in? Select all applicable categories from the following list: 
+        'embryo', 'larval', 'juvenile', 'adult'.  
+        If fish are not used as an experimental subject, respond 'Not Applicable'. 
+        If fish are used, but the developmental stage is not mentioned, respond 'Unknown'.
+    - name: developmental_stage_fine
+      spec: >
+        What developmental stage were the fish in? Select all applicable categories from the following list:
+        'zygote', 'cleavage', 'blastula', 'gastrula', 'segmentation', 'pharyngula', 'hatching', 'larval', 'juvenile', 
+        'adult'embryo', 'larval', 'juvenile', 'adult'.  
+        If fish are not used as an experimental subject, respond 'Not Applicable'. 
+        If fish are used, but the developmental stage is not mentioned, respond 'Unknown'.
+    - name: is_scRNA_data
+      spec: >
+        Is single cell RNA / gene expression data used in this paper?
+        To answer this question, pay attention to the papers' methods and results. 
+        If methods of single cell isolation, RNA extraction, and sequencing are described it is likely that single cell RNA data was used.
+        Similarly, if methods such as scRNAseq, STRT-seq, MARS-seq or any derivates are used, it is likely that single cell RNA data was used.
+        Provide a True/False answer to this question. If you are unsure, respond 'Unknown'.

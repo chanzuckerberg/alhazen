@@ -1,0 +1,262 @@
+ID	CURIS	CORPUS_NAME	TERMS QUERY	NOTES
+2000	NCBITaxon:46125	Abiotrophia defectiva		abiotrophia defectiva	Human pathogen
+2002	NCBITaxon:85698	Achromobacter xylosoxidans		achromobacter xylosoxidans | achromobacter xylosoxydans | alcaligenes xylosoxydans	Human pathogen
+2003	NCBITaxon:470	Acinetobacter baumannii		acinetobacter baumannii	Opportunistic human pathogen
+2007	NCBITaxon:1993	Actinomadura madurae		actinomadura madurae	Opportunistic human pathogen
+2008	NCBITaxon:111805	Actinomadura pelletieri		actinomadura pelletieri	Opportunistic human pathogen
+2009	NCBITaxon:52769	Actinomyces gerencseriae		actinomyces gerencseriae	Opportunistic human pathogen
+2010	NCBITaxon:1659	Actinomyces israelii		actinomyces israelii	Opportunistic human pathogen
+2012	NCBITaxon:59505	Actinotigum schaalii		actinotigum schaalii	Human pathogen
+2013	NCBITaxon:119206	Aerococcus sanguinicola		aerococcus sanguinicola	Human pathogen
+2014	NCBITaxon:1376	Aerococcus urinae		aerococcus urinae	Human pathogen
+2015	NCBITaxon:644	Aeromonas caviae		aeromonas caviae	Human pathogen
+2016	NCBITaxon:648	Aeromonas hydrophila		aeromonas hydrophila	Human pathogen
+2018	NCBITaxon:654	Aeromonas veronii		aeromonas veronii	Human pathogen
+2019	NCBITaxon:714	Aggregatibacter actinomycetemcomitans		aggregatibacter actinomycetemcomitans	Human pathogen
+2020	NCBITaxon:732	Aggregatibacter aphrophilus		aggregatibacter aphrophilus	Human pathogen
+2022	NCBITaxon:358	Agrobacterium tumefaciens		agrobacterium tumefaciens	Opportunistic human pathogen
+2024	NCBITaxon:948	Anaplasma phagocytophilum		anaplasma phagocytophilum	Human pathogen
+2025	NCBITaxon:28264	Arcanobacterium haemolyticum		arcanibacterium haemolyticum | arcanobacterium haemolyticum	Human pathogen
+2027	NCBITaxon:28197	Arcobacter butzleri 		arcobacter butzleri 	Opportunistic human pathogen
+2031	NCBITaxon:1392	Bacillus anthracis		bacillus anthracis	Human pathogen
+2032	NCBITaxon:1393	Bacillus brevis		bacillus brevis	Human pathogen
+2033	NCBITaxon:1396	Bacillus cereus		bacillus cereus	Human pathogen
+2034	NCBITaxon:1398	Bacillus coagulans		bacillus coagulans	Human pathogen
+2036	NCBITaxon:1465	Bacillus laterosporus		bacillus laterosporus	Human pathogen
+2037	NCBITaxon:1402	Bacillus licheniformis		bacillus licheniformis	Human pathogen
+2046	NCBITaxon:774	Bartonella bacilliformis		bartonella bacilliformis	Human pathogen
+2047	NCBITaxon:56426	Bartonella clarridgeiae		bartonella clarridgeiae	Human pathogen
+2048	NCBITaxon:807	Bartonella elizabethae		bartonella elizabethae | bartonella saintelizabethsina | rochalimaea saintelizabethsina	Human pathogen
+2049	NCBITaxon:33045	Bartonella grahamii		bartonella grahamii	Human pathogen
+2050	NCBITaxon:38323	Bartonella henselae		bartonella henselae	Human pathogen
+2051	NCBITaxon:803	Bartonella quintana		bartonella quintana	Human pathogen
+2052	NCBITaxon:518	Bordetella bronchiseptica		bordetella bronchiseptica	Opportunistic human pathogen
+2053	NCBITaxon:519	Bordetella parapertussis		bordetella parapertussis	Human pathogen
+2054	NCBITaxon:520	Bordetella pertussis		bordetella pertussis	Human pathogen
+2055	NCBITaxon:139	Borrelia burgdorferi		borrelia burgdorferi	Human pathogen
+2056	NCBITaxon:40834	Borrelia duttonii		borrelia duttonii	Human pathogen
+2057	NCBITaxon:140	Borrelia hermsii		borrelia hermsii	Human pathogen
+2058	NCBITaxon:1674146	Borrelia mayonii		borrelia mayonii	Human pathogen
+2059	NCBITaxon:47466	Borrelia miyamotoi		borrelia miyamotoi	Human pathogen
+2060	NCBITaxon:141	Borrelia parkeri		borrelia parkeri	Human pathogen
+2061	NCBITaxon:44449	Borrelia recurrentis		borrelia recurrentis	Human pathogen
+2062	NCBITaxon:142	Borrelia turicatae		borrelia turicatae	Human pathogen
+2063	NCBITaxon:235	Brucella abortus		brucella abortus | brucella melitensis bv. abortus	Human pathogen
+2064	NCBITaxon:29459	Brucella canis		brucella canis	Human pathogen
+2066	NCBITaxon:29461	Brucella melitensis		brucella melitensis | brucella melitensis bv. suis	Human pathogen
+2070	NCBITaxon:36855	Brucella suis		brucella melitensis bv. canis | brucella suis	Human pathogen
+2071	NCBITaxon:95486	Burkholderia cenocepacia		burkholderia cenocepacia	Opportunistic human pathogen
+2072	NCBITaxon:292	Burkholderia cepacia		burkholderia cepacia | burkholderia cepacia genomovar i	Opportunistic human pathogen
+2075	NCBITaxon:13373	Burkholderia mallei		burkholderia mallei	Human pathogen
+2076	NCBITaxon:28450	Burkholderia pseudomallei		burkholderia pseudomallei	Human pathogen
+2079	NCBITaxon:195	Campylobacter coli		campylobacter coli	Human pathogen
+2080	NCBITaxon:200	Campylobacter curvus		campylobacter curvus	Human pathogen
+2081	NCBITaxon:196	Campylobacter fetus		campylobacter fetus	Human pathogen
+2082	NCBITaxon:197	Campylobacter jejuni		campylobacter jejuni	Human pathogen
+2083	NCBITaxon:201	Campylobacter lari		campylobacter lari	Human pathogen
+2085	NCBITaxon:2718	Cardiobacterium hominis		cardiobacterium hominis	Human pathogen
+2087	NCBITaxon:83558	Chlamydia pneumoniae		chlamydia pneumoniae	Human pathogen
+2088	NCBITaxon:83554	Chlamydia psittaci		chlamydia psittaci	Human pathogen
+2089	NCBITaxon:813	Chlamydia trachomatis		chlamydia trachomatis	Human pathogen
+2092	NCBITaxon:546	Citrobacter freundii 		citrobacter freundii 	Opportunistic human pathogen
+2095	NCBITaxon:1490	Clostridium bifermentans		clostridium bifermentans	Human pathogen
+2096	NCBITaxon:1491	Clostridium botulinum		clostridium botulinum	Human pathogen
+2097	NCBITaxon:1496	Clostridium difficile		clostridium difficile	Human pathogen
+2098	NCBITaxon:1502	Clostridium perfringens		clostridium perfringens	Human pathogen
+2099	NCBITaxon:1504	Clostridium septicum		clostridium septicum	Human pathogen
+2100	NCBITaxon:1513	Clostridium tetani		clostridium tetani	Human pathogen
+2101	NCBITaxon:1717	Corynebacterium diphtheriae		corynebacterium diphtheriae	Human pathogen
+2103	NCBITaxon:28264	Corynebacterium haemolyticum		arcanibacterium haemolyticum | corynebacterium haemolyticum	Human pathogen
+2104	NCBITaxon:38301	Corynebacterium minutissimum		corynebacterium minutissimum	Human pathogen
+2106	NCBITaxon:1661	Corynebacterium pyogenes		corynebacterium pyogenes	Opportunistic human pathogen
+2107	NCBITaxon:43770	Corynebacterium striatum		corynebacterium striatum	Opportunistic human pathogen
+2108	NCBITaxon:65058	Corynebacterium ulcerans		corynebacterium ulcerans	Opportunistic human pathogen
+2109	NCBITaxon:777	Coxiella burnetii		coxiella burnetii	Human pathogen
+2110	NCBITaxon:28141	Cronobacter sakazakii		cronobacter sakazakii	Opportunistic human pathogen
+2111	NCBITaxon:413502	Cronobacter turicensis		cronobacter turicensis	Opportunistic human pathogen
+2117	NCBITaxon:636	Edwardsiella tarda		edwardsiella tarda	Opportunistic human pathogen
+2118	NCBITaxon:945	Ehrlichia chaffeensis		ehrlichia chaffeensis	Human pathogen
+2119	NCBITaxon:947	Ehrlichia ewingii		ehrlichia ewingii	Human pathogen
+2120	NCBITaxon:35795	Ehrlichia muris		ehrlichia muris	Human pathogen
+2122	NCBITaxon:539	Eikenella corrodens		eikenella corrodens	Opportunistic human pathogen
+2123	NCBITaxon:1117645	Elizabethkingia anophelis		elizabethkingia anophelis	Human pathogen
+2124	NCBITaxon:238	Elizabethkingia meningoseptica		elizabethkingia meningoseptica	Human pathogen
+2125	NCBITaxon:550	Enterobacter aerogenes		enterobacter aerogenes	Human pathogen
+2126	NCBITaxon:548	Enterobacter cloacae		enterobacter cloacae	Human pathogen
+2127	NCBITaxon:33945	Enterococcus avium		enterococcus avium	Opportunistic human pathogen
+2129	NCBITaxon:1351	Enterococcus faecalis		enterococcus faecalis	Human pathogen
+2130	NCBITaxon:1352	Enterococcus faecium		enterococcus faecium	Human pathogen
+2131	NCBITaxon:1353	Enterococcus gallinarum		enterococcus gallinarum	Opportunistic human pathogen
+2134	NCBITaxon:1648	Erysipelothrix rhusiopathiae		erysipelothrix rhusiopathiae	Human pathogen
+2135	NCBITaxon:562	Escherichia coli		escherichia coli | shigella coli	Human pathogen
+2136	NCBITaxon:183192	Escherichia coli O157:H		escherichia coli o157:h	Human pathogen
+2139	NCBITaxon:447	Fluoribacter bozemanae		fluoribacter bozemanae	Human pathogen
+2140	NCBITaxon:263	Francisella tularensis		francisella tularensis	Human pathogen
+2141	NCBITaxon:	Francisella tularensis (Type B)		francisella tularensis & type b	Human pathogen
+2142	NCBITaxon:859	Fusobacterium necrophorum		fusibacterium necrophorum | fusobacterium necrophorum	Human pathogen
+2143	NCBITaxon:851	Fusobacterium nucleatum		fusibacterium nucleatum | fusobacterium nucleatum	Human pathogen
+2144	NCBITaxon:2702	Gardnerella vaginalis		gardnerella vaginalis	Human pathogen
+2146	NCBITaxon:197575	Haemophilus aegyptius		haemophilus aegyptius	Human pathogen
+2147	NCBITaxon:730	Haemophilus ducereyi		haemophilus ducereyi	Human pathogen
+2148	NCBITaxon:727	Haemophilus influenzae		haemophilus influenzae	Human pathogen
+2149	NCBITaxon:729	Haemophilus parainfluenzae		haemophilus parainfluenzae	Human pathogen
+2152	NCBITaxon:210	Helicobacter pylori		helicobacter pylori	Human pathogen
+2153	NCBITaxon:502	Kingella dentrificans		kingella dentrificans	Human pathogen
+2154	NCBITaxon:13276	Kingella indologenes		kingella indologenes	Human pathogen
+2155	NCBITaxon:504	Kingella kingae		kingella kingae | kingella kingii	Human pathogen
+2156	NCBITaxon:39824	Klebsiella granulomatis		klebsiella granulomatis	Human pathogen
+2157	NCBITaxon:571	Klebsiella oxytoca		klebsiella oxytoca	Opportunistic human pathogen
+2158	NCBITaxon:573	Klebsiella pneumoniae		klebsiella pneumoniae	Human pathogen
+2164	NCBITaxon:451	Legionella micdadei		legionella micdadei	Human pathogen
+2165	NCBITaxon:446	Legionella pneumophila		legionella pneumophila	Human pathogen
+2166	NCBITaxon:100053	Leptospira alexanderi		leptospira alexanderi	Human pathogen
+2167	NCBITaxon:28452	Leptospira alstonii		leptospira alstonii	Human pathogen
+2168	NCBITaxon:174	Leptospira borgpetersenii		leptospira borgpetersenii	Human pathogen
+2169	NCBITaxon:173	Leptospira interrogans		leptospira interrogans	Human pathogen
+2170	NCBITaxon:29507	Leptospira kirschneri		leptospira kirschneri	Human pathogen
+2171	NCBITaxon:408139	Leptospira kmetyi		leptospira kmetyi	Human pathogen
+2172	NCBITaxon:1137606	Leptospira mayottensis		leptospira mayottensis	Human pathogen
+2173	NCBITaxon:28182	Leptospira noguchii		leptospira noguchii	Human pathogen
+2174	NCBITaxon:28183	Leptospira santarosai		leptospira santarosai	Human pathogen
+2175	NCBITaxon:28184	Leptospira weilii		leptospira weilii	Human pathogen
+2178	NCBITaxon:1639	Listeria monocytogenes		listeria monocytogenes	Human pathogen
+2180	NCBITaxon:28227	Malacoplasma penetrans		malacoplasma penetrans	Human pathogen
+2181	NCBITaxon:408	Methylorubrum extorquens		methylorubrum extorquens	Opportunistic human pathogen
+2184	NCBITaxon:480	Moraxella catarrhalis		moraxella catarrhalis	Human pathogen
+2185	NCBITaxon:477	Moraxella lacunata		moraxella lacunata	Human pathogen
+2186	NCBITaxon:478	Moraxella nonliquefaciens		moraxella nonliquefaciens	Human pathogen
+2187	NCBITaxon:582	Morganella morganii		morganella morganii	Human pathogen
+2189	NCBITaxon:36809	Mycobacterium abscessus		mycobacterium abscessus	Human pathogen
+2190	NCBITaxon:33894	Mycobacterium africanum		mycobacterium africanum	Human pathogen
+2191	NCBITaxon:1764	Mycobacterium avium		mycobacterium avium	Opportunistic human pathogen
+2192	NCBITaxon:1765	Mycobacterium bovis		mycobacterium bovis	Human pathogen
+2194	NCBITaxon:1774	Mycobacterium chelonae		mycobacterium chelonae	Opportunistic human pathogen
+2196	NCBITaxon:1766	Mycobacterium fortuitum		mycobacterium fortuitum	Human pathogen
+2197	NCBITaxon:1767	Mycobacterium intracellulare		mycobacterium intracellulare	Opportunistic human pathogen
+2198	NCBITaxon:1768	Mycobacterium kansasii		mycobacterium kansasii	Opportunistic human pathogen
+2199	NCBITaxon:1769	Mycobacterium leprae		mycobacterium leprae	Human pathogen
+2200	NCBITaxon:480418	Mycobacterium lepromatosis		mycobacterium lepromatosis	Human pathogen
+2202	NCBITaxon:1780	Mycobacterium malmoense		mycobacterium malmoense	Human pathogen
+2203	NCBITaxon:1781	Mycobacterium marinum		mycobacterium marinum	Human pathogen
+2204	NCBITaxon:1806	Mycobacterium microti		mycobacterium microti	Human pathogen
+2205	NCBITaxon:1770	Mycobacterium paratuberculosis		mycobacterium avium paratuberculosis | mycobacterium paratuberculosis	Human pathogen
+2207	NCBITaxon:1783	Mycobacterium scrofulaceum		mycobacterium scrofulaceum	Opportunistic human pathogen
+2208	NCBITaxon:1784	Mycobacterium simiae		mycobacterium simiae	Human pathogen
+2209	NCBITaxon:1772	Mycobacterium smegmatis		mycobacterium smegmatis	Opportunistic human pathogen
+2210	NCBITaxon:1787	Mycobacterium szulgai		mycobacterium szulgai	Opportunistic human pathogen
+2211	NCBITaxon:1788	Mycobacterium terrae		mycobacterium terrae	Human pathogen
+2212	NCBITaxon:1773	Mycobacterium tuberculosis		mycobacterium tuberculosis	Human pathogen
+2213	NCBITaxon:1809	Mycobacterium ulcerans		mycobacterium ulcerans	Human pathogen
+2214	NCBITaxon:59750	Mycobacterium wolinskyi		mycobacterium wolinskyi	Human pathogen
+2215	NCBITaxon:1789	Mycobacterium xenopi		mycobacterium xenopi	Human pathogen
+2216	NCBITaxon:2097	Mycoplasma genitalium		mycoplasma genitalium	Human pathogen
+2217	NCBITaxon:2098	Mycoplasma hominis		mycoplasma hominis	Human pathogen
+2219	NCBITaxon:2104	Mycoplasma pneumoniae		mycoplasma pneumoniae	Human pathogen
+2220	NCBITaxon:2124	Mycoplasma salivarium		mycoplasma salivarium	Human pathogen
+2223	NCBITaxon:55603	Mycoplasmopsis caviae		mycoplasmopsis caviae	Opportunistic human pathogen
+2224	NCBITaxon:2115	Mycoplasmopsis fermentans		mycoplasmopsis fermentans	Opportunistic human pathogen
+2225	NCBITaxon:485	Neisseria gonorrhoeae		neisseria gonorrhoeae	Human pathogen
+2226	NCBITaxon:487	Neisseria meningitidis		neisseria meningitidis	Human pathogen
+2227	NCBITaxon:951	Neorickettsia sennetsu		neorickettsia sennetsu	Human pathogen
+2228	NCBITaxon:1824	Nocardia asteroides		nocardia asteroides	Opportunistic human pathogen
+2229	NCBITaxon:37326	Nocardia brasiliensis		nocardia brasilensis | nocardia brasiliensis	Human pathogen
+2230	NCBITaxon:37329	Nocardia farcinica		nocardia farcinica	Opportunistic human pathogen
+2231	NCBITaxon:37330	Nocardia nova		nocardia nova	Opportunistic human pathogen
+2232	NCBITaxon:1823	Nocardia otitidiscaviarum		nocardia otitidiscaviarum	Opportunistic human pathogen
+2233	NCBITaxon:784	Orientia tsutsugamushi		orientia tsutsugamushi	Human pathogen
+2237	NCBITaxon:747	Pasteurella multocida		pasteurella multocida	Human pathogen
+2242	NCBITaxon:1261	Peptostreptococcus anaerobius		peptostreptococcus anaerobius	Human pathogen
+2243	NCBITaxon:1258	Peptostreptococcus asaccharolyticus		peptostreptococcus asaccharolyticus	Human pathogen
+2244	NCBITaxon:1260	Peptostreptococcus magnus		peptostreptococcus magnus	Human pathogen
+2245	NCBITaxon:33033	Peptostreptococcus micros		peptostreptococcus micros	Human pathogen
+2246	NCBITaxon:33034	Peptostreptococcus prevotii		peptostreptococcus prevotii	Human pathogen
+2247	NCBITaxon:38293	Photobacterium damselae		photobacterium damselae	Opportunistic human pathogen
+2249	NCBITaxon:703	Plesiomonas shigelloides		plesiomonas shigelloides	Human pathogen
+2251	NCBITaxon:837	Porphyromonas gingivalis		porphyromonas gingivalis	Human pathogen
+2252	NCBITaxon:28125	Prevotella bivia		prevotella bivia	Human pathogen
+2253	NCBITaxon:28131	Prevotella intermedia		prevotella intermedia	Human pathogen
+2254	NCBITaxon:28132	Prevotella melaninogenica		prevotella melaninogenica	Human pathogen
+2255	NCBITaxon:584	Proteus mirabalis		proteus mirabalis	Human pathogen
+2256	NCBITaxon:102862	Proteus penneri		proteus penneri	Opportunistic human pathogen
+2257	NCBITaxon:585	Proteus vulgaris		proteus vulgaris	Opportunistic human pathogen
+2258	NCBITaxon:126385	Providencia alcalifaciens		providencia alcalifaciens	Human pathogen
+2259	NCBITaxon:587	Providencia rettgeri		providencia rettgeri	Opportunistic human pathogen
+2260	NCBITaxon:287	Pseudomonas aeruginosa		pseudomonas aeruginosa	Opportunistic human pathogen
+2262	NCBITaxon:294	Pseudomonas fluorescens		pseudomonas fluorescens	Opportunistic human pathogen
+2266	NCBITaxon:303	Pseudomonas putida		pseudomonas putida	Opportunistic human pathogen
+2270	NCBITaxon:329	Ralstonia pickettii		ralstonia pickettii	Opportunistic human pathogen
+2273	NCBITaxon:43767	Rhodococcus equi		rhodococcus equi	Opportunistic human pathogen
+2274	NCBITaxon:35788	Rickettsia africae		rickettsia africae	Human pathogen
+2275	NCBITaxon:786	Rickettsia akari		rickettsia akari	Human pathogen
+2276	NCBITaxon:787	Rickettsia australis		rickettsia australis	Human pathogen
+2277	NCBITaxon:788	Rickettsia canada		rickettsia canada	Human pathogen
+2278	NCBITaxon:781	Rickettsia conorii		rickettsia conorii	Human pathogen
+2279	NCBITaxon:42862	Rickettsia felis		rickettsia felis	Human pathogen
+2280	NCBITaxon:35789	Rickettsia helvetica		rickettsia helvetica	Human pathogen
+2281	NCBITaxon:37816	Rickettsia honei		rickettsia honei	Human pathogen
+2282	NCBITaxon:35790	Rickettsia japonica		rickettsia japonica	Human pathogen
+2283	NCBITaxon:33991	Rickettsia montanensis		rickettsia montanensis	Human pathogen
+2285	NCBITaxon:35792	Rickettsia parkeri		rickettsia parkeri	Human pathogen
+2286	NCBITaxon:782	Rickettsia prowazekii		rickettsia prowazekii	Human pathogen
+2289	NCBITaxon:783	Rickettsia rickettsii		rickettsia rickettsii	Human pathogen
+2291	NCBITaxon:35793	Rickettsia sibirica		rickettsia sibirica	Human pathogen
+2293	NCBITaxon:784	Rickettsia tsutsugamushi		rickettsia tsutsugamushi	Human pathogen
+2294	NCBITaxon:785	Rickettsia typhi		rickettsia typhi	Human pathogen
+2298	NCBITaxon:2047	Rothia dentocariosa		rothia denticariosa | rothia dentocariosa	Opportunistic human pathogen
+2300	NCBITaxon:54736	Salmonella bongori		salmonella bongori	Human pathogen
+2301	NCBITaxon:28901	Salmonella enterica		salmonella enterica	Human pathogen
+2302	NCBITaxon:54388	Salmonella paratyphi A		salmonella paratyphi a	Human pathogen
+2303	NCBITaxon:57045	Salmonella paratyphi B		salmonella paratyphi b	Opportunistic human pathogen
+2304	NCBITaxon:57046	Salmonella paratyphi C		salmonella paratyphi c	Opportunistic human pathogen
+2305	NCBITaxon:622	Salmonella typhi		escherichia/shigella dysenteriae | salmonella typhi	Human pathogen
+2306	NCBITaxon:90371	Salmonella typhimurium		salmonella typhimurium	Human pathogen
+2307	NCBITaxon:615	Serratia marcescens		serratia marcescens	Opportunistic human pathogen
+2308	NCBITaxon:38313	Shewanella algae		shewanella algae	Human pathogen
+2309	NCBITaxon:623	Shigella boydii		escherichia flexneri | escherichia/shigella flexneri | shigella boydii	Human pathogen
+2310	NCBITaxon:621	Shigella dysenteriae		shigella dysenteriae	Human pathogen
+2311	NCBITaxon:624	Shigella flexneri		shigella flexneri	Human pathogen
+2312	NCBITaxon:1280	Shigella sonnei		shigella sonnei	Human pathogen
+2313	NCBITaxon:n/a	Spirillum minus		spirillum minus	Human pathogen
+2315	NCBITaxon:29388	Staphylococcus aureus		staphylococcus aureus	Human pathogen
+2316	NCBITaxon:1282	Staphylococcus capitus		staphylococcus capitus	Human pathogen
+2317	NCBITaxon:1283	Staphylococcus epidermidis		staphylococcus epidermidis	Human pathogen
+2318	NCBITaxon:33028	Staphylococcus haemolyticus		staphylococcus haemolyticus	Human pathogen
+2319	NCBITaxon:28035	Staphylococcus lugdunensis		staphylococcus lugdunensis	Opportunistic human pathogen
+2320	NCBITaxon:283734	Staphylococcus pseudintermedius		staphylococcus pseudintermedius	Opportunistic human pathogen
+2321	NCBITaxon:29385	Staphylococcus saccharolyticus		staphylococcus saccharolyticus	Human pathogen
+2322	NCBITaxon:34105	Staphylococcus saprophyticus		staphylococcus saprophyticus	Human pathogen
+2323	NCBITaxon:40324	Stenotrophomonas maltophilia		stenotrophomonas maltophilia	Opportunistic human pathogen
+2324	NCBITaxon:1311	Streptobacillus moniliformis		streptobacillus moniliformis	Human pathogen
+2325	NCBITaxon:1328	Streptococcus agalactiae		streptococcus agalactiae	Human pathogen
+2326	NCBITaxon:1335	Streptococcus anginosus		streptococcus anginosus	Human pathogen
+2328	NCBITaxon:1302	Streptococcus bovis		streptococcus bovis	Human pathogen
+2329	NCBITaxon:1333	Streptococcus criceti		streptococcus criceti	Human pathogen
+2330	NCBITaxon:1334	Streptococcus dysgalactiaeequisimilis		streptococcus dysgalactiaeequisimilis	Opportunistic human pathogen
+2331	NCBITaxon:1336	Streptococcus equi		streptococcus equi	Opportunistic human pathogen
+2336	NCBITaxon:1338	Streptococcus gordonii		streptococcus gordonii	Human pathogen
+2337	NCBITaxon:1346	Streptococcus iniae		streptococcus iniae	Opportunistic human pathogen
+2340	NCBITaxon:28037	Streptococcus mitis		streptococcus mitis	Human pathogen
+2341	NCBITaxon:1309	Streptococcus mutans		streptococcus mutans	Human pathogen
+2342	NCBITaxon:1303	Streptococcus oralis		streptococcus oralis	Opportunistic human pathogen
+2344	NCBITaxon:1313	Streptococcus pneumoniae		streptococcus pneumoniae	Human pathogen
+2345	NCBITaxon:1314	Streptococcus pyogenes		streptococcus pyogenes	Human pathogen
+2347	NCBITaxon:1305	Streptococcus sanguinis		streptococcus sanguinis	Human pathogen
+2348	NCBITaxon:1310	Streptococcus sobrinus		streptococcus sobrinus	Human pathogen
+2349	NCBITaxon:1307	Streptococcus suis		streptococcus suis	Human pathogen
+2353	NCBITaxon:28112	Tannerella forsythensis		tannerella forsythensis	Human pathogen
+2354	NCBITaxon:n/a	Treponema carateum		treponema carateum	Human pathogen
+2355	NCBITaxon:158	Treponema denticola		treponema denticola	Human pathogen
+2356	NCBITaxon:159	Treponema hyodysenteriae		treponema hyodysenteriae	Human pathogen
+2357	NCBITaxon:160	Treponema pallidum		treponema pallidum	Human pathogen
+2358	NCBITaxon:168	Treponema pertenue		treponema pallidum pertenue | treponema pertenue	Human pathogen
+2359	NCBITaxon:69710	Treponema vincentii		treponema vincentii	Human pathogen
+2360	NCBITaxon:2039	Tropheryma whippelii		tropheryma whippelii	Human pathogen
+2361	NCBITaxon:134821	Ureaplasma parvum		ureaplasma parvum	Human pathogen
+2362	NCBITaxon:2130	Ureaplasma urealyticum		ureaplasma urealyticum	Human pathogen
+2364	NCBITaxon:663	Vibrio alginolyticus		vibrio alginolyticus	Human pathogen
+2367	NCBITaxon:666	Vibrio cholerae		vibrio cholerae	Human pathogen
+2370	NCBITaxon:670	Vibrio parahaemolyticus		vibrio parahaemolyticus	Human pathogen
+2372	NCBITaxon:672	Vibrio vulnificus		vibrio vulnificus	Human pathogen
+2384	NCBITaxon:630	Yersinia enterocolitica		yersinia enterocolitica	Human pathogen
+2385	NCBITaxon:632	Yersinia pestis		yersinia pestis	Human pathogen
+2386	NCBITaxon:633	Yersinia pseudotuberculosis		yersinia pseudotuberculosis	Human pathogen

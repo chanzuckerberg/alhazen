@@ -8,15 +8,12 @@ website:
       - docnb2_architecture.ipynb
       - section: "Tech Elements"
         contents:
-          - 35_ceifns_db.ipynb
-          - 20_toolkit.ipynb
-          - 21_basic_tools.ipynb
-          - 22_metadata_extraction_tool.ipynb
-          - 24_PaperQA_emulation_tool.ipynb
-          - 36_search_engine_eutils.ipynb
-          - 37_jats_text_extractor.ipynb
-          - 37_pdf_text_extractor.ipynb
-          - 36_web_robot.ipynb
+          - section: "Agents"
+            contents: agents/*
+          - section: "Tools"
+            contents: tools/*
+          - section: "Utilities"
+            contents: utils/*
       - section: "Example Notebooks"
         contents:
           - section: "Metadata Extraction"

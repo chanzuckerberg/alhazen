@@ -1,0 +1,11 @@
+---
+order: 1
+title: Utilities
+listing:
+  fields: [title, description]
+  type: table
+  sort-ui: false
+  filter-ui: false
+---
+
+The substance of much of the functionality supplied by Alhazen is provided by utility programs. These are the functional elements that are brought together and executed by tools. The consist of inputs and outputs to the local database, downloading papers, querying external databases and other functions. 
