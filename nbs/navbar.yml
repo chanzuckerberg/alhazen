@@ -1,0 +1,20 @@
+website:
+  navbar:
+    background: primary
+    search: true
+    collapse-below: lg
+    left:
+      - text: "Get Started"
+        href: index.ipynb#install-dependencies
+      - text: "Use Cases"
+        href: docnb1_use_cases.ipynb
+      - text: "Platform Architecture"
+        href: docnb2_architecture.ipynb
+      - text: "Help"
+        menu:
+          - text: "Report an Issue"
+            icon: bug
+            href: https://github.com/chanzuckerberg/alhazen/issues
+    right:
+      - icon: github
+        href: "https://github.com/chanzuckerberg/alhazen"

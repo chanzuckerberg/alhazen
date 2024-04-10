@@ -1,0 +1,11 @@
+---
+order: 1
+title: Tools
+listing:
+  fields: [title, description]
+  type: table
+  sort-ui: false
+  filter-ui: false
+---
+
+Alhazen has a library of tools, programs with simple call / return signatures that agents call to solve problems. 

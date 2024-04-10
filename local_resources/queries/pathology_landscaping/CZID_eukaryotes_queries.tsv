@@ -1,0 +1,71 @@
+ID	CURIS	CORPUS_NAME	TERMS QUERY	NOTES
+3000	NCBITaxon:42458	Absidia corymbifera		absidia corymbifera | lichtheimia corymbifera	Fungus/Human pathogen
+3011	NCBITaxon:5599	Alternaria alternata		alternaria alternata	Fungus/Opportunistic human pathogen
+3012	NCBITaxon:29001	Alternaria brassicicola		alternaria brassicicola	Fungus/Opportunistic human pathogen
+3023	NCBITaxon:723287	Anncaliia algerae		anncaliia algerae	Fungus/Human pathogen
+3024	NCBITaxon:760013	Apophysomyces variabilis		apophysomyces variabilis	Fungus/Human pathogen
+3030	NCBITaxon:5059	Aspergillus flavus		aspergillus flavus	Fungus/Human pathogen
+3031	NCBITaxon:746128	Aspergillus fumigatus		aspergillus fumigatus	Fungus/Human pathogen
+3032	NCBITaxon:162425	Aspergillus nidulans		aspergillus nidulans	Fungus/Human pathogen
+3033	NCBITaxon:5061	Aspergillus niger		aspergillus niger	Fungus/Human pathogen
+3034	NCBITaxon:33178	Aspergillus terreus		aspergillus terreus	Fungus/Human pathogen
+3044	NCBITaxon:34480	Basidiobolus ranarum		basidiobolus ranarum	Fungus/Human pathogen
+3049	NCBITaxon:33194	Bipolaris		bipolaris	Fungus/Human pathogen
+3056	NCBITaxon:5039	Blastomyces dermatitidis		blastomyces dermatitidis	Fungus/Human pathogen
+3057	NCBITaxon:1681229	Blastomyces gilchristii		blastomyces gilchristii	Fungus/Human pathogen
+3058	NCBITaxon:465036	Blastomyces helicus		blastomyces helicus	Fungus/Human pathogen
+3068	NCBITaxon:5476	Candida albicans		candida albicans	Fungus/Human pathogen
+3069	NCBITaxon:498019	Candida auris		candida auris	Fungus/Human pathogen
+3070	NCBITaxon:42374	Candida dubliniensis		candida dubliniensis	Fungus/Human pathogen
+3071	NCBITaxon:5478	Candida glabrata		candida glabrata | nakaseomyces glabratus	Fungus/Human pathogen
+3072	NCBITaxon:4909	Candida krusei		candida krusei | pichia kudriavzevii	Fungus/Human pathogen
+3073	NCBITaxon:5480	Candida parapsilosis		candida parapsilosis	Fungus/Human pathogen
+3074	NCBITaxon:5482	Candida tropicalis		candida tropicalis	Fungus/Human pathogen
+3088	NCBITaxon:89940	Cladophialophora bantiana		cladophialophora bantiana	Fungus/Human pathogen
+3089	NCBITaxon:82106	Cladophialophora boppii		cladophialophora boppii	Fungus/Human pathogen
+3090	NCBITaxon:86049	Cladophialophora carrionii		cladophialophora carrionii	Fungus/Human pathogen
+3093	NCBITaxon:36911	Clavispora lusitaniae		clavispora imtechensis | clavispora lusitaniae	Fungus/Human pathogen
+3097	NCBITaxon:5501	Coccidioides immitis		coccidioides immitis	Fungus/Human pathogen
+3098	NCBITaxon:199306	Coccidioides posadasii		coccidioides posadasii	Fungus/Human pathogen
+3101	NCBITaxon:27358	Colletotrichum coccodes		colletotrichum coccodes	Fungus/Opportunistic human pathogen
+3102	NCBITaxon:474922	Colletotrichum gloeosporioides		colletotrichum gloeosporioides	Fungus/Opportunistic human pathogen
+3110	NCBITaxon:34488	Conidiobolus coronatus		conidiobolus coronatus	Fungus/Human pathogen
+3111	NCBITaxon:90249	Conidiobolus incongruus		conidiobolus incongruus	Fungus/Human pathogen
+3114	NCBITaxon:37769	Cryptococcus gattii		cryptococcus gattii | cryptococcus gattii vgi	Fungus/Human pathogen
+3115	NCBITaxon:5207	Cryptococcus neoformans		cryptococcus neoformans	Fungus/Human pathogen
+3118	NCBITaxon:5503	Curvularia lunata		curvularia lunata	Fungus/Human pathogen
+3138	NCBITaxon:461172	Edenia gomezpompae		edenia gomezpompae	Fungus/Human pathogen
+3139	NCBITaxon:73230	Emmonsia crescens		emergomyces crescens | emmonsia crescens	Fungus/Human pathogen
+3149	NCBITaxon:34391	Epidermophyton floccosum		epidermophyton floccosum	Fungus/Human pathogen
+3150	NCBITaxon:5970	Exophiala dermatitidis		exophiala dermatitidis	Fungus/Human pathogen
+3156	NCBITaxon:86057	Fonsecaea compacta		fonsecaea compacta	Fungus/Human pathogen
+3157	NCBITaxon:40355	Fonsecaea pedrosoi		fonsecaea pedrosoi	Fungus/Human pathogen
+3160	NCBITaxon:5127	Fusarium fujikuroi		fusarium fujikuroi	Fungus/Opportunistic human pathogen
+3162	NCBITaxon:5507	Fusarium oxysporum		fusarium oxysporum	Fungus/Opportunistic human pathogen
+3165	NCBITaxon:169388	Fusarium solani		fusarium solani	Fungus/Human pathogen
+3181	NCBITaxon:5037	Histoplasma capsulatum		histoplasma capsulatum	Fungus/Human pathogen
+3205	NCBITaxon:42458	Lichtheimia corymbifera		lichtheimia corymbifera	Fungus/Human pathogen
+3206	NCBITaxon:688394	Lichtheimia ramosa		lichtheimia ramosa	Fungus/Human pathogen
+3211	NCBITaxon:1489895	Madurella grisea		madurella grisea | trematosphaeria grisea	Fungus/Human pathogen
+3212	NCBITaxon:100816	Madurella mycetomatis		madurella mycetomatis	Fungus/Human pathogen
+3225	NCBITaxon:	Microsporidia		microsporidia	Fungus/Opportunistic human pathogen
+3228	NCBITaxon:36080	Mucor circinelloides		mucor circinelloides	Fungus/Human pathogen
+3241	NCBITaxon:121759	Paracoccidioides brasiliensis		paracoccidioides brasiliensis	Fungus/Human pathogen
+3258	NCBITaxon:37727	Talaromyces marneffei		talaromyces marneffei	Fungus/Opportunistic human pathogen
+3259	NCBITaxon:39412	Phialophora verrucosa		phialophora verrucosa	Fungus/Human pathogen
+3272	NCBITaxon:5597	Pseudallescheria boydii		pseudallescheria boydii | scedosporium boydii	Fungus/Opportunistic human pathogen
+3284	NCBITaxon:86056	Rhinocladiella mackenziei		rhinocladiella mackenziei	Fungus/Human pathogen
+3286	NCBITaxon:4840	Rhizomucor pusillus		rhizomucor pusillus	Fungus/Human pathogen
+3287	NCBITaxon:58291	Rhizopus microsporus		rhizopus microsporus	Fungus/Human pathogen
+3288	NCBITaxon:64495	Rhizopus oryzae		rhizopus arrhizus | rhizopus oryzae	Fungus/Human pathogen
+3291	NCBITaxon:4932	Saccharomyces cerevisiae		saccharomyces cerevisiae	Fungus/Opportunistic human pathogen
+3292	NCBITaxon:931868	Saksenaea erythrospora		saksenaea erythrospora	Fungus/Human pathogen
+3293	NCBITaxon:90258	Saksenaea vasiformis		saksenaea vasiformis	Fungus/Human pathogen
+3299	NCBITaxon:563466	Scedosporium apiospermum		scedosporium apiospermum	Fungus/Human pathogen
+3300	NCBITaxon:41688	Scedosporium prolificans		lomentospora prolificans | scedosporium prolificans	Fungus/Human pathogen
+3309	NCBITaxon:561152	Scopulariopsis brevicaulis		scopulariopsis brevicaulis	Fungus/Human pathogen
+3313	NCBITaxon:29908	Sporothrix schenckii		sporothrix schenckii	Fungus/Human pathogen
+3323	NCBITaxon:72359	Trachipleistophora hominis		trachipleistophora hominis	Fungus/Human pathogen
+3332	NCBITaxon:5551	Trichophyton rubrum		trichophyton rubrum	Fungus/Human pathogen
+3339	NCBITaxon:307626	Tubulinosema acridophagus		tubulinosema acridophagus	Fungus/Human pathogen
+3347	NCBITaxon:42399	Vittaforma corneae		vittaforma corneae	Fungus/Human pathogen

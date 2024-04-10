@@ -1,0 +1,18 @@
+ID	CORPUS_NAME	QUERY
+900		Chromatin accessibility		ATAC-seq 	
+901		Chromatin immunoprecipitation		ChIP-seq	
+902		Chromosome conformation capture		chromosome conformation capture | Hi-C	
+903		illumina		illumina | MiSeq | MiniSeq | HiSeq | iSeq | NextSeq | NovaSeq | Genome Analyzer IIX	
+904		Metagenome Sequencing		Metagenome Sequencing | metagenomics | Shallow Shotgun Metagenome Sequencing | metagenomic sequencing | (metagenomic sequencing & spiked primer enrichment)	
+905		nanopore		nanopore | long read mechanism | GridION | PromethION | (minION & sequenc)| oxford nanopore technology	
+906		Other sequencing platforms		Roche GS FLX Titanium XL | GS FLX Titanium | Life Technologies SOLiD | Roche 454 | Roche GS Junior System | HeliScope | ion torrent	
+907		PacBio		PacBio | Sequel long-read systems | SMRT cell | Revio system | RS Sequencer | Revio long-read system | Sequel system | Pacific Biosciences | Sequel II system | HIFI SEQUENCING | ONSO SYSTEM | Onso short-read system | RS II Sequencer | Sequel IIe system 	
+908		rRNA sequencing		rRNA sequencing | 18S RRNA Sequencing | 16S RRNA Sequencing | ITS2 RRNA Sequencing | Archael V4-V5 RRNA Sequencing	
+909		Targeted sequencing		Targeted sequencing | molecular inversion probe | (metagenomic sequencing & spiked primer enrichment) | hybridization capture | amplicon sequencing | sequence capture	
+910		Transcriptome sequencing		transcriptome sequencing | RNA-seq | Whole transcriptome sequencing | mRNA sequencing | RNA sequencing	
+911		Wastewater sequencing		Wastewater & (sequencing | sequence)	
+912		Whole exome sequencing		Whole exome sequencing 	
+913		Broad NGS		Next-generation sequencing | Next generation sequencing | High-Throughput DNA Sequencing | High-Throughput RNA Sequencing | Deep Sequencing | second-generation sequencing | massive parallel sequencing | massively parallel sequencing	
+914		Whole Genome Sequencing		Whole genome sequencing | amplicon sequencing | (amplicon & sequenc)	
+915		methylation sequencing		methyl-seq | methylation sequencing	
+916		Chromatin immunoprecipitation		ChIP-seq	
