@@ -39,7 +39,6 @@
   {
     "listing": "/agents/index.html",
     "items": [
-      "/agents/gradio_agent.html",
       "/agents/agent.html"
     ]
   },

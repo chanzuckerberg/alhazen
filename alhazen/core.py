@@ -157,12 +157,14 @@ def lookup_chat_models() -> Dict[str, Any]:
     """Utility function to provide access to all available chat models."""
 
     llm_ollama_mixtral = ChatOllama(model='mixtral:instruct') 
+    llm_ollama_llama3 = ChatOllama(model='llama3:70b') 
     
     llm_gpt4_1106 = ChatOpenAI(model='gpt-4-1106-preview') 
     llm_gpt35 = ChatOpenAI(model='gpt-4-1106-preview') 
     llm_gemini10 = ChatVertexAI(model_name="gemini-1.0-pro", convert_system_message_to_human=True)
     
-    chat_models = {        
+    chat_models = {
+        "ollama_llama3": llm_ollama_llama3, 
         "ollama_mixtral": llm_ollama_mixtral,
         "gpt4.0": llm_gpt4_1106,
         'gpt3.5': llm_gpt35,

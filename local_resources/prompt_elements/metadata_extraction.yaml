@@ -220,6 +220,16 @@ cryoet:
       spec: >
         If the preparation or imaging process involves named subcellular structures (ribosomes, cellular nuclei, cell membranes, specific vesicles, etc), please list them here. If cellular subcomponents are not mentioned, respond 'None'.
       path: dataset.cell_component.name
+  tiab metadata specs: 
+    - name: organism_name
+      spec: >
+        Is the paper working with a specific organism? If so, provide the scientific name of the organism. If the paper does not identify a specific organism in the available text, respond 'None'.
+    - name: cell_component
+      spec: >
+        If the preparation or imaging process involves named subcellular structures (ribosomes, cellular nuclei, cell membranes, specific vesicles, etc), please list them here. If cellular subcomponents are not mentioned, respond 'None'.
+    - name: paper_focus
+      spec: >
+        What is the primary focus of the paper? Pick one category from the following options (A) microscopy methods; (B) analysis methods; (C) characterization of a pathogen (such as a virus); (D) characterization of a biological  of respond 'Unknown'.
 
 natural history studies:
   notes: "This is based on collaborative work between CZI and NCATS. This approach is in development."

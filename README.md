@@ -122,7 +122,7 @@ dashboards and data visualization.
 For a dashboard that shows contents of all active databases on the
 current machine, run
 
-    marimo run dashboards/000_corpus_browser.py 
+    marimo run nb/marimo/002_corpora_map.py 
 
 ### Applications
 
@@ -139,15 +139,15 @@ python -m alhazen.apps.chat --loc <path/to/location/of/data/files> --db_name <da
 
 The following environment variables will need to be set:
 
-- ALHAZEN_DB_NAME = <short_desc_string_no_spaces>
 - LOCAL_FILE_PATH = /path/to/local/directory/for/full/text/files/
 
 To use other commercial services, you should also set appropriate
 environmental variables to gain access. Examples include:
 
 - OPENAI_API_KEY
-- NCBI_API_KEY
+- DB_API_KEY
 - VERTEXAI_PROJECT_NAME
+- NCBI_API_KEY
 
 ## Code Status and Capabilities
 
