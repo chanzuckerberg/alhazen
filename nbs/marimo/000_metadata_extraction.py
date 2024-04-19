@@ -173,7 +173,6 @@ def __(mo):
     doi_filter = mo.ui.text(label='Filter for DOI')
     citation_filter = mo.ui.text(label='Filter for Citation')
     extraction_complete = mo.ui.checkbox(label='Metadata Extraction Complete')
-
     return citation_filter, doi_filter, extraction_complete
 
 

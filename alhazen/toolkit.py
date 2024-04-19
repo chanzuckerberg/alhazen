@@ -12,6 +12,8 @@ from .tools.metadata_extraction_tool import *
 from .tools.protocol_extraction_tool import * 
 from .tools.paperqa_emulation_tool import * 
 from .tools.tiab_classifier_tool import * 
+from .tools.tiab_extraction_tool import * 
+from .tools.tiab_mapping_tool import * 
 from .utils.ceifns_db import *
 
 from langchain.chat_models.base import BaseChatModel
@@ -120,6 +122,20 @@ class AlhazenToolkit(BaseModel):
             db=self.db, llm=self.llm, description=tiab_classifier_tool_description
         )
 
+        tiab_mapper_tool_description = (
+            "This analyzes the title and abstract to provide descriptions of background information, the goals and methods, and the results and conclusions for the study."
+        )
+        tiab_mapper_tool = TitleAbstractDiscourseMappingTool(
+            db=self.db, llm=self.llm, description=tiab_mapper_tool_description
+        )
+
+        tiab_extract_tool_description = (
+            "This analyzes the title and abstract to provide descriptions of background information, the goals and methods, and the results and conclusions for the study."
+        )
+        tiab_extract_tool = TitleAbstractExtraction_OneDocAtATime_Tool(
+            db=self.db, llm=self.llm, description=tiab_extract_tool_description
+        )
+
         tool_list = [
             add_collection_tool,
             add_authors_to_collection_tool,
@@ -132,7 +148,9 @@ class AlhazenToolkit(BaseModel):
             paperqa_emulation_tool,
             protocol_extraction_tool,
             check_expression_tool,
-            tiab_classifier_tool
+            tiab_classifier_tool,
+            tiab_mapper_tool,
+            tiab_extract_tool
         ]
 
         #trial_run_tool_description = (

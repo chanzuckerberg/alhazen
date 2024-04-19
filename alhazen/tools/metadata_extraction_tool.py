@@ -319,16 +319,6 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
         ske = self.db.session.query(SKE) \
                 .filter(SKE.id.like('%'+paper_id+'%')).first()    
 
-        # 0. Use the first available full text item type
-        item_types = set()
-        for i in self.db.list_items_for_expression(paper_id):
-            item_types.add(i.type)
-        for i_type in item_types:
-            if i_type == 'CitationRecord':
-                continue
-            item_type = i_type
-            break
-
         # Introspect the class name of the llm model for notes and logging
         llm_class_name = self.llm.__class__.__name__
         llm_model_desc = str(self.llm)
@@ -338,6 +328,20 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
             'doi': paper_id,
             'llm_class': llm_class_name,
             'llm_desc': llm_model_desc}
+
+        # 0. Use the first available full text item type
+        item_types = set()
+        item_type = None
+        for i in self.db.list_items_for_expression(paper_id):
+            item_types.add(i.type)
+        for i_type in item_types:
+            if i_type == 'CitationRecord':
+                continue
+            item_type = i_type
+            break
+        if item_type is None:
+            return {'answer': "Could not retrieve full text of the paper: %s."%(paper_id),
+                "data": {'list_of_answers': None, 'run': run_metadata} }
 
         # 1. Build LangChain elements
         pts = PromptTemplateRegistry()
@@ -394,7 +398,7 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
         output = None
         attempts = 0
         full_answer = []
-        output = extract_lcel.invoke(s1, config={'callbacks': [ConsoleCallbackHandler()]})
+        output = extract_lcel.invoke(s1)#, config={'callbacks': [ConsoleCallbackHandler()]})
         total_execution_time = datetime.now() - start
         time_per_variable = total_execution_time / len(metadata_specs)
 

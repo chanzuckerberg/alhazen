@@ -169,25 +169,6 @@ def _(ldb, mo):
 
 
 @app.cell
-def __():
-    study_type_lookup = {
-        'A': 'Viral Pathogens',
-        'B': "Mutated protein structure",
-        'C': 'Bacterial pathogens',
-        'D': 'Plant cells',
-        'E': 'Material science',
-        'F': 'Intracellular Transport Structure',
-        'G': 'Synapses or Vesicle Release',
-        'H': 'Other Intracellular Structure', 
-        'I': 'Cellular Processes',
-        'J': 'Dynamics of molecular interactions',    
-        'K': 'New CryoET imaging methods', 
-        'L': 'New data analysis methods'
-    }
-    return study_type_lookup,
-
-
-@app.cell
 def __(c_ids):
     collections_clause = ' OR '.join(['skc.id=\'{}\''.format(coll_id) for coll_id in c_ids])
 
@@ -207,8 +188,8 @@ def __(c_ids):
     ORDER BY pub_date DESC;
     """.format(collections_clause)
 
-    q2_study_types = """
-    SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, skf.content, n.content
+    q2_notes = """
+    SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, skf.content 
     FROM langchain_pg_embedding as emb, 
         "ScientificKnowledgeExpression" as ske,
         "ScientificKnowledgeCollection_has_members" as skc_hm, 
@@ -216,7 +197,7 @@ def __(c_ids):
         "ScientificKnowledgeFragment" as skf,
         "Note" as n,
         "Note_is_about" as nia
-    WHERE n.type = 'TiAbClassificationNote__cryoet_study_types' AND
+    WHERE n.type = 'MetadataExtractionNote' AND
         n.id = nia."Note_id" AND
         nia.is_about_id = ske.id AND
         emb.cmetadata->>'i_type' = 'CitationRecord' AND
@@ -226,85 +207,14 @@ def __(c_ids):
         ske.id = skc_hm.has_members_id AND ({})
     ORDER BY pub_date DESC;
     """.format(collections_clause)
-
-    q2_background = """
-    SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, n.content 
-    FROM langchain_pg_embedding as emb, 
-        "ScientificKnowledgeExpression" as ske,
-        "ScientificKnowledgeCollection_has_members" as skc_hm,
-        "ScientificKnowledgeCollection" as skc, 
-        "Note" as n
-    WHERE emb.cmetadata->>'n_type' = 'TiAbMappingNote__Discourse' AND
-        emb.cmetadata->>'about_id' = ske.id AND 
-        emb.cmetadata->>'discourse_type' = 'Background' AND 
-        emb.cmetadata->>'n_id' = n.id AND 
-        skc_hm."ScientificKnowledgeCollection_id" = skc.id AND
-        ske.id = skc_hm.has_members_id AND ({})
-    ORDER BY pub_date DESC;
-    """.format(collections_clause)
-
-    q2_objectives_methods = """
-    SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, n.content 
-    FROM langchain_pg_embedding as emb, 
-        "ScientificKnowledgeExpression" as ske,
-        "ScientificKnowledgeCollection_has_members" as skc_hm,
-        "ScientificKnowledgeCollection" as skc, 
-        "Note" as n
-    WHERE emb.cmetadata->>'n_type' = 'TiAbMappingNote__Discourse' AND
-        emb.cmetadata->>'about_id' = ske.id AND 
-        emb.cmetadata->>'discourse_type' = 'ObjectivesMethods' AND 
-        emb.cmetadata->>'n_id' = n.id AND 
-        skc_hm."ScientificKnowledgeCollection_id" = skc.id AND
-        ske.id = skc_hm.has_members_id AND ({})
-    ORDER BY pub_date DESC;
-    """.format(collections_clause)
-
-    q2_results_conclusions = """
-    SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, n.content
-    FROM langchain_pg_embedding as emb, 
-        "ScientificKnowledgeExpression" as ske,
-        "ScientificKnowledgeCollection_has_members" as skc_hm,
-        "ScientificKnowledgeCollection" as skc, 
-        "Note" as n
-    WHERE emb.cmetadata->>'n_type' = 'TiAbMappingNote__Discourse' AND
-        emb.cmetadata->>'about_id' = ske.id AND 
-        emb.cmetadata->>'discourse_type' = 'ResultsConclusions' AND 
-        emb.cmetadata->>'n_id' = n.id AND 
-        skc_hm."ScientificKnowledgeCollection_id" = skc.id AND
-        ske.id = skc_hm.has_members_id AND ({})
-    ORDER BY pub_date DESC;
-    """.format(collections_clause)
-    return (
-        collections_clause,
-        q2_all,
-        q2_background,
-        q2_objectives_methods,
-        q2_results_conclusions,
-        q2_study_types,
-    )
+    return collections_clause, q2_all, q2_notes
 
 
 @app.cell
-def __():
-    return
-
-
-@app.cell
-def __(
-    mo,
-    q2_all,
-    q2_background,
-    q2_objectives_methods,
-    q2_results_conclusions,
-    q2_study_types,
-    set_prunelist,
-):
+def __(mo, q2_all, q2_notes, set_prunelist):
     map_type_dropdown = mo.ui.dropdown(
         options={"All papers": ('All', q2_all), 
-                 "Study Types": ('StudyTypes', q2_study_types), 
-                 "Background": ('Background', q2_background), 
-                 "Objectives + Methods": ('ObjectivesMethods', q2_objectives_methods), 
-                 "Results + Conclusions": ('ResultsConclusions', q2_results_conclusions)},
+                 "Papers with Metadata": ('Background', q2_notes)},
         value="All papers",
         label='Map type: '
     )
@@ -363,76 +273,57 @@ def __(collection_counts):
 
 
 @app.cell
-def __(collection_counts, ldb, map_type_dropdown, mo, text):
+def __(
+    collection_counts,
+    compute_embedding,
+    get_prunelist,
+    json,
+    ldb,
+    map_type_dropdown,
+    mo,
+    paper_type_table,
+    pd,
+    pymde,
+    re,
+    text,
+    torch,
+):
     mo.stop(collection_counts == None)
     map_type = map_type_dropdown.value[0]
     map_type_query = map_type_dropdown.value[1]
     ldb.session.rollback()
     rag_data = ldb.session.execute(text(map_type_query)).fetchall()
-    return map_type, map_type_query, rag_data
 
-
-@app.cell
-def __(dat):
-    dat
-    return
-
-
-@app.cell
-def __(
-    compute_embedding,
-    get_prunelist,
-    json,
-    map_type,
-    mo,
-    paper_type_table,
-    pd,
-    pymde,
-    rag_data,
-    re,
-    study_type_lookup,
-    torch,
-):
     rag_coll_list = []
     rag_id_list = []
-    rag_url_list = []
     rag_ref_list = []
     rag_date_list = []
     rag_type_list = []
     rag_text_list = []
     rag_embeddings_list = []
-    for tup in rag_data: 
-        cid, eid, ref, date, ptype, embed, txt = tup[0:7]
-        dat = None
-        if len(tup) == 8:
-            print(tup[7])
-            dat = json.loads(tup[7]) 
-            cid = study_type_lookup.get(dat.get('cryoet_study_type_code'), 'X')
+    for cid, eid, ref, date, ptype, embed, txt in rag_data: 
         if eid in get_prunelist():
             #print(eid)
             continue
         if (ptype in paper_type_table.value) is False:
-            #print(txt)
+            #print(ptype)
             continue
         doi = re.sub('doi:', '', eid)
         doi_html = mo.Html('<a href="https://doi.org/'+doi+'">'+doi+'</a>')
-        rag_coll_list.append(cid)    
+        rag_coll_list.append(cid)
         rag_id_list.append(eid)
-        rag_url_list.append(doi_html)
         rag_ref_list.append(ref)
         rag_date_list.append(date)
         rag_type_list.append(ptype)
         rag_embeddings_list.append(json.loads(embed))
         rag_text_list.append(txt)
 
+    print(len(rag_embeddings_list))
     rag_embeddings_tensor = torch.FloatTensor(rag_embeddings_list)
 
     embedding_dimension = 2
     constraint = pymde.Standardized()
     embedding = compute_embedding(rag_embeddings_tensor, embedding_dimension, constraint)
-
-    if map_type == "Background" or map_type == 'ObjectivesMethods' or map_type == 'ResultsConclusions':
-        rag_text_list = [json.loads(r).get(map_type) for r in rag_text_list]
 
     embedding_sampled = embedding.cpu()
     embedding_df = pd.DataFrame(
@@ -451,7 +342,6 @@ def __(
     return (
         cid,
         constraint,
-        dat,
         date,
         doi,
         doi_html,
@@ -461,8 +351,11 @@ def __(
         embedding_df,
         embedding_dimension,
         embedding_sampled,
+        map_type,
+        map_type_query,
         ptype,
         rag_coll_list,
+        rag_data,
         rag_date_list,
         rag_embeddings_list,
         rag_embeddings_tensor,
@@ -470,9 +363,7 @@ def __(
         rag_ref_list,
         rag_text_list,
         rag_type_list,
-        rag_url_list,
         ref,
-        tup,
         txt,
     )
 
@@ -541,19 +432,9 @@ def __(chart, collection_counts, embedding_df, ldb, mo):
         papers_df = chart.value.drop(columns=["x", "y", "text"])
     else:
         papers_df = embedding_df.drop(columns=["x", "y", "text"])
-
-    papers_list = [r.to_dict() for i, r in papers_df.iterrows()]
-    htmls = []
-    for r in papers_list:
-        doi2 = r['DOI']
-        r['DOI'] = mo.Html('<a href="https://doi.org/'+doi2+'" target="_blank">'+doi2+'</a>')
-    return doi2, htmls, papers_df, papers_list, r
-
-
-@app.cell
-def __(mo, papers_list):
-    mo.ui.table(papers_list)
-    return
+    papers_table = mo.ui.table(papers_df, selection='single')
+    mo.as_html(papers_table)
+    return papers_df, papers_table
 
 
 @app.cell

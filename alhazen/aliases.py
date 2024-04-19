@@ -2,7 +2,7 @@
 
 # %% auto 0
 __all__ = ['IR', 'SKC', 'SKC_HM', 'SKE', 'SKE_XREF', 'SKE_IRI', 'SKE_HR', 'SKE_MO', 'SKI', 'SKI_HP', 'SKF', 'N', 'NIA', 'SKC_HN',
-           'SKE_HN', 'SKI_HN', 'SKF_HN']
+           'SKE_HN', 'SKI_HN', 'SKF_HN', 'N_HN']
 
 # %% ../nbs/01_aliases.ipynb 3
 from .schema_sqla import *
@@ -29,5 +29,5 @@ SKC_HN = aliased(ScientificKnowledgeCollectionHasNotes)
 SKE_HN = aliased(ScientificKnowledgeExpressionHasNotes)
 SKI_HN = aliased(ScientificKnowledgeItemHasNotes)
 SKF_HN = aliased(ScientificKnowledgeFragmentHasNotes)
-
+N_HN = aliased(NoteHasNotes)
 
