@@ -276,6 +276,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Document Classifier Tool</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/tiab_clasifier_tool copy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document Classifier Tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/tiab_mapping_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document Classifier Tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/tiab_extraction_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Document Classifier Tool</span></a>
+  </div>
+</li>
       </ul>
   </li>
           <li class="sidebar-item sidebar-item-section">
@@ -458,7 +476,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#attempting-to-reconstruct-paper-qa-pipeline-in-our-system." id="toc-attempting-to-reconstruct-paper-qa-pipeline-in-our-system." class="nav-link" data-scroll-target="#attempting-to-reconstruct-paper-qa-pipeline-in-our-system.">ATTEMPTING TO RECONSTRUCT PAPER-QA PIPELINE IN OUR SYSTEM.</a></li>
   </ul></li>
-  <li><a href="#run-fast-huggingface-deep-learning-tools-over-corpus" id="toc-run-fast-huggingface-deep-learning-tools-over-corpus" class="nav-link" data-scroll-target="#run-fast-huggingface-deep-learning-tools-over-corpus">Run Fast HuggingFace Deep Learning Tools over corpus</a></li>
+  <li><a href="#discourse-analysis" id="toc-discourse-analysis" class="nav-link" data-scroll-target="#discourse-analysis">Discourse Analysis</a></li>
   <li><a href="#running-drsm-classifiers." id="toc-running-drsm-classifiers." class="nav-link" data-scroll-target="#running-drsm-classifiers.">Running DRSM Classifiers.</a></li>
   <li><a href="#topic-modeling-over-the-corpus." id="toc-topic-modeling-over-the-corpus." class="nav-link" data-scroll-target="#topic-modeling-over-the-corpus.">Topic Modeling over the corpus.</a></li>
   <li><a href="#search-for-and-download-full-text-papers." id="toc-search-for-and-download-full-text-papers." class="nav-link" data-scroll-target="#search-for-and-download-full-text-papers.">Search for and download Full Text Papers.</a></li>
@@ -6252,9 +6270,9 @@ No paper found with that DOI</code></pre>
 </div>
 </section>
 </section>
-<section id="run-fast-huggingface-deep-learning-tools-over-corpus" class="level1">
-<h1>Run Fast HuggingFace Deep Learning Tools over corpus</h1>
-<div class="cell">
+<section id="discourse-analysis" class="level1">
+<h1>Discourse Analysis</h1>
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline, AutoModel, AutoTokenizer</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -6273,37 +6291,34 @@ No paper found with that DOI</code></pre>
 <span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>                      truncation<span class="op">=</span><span class="va">True</span>,</span>
 <span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>                      batch_size<span class="op">=</span><span class="dv">8</span>,</span>
 <span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>                      device<span class="op">=</span><span class="st">'mps'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<pre><code>SSLError: (MaxRetryError("HTTPSConnectionPool(host='huggingface.co', port=443): Max retries exceeded with url: /dmis-lab/biobert-v1.1/resolve/main/tokenizer_config.json (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1006)')))"), '(Request ID: 26ef6d10-0e92-4cbd-876a-e181b196556f)')</code></pre>
-</div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Try an out-of-the-box classifier on the data for discourse tagging.</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span>
-<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>one_year_ago <span class="op">=</span> (datetime.now() <span class="op">-</span> timedelta(days<span class="op">=</span><span class="dv">1</span><span class="op">*</span><span class="dv">365</span>))</span>
-<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE, SKF) <span class="op">\</span></span>
-<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
-<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span>SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
-<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKE_HR.has_representation_id<span class="op">==</span>SKI.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKI.<span class="bu">id</span><span class="op">==</span>SKI_HP.ScientificKnowledgeItem_id) <span class="op">\</span></span>
-<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKI_HP.has_part_id<span class="op">==</span>SKF.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKE_HR.has_representation_id<span class="op">==</span>SKI.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'CitationRecord'</span> ) <span class="op">\</span></span>
-<span id="cb43-16"><a href="#cb43-16" aria-hidden="true" tabindex="-1"></a>    .order_by(SKE.<span class="bu">id</span>)</span>
-<span id="cb43-17"><a href="#cb43-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-18"><a href="#cb43-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   .filter(SKC.name == 'The Stiff Person Syndrome' ) \</span></span>
-<span id="cb43-19"><a href="#cb43-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   .filter(SKE.publication_date &gt;= one_year_ago) \</span></span>
-<span id="cb43-20"><a href="#cb43-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb43-21"><a href="#cb43-21" aria-hidden="true" tabindex="-1"></a>s_list <span class="op">=</span> []</span>
-<span id="cb43-22"><a href="#cb43-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e, f <span class="kw">in</span> q.<span class="bu">all</span>():</span>
-<span id="cb43-23"><a href="#cb43-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, s <span class="kw">in</span> <span class="bu">enumerate</span>(ldb.sent_detector.tokenize(f.content)):</span>
-<span id="cb43-24"><a href="#cb43-24" aria-hidden="true" tabindex="-1"></a>        s_list.append([e.<span class="bu">id</span>, f.<span class="bu">id</span>, i, s])</span>
-<span id="cb43-25"><a href="#cb43-25" aria-hidden="true" tabindex="-1"></a>sent_df <span class="op">=</span> pd.DataFrame(s_list, columns<span class="op">=</span>[<span class="st">'doi'</span>, <span class="st">'f_id'</span>, <span class="st">'s_id'</span>, <span class="st">'text'</span>])</span>
-<span id="cb43-26"><a href="#cb43-26" aria-hidden="true" tabindex="-1"></a>sent_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Try an out-of-the-box classifier on the data for discourse tagging.</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>one_year_ago <span class="op">=</span> (datetime.now() <span class="op">-</span> timedelta(days<span class="op">=</span><span class="dv">1</span><span class="op">*</span><span class="dv">365</span>))</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE, SKF) <span class="op">\</span></span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span>SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKE_HR.has_representation_id<span class="op">==</span>SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKI.<span class="bu">id</span><span class="op">==</span>SKI_HP.ScientificKnowledgeItem_id) <span class="op">\</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKI_HP.has_part_id<span class="op">==</span>SKF.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKE_HR.has_representation_id<span class="op">==</span>SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a>    .<span class="bu">filter</span>(SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'CitationRecord'</span> ) <span class="op">\</span></span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a>    .order_by(SKE.<span class="bu">id</span>)</span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a><span class="co">#   .filter(SKC.name == 'The Stiff Person Syndrome' ) \</span></span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   .filter(SKE.publication_date &gt;= one_year_ago) \</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a>s_list <span class="op">=</span> []</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e, f <span class="kw">in</span> q.<span class="bu">all</span>():</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, s <span class="kw">in</span> <span class="bu">enumerate</span>(ldb.sent_detector.tokenize(f.content)):</span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>        s_list.append([e.<span class="bu">id</span>, f.<span class="bu">id</span>, i, s])</span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>sent_df <span class="op">=</span> pd.DataFrame(s_list, columns<span class="op">=</span>[<span class="st">'doi'</span>, <span class="st">'f_id'</span>, <span class="st">'s_id'</span>, <span class="st">'text'</span>])</span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>sent_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>ProgrammingError: (psycopg2.errors.UndefinedColumn) column ScientificKnowledgeExpression_1.provenance does not exist
 LINE 1: ...rmat AS "ScientificKnowledgeExpression_1_format", "Scientifi...
@@ -6317,25 +6332,25 @@ WHERE "ScientificKnowledgeCollection_1".id = "ScientificKnowledgeCollection_has_
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict multipe texts on single CPU and time the inference duration</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> time()</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sent_df</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> classifier([row.text <span class="cf">for</span> i, row <span class="kw">in</span> df.iterrows()])</span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>pred_df <span class="op">=</span> pd.DataFrame(preds)</span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'label'</span>] <span class="op">=</span> [lookup[row.label] <span class="cf">for</span> i, row <span class="kw">in</span> pred_df.iterrows()]</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'score'</span>] <span class="op">=</span> [row.score <span class="cf">for</span> i, row <span class="kw">in</span> pred_df.iterrows()]</span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>end <span class="op">=</span> time()</span>
-<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Prediction time:'</span>, <span class="bu">str</span>(timedelta(seconds<span class="op">=</span>end<span class="op">-</span>start)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict multipe texts on single CPU and time the inference duration</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>start <span class="op">=</span> time()</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> sent_df</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> classifier([row.text <span class="cf">for</span> i, row <span class="kw">in</span> df.iterrows()])</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>pred_df <span class="op">=</span> pd.DataFrame(preds)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'label'</span>] <span class="op">=</span> [lookup[row.label] <span class="cf">for</span> i, row <span class="kw">in</span> pred_df.iterrows()]</span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'score'</span>] <span class="op">=</span> [row.score <span class="cf">for</span> i, row <span class="kw">in</span> pred_df.iterrows()]</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>end <span class="op">=</span> time()</span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-13"><a href="#cb44-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Prediction time:'</span>, <span class="bu">str</span>(timedelta(seconds<span class="op">=</span>end<span class="op">-</span>start)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Prediction time: 0:26:27.240843</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 
@@ -6460,53 +6475,58 @@ WHERE "ScientificKnowledgeCollection_1".id = "ScientificKnowledgeCollection_has_
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate fragment sentences and add them as Notes</span></span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> df.iterrows():</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    f_q <span class="op">=</span> ldb.session.query(SKF).<span class="bu">filter</span>(SKF.<span class="bu">id</span> <span class="op">==</span> row.f_id).first()</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    i_q <span class="op">=</span> ldb.session.query(SKI).<span class="bu">filter</span>(SKI.<span class="bu">id</span> <span class="op">==</span> row.f_id.split(<span class="st">'.'</span>)[<span class="dv">0</span>]).first()</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    o <span class="op">=</span> i_q.content.find(row.text)</span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> <span class="bu">len</span>(row.text)</span>
-<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>    sentence_fragment <span class="op">=</span> ScientificKnowledgeFragment(<span class="bu">id</span><span class="op">=</span>f_q.<span class="bu">id</span><span class="op">+</span><span class="st">'.'</span><span class="op">+</span><span class="bu">str</span>(row.s_id), <span class="op">\</span></span>
-<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>                                                    content<span class="op">=</span>row.text, <span class="op">\</span></span>
-<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>                                                    offset<span class="op">=</span>o, <span class="op">\</span></span>
-<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>                                                    length<span class="op">=</span>l, <span class="op">\</span></span>
-<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>                                                    <span class="bu">type</span><span class="op">=</span><span class="st">'sentence'</span>)</span>
-<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a>    i_q.has_part.append(sentence_fragment)</span>
-<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>    note_content <span class="op">=</span> {<span class="st">'discourse_label'</span>: row.label, <span class="st">'score'</span>: row.score}</span>
-<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> Note(<span class="bu">id</span><span class="op">=</span>f_q.<span class="bu">id</span><span class="op">+</span><span class="st">'.'</span><span class="op">+</span><span class="bu">str</span>(row.s_id)<span class="op">+</span><span class="st">'.discourse_type'</span>,</span>
-<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>             content<span class="op">=</span>json.dumps(note_content, indent<span class="op">=</span><span class="dv">4</span>),</span>
-<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>             <span class="bu">format</span><span class="op">=</span><span class="st">'json'</span>,</span>
-<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>             <span class="bu">type</span><span class="op">=</span><span class="st">'NoteAboutFragment'</span>)</span>
-<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>    sentence_fragment.has_notes.append(n)</span>
-<span id="cb49-20"><a href="#cb49-20" aria-hidden="true" tabindex="-1"></a>    ldb.session.flush()</span>
-<span id="cb49-21"><a href="#cb49-21" aria-hidden="true" tabindex="-1"></a>ldb.session.commit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate fragment sentences and add them as Notes</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>    f_q <span class="op">=</span> ldb.session.query(SKF).<span class="bu">filter</span>(SKF.<span class="bu">id</span> <span class="op">==</span> row.f_id).first()</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>    i_q <span class="op">=</span> ldb.session.query(SKI).<span class="bu">filter</span>(SKI.<span class="bu">id</span> <span class="op">==</span> row.f_id.split(<span class="st">'.'</span>)[<span class="dv">0</span>]).first()</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>    o <span class="op">=</span> i_q.content.find(row.text)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> <span class="bu">len</span>(row.text)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a>    sentence_fragment <span class="op">=</span> ScientificKnowledgeFragment(<span class="bu">id</span><span class="op">=</span>f_q.<span class="bu">id</span><span class="op">+</span><span class="st">'.'</span><span class="op">+</span><span class="bu">str</span>(row.s_id), <span class="op">\</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>                                                    content<span class="op">=</span>row.text, <span class="op">\</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>                                                    offset<span class="op">=</span>o, <span class="op">\</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>                                                    length<span class="op">=</span>l, <span class="op">\</span></span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>                                                    <span class="bu">type</span><span class="op">=</span><span class="st">'sentence'</span>)</span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>    i_q.has_part.append(sentence_fragment)</span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>    note_content <span class="op">=</span> {<span class="st">'discourse_label'</span>: row.label, <span class="st">'score'</span>: row.score}</span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> Note(<span class="bu">id</span><span class="op">=</span>f_q.<span class="bu">id</span><span class="op">+</span><span class="st">'.'</span><span class="op">+</span><span class="bu">str</span>(row.s_id)<span class="op">+</span><span class="st">'.discourse_type'</span>,</span>
+<span id="cb48-16"><a href="#cb48-16" aria-hidden="true" tabindex="-1"></a>             content<span class="op">=</span>json.dumps(note_content, indent<span class="op">=</span><span class="dv">4</span>),</span>
+<span id="cb48-17"><a href="#cb48-17" aria-hidden="true" tabindex="-1"></a>             <span class="bu">format</span><span class="op">=</span><span class="st">'json'</span>,</span>
+<span id="cb48-18"><a href="#cb48-18" aria-hidden="true" tabindex="-1"></a>             <span class="bu">type</span><span class="op">=</span><span class="st">'NoteAboutFragment'</span>)</span>
+<span id="cb48-19"><a href="#cb48-19" aria-hidden="true" tabindex="-1"></a>    sentence_fragment.has_notes.append(n)</span>
+<span id="cb48-20"><a href="#cb48-20" aria-hidden="true" tabindex="-1"></a>    ldb.session.flush()</span>
+<span id="cb48-21"><a href="#cb48-21" aria-hidden="true" tabindex="-1"></a>ldb.session.commit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="running-drsm-classifiers." class="level1">
 <h1>Running DRSM Classifiers.</h1>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline, AutoModel, AutoTokenizer</span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>model_path <span class="op">=</span> <span class="st">'/Users/gully.burns/Documents/2024H1/models/drsm_classifier'</span></span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">"dmis-lab/biobert-v1.1"</span>, </span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>                                          truncation<span class="op">=</span><span class="va">True</span>, </span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>                                          max_length<span class="op">=</span><span class="dv">512</span>)</span>
-<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">'BACKGROUND'</span>, <span class="st">'OBJECTIVE'</span>, <span class="st">'METHODS'</span>, <span class="st">'RESULTS'</span>, <span class="st">'CONCLUSIONS'</span>]</span>
-<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>lookup <span class="op">=</span> {<span class="st">'LABEL_</span><span class="sc">%d</span><span class="st">'</span><span class="op">%</span>(i):l <span class="cf">for</span> i, l <span class="kw">in</span> <span class="bu">enumerate</span>(labels)}</span>
-<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModel.from_pretrained(model_path)</span>
-<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
-<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-13"><a href="#cb50-13" aria-hidden="true" tabindex="-1"></a>classifier <span class="op">=</span> pipeline(<span class="st">"text-classification"</span>, </span>
-<span id="cb50-14"><a href="#cb50-14" aria-hidden="true" tabindex="-1"></a>                      model <span class="op">=</span> model_path, </span>
-<span id="cb50-15"><a href="#cb50-15" aria-hidden="true" tabindex="-1"></a>                      tokenizer<span class="op">=</span>tokenizer, </span>
-<span id="cb50-16"><a href="#cb50-16" aria-hidden="true" tabindex="-1"></a>                      truncation<span class="op">=</span><span class="va">True</span>,</span>
-<span id="cb50-17"><a href="#cb50-17" aria-hidden="true" tabindex="-1"></a>                      batch_size<span class="op">=</span><span class="dv">8</span>,</span>
-<span id="cb50-18"><a href="#cb50-18" aria-hidden="true" tabindex="-1"></a>                      device<span class="op">=</span><span class="st">'mps'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline, AutoModel, AutoTokenizer</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>model_path <span class="op">=</span> <span class="st">'/Users/gully.burns/Documents/2024H1/models/drsm_classifier'</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">"dmis-lab/biobert-v1.1"</span>, </span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>                                          truncation<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>                                          max_length<span class="op">=</span><span class="dv">512</span>)</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">'BACKGROUND'</span>, <span class="st">'OBJECTIVE'</span>, <span class="st">'METHODS'</span>, <span class="st">'RESULTS'</span>, <span class="st">'CONCLUSIONS'</span>]</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>lookup <span class="op">=</span> {<span class="st">'LABEL_</span><span class="sc">%d</span><span class="st">'</span><span class="op">%</span>(i):l <span class="cf">for</span> i, l <span class="kw">in</span> <span class="bu">enumerate</span>(labels)}</span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModel.from_pretrained(model_path)</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>classifier <span class="op">=</span> pipeline(<span class="st">"text-classification"</span>, </span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>                      model <span class="op">=</span> model_path, </span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a>                      tokenizer<span class="op">=</span>tokenizer, </span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a>                      truncation<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>                      batch_size<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb49-19"><a href="#cb49-19" aria-hidden="true" tabindex="-1"></a>                      device<span class="op">=</span><span class="st">'mps'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/Users/gully.burns/miniconda3/envs/alhazen/lib/python3.11/site-packages/torch/_utils.py:831: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  return self.fget.__get__(instance, owner)()</code></pre>
+</div>
 </div>
 </section>
 <section id="topic-modeling-over-the-corpus." class="level1">
