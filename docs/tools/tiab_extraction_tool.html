@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="description" content="Langchain tools that execute zero-shot classification tasks over a local database of title/abstracts from papers previously imported into our database.">
 
-<title>alhazen - Tools</title>
+<title>alhazen - Document Classifier Tool</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +31,6 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -61,45 +60,14 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../styles.css">
-<meta property="og:title" content="alhazen - Tools">
-<meta property="og:description" content="">
+<meta property="og:title" content="alhazen - Document Classifier Tool">
+<meta property="og:description" content="Langchain tools that execute zero-shot classification tasks over a local database of title/abstracts from papers previously imported into our database.">
 <meta property="og:site-name" content="alhazen">
-<meta name="twitter:title" content="alhazen - Tools">
-<meta name="twitter:description" content="">
+<meta name="twitter:title" content="alhazen - Document Classifier Tool">
+<meta name="twitter:description" content="Langchain tools that execute zero-shot classification tasks over a local database of title/abstracts from papers previously imported into our database.">
 <meta name="twitter:card" content="summary">
 </head>
 
@@ -162,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../agents/index.html">Tech Elements</a></li><li class="breadcrumb-item"><a href="../tools/index.html">Tools</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../agents/index.html">Tech Elements</a></li><li class="breadcrumb-item"><a href="../tools/index.html">Tools</a></li><li class="breadcrumb-item"><a href="../tools/tiab_extraction_tool.html">Document Classifier Tool</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -228,7 +196,7 @@ ul.task-list li input[type="checkbox"] {
   </li>
           <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="../tools/index.html" class="sidebar-item-text sidebar-link active">
+            <a href="../tools/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Tools</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -285,7 +253,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../tools/tiab_extraction_tool.html" class="sidebar-item-text sidebar-link">
+  <a href="../tools/tiab_extraction_tool.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Document Classifier Tool</span></a>
   </div>
 </li>
@@ -461,16 +429,29 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basetitleabstractextractiontool" id="toc-basetitleabstractextractiontool" class="nav-link active" data-scroll-target="#basetitleabstractextractiontool">BaseTitleAbstractExtractionTool</a></li>
+  <li><a href="#titleabstractextractiontoolschema" id="toc-titleabstractextractiontoolschema" class="nav-link" data-scroll-target="#titleabstractextractiontoolschema">TitleAbstractExtractionToolSchema</a></li>
+  <li><a href="#titleabstractextraction_onedocatatime_tool" id="toc-titleabstractextraction_onedocatatime_tool" class="nav-link" data-scroll-target="#titleabstractextraction_onedocatatime_tool">TitleAbstractExtraction_OneDocAtATime_Tool</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Tools</h1>
+<h1 class="title">Document Classifier Tool</h1>
 </div>
 
+<div>
+  <div class="description">
+    Langchain tools that execute zero-shot classification tasks over a local database of title/abstracts from papers previously imported into our database.
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
@@ -483,104 +464,107 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Alhazen has a library of tools, programs with simple call / return signatures that agents call to solve problems.</p>
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/tiab_extraction_tool.py#L55" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="basetitleabstractextractiontool" class="level3">
+<h3 class="anchored" data-anchor-id="basetitleabstractextractiontool">BaseTitleAbstractExtractionTool</h3>
+<blockquote class="blockquote">
+<pre><code> BaseTitleAbstractExtractionTool
+                                  (db:alhazen.utils.ceifns_db.Ceifns_Liter
+                                  atureDb, llm:Optional[langchain_core.lan
+                                  guage_models.chat_models.BaseChatModel]=
+                                  None, slm:Optional[langchain_core.langua
+                                  ge_models.chat_models.BaseChatModel]=Non
+                                  e, name:str='tiab_classification',
+                                  description:str='Runs a specified
+                                  document classification pipeline over
+                                  papers in a collection.', args_schema:Op
+                                  tional[Type[pydantic.v1.main.BaseModel]]
+                                  =None, return_direct:bool=True,
+                                  verbose:bool=False, callbacks:Union[List
+                                  [langchain_core.callbacks.base.BaseCallb
+                                  ackHandler],langchain_core.callbacks.bas
+                                  e.BaseCallbackManager,NoneType]=None, ca
+                                  llback_manager:Optional[langchain_core.c
+                                  allbacks.base.BaseCallbackManager]=None,
+                                  tags:Optional[List[str]]=None,
+                                  metadata:Optional[Dict[str,Any]]=None, h
+                                  andle_tool_error:Union[bool,str,Callable
+                                  [[langchain_core.tools.ToolException],st
+                                  r],NoneType]=False, handle_validation_er
+                                  ror:Union[bool,str,Callable[[pydantic.v1
+                                  .error_wrappers.ValidationError],str],No
+                                  neType]=False, prompt_name:str='binary
+                                  methods paper', examples:dict={})</code></pre>
+</blockquote>
+<p>Runs a specified document classification pipeline over papers in a collection.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/tiab_extraction_tool.py#L49" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="titleabstractextractiontoolschema" class="level3">
+<h3 class="anchored" data-anchor-id="titleabstractextractiontoolschema">TitleAbstractExtractionToolSchema</h3>
+<blockquote class="blockquote">
+<pre><code> TitleAbstractExtractionToolSchema (collection_id:str, domain:str,
+                                    extraction_type:str,
+                                    repeat_run:Optional[bool]=None)</code></pre>
+</blockquote>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
+<hr>
+<p><a href="https://github.com/chanzuckerberg/alhazen/blob/main/alhazen/tools/tiab_extraction_tool.py#L69" target="_blank" style="float:right; font-size:smaller">source</a></p>
+</section>
+<section id="titleabstractextraction_onedocatatime_tool" class="level3">
+<h3 class="anchored" data-anchor-id="titleabstractextraction_onedocatatime_tool">TitleAbstractExtraction_OneDocAtATime_Tool</h3>
+<blockquote class="blockquote">
+<pre><code> TitleAbstractExtraction_OneDocAtATime_Tool
+                                             (db:alhazen.utils.ceifns_db.C
+                                             eifns_LiteratureDb, llm:Optio
+                                             nal[langchain_core.language_m
+                                             odels.chat_models.BaseChatMod
+                                             el]=None, slm:Optional[langch
+                                             ain_core.language_models.chat
+                                             _models.BaseChatModel]=None, 
+                                             name:str='tiab_one_doc_classi
+                                             fication',
+                                             description:str='Runs a
+                                             specified document
+                                             classification pipeline over
+                                             papers in a collection by
+                                             running a simple classifier
+                                             over the text of each title +
+                                             abstract.', args_schema:Optio
+                                             nal[Type[pydantic.v1.main.Bas
+                                             eModel]]=None,
+                                             return_direct:bool=True,
+                                             verbose:bool=False, callbacks
+                                             :Union[List[langchain_core.ca
+                                             llbacks.base.BaseCallbackHand
+                                             ler],langchain_core.callbacks
+                                             .base.BaseCallbackManager,Non
+                                             eType]=None, callback_manager
+                                             :Optional[langchain_core.call
+                                             backs.base.BaseCallbackManage
+                                             r]=None, tags:Optional[List[s
+                                             tr]]=None, metadata:Optional[
+                                             Dict[str,Any]]=None, handle_t
+                                             ool_error:Union[bool,str,Call
+                                             able[[langchain_core.tools.To
+                                             olException],str],NoneType]=F
+                                             alse, handle_validation_error
+                                             :Union[bool,str,Callable[[pyd
+                                             antic.v1.error_wrappers.Valid
+                                             ationError],str],NoneType]=Fa
+                                             lse, prompt_name:str='binary
+                                             methods paper',
+                                             examples:dict={})</code></pre>
+</blockquote>
+<p>Runs a specified document classification pipeline over papers in a collection.</p>
 
 
+</section>
 
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-<th>
-Title
-</th>
-<th>
-Description
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-listing-file-modified-sort="1713539305401" data-listing-reading-time-sort="1" data-listing-title-sort="Alhazen Toolkit" data-listing-filename-sort="20_toolkit.ipynb">
-<td>
-<a href="../tools/toolkit.html" class="title listing-title">Alhazen Toolkit</a>
-</td>
-<td>
-<span class="listing-description">A set of Langchain tools that populate and query a CEIFNS database by (1) Build collections of expressions; (2) locate and load items that represent expressions; (3) segregate the parts of items as ‘fragments’; (4) analyze the fragments to generate notes that can then be summarized to provide summaries.</span>
-</td>
-</tr>
-<tr data-index="1" data-listing-file-modified-sort="1712782920214" data-listing-reading-time-sort="1" data-listing-title-sort="Basic Tools for Alhazen" data-listing-filename-sort="21_basic_tools.ipynb">
-<td>
-<a href="../tools/basic_tools.html" class="title listing-title">Basic Tools for Alhazen</a>
-</td>
-<td>
-<span class="listing-description">Simple tools to demonstrate utility and ‘agentic’ functionality.</span>
-</td>
-</tr>
-<tr data-index="2" data-listing-file-modified-sort="1712861559244" data-listing-reading-time-sort="1" data-listing-title-sort="Document Classifier Tool" data-listing-filename-sort="26_tiab_mapping_tool.ipynb">
-<td>
-<a href="../tools/tiab_mapping_tool.html" class="title listing-title">Document Classifier Tool</a>
-</td>
-<td>
-<span class="listing-description">Langchain tools that execute zero-shot classification tasks over a local database of title/abstracts from papers previously imported into our database.</span>
-</td>
-</tr>
-<tr data-index="3" data-listing-file-modified-sort="1713539305313" data-listing-reading-time-sort="1" data-listing-title-sort="Document Classifier Tool" data-listing-filename-sort="25_tiab_clasifier_tool.ipynb">
-<td>
-<a href="../tools/tiab_clasifier_tool.html" class="title listing-title">Document Classifier Tool</a>
-</td>
-<td>
-<span class="listing-description">Langchain tools that execute zero-shot classification tasks over a local database of title/abstracts from papers previously imported into our database.</span>
-</td>
-</tr>
-<tr data-index="4" data-listing-file-modified-sort="1713539305329" data-listing-reading-time-sort="1" data-listing-title-sort="Document Classifier Tool" data-listing-filename-sort="27_tiab_extraction_tool.ipynb">
-<td>
-<a href="../tools/tiab_extraction_tool.html" class="title listing-title">Document Classifier Tool</a>
-</td>
-<td>
-<span class="listing-description">Langchain tools that execute zero-shot classification tasks over a local database of title/abstracts from papers previously imported into our database.</span>
-</td>
-</tr>
-<tr data-index="5" data-listing-file-modified-sort="1712853778456" data-listing-reading-time-sort="1" data-listing-title-sort="Document Classifier Tool" data-listing-filename-sort="25_tiab_clasifier_tool copy.ipynb">
-<td>
-<a href="../tools/tiab_clasifier_tool copy.html" class="title listing-title">Document Classifier Tool</a>
-</td>
-<td>
-<span class="listing-description">Langchain tools that execute zero-shot classification tasks over a local database of title/abstracts from papers previously imported into our database.</span>
-</td>
-</tr>
-<tr data-index="6" data-listing-file-modified-sort="1713539305363" data-listing-reading-time-sort="1" data-listing-title-sort="Methods Metadata Extraction Tool" data-listing-filename-sort="22_metadata_extraction_tool.ipynb">
-<td>
-<a href="../tools/metadata_extraction_tool.html" class="title listing-title">Methods Metadata Extraction Tool</a>
-</td>
-<td>
-<span class="listing-description">Langchain tools that execute zero-shot extraction over a local database of full text papers previously imported into our database.</span>
-</td>
-</tr>
-<tr data-index="7" data-listing-file-modified-sort="1712782919757" data-listing-reading-time-sort="1" data-listing-title-sort="Paper QA Emulation Tool" data-listing-filename-sort="24_PaperQA_emulation_tool.ipynb">
-<td>
-<a href="../tools/paperqa_emulation_tool.html" class="title listing-title">Paper QA Emulation Tool</a>
-</td>
-<td>
-<span class="listing-description">We here emulate the workflow of the PaperQA system by Andrew White (https://thewhitelab.org/). This is a Retrieval Augmented Generation (RAG) application using a Map-Reduce model where we query our embedded index for based on a question, we then write summaries for each returned document based on relevance to the underlying question. Finally, we synthesize each summary into an essay presented as an answer to the original question.</span>
-</td>
-</tr>
-<tr data-index="8" data-listing-file-modified-sort="1712782919959" data-listing-reading-time-sort="1" data-listing-title-sort="Protocol Workflow Extraction Tool" data-listing-filename-sort="23_protocol_extraction_tool.ipynb">
-<td>
-<a href="../tools/protocol_extraction_tool.html" class="title listing-title">Protocol Workflow Extraction Tool</a>
-</td>
-<td>
-<span class="listing-description">Langchain tools that execute zero-shot extraction over a local database of full text papers previously imported into our database.</span>
-</td>
-</tr>
-</tbody>
-
-</table>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -818,4 +802,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></div></div></footer></body></html>
+</body></html>
