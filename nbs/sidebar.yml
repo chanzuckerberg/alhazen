@@ -14,6 +14,8 @@ website:
             contents: tools/*
           - section: "Utilities"
             contents: utils/*
+      - section: "Tutorial Notebooks"
+        contents: tutorials/*
       - section: "Example Notebooks"
         contents:
           - section: "Metadata Extraction"
