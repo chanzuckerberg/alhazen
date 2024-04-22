@@ -94,6 +94,13 @@ class AlhazenToolkit(BaseModel):
             db=self.db, llm=self.llm, description=metadata_extraction_tool_description
         )
 
+        methods_metadata_extraction_tool_description = (
+            "This tool extracts all metadata for a specified type of experiment from the methods section of a single full text paper."
+        )
+        methods_metadata_extraction_tool = MetadataExtraction_MethodsSectionOnly_Tool(
+            db=self.db, llm=self.llm, description=methods_metadata_extraction_tool_description
+        )
+
         protocol_extraction_tool_description = (
             "This tool draws a flowchart of the protocol described in a single full text paper."
         )
@@ -144,6 +151,7 @@ class AlhazenToolkit(BaseModel):
             retrieve_full_text_tool,
             retrieve_full_text_for_a_collection_tool,
             metadata_extraction_tool,
+            methods_metadata_extraction_tool,
             simple_extraction_tool,
             paperqa_emulation_tool,
             protocol_extraction_tool,

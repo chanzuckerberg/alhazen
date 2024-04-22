@@ -2,194 +2,198 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/index.html</loc>
-    <lastmod>2024-04-19T16:06:13.867Z</lastmod>
+    <lastmod>2024-04-22T21:40:48.266Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/utils_undocumented/langchain_output_parsers.html</loc>
-    <lastmod>2024-04-19T16:06:13.258Z</lastmod>
+    <lastmod>2024-04-22T21:40:47.541Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/utils_undocumented/curated_data_utils.html</loc>
-    <lastmod>2024-04-19T16:06:12.772Z</lastmod>
+    <lastmod>2024-04-22T21:40:47.029Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/utils_undocumented/30_ms_nlp_utils.html</loc>
-    <lastmod>2024-04-19T16:06:12.274Z</lastmod>
+    <lastmod>2024-04-22T21:40:46.461Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/91_ssl_hackfix.html</loc>
-    <lastmod>2024-04-19T16:06:11.773Z</lastmod>
+    <lastmod>2024-04-22T21:40:45.942Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/cookbook/personal_use/opensciencebestpractice.html</loc>
-    <lastmod>2024-04-19T16:06:11.258Z</lastmod>
+    <lastmod>2024-04-22T21:40:45.384Z</lastmod>
   </url>
   <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/imaging_technology_evolution.html</loc>
-    <lastmod>2024-04-19T16:06:10.701Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/index.html</loc>
-    <lastmod>2024-04-19T16:06:09.789Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/rare_disease_literature.html</loc>
-    <lastmod>2024-04-19T16:06:09.247Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/key_opinion_leaders/index.html</loc>
-    <lastmod>2024-04-19T16:06:08.222Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/cellxgene_datasets.html</loc>
-    <lastmod>2024-04-19T16:06:07.708Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/ncats_natural_history_studies.html</loc>
-    <lastmod>2024-04-19T16:06:06.338Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/question_answering/virtualcell_corepapers.html</loc>
-    <lastmod>2024-04-19T16:06:05.231Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/utils/search_engine_eutils.html</loc>
-    <lastmod>2024-04-19T16:06:04.687Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/utils/pdf_text_extractor.html</loc>
-    <lastmod>2024-04-19T16:06:04.103Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/utils/index.html</loc>
-    <lastmod>2024-04-19T16:06:03.613Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/utils/jats_text_extractor.html</loc>
-    <lastmod>2024-04-19T16:06:03.090Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/agents/agent.html</loc>
-    <lastmod>2024-04-19T16:06:02.606Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/docnb1_use_cases.html</loc>
-    <lastmod>2024-04-19T16:06:02.102Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/tiab_clasifier_tool copy.html</loc>
-    <lastmod>2024-04-19T16:06:01.541Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/basic_tools.html</loc>
-    <lastmod>2024-04-19T16:06:01.032Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/index.html</loc>
-    <lastmod>2024-04-19T16:06:00.373Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/toolkit.html</loc>
-    <lastmod>2024-04-19T16:05:59.742Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/paperqa_emulation_tool.html</loc>
-    <lastmod>2024-04-19T16:05:59.178Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/core.html</loc>
-    <lastmod>2024-04-19T16:05:58.851Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/tiab_mapping_tool.html</loc>
-    <lastmod>2024-04-19T16:05:59.455Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/tiab_clasifier_tool.html</loc>
-    <lastmod>2024-04-19T16:06:00.028Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/metadata_extraction_tool.html</loc>
-    <lastmod>2024-04-19T16:06:00.659Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/tiab_extraction_tool.html</loc>
-    <lastmod>2024-04-19T16:06:01.286Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/tools/protocol_extraction_tool.html</loc>
-    <lastmod>2024-04-19T16:06:01.794Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/sqla_fixes.html</loc>
-    <lastmod>2024-04-19T16:06:02.354Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/agents/index.html</loc>
-    <lastmod>2024-04-19T16:06:02.849Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/utils/html_text_extractor.html</loc>
-    <lastmod>2024-04-19T16:06:03.329Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/utils/web_robot.html</loc>
-    <lastmod>2024-04-19T16:06:03.863Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/utils/ceifns_db.html</loc>
-    <lastmod>2024-04-19T16:06:04.420Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/question_answering/index.html</loc>
-    <lastmod>2024-04-19T16:06:04.951Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/cryoet.html</loc>
-    <lastmod>2024-04-19T16:06:05.775Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/rnaquarium.html</loc>
-    <lastmod>2024-04-19T16:06:07.425Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/index.html</loc>
-    <lastmod>2024-04-19T16:06:07.980Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/key_opinion_leaders/african_microscopy.html</loc>
-    <lastmod>2024-04-19T16:06:08.477Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/pathogen_landscaping.html</loc>
-    <lastmod>2024-04-19T16:06:09.519Z</lastmod>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/cryoet_tutorial.html</loc>
+    <lastmod>2024-04-22T21:40:44.804Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/capacity_building.html</loc>
-    <lastmod>2024-04-19T16:06:10.060Z</lastmod>
+    <lastmod>2024-04-22T21:40:43.035Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/pathogen_landscaping.html</loc>
+    <lastmod>2024-04-22T21:40:42.433Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/key_opinion_leaders/african_microscopy.html</loc>
+    <lastmod>2024-04-22T21:40:41.331Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/index.html</loc>
+    <lastmod>2024-04-22T21:40:40.782Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/rnaquarium.html</loc>
+    <lastmod>2024-04-22T21:40:40.211Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/cryoet.html</loc>
+    <lastmod>2024-04-22T21:40:38.453Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/question_answering/index.html</loc>
+    <lastmod>2024-04-22T21:40:37.567Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/utils/ceifns_db.html</loc>
+    <lastmod>2024-04-22T21:40:37.031Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/utils/web_robot.html</loc>
+    <lastmod>2024-04-22T21:40:36.438Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/utils/html_text_extractor.html</loc>
+    <lastmod>2024-04-22T21:40:35.864Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/agents/index.html</loc>
+    <lastmod>2024-04-22T21:40:35.330Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/sqla_fixes.html</loc>
+    <lastmod>2024-04-22T21:40:34.795Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/protocol_extraction_tool.html</loc>
+    <lastmod>2024-04-22T21:40:34.156Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/tiab_extraction_tool.html</loc>
+    <lastmod>2024-04-22T21:40:33.575Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/metadata_extraction_tool.html</loc>
+    <lastmod>2024-04-22T21:40:32.930Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/tiab_clasifier_tool.html</loc>
+    <lastmod>2024-04-22T21:40:32.277Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/tiab_mapping_tool.html</loc>
+    <lastmod>2024-04-22T21:40:31.720Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/core.html</loc>
+    <lastmod>2024-04-22T21:40:31.075Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/paperqa_emulation_tool.html</loc>
+    <lastmod>2024-04-22T21:40:31.420Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/toolkit.html</loc>
+    <lastmod>2024-04-22T21:40:32.009Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/index.html</loc>
+    <lastmod>2024-04-22T21:40:32.638Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/basic_tools.html</loc>
+    <lastmod>2024-04-22T21:40:33.304Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/tools/tiab_clasifier_tool copy.html</loc>
+    <lastmod>2024-04-22T21:40:33.843Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/docnb1_use_cases.html</loc>
+    <lastmod>2024-04-22T21:40:34.508Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/agents/agent.html</loc>
+    <lastmod>2024-04-22T21:40:35.068Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/utils/jats_text_extractor.html</loc>
+    <lastmod>2024-04-22T21:40:35.606Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/utils/index.html</loc>
+    <lastmod>2024-04-22T21:40:36.168Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/utils/pdf_text_extractor.html</loc>
+    <lastmod>2024-04-22T21:40:36.698Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/utils/search_engine_eutils.html</loc>
+    <lastmod>2024-04-22T21:40:37.311Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/question_answering/virtualcell_corepapers.html</loc>
+    <lastmod>2024-04-22T21:40:37.869Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/ncats_natural_history_studies.html</loc>
+    <lastmod>2024-04-22T21:40:39.037Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/single_doc_extraction/cellxgene_datasets.html</loc>
+    <lastmod>2024-04-22T21:40:40.508Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/key_opinion_leaders/index.html</loc>
+    <lastmod>2024-04-22T21:40:41.042Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/rare_disease_literature.html</loc>
+    <lastmod>2024-04-22T21:40:42.148Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/index.html</loc>
+    <lastmod>2024-04-22T21:40:42.734Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chanzuckerberg.github.io/alhazen/cookbook/trend_analysis/imaging_technology_evolution.html</loc>
+    <lastmod>2024-04-22T21:40:43.722Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/cookbook/general_workbook.html</loc>
-    <lastmod>2024-04-19T16:06:10.972Z</lastmod>
+    <lastmod>2024-04-22T21:40:45.095Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/cookbook/personal_use/machine_learning_in_biology copy.html</loc>
-    <lastmod>2024-04-19T16:06:11.531Z</lastmod>
+    <lastmod>2024-04-22T21:40:45.682Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/docnb2_architecture.html</loc>
-    <lastmod>2024-04-19T16:06:12.026Z</lastmod>
+    <lastmod>2024-04-22T21:40:46.215Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/utils_undocumented/query_translator.html</loc>
-    <lastmod>2024-04-19T16:06:12.529Z</lastmod>
+    <lastmod>2024-04-22T21:40:46.743Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/utils_undocumented/airtable_utils.html</loc>
-    <lastmod>2024-04-19T16:06:13.020Z</lastmod>
+    <lastmod>2024-04-22T21:40:47.290Z</lastmod>
   </url>
   <url>
     <loc>https://chanzuckerberg.github.io/alhazen/aliases.html</loc>
-    <lastmod>2024-04-19T16:06:13.489Z</lastmod>
+    <lastmod>2024-04-22T21:40:47.791Z</lastmod>
   </url>
 </urlset>
