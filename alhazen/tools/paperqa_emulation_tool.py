@@ -79,7 +79,8 @@ class PaperQAEmulationTool(BaseTool, AlhazenToolMixin):
         #~~~~~~~~~~~~~~~~~~~~~~
         # 1. Set up environment
         #~~~~~~~~~~~~~~~~~~~~~~
-        loc, db_name = load_alhazen_tool_environment()
+        loc = load_alhazen_tool_environment()
+        db_name = self.db.name
 
         os.environ['PGVECTOR_CONNECTION_STRING'] = "postgresql+psycopg2:///"+db_name
             

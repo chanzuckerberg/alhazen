@@ -5,7 +5,7 @@ __all__ = ['TitleAbstractExtractionToolSchema', 'BaseTitleAbstractExtractionTool
 
 # %% ../../nbs/tools/27_tiab_extraction_tool.ipynb 3
 from ..aliases import *
-from ..core import PromptTemplateRegistry, load_alhazen_tool_environment
+from ..core import PromptTemplateRegistry
 from .basic import AlhazenToolMixin
 from ..utils.output_parsers import JsonEnclosedByTextOutputParser
 from ..utils.ceifns_db import *
