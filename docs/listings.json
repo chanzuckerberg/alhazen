@@ -1,28 +1,23 @@
 [
   {
-    "listing": "/cookbook/trend_analysis/index.html",
+    "listing": "/cookbook/single_doc_extraction/index.html",
     "items": [
-      "/cookbook/trend_analysis/capacity_building.html",
-      "/cookbook/trend_analysis/imaging_technology_evolution.html",
-      "/cookbook/trend_analysis/pathogen_landscaping.html",
-      "/cookbook/trend_analysis/rare_disease_literature.html"
+      "/cookbook/single_doc_extraction/cellxgene_datasets.html",
+      "/cookbook/single_doc_extraction/cryoet.html",
+      "/cookbook/single_doc_extraction/ncats_natural_history_studies.html",
+      "/cookbook/single_doc_extraction/rnaquarium.html"
     ]
   },
   {
-    "listing": "/cookbook/key_opinion_leaders/index.html",
+    "listing": "/cookbook/question_answering/index.html",
     "items": [
-      "/cookbook/key_opinion_leaders/african_microscopy.html"
+      "/cookbook/question_answering/virtualcell_corepapers.html"
     ]
   },
   {
-    "listing": "/utils/index.html",
+    "listing": "/agents/index.html",
     "items": [
-      "/utils/ceifns_db.html",
-      "/utils/html_text_extractor.html",
-      "/utils/jats_text_extractor.html",
-      "/utils/pdf_text_extractor.html",
-      "/utils/search_engine_eutils.html",
-      "/utils/web_robot.html"
+      "/agents/agent.html"
     ]
   },
   {
@@ -40,24 +35,29 @@
     ]
   },
   {
-    "listing": "/agents/index.html",
+    "listing": "/utils/index.html",
     "items": [
-      "/agents/agent.html"
+      "/utils/ceifns_db.html",
+      "/utils/html_text_extractor.html",
+      "/utils/jats_text_extractor.html",
+      "/utils/pdf_text_extractor.html",
+      "/utils/search_engine_eutils.html",
+      "/utils/web_robot.html"
     ]
   },
   {
-    "listing": "/cookbook/question_answering/index.html",
+    "listing": "/cookbook/key_opinion_leaders/index.html",
     "items": [
-      "/cookbook/question_answering/virtualcell_corepapers.html"
+      "/cookbook/key_opinion_leaders/african_microscopy.html"
     ]
   },
   {
-    "listing": "/cookbook/single_doc_extraction/index.html",
+    "listing": "/cookbook/trend_analysis/index.html",
     "items": [
-      "/cookbook/single_doc_extraction/cellxgene_datasets.html",
-      "/cookbook/single_doc_extraction/cryoet.html",
-      "/cookbook/single_doc_extraction/ncats_natural_history_studies.html",
-      "/cookbook/single_doc_extraction/rnaquarium.html"
+      "/cookbook/trend_analysis/capacity_building.html",
+      "/cookbook/trend_analysis/imaging_technology_evolution.html",
+      "/cookbook/trend_analysis/pathogen_landscaping.html",
+      "/cookbook/trend_analysis/rare_disease_literature.html"
     ]
   }
 ]

@@ -5,7 +5,7 @@ __all__ = ['TitleAbstractClassifierToolSchema', 'BaseTitleAbstractClassifierTool
 
 # %% ../../nbs/tools/25_tiab_clasifier_tool.ipynb 3
 from ..aliases import *
-from ..core import PromptTemplateRegistry, load_alhazen_tool_environment
+from ..core import PromptTemplateRegistry
 from .basic import AlhazenToolMixin
 from ..utils.output_parsers import JsonEnclosedByTextOutputParser
 from ..utils.ceifns_db import *

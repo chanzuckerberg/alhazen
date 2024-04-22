@@ -611,7 +611,8 @@ class RetrieveFullTextToolForACollection(AlhazenToolMixin, BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         
-        loc, db_name = load_alhazen_tool_environment()
+        loc = load_alhazen_tool_environment()
+        db_name = self.db.name
 
         skc = aliased(ScientificKnowledgeCollection)
         for c in self.db.session.query(skc) \
@@ -689,7 +690,8 @@ class RetrieveFullTextTool(AlhazenToolMixin, BaseTool):
         run_manager: Optional[CallbackManagerForToolRun] = None,
     ) -> str:
         
-        loc, db_name = load_alhazen_tool_environment()
+        loc = load_alhazen_tool_environment()
+        db_name = self.db.name
 
         try: 
             ske = aliased(ScientificKnowledgeExpression)
