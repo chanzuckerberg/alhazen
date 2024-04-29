@@ -104,7 +104,7 @@ class TitleAbstractClassifier_OneDocAtATime_Tool(BaseTitleAbstractClassifierTool
             pts = PromptTemplateRegistry()
             pts.load_prompts_from_yaml('tiab_prompts.yaml')
             tiab_classifier_prompt_template = pts.get_prompt_template(classification_type).generate_chat_prompt_template()
-            classify_lcel = tiab_classifier_prompt_template | self.llm | JsonOutputParser()        
+            classify_lcel = tiab_classifier_prompt_template | self.llm | JsonEnclosedByTextOutputParser()        
             
             # 2. Run through all available sections of the paper and identify only those that are predominantly methods sections.
             start = datetime.now()
@@ -119,10 +119,11 @@ class TitleAbstractClassifier_OneDocAtATime_Tool(BaseTitleAbstractClassifierTool
             # 4. Run the chain with a JsonEnclosedByTextOutputParser 
             try: 
                 output = classify_lcel.invoke(s1)#, config={'callbacks': [ConsoleCallbackHandler()]})
-            except Exception as e:
+            except Exception as ex:
                 # Note that the LLM may raise an exception if it is unable to classify the document.
-                print(e)
+                print(ex)
                 output = "ERROR: Unable to classify document."
+                continue
             
             total_execution_time = datetime.now() - start
 

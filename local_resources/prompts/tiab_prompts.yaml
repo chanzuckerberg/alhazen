@@ -238,7 +238,7 @@ cryoet_study_types:
     Use the following format for the output JSON object: 
     ```json
     {{
-      "cryoet_study_type_code":  A single classification code from this list: A, B, C, D, E, F, G, H, I, J, K, L
+      "cryoet_study_type_code":  A single classification code from this list: "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L" 
       "cryoet_study_type_name": the name of the technology selected from the list above,
       "explanation": "A brief explanation of your reasoning for your classification decision.
     }}
