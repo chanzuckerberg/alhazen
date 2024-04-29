@@ -1367,7 +1367,7 @@ class Ceifns_LiteratureDb(BaseModel):
     texts = []
     metadatas = []
     
-    for e in explist:
+    for e in tqdm(explist):
       coll_ids = ','.join([c.id for c in e.member_of])
 
       t, a = self.list_fragments_for_paper(e.id, 'CitationRecord')
@@ -1416,6 +1416,7 @@ class Ceifns_LiteratureDb(BaseModel):
     for t,m in zip(texts, metadatas):
       docs.append(Document(page_content=t, metadata=m))
     
+    print('Indexing %d documents'%(len(docs)))
     db = PGVector.from_documents(
         embedding=self.embed_model,
         documents=docs,

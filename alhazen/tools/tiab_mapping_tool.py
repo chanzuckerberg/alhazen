@@ -120,11 +120,12 @@ class TitleAbstractDiscourseMappingTool(BaseTitleAbstractMappingTool):
             # 4. Run the chain with a JsonEnclosedByTextOutputParser 
             try: 
                 output = mapper_lcel.invoke(s1)#, config={'callbacks': [ConsoleCallbackHandler()]})
-            except Exception as e:
+            except Exception as ex:
                 # Note that the LLM may raise an exception if it is unable to classify the document.
-                print(e)
+                print(ex)
                 output = "ERROR: Unable to classify document."
-
+                continue
+            
             total_execution_time = datetime.now() - start
 
             output['paper_id'] = e.id
