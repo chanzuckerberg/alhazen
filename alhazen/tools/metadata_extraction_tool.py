@@ -211,14 +211,12 @@ class MetadataExtraction_EverythingEverywhere_Tool(BaseMetadataExtractionTool):
 
         # Introspect the class name of the llm model for notes and logging
         llm_class_name = self.llm.__class__.__name__
-        llm_model_desc = str(self.llm)
 
         run_metadata = {
             'tool': self.__class__.__name__,
             'extraction_type': extraction_type,
             'doi': paper_id,
-            'llm_class': llm_class_name,
-            'llm_desc': llm_model_desc}
+            'llm_class': llm_class_name}
 
         # 0. Use the first available full text item type
         item_types = set()
@@ -321,13 +319,11 @@ class MetadataExtraction_MethodsSectionOnly_Tool(BaseMetadataExtractionTool):
 
         # Introspect the class name of the llm model for notes and logging
         llm_class_name = self.llm.__class__.__name__
-        llm_model_desc = str(self.llm)
 
         run_metadata = {
             'tool': self.__class__.__name__,
             'doi': paper_id,
-            'llm_class': llm_class_name,
-            'llm_desc': llm_model_desc}
+            'llm_class': llm_class_name}
 
         # 0. Use the first available full text item type
         item_types = set()
