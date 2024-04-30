@@ -1,4 +1,4 @@
-CREATE TYPE "ScientificKnowledgeExpressionType" AS ENUM ('ScientificPrimaryResearchArticle', 'ScientificPrimaryResearchPreprint', 'ScientificReviewArticle', 'ScientificBook', 'ScientificBookChapter', 'ScientificConferenceArticle', 'ScientificDissertation', 'ClinicalCaseReport', 'ClinicalTrial', 'ScientificComment', 'ScientificErrata', 'ClinicalGuidelines');
+
 CREATE TABLE "Entity" (
 	id TEXT NOT NULL, 
 	type TEXT NOT NULL, 
@@ -62,7 +62,7 @@ CREATE TABLE "ScientificKnowledgeCollection" (
 );COMMENT ON TABLE "ScientificKnowledgeCollection" IS 'A collection of expressions of scientific knowledge.';COMMENT ON COLUMN "ScientificKnowledgeCollection".creation_date IS 'date on which an entity was created. This can be applied to nodes or edges';COMMENT ON COLUMN "ScientificKnowledgeCollection".content IS 'The content of an InformationContentEntity expressed as a string.';COMMENT ON COLUMN "ScientificKnowledgeCollection".token_count IS 'The number of tokens in the content of an InformationContentEntity.';COMMENT ON COLUMN "ScientificKnowledgeCollection".format IS 'The format (JSON, XML, BINARY) of the content of an InformationContentEntity.';COMMENT ON COLUMN "ScientificKnowledgeCollection".provenance IS 'A description of the provenance of an information content entity. Expressed as a list of commands describing how the collection was built. This should involve describing the operation to generate the collection in  sufficient detail that that could be replicated by an LLM agent with  the appropriate tooling.  ';COMMENT ON COLUMN "ScientificKnowledgeCollection".license IS 'A license under which an information content entity is provided.';COMMENT ON COLUMN "ScientificKnowledgeCollection".name IS 'A human-readable name for an attribute or entity.';COMMENT ON COLUMN "ScientificKnowledgeCollection".id IS 'A simple, locally-generated unique identifier specific with different heuristic formatting for each application.';COMMENT ON COLUMN "ScientificKnowledgeCollection".type IS 'The type of an Entity expressed as curi.';
 CREATE TABLE "ScientificKnowledgeExpression" (
 	publication_date DATE, 
-	type "ScientificKnowledgeExpressionType" NOT NULL, 
+	type TEXT NOT NULL, 
 	creation_date DATE, 
 	content TEXT, 
 	token_count INTEGER, 

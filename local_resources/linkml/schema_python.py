@@ -1,5 +1,5 @@
 # Auto generated from sciknow.yaml by pythongen.py version: 0.0.1
-# Generation date: 2024-02-28T14:16:39
+# Generation date: 2024-04-29T23:43:20
 # Schema: ScientificKnowledgeExpressionModel
 #
 # id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
@@ -315,7 +315,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     class_model_uri: ClassVar[URIRef] = SKEM.ScientificKnowledgeExpression
 
     id: Union[str, ScientificKnowledgeExpressionId] = None
-    type: Union[str, "ScientificKnowledgeExpressionType"] = None
+    type: str = None
     has_representation: Optional[Union[Union[str, ScientificKnowledgeItemId], List[Union[str, ScientificKnowledgeItemId]]]] = empty_list()
     member_of: Optional[Union[Union[str, ScientificKnowledgeCollectionId], List[Union[str, ScientificKnowledgeCollectionId]]]] = empty_list()
     has_authors: Optional[Union[Union[str, AuthorId], List[Union[str, AuthorId]]]] = empty_list()
@@ -329,8 +329,8 @@ class ScientificKnowledgeExpression(InformationContentEntity):
 
         if self._is_empty(self.type):
             self.MissingRequiredField("type")
-        if not isinstance(self.type, ScientificKnowledgeExpressionType):
-            self.type = ScientificKnowledgeExpressionType(self.type)
+        if not isinstance(self.type, str):
+            self.type = str(self.type)
 
         if not isinstance(self.has_representation, list):
             self.has_representation = [self.has_representation] if self.has_representation is not None else []
@@ -579,139 +579,7 @@ class Country(NamedThing):
 
 
 # Enumerations
-class ScientificKnowledgeExpressionType(EnumDefinitionImpl):
 
-    ScientificPrimaryResearchArticle = PermissibleValue(
-        text="ScientificPrimaryResearchArticle",
-        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion). These articles will have undergone  peer review.""")
-    ScientificPrimaryResearchPreprint = PermissibleValue(
-        text="ScientificPrimaryResearchPreprint",
-        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion). These articles have been published as preprints and have NOT undergone peer review.""")
-    ScientificReviewArticle = PermissibleValue(
-        text="ScientificReviewArticle",
-        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion).""")
-    ScientificBook = PermissibleValue(
-        text="ScientificBook",
-        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion).""")
-    ScientificBookChapter = PermissibleValue(
-        text="ScientificBookChapter",
-        description="""A scientific publication describing original research typically formatted in an IMRaD structure (introduction, methods, results, and discussion).""")
-    ScientificConferenceArticle = PermissibleValue(
-        text="ScientificConferenceArticle",
-        description="A scientific publication describing original research that was presented at a conference.")
-    ScientificDissertation = PermissibleValue(
-        text="ScientificDissertation",
-        description="""A thesis or dissertation submitted by a researcher as  part of their work to qualify for an advanced degree - usually a  doctorate.""")
-    ClinicalCaseReport = PermissibleValue(
-        text="ClinicalCaseReport",
-        description="A published case report of a patient's clinical experience.")
-    ClinicalTrial = PermissibleValue(
-        text="ClinicalTrial",
-        description="A description of a clinical trial of a therapeutic procedure or drug.")
-    ScientificComment = PermissibleValue(
-        text="ScientificComment",
-        description="Commentary expressed as a letter to the editor or an editorial.")
-    ScientificErrata = PermissibleValue(
-        text="ScientificErrata",
-        description="An erratum or retraction describing errors in another scientific publication.")
-    ClinicalGuidelines = PermissibleValue(
-        text="ClinicalGuidelines",
-        description="""An official publication making recommendations to physicians for clinical best practices.  Could be any aspect of clinical work including treatment, diagnosis, standard of care, etc.""")
-
-    _defn = EnumDefinition(
-        name="ScientificKnowledgeExpressionType",
-    )
-
-class ItemType(EnumDefinitionImpl):
-
-    CitationRecord = PermissibleValue(
-        text="CitationRecord",
-        description="""An instantiated record that describes metadata about a research paper (including title and abstract).""")
-    FullTextPaper = PermissibleValue(
-        text="FullTextPaper",
-        description="A copy of the full text of a paper.")
-
-    _defn = EnumDefinition(
-        name="ItemType",
-    )
-
-class FragmentType(EnumDefinitionImpl):
-
-    title = PermissibleValue(
-        text="title",
-        description="The text denoting the title.")
-    abstract = PermissibleValue(
-        text="abstract",
-        description="The text denoting the abstract.")
-    section = PermissibleValue(
-        text="section",
-        description="Text within a given section.")
-    heading = PermissibleValue(
-        text="heading",
-        description="Text of a section heading.")
-    paragraph = PermissibleValue(
-        text="paragraph",
-        description="Text in a paragraph.")
-    caption = PermissibleValue(
-        text="caption",
-        description="Text describing a figure or table caption.")
-    sentence = PermissibleValue(
-        text="sentence",
-        description="Text of a sentence.")
-    excerpt = PermissibleValue(
-        text="excerpt",
-        description="A single quoted text excerpt.")
-
-    _defn = EnumDefinition(
-        name="FragmentType",
-    )
-
-class IdType(EnumDefinitionImpl):
-
-    PMID = PermissibleValue(
-        text="PMID",
-        description="""Pubmed ID - numeric identifier for a publication denoting (broadly) when the publication was indexed in Pubmed""")
-    PMCID = PermissibleValue(
-        text="PMCID",
-        description="""PubmedCentral ID - numeric identifier for a publication in PubmedCentral. When used in PMC directly, the numbers usually have a prefix of PMC""")
-    EPMCID = PermissibleValue(
-        text="EPMCID",
-        description="European PubmedCentral ID - alphanumeric string used within Europe PMC.")
-    DOI = PermissibleValue(
-        text="DOI",
-        description="Digital Object Identifier.")
-    ORCID = PermissibleValue(
-        text="ORCID",
-        description="ORCID Identifier for scientists.")
-
-    _defn = EnumDefinition(
-        name="IdType",
-    )
-
-class UserQuestionType(EnumDefinitionImpl):
-
-    ProgramLevelQuestion = PermissibleValue(
-        text="ProgramLevelQuestion",
-        description="A very broad scientific question that would typically be addressed by a large-scale program.")
-    ProjectLevelQuestion = PermissibleValue(
-        text="ProjectLevelQuestion",
-        description="""A  broad scientific question that would typically be the focus of a multi-year research project.""")
-    StudyLevelQuestion = PermissibleValue(
-        text="StudyLevelQuestion",
-        description="""A  broad scientific question that would typically be the focus of a single study or publication.""")
-    ExperimentLevelQuestion = PermissibleValue(
-        text="ExperimentLevelQuestion",
-        description="A question that would be addressed by performing a single scientific experiments.")
-    MethodologicalLevelQuestion = PermissibleValue(
-        text="MethodologicalLevelQuestion",
-        description="A question concerning underlying methodology of how to execute an experiment.")
-    AgentInstruction = PermissibleValue(
-        text="AgentInstruction",
-        description="Description of an instruction issued to the agent.")
-
-    _defn = EnumDefinition(
-        name="UserQuestionType",
-    )
 
 # Slots
 class slots:
@@ -823,4 +691,4 @@ slots.country__income = Slot(uri=SKEM.income, name="country__income", curie=SKEM
                    model_uri=SKEM.country__income, domain=None, range=Optional[str])
 
 slots.ScientificKnowledgeExpression_type = Slot(uri=SKEM.type, name="ScientificKnowledgeExpression_type", curie=SKEM.curie('type'),
-                   model_uri=SKEM.ScientificKnowledgeExpression_type, domain=ScientificKnowledgeExpression, range=Union[str, "ScientificKnowledgeExpressionType"])
+                   model_uri=SKEM.ScientificKnowledgeExpression_type, domain=ScientificKnowledgeExpression, range=str)
