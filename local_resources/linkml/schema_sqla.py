@@ -579,7 +579,7 @@ class NoteHasNotes(Base):
     __tablename__ = 'Note_has_notes'
 
     Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
-    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    has_notes_id2 = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):

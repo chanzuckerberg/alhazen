@@ -1,0 +1,90 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "alzhazen"
+dynamic = ["version"]
+description = "A generative AI for scientific knowledge."
+readme = "README.md"
+requires-python = ">=3.7"
+authors = [
+    { name = "GullyBurns", email = "gully.burns@chanzuckerberg.com" },
+]
+keywords = [
+    "jupyter",
+    "nbdev",
+    "notebook",
+    "python",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+dependencies = [
+    "beautifulsoup4==4.12.2",
+    "databricks-sql-connector",
+    "fastapi==0.101.1",
+    "huggingface_hub==0.22.1",
+    "ipywidgets",
+    "jmespath",
+    "langchain-google-vertexai==0.0.5",
+    "langchain-openai==0.0.8",
+    "langchain==0.1.16",
+    "langserve==0.0.34",
+    "linkml==1.6.1",
+    "lxml==4.9.4",
+    "marimo==0.2.13",
+    "nbdev==2.3.12",
+    "numpy==1.26.0",
+    "nxml-2-txt@git+https://github.com/GullyBurns/nxml2txt",
+    "owlready2==0.45",
+    "pandas==2.1.1",
+    "psycopg2-binary==2.9.9",
+    "pyalex==0.13",
+    "pydantic==2.5.1",
+    "pymupdf==1.23.4",
+    "selenium==4.16.0",
+    "sentence_transformers==2.2.2",
+    "splinter==0.20.1",
+    "sqlalchemy==2.0.21",
+    "sse_starlette==1.8.2",
+    "torch==2.1.2",
+    "trafilatura==1.9.0",
+    "transformers==4.39.3",
+]
+
+[project.optional-dependencies]
+dev = []
+
+[project.scripts]
+
+[project.entry-points.nbdev]
+alhazen = "alhazen._modidx:d"
+
+[project.urls]
+Homepage = "https://github.com/chanzuckerberg/alhazen"
+
+[template.licenses]
+headers = true
+default = [
+  "Apache-2.0",
+]
+
+[tool.hatch.version]
+path = "alhazen/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["/alhazen",]
+
+[tool.hatch.build.targets.wheel]
+packages = ["alhazen"]
+
+[tool.hatch.metadata]
+allow-direct-references = true

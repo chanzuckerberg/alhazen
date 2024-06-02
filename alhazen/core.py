@@ -21,7 +21,7 @@ from langchain_community.chat_models.openai import ChatOpenAI
 from langchain_community.llms.llamacpp import LlamaCpp
 from langchain_community.llms.openai import OpenAI
 from langchain_community.llms.ollama import Ollama 
-from langchain_groq import ChatGroq
+#from langchain_groq import ChatGroq
 from langchain.prompts import ChatPromptTemplate, PromptTemplate
 from langchain_google_vertexai import ChatVertexAI
 
@@ -159,25 +159,26 @@ def lookup_chat_models() -> Dict[str, Any]:
 
     llm_ollama_mixtral = ChatOllama(model='mixtral:instruct') 
     llm_ollama_llama3 = ChatOllama(model='llama3:70b', stop=["<|eot_id|>"])
-    llm_gemini10 = ChatVertexAI(model_name="gemini-1.0-pro", convert_system_message_to_human=True)
 
     chat_models = {
         "ollama_llama3": llm_ollama_llama3, 
         "ollama_mixtral": llm_ollama_mixtral,
-        'gemini1.0': llm_gemini10,
     }
+    if os.environ.get('VERTEXAI_PROJECT_NAME') is not None:
+        llm_gemini10 = ChatVertexAI(model_name="gemini-1.0-pro", convert_system_message_to_human=True)
+        chat_models['gemini1.0'] = llm_gemini10,
 
-    if os.environ.get('DB_API_KEY') is not None:
+    if os.environ.get('DATABRICKS_API_KEY') is not None:
         llm_databricks_dbrx = ChatOpenAI(base_url='https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/serving-endpoints', 
-                        api_key=os.environ['DB_API_KEY'], 
+                        api_key=os.environ['DATABRICKS_API_KEY'], 
                         model='databricks-dbrx-instruct')
         chat_models['databricks_dbrx'] = llm_databricks_dbrx
         llm_databricks_mixtral = ChatOpenAI(base_url='https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/serving-endpoints', 
-                        api_key=os.environ['DB_API_KEY'], 
+                        api_key=os.environ['DATABRICKS_API_KEY'], 
                         model='databricks-mixtral-8x7b-instruct')
         chat_models['databricks_mixtral'] = llm_databricks_mixtral
         llm_databricks_llama3 = ChatOpenAI(base_url='https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/serving-endpoints', 
-                        api_key=os.environ['DB_API_KEY'], 
+                        api_key=os.environ['DATABRICKS_API_KEY'], 
                         model='databricks-meta-llama-3-70b-instruct')
         chat_models['databricks_llama3'] = llm_databricks_llama3
 
