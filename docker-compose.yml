@@ -1,25 +1,38 @@
-version: "3.3"
+version: '3'
 services:
-  weaviate:
-    command:
-    - --host
-    - 0.0.0.0
-    - --port
-    - '8080'
-    - --scheme
-    - http
-    image: semitechnologies/weaviate:1.21.2
+  alhazen: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
     ports:
-    - 8080:8080
+      - "127.0.0.1:8888:8888"
     volumes:
-    - weaviate_data:/var/lib/weaviate
-    restart: on-failure:0
+      - .:/home/jovyan/alhazen
+      - ./nbs/cookbook:/home/jovyan/work
+      - ~/.cache/huggingface:/home/jovyan/.cache/huggingface
+      - $LOCAL_FILE_PATH:/home/jovyan/files
     environment:
-      QUERY_DEFAULTS_LIMIT: 25
-      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
-      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
-      DEFAULT_VECTORIZER_MODULE: 'none'
-      ENABLE_MODULES: 'text2vec-cohere,text2vec-huggingface,text2vec-palm,text2vec-openai,generative-openai,generative-cohere,generative-palm,ref2vec-centroid,reranker-cohere,qna-openai'
-      CLUSTER_HOSTNAME: 'node1'
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_HOST=localhost
+      - LOCAL_FILE_PATH=/home/jovyan/files
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: postgres:14.0
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_HOST=localhost
+    healthcheck:
+      test: "pg_isready -q -U postgres" 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
 volumes:
-  weaviate_data:
+  pgdata:
+  work:

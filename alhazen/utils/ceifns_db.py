@@ -11,7 +11,7 @@ from .searchEngineUtils import ESearchQuery, EuroPMCQuery, load_paper_from_opena
 from .pdf_research_article_text_extractor import LAPDFBlockLoader, HuridocsPDFLoader
 from .html_research_article_text_extractor import TrafilaturaSectionLoader
 
-from .queryTranslator import QueryTranslator, QueryType
+#from alhazen.utils.queryTranslator import QueryTranslator, QueryType
 from ..schema_sqla import *
 import alhazen.schema_python as linkml_py
 from .jats_text_extractor import NxmlDoc
@@ -66,9 +66,9 @@ def create_ceifns_database(db_name):
   """Use this function to create a CEIFNS database within the local postgres server."""
   conn = psycopg2.connect(
     database="postgres",
-      user='postgres',
-      password='password',
-      host='localhost',
+      user=os.environ['PGUSER'],
+      password=os.environ['PGPASSWORD'],
+      host=os.environ['PGHOST'],
       port= '5432'
   )
   conn.autocommit = True
@@ -78,7 +78,9 @@ def create_ceifns_database(db_name):
   
   conn = psycopg2.connect(
     database=db_name,
-    host='localhost',
+    user=os.environ['PGUSER'],
+    password=os.environ['PGPASSWORD'],
+    host=os.environ['PGHOST'],
     port= '5432'
   )
   conn.autocommit = True
@@ -89,7 +91,7 @@ def create_ceifns_database(db_name):
           continue
         cursor.execute(sql)
 
-  engine = create_engine('postgresql+psycopg2:///'+db_name)
+  engine = create_engine("postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['PGUSER'], os.environ['PGPASSWORD'], os.environ['PGHOST'], db_name))
   session_class = sessionmaker(bind=engine)
   session = session_class()
 
@@ -147,9 +149,9 @@ def drop_ceifns_database(db_name, backupFirst=True):
     print("Database has been backed up to %s"%(backup_path));
   conn = psycopg2.connect(
     database="postgres",
-      user='postgres',
-      password='password',
-      host='localhost',
+      user=os.environ['PGUSER'],
+      password=os.environ['PGPASSWORD'],
+      host=os.environ['PGHOST'],
       port= '5432'
   )
   conn.autocommit = True
@@ -243,7 +245,7 @@ def list_databases():
   """
   List all CEIFNS databases in the postgres server
   """
-  engine = create_engine('postgresql+psycopg2:///postgres')
+  engine = create_engine("postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['POSTGRES_USER'], os.environ['POSTGRES_PASSWORD'], os.environ['POSTGRES_HOST'], 'postgres'))
   connection = engine.connect()
   result = connection.execute(text("SELECT datname FROM pg_database;"))
   dbn = [row[0] for row in result if row[0] != 'postgres']
@@ -251,7 +253,7 @@ def list_databases():
 
   ah_dbs = []
   for db in dbn:
-    engine = create_engine('postgresql+psycopg2:///'+db)
+    engine = create_engine("postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['POSTGRES_USER'], os.environ['POSTGRES_PASSWORD'], os.environ['POSTGRES_HOST'], db))
     try: 
         connection = engine.connect()
         result = connection.execute(text('SELECT * FROM "ScientificKnowledgeCollection" LIMIT 1;'))
@@ -282,7 +284,10 @@ class Ceifns_LiteratureDb(BaseModel):
   engine: Engine = Field(default=None, init=False)
   session: Session = Field(default=None, init=False)
   sent_detector: nltk.tokenize.punkt.PunktSentenceTokenizer = Field(default=None, init=False)
+  embed_model_name: str = Field(default='BAAI/bge-large-en-v1.5', init=False)
+  embed_model_device: str = Field(default='cpu', init=False)
   embed_model: Embeddings = Field(default=None, init=False)
+
 
   class Config:
     """Configuration for this pydantic object."""
@@ -300,7 +305,7 @@ class Ceifns_LiteratureDb(BaseModel):
     if db_dir.exists() is False:
       os.makedirs(db_dir)
 
-    self.engine = create_engine('postgresql+psycopg2:///'+self.name)
+    self.engine = create_engine("postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['POSTGRES_USER'], os.environ['POSTGRES_PASSWORD'], os.environ['POSTGRES_HOST'], self.name))
 
     self.start_session() # instantiate session 
 
@@ -313,15 +318,14 @@ class Ceifns_LiteratureDb(BaseModel):
     #
     # hard coded embedding model at present.
     #
-    model_name = "BAAI/bge-large-en"
-    model_kwargs = {"device": "mps"}
+    model_kwargs = {"device": self.embed_model_device}
     encode_kwargs = {"normalize_embeddings": True}
     self.embed_model = HuggingFaceBgeEmbeddings(
-      model_name=model_name, model_kwargs=model_kwargs, encode_kwargs=encode_kwargs
+      model_name=self.embed_model_name, model_kwargs=model_kwargs, encode_kwargs=encode_kwargs
     )
 
     # PGVECTOR representation for embedding uses environmental variables to set the right database 
-    os.environ['PGVECTOR_CONNECTION_STRING'] = "postgresql+psycopg2:///"+self.name
+    os.environ['PGVECTOR_CONNECTION_STRING'] = "postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['POSTGRES_USER'], os.environ['POSTGRES_PASSWORD'], os.environ['POSTGRES_HOST'], self.name)
 
   def start_session(self):
     if self.session is None:
@@ -333,51 +337,51 @@ class Ceifns_LiteratureDb(BaseModel):
   # Add Collections, Expressions, Items, and Fragments 
   # by running queries on external databases
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  def add_corpus_from_epmc(self, qt, qt2, 
-                           sections=['paper_title', 'ABSTRACT'], 
-                           sections2=['paper_title', 'ABSTRACT'], 
-                           page_size=1000):
-    """Adds corpora based on coupled QueryTranslator objects."""
-    
-    if self.session is None:
-      session_class = sessionmaker(bind=self.engine)
-      self.session = session_class()
-
-    if self.session.query(exists().where(InformationResource.name=='EPMC')).scalar():
-      info_resource = self.session.query(InformationResource) \
-          .filter(InformationResource.name=='EPMC').first()
-    else:
-      info_resource = InformationResource(id='skem:EPMC', 
-                                          iri=['skem:EPMC'], 
-                                          name='European PubMed Central', 
-                                          type='skem:InformationResource',
-                                          xref=['https://europepmc.org/'])
-
-    (corpus_ids, epmc_queries) = qt.generate_queries(QueryType.epmc, sections=sections)
-    if qt2:
-      (subset_ids, epmc_subset_queries) = qt2.generate_queries(QueryType.epmc, sections=sections2)
-    else: 
-      (subset_ids, epmc_subset_queries) = ([0],[''])
-    for (i, q) in zip(corpus_ids, epmc_queries):
-      for (j, sq) in zip(subset_ids, epmc_subset_queries):
-        query = q
-        corpus_id = str(i)
-        corpus_name = qt.df.loc[qt.df['ID']==i][qt.name_col].values[0]
-        if query is None or query=='nan' or len(query)==0: 
-          continue
-        if len(sq) > 0 and sq != 'nan':
-          query = '(%s) AND (%s)'%(q, sq)
-          if j is not None:
-            corpus_id = str(i)+'.'+str(j)
-            corpus_name2 = qt2.df.loc[qt2.df['ID']==j][qt2.name_col].values[0]
-            corpus_name = corpus_name + '/'+ corpus_name2
-        try:
-          self.add_corpus_from_epmc_query(corpus_id, corpus_name, query)
-        except Exception as ex:
-          print(ex)
-          print('skipping %s'%(corpus_name) )
-          continue
-    self.session.commit()
+  #def add_corpus_from_epmc(self, qt, qt2, 
+  #                         sections=['paper_title', 'ABSTRACT'], 
+  #                         sections2=['paper_title', 'ABSTRACT'], 
+  #                         page_size=1000):
+  #  """Adds corpora based on coupled QueryTranslator objects."""
+  #  
+  #  if self.session is None:
+  #    session_class = sessionmaker(bind=self.engine)
+  #    self.session = session_class()
+  #  
+  #  if self.session.query(exists().where(InformationResource.name=='EPMC')).scalar():
+  #    info_resource = self.session.query(InformationResource) \
+  #        .filter(InformationResource.name=='EPMC').first()
+  #  else:
+  #    info_resource = InformationResource(id='skem:EPMC', 
+  #                                        iri=['skem:EPMC'], 
+  #                                        name='European PubMed Central', 
+  #                                        type='skem:InformationResource',
+  #                                        xref=['https://europepmc.org/'])
+  #  
+  #  (corpus_ids, epmc_queries) = qt.generate_queries(QueryType.epmc, sections=sections)
+  #  if qt2:
+  #    (subset_ids, epmc_subset_queries) = qt2.generate_queries(QueryType.epmc, sections=sections2)
+  #  else: 
+  #    (subset_ids, epmc_subset_queries) = ([0],[''])
+  #  for (i, q) in zip(corpus_ids, epmc_queries):
+  #    for (j, sq) in zip(subset_ids, epmc_subset_queries):
+  #      query = q
+  #      corpus_id = str(i)
+  #      corpus_name = qt.df.loc[qt.df['ID']==i][qt.name_col].values[0]
+  #      if query is None or query=='nan' or len(query)==0: 
+  #        continue
+  #      if len(sq) > 0 and sq != 'nan':
+  #        query = '(%s) AND (%s)'%(q, sq)
+  #        if j is not None:
+  #          corpus_id = str(i)+'.'+str(j)
+  #          corpus_name2 = qt2.df.loc[qt2.df['ID']==j][qt2.name_col].values[0]
+  #          corpus_name = corpus_name + '/'+ corpus_name2
+  #      try:
+  #        self.add_corpus_from_epmc_query(corpus_id, corpus_name, query)
+  #      except Exception as ex:
+  #        print(ex)
+  #        print('skipping %s'%(corpus_name) )
+  #        continue
+  #  self.session.commit()
   
   def add_corpus_from_epmc_query(self, 
                                  corpus_id, 
