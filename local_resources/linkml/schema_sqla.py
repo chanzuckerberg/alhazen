@@ -579,7 +579,7 @@ class NoteHasNotes(Base):
     __tablename__ = 'Note_has_notes'
 
     Note_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
-    has_notes_id = Column(Text(), ForeignKey('Note.id'), primary_key=True)
+    has_notes_id2 = Column(Text(), ForeignKey('Note.id'), primary_key=True)
     
 
     def __repr__(self):
@@ -1105,7 +1105,7 @@ class ScientificKnowledgeExpression(InformationContentEntity):
     __tablename__ = 'ScientificKnowledgeExpression'
 
     publication_date = Column(Date())
-    type = Column(Enum('ScientificPrimaryResearchArticle', 'ScientificPrimaryResearchPreprint', 'ScientificReviewArticle', 'ScientificBook', 'ScientificBookChapter', 'ScientificConferenceArticle', 'ScientificDissertation', 'ClinicalCaseReport', 'ClinicalTrial', 'ScientificComment', 'ScientificErrata', 'ClinicalGuidelines', name='ScientificKnowledgeExpressionType'), nullable=False )
+    type = Column(Text(), nullable=False )
     creation_date = Column(Date())
     content = Column(Text())
     token_count = Column(Integer())
