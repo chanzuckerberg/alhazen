@@ -77,9 +77,8 @@ class TitleAbstractClassifier_OneDocAtATime_Tool(BaseTitleAbstractClassifierTool
 
         # Introspect the class name of the llm model for notes and logging
         llm_class_name = self.llm.__class__.__name__
-        llm_model_desc = str(self.llm)
 
-        run_name = self.__class__.__name__ + '__' + re.sub(' ','_',classification_type) + '__' + collection_id + '__' + llm_class_name + '__' + llm_model_desc
+        run_name = self.__class__.__name__ + '__' + re.sub(' ','_',classification_type) + '__' + collection_id + '__' + llm_class_name 
 
         exp_q = self.db.session.query(SKE) \
                 .filter(SKC_HM.has_members_id == SKE.id) \

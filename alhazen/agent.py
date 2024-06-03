@@ -32,8 +32,6 @@ from langchain_core.tools import BaseTool
 
 from langchain.prompts import ChatPromptTemplate
 
-
-import gradio as gr
 import os
 import pandas as pd
 from pathlib import Path
