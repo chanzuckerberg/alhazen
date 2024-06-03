@@ -18,6 +18,7 @@ from langchain_community.embeddings.openai import OpenAIEmbeddings
 from langchain_community.embeddings.huggingface import HuggingFaceBgeEmbeddings
 from langchain_community.chat_models.ollama import ChatOllama
 from langchain_community.chat_models.openai import ChatOpenAI
+from langchain_groq import ChatGroq
 from langchain_community.llms.llamacpp import LlamaCpp
 from langchain_community.llms.openai import OpenAI
 from langchain_community.llms.ollama import Ollama 
@@ -164,11 +165,11 @@ def lookup_chat_models() -> Dict[str, Any]:
         "ollama_llama3": llm_ollama_llama3, 
         "ollama_mixtral": llm_ollama_mixtral,
     }
-    if os.environ.get('VERTEXAI_PROJECT_NAME') is not None:
+    if os.environ.get('VERTEXAI_PROJECT_NAME') is not None and len(os.environ.get('VERTEXAI_PROJECT_NAME')) > 0:
         llm_gemini10 = ChatVertexAI(model_name="gemini-1.0-pro", convert_system_message_to_human=True)
         chat_models['gemini1.0'] = llm_gemini10,
 
-    if os.environ.get('DATABRICKS_API_KEY') is not None:
+    if os.environ.get('DATABRICKS_API_KEY') is not None and len(os.environ.get('DATABRICKS_API_KEY')) > 0:
         llm_databricks_dbrx = ChatOpenAI(base_url='https://czi-shared-infra-czi-sci-general-prod-databricks.cloud.databricks.com/serving-endpoints', 
                         api_key=os.environ['DATABRICKS_API_KEY'], 
                         model='databricks-dbrx-instruct')
@@ -185,7 +186,7 @@ def lookup_chat_models() -> Dict[str, Any]:
     else:
         print('llm_databricks_* chat models are not available. Please set DB_API_KEY environment variable.')
 
-    if os.environ.get('GROQ_API_KEY') is not None:
+    if os.environ.get('GROQ_API_KEY') is not None and len(os.environ.get('GROQ_API_KEY')) > 0:
         llm_groq_mixtral = ChatGroq(model_name="mixtral-8x7b-32768") 
         llm_groq_llama3 = ChatGroq(model_name="llama3-70b-8192", stop=["<|eot_id|>"]) 
         chat_models['groq_mixtral'] = llm_groq_mixtral
@@ -193,9 +194,9 @@ def lookup_chat_models() -> Dict[str, Any]:
     else:
         print('groq_* chat models are not available. Please set GROQ_API_KEY environment variable.')
 
-    if os.environ.get('OPENAI_API_KEY') is not None:
+    if os.environ.get('OPENAI_API_KEY') is not None and len(os.environ.get('OPENAI_API_KEY')) > 0:
         llm_gpt4_1106 = ChatOpenAI(model='gpt-4-1106-preview') 
-        llm_gpt35 = ChatOpenAI(model='gpt-4-1106-preview')
+        llm_gpt35 = ChatOpenAI(model='gpt-3.5-turbo')
         chat_models['gpt4_1106'] = llm_gpt4_1106
         chat_models['gpt35'] = llm_gpt35
     else:

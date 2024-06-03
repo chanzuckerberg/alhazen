@@ -155,6 +155,10 @@ class AddCollectionFromEPMCTool(AlhazenToolMixin, BaseTool):
         try: 
             
             c = self.db.add_corpus_from_epmc_query(id, name, query, commit_this=False)
+
+            if self.db.embed_model is not None:
+                skes = self.db.list_unindexed_skes(id)
+                self.db.embed_expression_list(skes)
             
             # Need to add provenance for the data we have added to the model. 
             c.provenance = json.dumps([{'action_type': self.name, 'action': {'id': id, 'name': name, 'query': query} }])
