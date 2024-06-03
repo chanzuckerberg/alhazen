@@ -14,13 +14,16 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=example
-      - POSTGRES_HOST=localhost
+      - POSTGRES_HOST=db
       - LOCAL_FILE_PATH=/home/jovyan/files
+      - DATABRICKS_API_KEY=$DATABRICKS_API_KEY
+      - GROQ_API_KEY=$GROQ_API_KEY
+      - OPENAI_API_KEY=$OPENAI_API_KEY
     depends_on:
       db:
         condition: service_healthy
   db:
-    image: postgres:14.0
+    image: pgvector/pgvector:pg14
     restart: always
     environment:
       - POSTGRES_USER=postgres

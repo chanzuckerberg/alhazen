@@ -66,9 +66,9 @@ def create_ceifns_database(db_name):
   """Use this function to create a CEIFNS database within the local postgres server."""
   conn = psycopg2.connect(
     database="postgres",
-      user=os.environ['PGUSER'],
-      password=os.environ['PGPASSWORD'],
-      host=os.environ['PGHOST'],
+      user=os.environ['POSTGRES_USER'],
+      password=os.environ['POSTGRES_PASSWORD'],
+      host=os.environ['POSTGRES_HOST'],
       port= '5432'
   )
   conn.autocommit = True
@@ -78,9 +78,9 @@ def create_ceifns_database(db_name):
   
   conn = psycopg2.connect(
     database=db_name,
-    user=os.environ['PGUSER'],
-    password=os.environ['PGPASSWORD'],
-    host=os.environ['PGHOST'],
+    user=os.environ['POSTGRES_USER'],
+    password=os.environ['POSTGRES_PASSWORD'],
+    host=os.environ['POSTGRES_HOST'],
     port= '5432'
   )
   conn.autocommit = True
@@ -91,7 +91,7 @@ def create_ceifns_database(db_name):
           continue
         cursor.execute(sql)
 
-  engine = create_engine("postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['PGUSER'], os.environ['PGPASSWORD'], os.environ['PGHOST'], db_name))
+  engine = create_engine("postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['POSTGRES_USER'], os.environ['POSTGRES_PASSWORD'], os.environ['POSTGRES_HOST'], db_name))
   session_class = sessionmaker(bind=engine)
   session = session_class()
 
@@ -149,9 +149,9 @@ def drop_ceifns_database(db_name, backupFirst=True):
     print("Database has been backed up to %s"%(backup_path));
   conn = psycopg2.connect(
     database="postgres",
-      user=os.environ['PGUSER'],
-      password=os.environ['PGPASSWORD'],
-      host=os.environ['PGHOST'],
+      user=os.environ['POSTGRES_USER'],
+      password=os.environ['POSTGRES_PASSWORD'],
+      host=os.environ['POSTGRES_HOST'],
       port= '5432'
   )
   conn.autocommit = True
@@ -284,10 +284,9 @@ class Ceifns_LiteratureDb(BaseModel):
   engine: Engine = Field(default=None, init=False)
   session: Session = Field(default=None, init=False)
   sent_detector: nltk.tokenize.punkt.PunktSentenceTokenizer = Field(default=None, init=False)
-  embed_model_name: str = Field(default='BAAI/bge-large-en-v1.5', init=False)
-  embed_model_device: str = Field(default='cpu', init=False)
+  #embed_model_name: str = Field(default='BAAI/bge-large-en-v1.5', init=False)
+  #embed_model_device: str = Field(default='cpu', init=False)
   embed_model: Embeddings = Field(default=None, init=False)
-
 
   class Config:
     """Configuration for this pydantic object."""
@@ -318,14 +317,16 @@ class Ceifns_LiteratureDb(BaseModel):
     #
     # hard coded embedding model at present.
     #
-    model_kwargs = {"device": self.embed_model_device}
-    encode_kwargs = {"normalize_embeddings": True}
-    self.embed_model = HuggingFaceBgeEmbeddings(
-      model_name=self.embed_model_name, model_kwargs=model_kwargs, encode_kwargs=encode_kwargs
-    )
+    #model_kwargs = {"device": self.embed_model_device}
+    #encode_kwargs = {"normalize_embeddings": True}
+    #self.embed_model = HuggingFaceBgeEmbeddings(
+    #  model_name=self.embed_model_name, model_kwargs=model_kwargs, encode_kwargs=encode_kwargs
+    #)
 
-    # PGVECTOR representation for embedding uses environmental variables to set the right database 
-    os.environ['PGVECTOR_CONNECTION_STRING'] = "postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['POSTGRES_USER'], os.environ['POSTGRES_PASSWORD'], os.environ['POSTGRES_HOST'], self.name)
+    if self.embed_model is not None:
+        # PGVECTOR representation for embedding uses environmental variables to set the right database 
+        os.environ['PGVECTOR_CONNECTION_STRING'] = "postgresql+psycopg2://%s:%s@%s:5432/%s"%(os.environ['POSTGRES_USER'], os.environ['POSTGRES_PASSWORD'], os.environ['POSTGRES_HOST'], self.name)
+        self.embed_expression_list([])
 
   def start_session(self):
     if self.session is None:
@@ -424,9 +425,6 @@ class Ceifns_LiteratureDb(BaseModel):
         self.session.add(item)
       self.session.add(p)
     
-    skes = self.list_unindexed_skes(corpus_id)
-    self.embed_expression_list(skes)
-
     if commit_this:
       self.session.commit()
 
