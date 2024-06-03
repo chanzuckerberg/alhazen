@@ -30,7 +30,7 @@ classifiers = [
 dependencies = [
     "beautifulsoup4==4.12.2",
     "databricks-sql-connector",
-    "fastapi==0.101.1",
+    "fastapi==0.109.1",
     "huggingface_hub==0.22.1",
     "ipywidgets",
     "jmespath",
