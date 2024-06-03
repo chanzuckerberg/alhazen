@@ -79,12 +79,10 @@ class TitleAbstractDiscourseMappingTool(BaseTitleAbstractMappingTool):
 
         output_list = []
         llm_class_name = self.llm.__class__.__name__
-        llm_model_desc = str(self.llm)
         run_metadata = {
             'tool': self.__class__.__name__,
             'mapping_type': 'discourse_tags',
-            'llm_class': llm_class_name,
-            'llm_desc': llm_model_desc}
+            'llm_class': llm_class_name}
 
         exp_q = self.db.session.query(SKE) \
                 .filter(SKC_HM.has_members_id == SKE.id) \
