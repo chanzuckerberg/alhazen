@@ -952,7 +952,10 @@ class Ceifns_LiteratureDb(BaseModel):
         self.session.commit()
 
     if os.path.exists(pdf_file_path):
-      loader = HuridocsPDFLoader(pdf_file_path)
+      if os.environ.get('HURIDOCS_NETWORK'):
+        loader = HuridocsPDFLoader(pdf_file_path, host=os.environ.get('HURIDOCS_NETWORK'))
+      else:   
+        loader = HuridocsPDFLoader(pdf_file_path)
       #loader = LAPDFBlockLoader(pdf_file_path)
       docs = loader.load(curi_id='doi:'+doi)
       skfs = []
