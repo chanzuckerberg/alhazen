@@ -272,11 +272,11 @@ class LAPDFBlockParser(BaseBlobParser):
 class HuridocsPDFLoader(BasePDFLoader):
     """Load `PDF` files using `Huridocs` (https://github.com/huridocs/pdf_paragraphs_extraction)."""
 
-    def __init__(self, file_path: str) -> None:
+    def __init__(self, file_path: str, host='localhost') -> None:
         """Initialize with a file path."""
         try:
             # check that the server's up and running
-            url = 'http://localhost:5051/info'
+            url = 'http://'+host+':5051/info'
             r = requests.get(url)
         except Exception as e:
             raise Exception(
@@ -284,11 +284,12 @@ class HuridocsPDFLoader(BasePDFLoader):
                 "Please download it and run it from `https://github.com/GullyBurns/pdf_paragraphs_extraction`"
             )
         super().__init__(file_path)
+        self.host = host
 
     def load(self, **kwargs: Optional[Any]) -> List[Document]:
         """Load file."""
 
-        parser = HuridocsPDFParser(text_kwargs=kwargs)
+        parser = HuridocsPDFParser(text_kwargs=kwargs, host=self.host)
         blob = Blob.from_path(self.file_path)
         blocks = parser.parse(blob)
         return blocks
@@ -296,9 +297,10 @@ class HuridocsPDFLoader(BasePDFLoader):
 class HuridocsPDFParser(BaseBlobParser):
     """Parse `PDF` using `Huridocs` (https://github.com/huridocs/pdf_paragraphs_extraction)."""    
 
-    def __init__(self, text_kwargs: Optional[Mapping[str, Any]] = None) -> None:
+    def __init__(self, text_kwargs: Optional[Mapping[str, Any]] = None, host='localhost') -> None:
         """Initialize the parser."""
         self.text_kwargs = text_kwargs or {}
+        self.host = host
 
     def lazy_parse(self, blob: Blob) -> Iterator[Document]:
         """Lazily parse the blob."""
@@ -338,7 +340,7 @@ class HuridocsPDFParser(BaseBlobParser):
                 max_x1 = 10000
                 max_y1 = 10000 
 
-            url = 'http://localhost:5051'
+            url = 'http://'+self.host+':5051'
             files = {'file': file_path}
             r = requests.post(url, files=files)
             paragraphs = r.json().get('paragraphs', [])

@@ -11,6 +11,7 @@ services:
       - ~/.cache/huggingface:/home/jovyan/.cache/huggingface
       - $LOCAL_FILE_PATH:/home/jovyan/files
     environment:
+      - HURIDOCS_NETWORK=pdf_paragraphs_extraction_api
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=example
       - POSTGRES_HOST=db
@@ -18,6 +19,8 @@ services:
       - DATABRICKS_API_KEY=$DATABRICKS_API_KEY
       - GROQ_API_KEY=$GROQ_API_KEY
       - OPENAI_API_KEY=$OPENAI_API_KEY
+    networks:
+      - pdf_paragraphs_extraction_pdf_paragraphs_extraction_network
     depends_on:
       db:
         condition: service_healthy
@@ -40,4 +43,5 @@ volumes:
   work:
 networks:
   pdf_paragraphs_extraction_pdf_paragraphs_extraction_network:
-    external:true
+    name: pdf_paragraphs_extraction_pdf_paragraphs_extraction_network
+    external: true

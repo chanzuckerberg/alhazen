@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.555">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -23,7 +23,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,7 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -80,7 +80,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -89,20 +95,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="alhazen - Image Tech Evolution">
 <meta property="og:description" content="Methods to extract and model how imaging technology evolves.">
-<meta property="og:site-name" content="alhazen">
+<meta property="og:site_name" content="alhazen">
 <meta name="twitter:title" content="alhazen - Image Tech Evolution">
 <meta name="twitter:description" content="Methods to extract and model how imaging technology evolves.">
 <meta name="twitter:card" content="summary">
@@ -112,9 +119,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">alhazen</span>
     </a>
@@ -126,24 +133,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html#install-dependencies" rel="" target="">
- <span class="menu-text">Get Started</span></a>
+    <a class="nav-link" href="../../index.html#install-dependencies"> 
+<span class="menu-text">Get Started</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../../docnb1_use_cases.html" rel="" target="" aria-current="page">
- <span class="menu-text">Use Cases</span></a>
+    <a class="nav-link active" href="../../docnb1_use_cases.html" aria-current="page"> 
+<span class="menu-text">Use Cases</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../docnb2_architecture.html" rel="" target="">
- <span class="menu-text">Platform Architecture</span></a>
+    <a class="nav-link" href="../../docnb2_architecture.html"> 
+<span class="menu-text">Platform Architecture</span></a>
   </li>  
   <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-help" role="button" data-bs-toggle="dropdown" aria-expanded="false" rel="" target="">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-help" role="button" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Help</span>
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-help">    
         <li>
-    <a class="dropdown-item" href="https://github.com/chanzuckerberg/alhazen/issues" rel="" target=""><i class="bi bi-bug" role="img">
+    <a class="dropdown-item" href="https://github.com/chanzuckerberg/alhazen/issues"><i class="bi bi-bug" role="img">
 </i> 
  <span class="dropdown-text">Report an Issue</span></a>
   </li>  
@@ -152,24 +159,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/chanzuckerberg/alhazen" rel="" target=""><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/chanzuckerberg/alhazen"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/single_doc_extraction/index.html">Example Notebooks</a></li><li class="breadcrumb-item"><a href="../../cookbook/trend_analysis/index.html">Trend Analysis</a></li><li class="breadcrumb-item"><a href="../../cookbook/trend_analysis/imaging_technology_evolution.html">Image Tech Evolution</a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/single_doc_extraction/index.html">Example Notebooks</a></li><li class="breadcrumb-item"><a href="../../cookbook/trend_analysis/index.html">Trend Analysis</a></li><li class="breadcrumb-item"><a href="../../cookbook/trend_analysis/imaging_technology_evolution.html">Image Tech Evolution</a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -179,7 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
@@ -467,6 +474,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Virtual Cell Landscaping Analysis</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/question_answering/cellbiology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cell Biology Database.</span></a>
+  </div>
+</li>
       </ul>
   </li>
       </ul>
@@ -474,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -496,12 +509,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#run-llm-over-each-paper-in-imaging-program-collection-to-determine-if-papers-are-methods-or-applications" id="toc-run-llm-over-each-paper-in-imaging-program-collection-to-determine-if-papers-are-methods-or-applications" class="nav-link" data-scroll-target="#run-llm-over-each-paper-in-imaging-program-collection-to-determine-if-papers-are-methods-or-applications">Run LLM over each paper in Imaging Program collection to determine if papers are methods or applications</a></li>
   <li><a href="#run-the-tool-for-high-level-subtypes" id="toc-run-the-tool-for-high-level-subtypes" class="nav-link" data-scroll-target="#run-the-tool-for-high-level-subtypes">Run the tool for high-level subtypes</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../cookbook/single_doc_extraction/index.html">Example Notebooks</a></li><li class="breadcrumb-item"><a href="../../cookbook/trend_analysis/index.html">Trend Analysis</a></li><li class="breadcrumb-item"><a href="../../cookbook/trend_analysis/imaging_technology_evolution.html">Image Tech Evolution</a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title">Image Tech Evolution</h1>
 </div>
@@ -521,7 +534,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
 <section id="modeling-technological-evolution-and-innovation" class="level2">
@@ -536,7 +551,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="python-imports" class="level3">
 <h3 class="anchored" data-anchor-id="python-imports">Python Imports</h3>
 <p>Setting python imports, environment variables, and other crucial set up parameters here.</p>
-<div class="cell">
+<div id="cell-4" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.core <span class="im">import</span> get_langchain_chatmodel, MODEL_TYPE</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.agent <span class="im">import</span> AlhazenAgent</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -578,9 +593,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.parse <span class="im">import</span> quote_plus, quote, unquote</span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.error <span class="im">import</span> URLError, HTTPError</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yaml</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.searchEngineUtils <span class="im">import</span> load_paper_from_openalex, read_references_from_openalex </span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyalex <span class="im">import</span> config, Works, Work</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>config.email <span class="op">=</span> <span class="st">"gully.burns@chanzuckerberg.com"</span></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> local_resources.queries.imaging_tech <span class="im">as</span> imaging_tech</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.queryTranslator <span class="im">import</span> QueryTranslator, QueryType</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div id="cell-5" class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Using Aliases like this massively simplifies the use of SQLAlchemy</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>IR <span class="op">=</span> aliased(InformationResource)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -610,7 +632,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>ALHAZEN_DB_NAME</code> - the name of the PostGresQL database you are storing information into</li>
 <li><code>LOCAL_FILE_PATH</code> - the location on disk where you save temporary files, downloaded models or other data.</li>
 </ul>
-<div class="cell">
+<div id="cell-7" class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.environ.get(<span class="st">'LOCAL_FILE_PATH'</span>) <span class="kw">is</span> <span class="va">None</span>: </span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'Where are you storing your local literature database?'</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(os.environ[<span class="st">'LOCAL_FILE_PATH'</span>]) <span class="kw">is</span> <span class="va">False</span>:</span>
@@ -622,7 +644,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="setup-utils-agents-and-tools" class="level3">
 <h3 class="anchored" data-anchor-id="setup-utils-agents-and-tools">Setup utils, agents, and tools</h3>
-<div class="cell">
+<div id="cell-9" class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ldb <span class="op">=</span> Ceifns_LiteratureDb(loc<span class="op">=</span>loc, name<span class="op">=</span>db_name)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOllama(model<span class="op">=</span><span class="st">'mixtral:instruct'</span>) </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>llm2 <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">'gpt-4-1106-preview'</span>) </span>
@@ -658,7 +680,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you need to restore a deleted database from backup, use the following shell commands:</p>
 <pre><code>$ createdb em_tech
 $ psql -d em_tech -f /local/file/path/em_tech/backup&lt;date_time&gt;.sql</code></pre>
-<div class="cell">
+<div id="cell-12" class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>drop_ceifns_database(os.environ[<span class="st">'ALHAZEN_DB_NAME'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
@@ -669,7 +691,7 @@ Database has been backed up to /users/gully.burns/alhazen/imaging_tech_innovatio
 Database has been dropped successfully !!</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-13" class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>create_ceifns_database(os.environ[<span class="st">'ALHAZEN_DB_NAME'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>100%|██████████| 310/310 [00:00&lt;00:00, 3467.45it/s]</code></pre>
@@ -687,19 +709,16 @@ Database has been dropped successfully !!</code></pre>
 <li>Volume Electron Microscopy</li>
 <li>Photoacoustic imaging</li>
 </ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> local_resources.queries.imaging_tech <span class="im">as</span> imaging_tech</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.queryTranslator <span class="im">import</span> QueryTranslator, QueryType</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>cols_to_include <span class="op">=</span> [<span class="st">'ID'</span>, <span class="st">'CORPUS_NAME'</span>, <span class="st">'QUERY'</span>]</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(files(imaging_tech).joinpath(<span class="st">'imaging_tech.tsv'</span>), sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, )</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>[c <span class="cf">for</span> c <span class="kw">in</span> df.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> cols_to_include])</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-16" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cols_to_include <span class="op">=</span> [<span class="st">'ID'</span>, <span class="st">'CORPUS_NAME'</span>, <span class="st">'QUERY'</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(files(imaging_tech).joinpath(<span class="st">'imaging_tech.tsv'</span>), sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, )</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>[c <span class="cf">for</span> c <span class="kw">in</span> df.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> cols_to_include])</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -739,7 +758,7 @@ Database has been dropped successfully !!</code></pre>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="cell-17" class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>qt <span class="op">=</span> QueryTranslator(df.sort_values(<span class="st">'ID'</span>), <span class="st">'ID'</span>, <span class="st">'QUERY'</span>, <span class="st">'CORPUS_NAME'</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>(corpus_ids, epmc_queries) <span class="op">=</span> qt.generate_queries(QueryType.epmc, sections<span class="op">=</span>[<span class="st">'TITLE_ABS'</span>, <span class="st">'METHODS'</span>])</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>corpus_names <span class="op">=</span> df[<span class="st">'CORPUS_NAME'</span>]</span>
@@ -774,7 +793,7 @@ https://www.ebi.ac.uk/europepmc/webservices/rest/search?format=JSON&amp;pageSize
 <section id="run-queries-on-known-lists-of-papers-from-czi-grantees-on-the-four-imaging-innovation-categories" class="level4">
 <h4 class="anchored" data-anchor-id="run-queries-on-known-lists-of-papers-from-czi-grantees-on-the-four-imaging-innovation-categories">Run queries on known lists of papers from CZI grantees on the four imaging innovation categories</h4>
 <p>Here we seach pre-developed lists of papers from CZI grantee’s work, indexed in a local file: <code>./local_resources/queries/imaging_tech/grantee_dois.json</code></p>
-<div class="cell">
+<div id="cell-19" class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(files(imaging_tech).joinpath(<span class="st">'grantee_dois.json'</span>), <span class="st">'r'</span>) <span class="im">as</span> f:</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    dict_lists <span class="op">=</span> json.load(f)</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -795,7 +814,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 </section>
 <section id="analyze-collections" class="level2">
 <h2 class="anchored" data-anchor-id="analyze-collections">Analyze Collections</h2>
-<div class="cell">
+<div id="cell-21" class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKC.<span class="bu">id</span>, SKC.name, SKE.<span class="bu">id</span>, SKI.<span class="bu">type</span>) <span class="op">\</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
@@ -807,7 +826,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 <div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -872,7 +891,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="cell-22" class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cb.agent_executor.invoke({<span class="st">'input'</span>:<span class="st">'Drop collection with id="0"'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -895,7 +914,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
    {'response': 'Successfully deleted a collection with collection_id:`0`.'})]}</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-23" class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(files(imaging_tech).joinpath(<span class="st">'dois.txt'</span>), <span class="st">'r'</span>) <span class="im">as</span> f:</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    dois <span class="op">=</span> f.readlines()</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>dois <span class="op">=</span> [d.strip() <span class="cf">for</span> d <span class="kw">in</span> dois]</span>
@@ -904,17 +923,13 @@ Photoacoustic imaging: Searching for 26</code></pre>
 <pre><code>806</code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.searchEngineUtils <span class="im">import</span> load_paper_from_openalex, read_references_from_openalex </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pyalex <span class="im">import</span> config, Works, Work</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>config.email <span class="op">=</span> <span class="st">"gully.burns@chanzuckerberg.com"</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>ldb.add_collection_from_dois_using_openalex(<span class="st">'0'</span>, <span class="st">'Imaging Program'</span>, dois, commit_this<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-24" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ldb.add_collection_from_dois_using_openalex(<span class="st">'0'</span>, <span class="st">'Imaging Program'</span>, dois, commit_this<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>100%|██████████| 806/806 [04:04&lt;00:00,  3.30it/s]</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-25" class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run local analysis on program data</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
@@ -923,7 +938,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 <span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="st">' OR '</span>.join([<span class="st">'doi:</span><span class="ch">\"</span><span class="st">'</span><span class="op">+</span>dois[i].lower()<span class="op">+</span><span class="st">'</span><span class="ch">\"</span><span class="st">'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(start_i, start_i<span class="op">+</span>step) <span class="cf">if</span> i <span class="op">&lt;</span> <span class="bu">len</span>(dois)])</span>
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    addEMPCCollection_tool.run({<span class="st">'id'</span>: <span class="st">'0'</span>, <span class="st">'name'</span>:<span class="st">'Imaging Program'</span>, <span class="st">'query'</span>:query, <span class="st">'full_text'</span>:<span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div id="cell-26" class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>missing_dois <span class="op">=</span> []</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> doi <span class="kw">in</span> dois:</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    c <span class="op">=</span> ldb.session.query(func.count(SKE.<span class="bu">id</span>)).<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span><span class="st">'doi:'</span><span class="op">+</span>doi.lower()).first()</span>
@@ -936,7 +951,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 ['10.3389%2Ffmed.2022.849677', '10.48550/arXiv.2210.04033', '10.3389%2Ffnins.2023.1135494', '10.48550/arXiv.2308.00870', '10.48550/arXiv.2307.14572', '10.48550/arXiv.2107.09145', '10.1038/s41598-021-94852-4', '10.1172%2Fjci.insight.142945', '10.1016/j.biopha.2022', '10.6084/m9.figshare.12758957.v1', '10.6084/m9.figshare.12299915.v2', '10.1126/sciadv.aaz2598.', '10.5281/ZENODO.3901011', '10.1152/ajpendo.00501.2018.', '10.48550/arXiv.2008.00807', '10.1136/ jitc-2022-006133', '10.1101/2020.05.27/119750', '10.1038/s41592-021- 01156-w', '0.1021/acschembio.0c00988', '10.1126/sciimmunol.abm693', '10.1038/s41598-021-85036-w', '10.1016%2Fj.ijcha.2020.100672', '10.1017/S2633903X2300003X[Opens in a new window]', '10.1016%2Fj.pacs.2021.100276', '10.1117%2F1.JBO.29.S1.S11521', '10.22443/rms.mmc2023.274', '10.5281/zenodo.10200758', '10.48550/arXiv.2306.15898', '10.48550/arXiv.2311.13417', '10.5281/zenodo.10451511', '10.5281/zenodo.10685021', '10.5281/zenodo.10057023', '10.5281/zenodo.10591803', '10.5281/zenodo.10591588']</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-27" class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>step <span class="op">=</span> <span class="dv">40</span></span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -955,11 +970,11 @@ Photoacoustic imaging: Searching for 26</code></pre>
 </section>
 <section id="run-llm-over-each-paper-in-imaging-program-collection-to-determine-if-papers-are-methods-or-applications" class="level2">
 <h2 class="anchored" data-anchor-id="run-llm-over-each-paper-in-imaging-program-collection-to-determine-if-papers-are-methods-or-applications">Run LLM over each paper in Imaging Program collection to determine if papers are methods or applications</h2>
-<div class="cell">
+<div id="cell-29" class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractClassifier_OneDocAtATime_Tool)][<span class="dv">0</span>]</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>t.run({<span class="st">'collection_id'</span>: <span class="st">'0'</span>, <span class="st">'classification_type'</span>:<span class="st">'is_method_paper'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div id="cell-30" class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>collection_id  <span class="op">=</span> <span class="st">'0'</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>classification_type <span class="op">=</span> <span class="st">'is_methods_paper'</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE, N) <span class="op">\</span></span>
@@ -984,7 +999,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 <div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -1094,7 +1109,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 </section>
 <section id="run-the-tool-for-high-level-subtypes" class="level1">
 <h1>Run the tool for high-level subtypes</h1>
-<div class="cell">
+<div id="cell-32" class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractClassifier_OneDocAtATime_Tool)][<span class="dv">0</span>]</span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>t.run({<span class="st">'collection_id'</span>: <span class="st">'0'</span>, <span class="st">'classification_type'</span>:<span class="st">'top_level_imaging_categories'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -2441,10 +2456,10 @@ Photoacoustic imaging: Searching for 26</code></pre>
  'run_name': "TitleAbstractClassifier_OneDocAtATime_Tool__top_level_imaging_categories__0__ChatOpenAI__client=&lt;openai.resources.chat.completions.Completions object&gt; async_client=&lt;openai.resources.chat.completions.AsyncCompletions object&gt; model_name='gpt-4-1106-preview' openai_api_key=SecretStr('**********') openai_proxy=''"}</code></pre>
 </div>
 </div>
-<div class="cell">
+<div id="cell-33" class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_colwidth'</span>, <span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div id="cell-34" class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>collection_id  <span class="op">=</span> <span class="st">'0'</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>classification_type <span class="op">=</span> <span class="st">'top_level_imaging_categories'</span></span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE, N) <span class="op">\</span></span>
@@ -2469,7 +2484,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 <div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -2486,7 +2501,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="cell-35" class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>collection_id  <span class="op">=</span> <span class="st">'0'</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>classification_type <span class="op">=</span> <span class="st">'top_level_imaging_categories'</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE, N) <span class="op">\</span></span>
@@ -2513,7 +2528,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 <div>
 
 
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<table class="dataframe caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -2632,7 +2647,7 @@ Photoacoustic imaging: Searching for 26</code></pre>
 </div>
 </div>
 </div>
-<div class="cell">
+<div id="cell-36" class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>collection_id  <span class="op">=</span> <span class="st">'0'</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>classification_type <span class="op">=</span> <span class="st">'top_level_imaging_categories'</span></span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE, N) <span class="op">\</span></span>
@@ -2733,10 +2748,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/chanzuckerberg\.github\.io\/alhazen\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -2746,8 +2778,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -2759,7 +2800,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -2803,6 +2967,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -2828,6 +2993,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -2891,4 +3082,5 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-</body></html>
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
