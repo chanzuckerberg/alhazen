@@ -5,6 +5,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "127.0.0.1:8888:8888"
+      - "127.0.0.1:2718:2718"
     volumes:
       - .:/home/jovyan/alhazen
       - ./nbs/cookbook:/home/jovyan/work
@@ -38,6 +39,3 @@ services:
 volumes:
   pgdata:
   work:
-networks:
-  pdf_paragraphs_extraction_pdf_paragraphs_extraction_network:
-    external:true

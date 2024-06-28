@@ -19,4 +19,3 @@ RUN pip install hatch
 USER ${NB_UID}
 
 RUN pip install -e .
-

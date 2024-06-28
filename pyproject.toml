@@ -41,7 +41,7 @@ dependencies = [
     "langserve==0.0.34",
     "linkml==1.6.1",
     "lxml==4.9.4",
-    "marimo==0.2.13",
+    "marimo==0.6.23",
     "nbdev==2.3.12",
     "numpy==1.26.0",
     "nxml-2-txt@git+https://github.com/GullyBurns/nxml2txt",
