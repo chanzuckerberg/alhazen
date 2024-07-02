@@ -48,7 +48,7 @@ import yaml
 # %% ../../nbs/tools/26_tiab_mapping_tool.ipynb 4
 class TitleAbstractMappingToolSchema(BaseModel):
     collection_id: str = Field(description="the id of the collection being analyzed.")
-    repeat_run: Optional[bool] = Field(description="Whether or not to repeat the classification task if it has been performed before. Defaults to False.")
+    repeat_run: Optional[bool] = Field(description="Whether or not to repeat the mapping task if it has been performed before. Defaults to False.")
     run_label: Optional[str] = Field(description="This is a label that will be used to identify the run of the tool in the database. Defaults to 'dev'")
 
 class BaseTitleAbstractMappingTool(BaseTool, AlhazenToolMixin):

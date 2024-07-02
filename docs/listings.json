@@ -22,12 +22,12 @@
     "items": [
       "/tools/toolkit.html",
       "/tools/basic_tools.html",
-      "/tools/tiab_mapping_tool.html",
-      "/tools/tiab_clasifier_tool.html",
-      "/tools/tiab_extraction_tool.html",
       "/tools/metadata_extraction_tool.html",
       "/tools/paperqa_emulation_tool.html",
-      "/tools/protocol_extraction_tool.html"
+      "/tools/protocol_extraction_tool.html",
+      "/tools/tiab_clasifier_tool.html",
+      "/tools/tiab_extraction_tool.html",
+      "/tools/tiab_mapping_tool.html"
     ]
   },
   {
