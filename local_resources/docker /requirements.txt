@@ -1,5 +1,0 @@
-Flask
-flask_cors
-pandas
-snowflake-connector-python
-cryptography

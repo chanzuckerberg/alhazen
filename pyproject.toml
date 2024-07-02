@@ -28,6 +28,7 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
 ]
 dependencies = [
+    "altair==5.3.0",
     "beautifulsoup4==4.12.2",
     "databricks-sql-connector",
     "fastapi==0.109.1",
@@ -41,7 +42,7 @@ dependencies = [
     "langserve==0.0.34",
     "linkml==1.6.1",
     "lxml==4.9.4",
-    "marimo==0.6.23",
+    "marimo==0.6.26",
     "nbdev==2.3.12",
     "numpy==1.26.0",
     "nxml-2-txt@git+https://github.com/GullyBurns/nxml2txt",
@@ -50,9 +51,11 @@ dependencies = [
     "psycopg2-binary==2.9.9",
     "pgvector==0.2.4",
     "pyalex==0.13",
+    "pyeda==0.29.0",
     "pydantic==2.5.1",
     "pymupdf==1.23.4",
     "selenium==4.16.0",
+    "pymde==0.1.18",
     "sentence_transformers==2.2.2",
     "splinter==0.20.1",
     "sqlalchemy==2.0.21",

@@ -1,17 +1,14 @@
 import marimo
 
-__generated_with = "0.2.13"
-app = marimo.App(
-    width="full",
-    layout_file="layouts/001a_CryoET_Metadata_Marimo.grid.json",
-)
+__generated_with = "0.6.23"
+app = marimo.App(width="full")
 
 
 @app.cell
 def _(mo):
     mo.md(
         r"""
-        # Metdata Dashboard  
+        # Collection Dashboard  
 
         > Dashboard for literature collection exploration.
         """
@@ -23,12 +20,10 @@ def _(mo):
 def _():
     import functools
 
-    import pymde
     from alhazen.aliases import IR, N, NIA, SKC, SKC_HM, SKC_HN, SKE, SKE_HN, SKE_HR, \
             SKE_IRI, SKE_MO, SKE_XREF, SKF, SKF_HN, SKI, SKI_HN, SKI_HP
     from alhazen.utils.ceifns_db import list_databases, Ceifns_LiteratureDb
 
-    import altair as alt
     import json
 
     from langchain.callbacks.tracers import ConsoleCallbackHandler
@@ -39,6 +34,7 @@ def _():
     from langchain_google_vertexai import ChatVertexAI
     from langchain_openai import ChatOpenAI
 
+    import altair as alt
     import marimo as mo
     import os
     import pandas as pd
@@ -59,6 +55,10 @@ def _():
     from urllib.parse import quote_plus, quote, unquote
     from urllib.error import URLError, HTTPError
     import yaml
+    import pymde
+
+    import nltk
+    success = nltk.download('punkt')
     return (
         Ceifns_LiteratureDb,
         CharacterTextSplitter,
@@ -103,6 +103,7 @@ def _():
         json,
         list_databases,
         mo,
+        nltk,
         not_,
         or_,
         os,
@@ -114,6 +115,7 @@ def _():
         requests,
         sessionmaker,
         sleep,
+        success,
         text,
         time,
         torch,
@@ -127,6 +129,7 @@ def _():
 @app.cell
 def __(list_databases, mo):
     ah_dbs = list_databases()
+    dropdown = None
     if len(ah_dbs)>0:
         dropdown = mo.ui.dropdown(
             options={n:n for n in ah_dbs},
@@ -139,9 +142,10 @@ def __(list_databases, mo):
 
 @app.cell
 def _(Ceifns_LiteratureDb, dropdown, os):
-    db_name = dropdown.value
-    loc = os.environ['LOCAL_FILE_PATH']
-    ldb = Ceifns_LiteratureDb(loc=loc, name=db_name)
+    if dropdown:
+        db_name = dropdown.value
+        loc = os.environ['LOCAL_FILE_PATH']
+        ldb = Ceifns_LiteratureDb(loc=loc, name=db_name)
     return db_name, ldb, loc
 
 
@@ -180,87 +184,92 @@ def __(select_collection_form):
     return c_id, c_ids
 
 
-app._unparsable_cell(
-    r"""
-    if select_collection_form.value is not None::
+@app.cell
+def __(c_ids, select_collection_form):
+    if select_collection_form.value is not None:
 
         collections_clause = ' OR '.join(['skc.id=\'{}\''.format(coll_id) for coll_id in c_ids])
 
         # Queries for each subtype of embedding
-        q2_all = \"\"\"
+        q2_all = """
         SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, skf.content 
         FROM langchain_pg_embedding as emb, 
-            \"ScientificKnowledgeExpression\" as ske,
-            \"ScientificKnowledgeCollection_has_members\" as skc_hm, 
-            \"ScientificKnowledgeCollection\" as skc, 
-            \"ScientificKnowledgeFragment\" as skf
+            "ScientificKnowledgeExpression" as ske,
+            "ScientificKnowledgeCollection_has_members" as skc_hm, 
+            "ScientificKnowledgeCollection" as skc, 
+            "ScientificKnowledgeFragment" as skf
         WHERE emb.cmetadata->>'i_type' = 'CitationRecord' AND
             emb.cmetadata->>'e_id' = ske.id AND 
             emb.cmetadata->>'f_id' = skf.id AND
-            skc_hm.\"ScientificKnowledgeCollection_id\" = skc.id AND
+            skc_hm."ScientificKnowledgeCollection_id" = skc.id AND
             ske.id = skc_hm.has_members_id AND ({})
         ORDER BY pub_date DESC;
-        \"\"\".format(collections_clause)
+        """.format(collections_clause)
 
-        q2_study_types = \"\"\"
+        q2_study_types = """
         SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, skf.content, n.content
         FROM langchain_pg_embedding as emb, 
-            \"ScientificKnowledgeExpression\" as ske,
-            \"ScientificKnowledgeCollection_has_members\" as skc_hm, 
-            \"ScientificKnowledgeCollection\" as skc, 
-            \"ScientificKnowledgeFragment\" as skf,
-            \"Note\" as n,
-            \"Note_is_about\" as nia
+            "ScientificKnowledgeExpression" as ske,
+            "ScientificKnowledgeCollection_has_members" as skc_hm, 
+            "ScientificKnowledgeCollection" as skc, 
+            "ScientificKnowledgeFragment" as skf,
+            "Note" as n,
+            "Note_is_about" as nia
         WHERE n.type = 'TiAbClassificationNote__cryoet_study_types' AND
-            n.id = nia.\"Note_id\" AND
+            n.id = nia."Note_id" AND
             nia.is_about_id = ske.id AND
             emb.cmetadata->>'i_type' = 'CitationRecord' AND
             emb.cmetadata->>'e_id' = ske.id AND 
             emb.cmetadata->>'f_id' = skf.id AND
-            skc_hm.\"ScientificKnowledgeCollection_id\" = skc.id AND
+            skc_hm."ScientificKnowledgeCollection_id" = skc.id AND
             ske.id = skc_hm.has_members_id AND ({})
         ORDER BY pub_date DESC;
-        \"\"\".format(collections_clause)
+        """.format(collections_clause)
 
-        q2_background = \"\"\"
+        q2_background = """
         SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, n.content 
         FROM langchain_pg_embedding as emb, 
-            \"ScientificKnowledgeExpression\" as ske,
-            \"ScientificKnowledgeCollection_has_members\" as skc_hm,
-            \"ScientificKnowledgeCollection\" as skc, 
-            \"Note\" as n
+            "ScientificKnowledgeExpression" as ske,
+            "ScientificKnowledgeCollection_has_members" as skc_hm,
+            "ScientificKnowledgeCollection" as skc, 
+            "Note" as n
         WHERE emb.cmetadata->>'n_type' = 'TiAbMappingNote__Discourse' AND
             emb.cmetadata->>'about_id' = ske.id AND 
             emb.cmetadata->>'discourse_type' = 'Background' AND 
             emb.cmetadata->>'n_id' = n.id AND 
-            skc_hm.\"ScientificKnowledgeCollection_id\" = skc.id AND
+            skc_hm."ScientificKnowledgeCollection_id" = skc.id AND
             ske.id = skc_hm.has_members_id AND ({})
         ORDER BY pub_date DESC;
-        \"\"\".format(collections_clause)
+        """.format(collections_clause)
 
-        q2_objectives_methods = \"\"\"
+        q2_objectives_methods = """
         SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, n.content 
         FROM langchain_pg_embedding as emb, 
-            \"ScientificKnowledgeExpression\" as ske,
-            \"ScientificKnowledgeCollection_has_members\" as skc_hm,
-            \"ScientificKnowledgeCollection\" as skc, 
-            \"Note\" as n
+            "ScientificKnowledgeExpression" as ske,
+            "ScientificKnowledgeCollection_has_members" as skc_hm,
+            "ScientificKnowledgeCollection" as skc, 
+            "Note" as n
         WHERE emb.cmetadata->>'n_type' = 'TiAbMappingNote__Discourse' AND
             emb.cmetadata->>'about_id' = ske.id AND 
             emb.cmetadata->>'discourse_type' = 'ObjectivesMethods' AND 
             emb.cmetadata->>'n_id' = n.id AND 
-            skc_hm.\"ScientificKnowledgeCollection_id\" = skc.id AND
+            skc_hm."ScientificKnowledgeCollection_id" = skc.id AND
             ske.id = skc_hm.has_members_id AND ({})
         ORDER BY pub_date DESC;
-        \"\"\".format(collections_clause)
+        """.format(collections_clause)
 
-        q2_results_conclusions = \"\"\"
+        q2_results_conclusions = """
         SELECT DISTINCT skc.name, ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, n.content
         FROM langchain_pg_embedding as emb, 
-        \"\"\".format(collections_clause)
-    """,
-    name="__"
-)
+        """.format(collections_clause)
+    return (
+        collections_clause,
+        q2_all,
+        q2_background,
+        q2_objectives_methods,
+        q2_results_conclusions,
+        q2_study_types,
+    )
 
 
 @app.cell
@@ -274,8 +283,7 @@ def __(
     select_collection_form,
     set_prunelist,
 ):
-    if select_collection_form.value:
-
+    if select_collection_form.value is not None:
         map_type_dropdown = mo.ui.dropdown(
             options={"All papers": ('All', q2_all), 
                      "Study Types": ('StudyTypes', q2_study_types), 
@@ -296,7 +304,7 @@ def __(
             value= ['Research Article', 'Research Preprint'],
             label='Paper sub-type: ')
         set_prunelist([])
-        mo.output.replace(mo.vstack([map_type_dropdown, paper_type_table,]))
+        mo.output.replace(mo.vstack([map_type_dropdown, paper_type_table]))
     return map_type_dropdown, paper_type_table
 
 
@@ -309,7 +317,7 @@ def __(
     selected_dois,
     set_prunelist,
 ):
-    if select_collection_form.value:
+    if select_collection_form.value is not None:
 
         l = get_prunelist()
         prune_pb = mo.ui.button(label='Prune', value=selected_dois+l, on_click=set_prunelist)
@@ -324,8 +332,8 @@ def __(
 
 @app.cell
 def __(embed_df, mo, select_collection_form):
-    if select_collection_form.value:
-        
+    if select_collection_form.value is not None:
+
         start_slider = mo.ui.slider(label='start', \
                           start=embed_df['date'].min().year, \
                           stop=embed_df['date'].max().year) 
@@ -338,8 +346,8 @@ def __(embed_df, mo, select_collection_form):
 
 @app.cell
 def __(end_slider, mo, select_collection_form, start_slider):
-    if select_collection_form.value:
-        
+    if select_collection_form.value is not None:
+
         start_value = mo.ui.text(value=str(start_slider.value), disabled=True )
         end_value = mo.ui.text(value=str(end_slider.value), disabled=True )
 
@@ -360,8 +368,8 @@ def __(c_ids, embed_df, end_slider, start_slider):
 
 @app.cell
 def __(alt, embedding_df, mo, select_collection_form):
-    if select_collection_form.value:
-        
+    if select_collection_form.value is not None:
+
         chart = mo.ui.altair_chart(
             alt.Chart(embedding_df)
             .mark_circle(size=10)
@@ -380,13 +388,20 @@ def __(alt, embedding_df, mo, select_collection_form):
 
 @app.cell
 def __(ldb, map_type_dropdown, select_collection_form, text):
-    if select_collection_form.value:
-        
+    if select_collection_form.value is not None:
+
         map_type = map_type_dropdown.value[0]
         map_type_query = map_type_dropdown.value[1]
         ldb.session.rollback()
         rag_data = ldb.session.execute(text(map_type_query)).fetchall()
     return map_type, map_type_query, rag_data
+
+
+@app.cell
+def __():
+    import platform; 
+    print(platform.platform())
+    return platform,
 
 
 @app.cell
@@ -405,8 +420,8 @@ def __(
     study_type_lookup,
     torch,
 ):
-    if select_collection_form.value:
-        
+    if select_collection_form.value is not None:
+
         rag_coll_list = []
         rag_id_list = []
         rag_url_list = []
@@ -503,7 +518,7 @@ def __(functools, mo, pymde):
             data,
             embedding_dim=embedding_dim,
             constraint=constraint,
-            device="mps",
+            device="cpu",
             verbose=True,
         )
         X = mde.embed(verbose=True)
@@ -520,8 +535,8 @@ def __(alt, mo, papers_df, pd, resample_dropdown, select_collection_form):
                             hours=dt.hour, minutes=dt.minute, seconds=dt.second,
                             milliseconds=0.001 * dt.microsecond)
 
-    if select_collection_form.value:
-        
+    if select_collection_form.value is not None:
+
         time_domain = [to_altair_datetime('2010-01-01'),
                   to_altair_datetime('2024-06-01')]
 
@@ -545,7 +560,7 @@ def __(alt, mo, papers_df, pd, resample_dropdown, select_collection_form):
 
 @app.cell
 def __(mo, select_collection_form):
-    if select_collection_form.value:    
+    if select_collection_form.value is not None:    
         resample_dropdown = mo.ui.dropdown(
           options=['1M', '2M', '3M', '6M', '1Y'],
           value='3M',
@@ -557,7 +572,7 @@ def __(mo, select_collection_form):
 
 @app.cell
 def __(chart, embedding_df, ldb, mo, select_collection_form):
-    if select_collection_form.value:
+    if select_collection_form.value is not None:
 
         ldb.session.rollback()
         if len(chart.value) > 0:
@@ -575,7 +590,7 @@ def __(chart, embedding_df, ldb, mo, select_collection_form):
 
 @app.cell
 def __(mo, papers_df, papers_list, select_collection_form):
-    if select_collection_form.value:
+    if select_collection_form.value is not None:
         mo.output.replace(mo.ui.table(papers_list))
         selected_dois = [row.DOI for i, row in papers_df.iterrows()]
     return selected_dois,

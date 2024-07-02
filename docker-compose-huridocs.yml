@@ -38,6 +38,7 @@ services:
     restart: always
     ports:
       - 8080:8080
+    command: ["php", "-d", "post_max_size=1G", "-d", "upload_max_filesize=1G", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]
 volumes:
   pgdata:
   work:
