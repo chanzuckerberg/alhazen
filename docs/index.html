@@ -563,9 +563,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="docker">Docker</h3>
 <p>The preferred method to run Alhazen is through <a href="https://www.docker.com/">Docker</a>.</p>
 <p>Note, for correct functionality, set the following environment variables for the shell from which you are calling Docker:</p>
-<p><strong>MANDATORY</strong> * LOCAL_FILE_PATH - the directory where the system will store full-text files.</p>
-<p><strong>OPTIONAL</strong> * OPENAI_API_KEY - if you are using OpenAI large language models.<br>
-* DATABRICKS_API_KEY - if you are using the Databricks AI Playground endpoint as an LLM server. * GROQ_API_KEY - if you are calling LLMs on groq.com</p>
+<p><strong>MANDATORY</strong></p>
+<ul>
+<li>LOCAL_FILE_PATH - the directory where the system will store full-text files.</li>
+</ul>
+<p><strong>OPTIONAL</strong></p>
+<ul>
+<li>OPENAI_API_KEY - if you are using OpenAI large language models.<br>
+</li>
+<li>DATABRICKS_API_KEY - if you are using the Databricks AI Playground endpoint as an LLM server.</li>
+<li>GROQ_API_KEY - if you are calling LLMs on groq.com</li>
+</ul>
 <section id="quickstart" class="level4">
 <h4 class="anchored" data-anchor-id="quickstart">Quickstart</h4>
 <p>To run the system out of the box, run these commands:</p>

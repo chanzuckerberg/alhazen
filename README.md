@@ -51,14 +51,17 @@ The preferred method to run Alhazen is through
 Note, for correct functionality, set the following environment variables
 for the shell from which you are calling Docker:
 
-**MANDATORY** \* LOCAL_FILE_PATH - the directory where the system will
-store full-text files.
+**MANDATORY**
 
-**OPTIONAL** \* OPENAI_API_KEY - if you are using OpenAI large language
-models.  
-\* DATABRICKS_API_KEY - if you are using the Databricks AI Playground
-endpoint as an LLM server. \* GROQ_API_KEY - if you are calling LLMs on
-groq.com
+- LOCAL_FILE_PATH - the directory where the system will store full-text
+  files.
+
+**OPTIONAL**
+
+- OPENAI_API_KEY - if you are using OpenAI large language models.  
+- DATABRICKS_API_KEY - if you are using the Databricks AI Playground
+  endpoint as an LLM server.
+- GROQ_API_KEY - if you are calling LLMs on groq.com
 
 #### Quickstart
 
