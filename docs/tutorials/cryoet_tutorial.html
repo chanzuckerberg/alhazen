@@ -549,7 +549,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="python-imports" class="level3">
 <h3 class="anchored" data-anchor-id="python-imports">Python Imports</h3>
 <p>Setting python imports, environment variables, and other crucial set up parameters here.</p>
-<div id="cell-5" class="cell" data-execution_count="1">
+<div id="cell-5" class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.aliases <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.core <span class="im">import</span> lookup_chat_models</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.agent <span class="im">import</span> AlhazenAgent</span>
@@ -565,7 +565,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.toolkit <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.jats_text_extractor <span class="im">import</span> NxmlDoc</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.ceifns_db <span class="im">import</span> Ceifns_LiteratureDb, create_ceifns_database, drop_ceifns_database, backup_ceifns_database</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.ceifns_db <span class="im">import</span> Ceifns_LiteratureDb, create_ceifns_database, drop_ceifns_database, backup_ceifns_database, list_databases</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.searchEngineUtils <span class="im">import</span> <span class="op">*</span></span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
@@ -601,10 +601,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.error <span class="im">import</span> URLError, HTTPError</span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> uuid</span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yaml</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>[nltk_data] Downloading package punkt to /home/jovyan/nltk_data...
-[nltk_data]   Unzipping tokenizers/punkt.zip.</code></pre>
 </div>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pymde</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-7" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>engine <span class="op">=</span> create_engine(<span class="st">"postgresql+psycopg2://</span><span class="sc">%s</span><span class="st">:</span><span class="sc">%s</span><span class="st">@</span><span class="sc">%s</span><span class="st">:5432/</span><span class="sc">%s</span><span class="st">"</span><span class="op">%</span>(os.environ[<span class="st">'POSTGRES_USER'</span>], os.environ[<span class="st">'POSTGRES_PASSWORD'</span>], os.environ[<span class="st">'POSTGRES_HOST'</span>], <span class="st">'postgres'</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>connection <span class="op">=</span> engine.<span class="ex">connect</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> connection.execute(text(<span class="st">"SELECT datname FROM pg_database;"</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>dbn <span class="op">=</span> [row[<span class="dv">0</span>] <span class="cf">for</span> row <span class="kw">in</span> result <span class="cf">if</span> row[<span class="dv">0</span>] <span class="op">!=</span> <span class="st">'postgres'</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>connection.close()</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>dbn</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="environment-variables" class="level3">
@@ -614,68 +621,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>LOCAL_FILE_PATH</code> - the location on disk where you save temporary files, downloaded models or other data.</li>
 </ul>
 <p>Note that this notebook will build and use a database specified as <code>cryoet_tutorial</code>, specified below</p>
-<div id="cell-7" class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.environ.get(<span class="st">'LOCAL_FILE_PATH'</span>) <span class="kw">is</span> <span class="va">None</span>: </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'Where are you storing your local literature database?'</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(os.environ[<span class="st">'LOCAL_FILE_PATH'</span>]) <span class="kw">is</span> <span class="va">False</span>:</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    os.makedirs(os.environ[<span class="st">'LOCAL_FILE_PATH'</span>])    </span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>loc <span class="op">=</span> os.environ[<span class="st">'LOCAL_FILE_PATH'</span>]</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>db_name <span class="op">=</span> <span class="st">'cryoet_tutorial'</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Variable to prevent accidental deletion of the database or any records</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>OK_TO_DELETE <span class="op">=</span> <span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-9" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.environ.get(<span class="st">'LOCAL_FILE_PATH'</span>) <span class="kw">is</span> <span class="va">None</span>: </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'Where are you storing your local literature database?'</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(os.environ[<span class="st">'LOCAL_FILE_PATH'</span>]) <span class="kw">is</span> <span class="va">False</span>:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    os.makedirs(os.environ[<span class="st">'LOCAL_FILE_PATH'</span>])    </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>loc <span class="op">=</span> os.environ[<span class="st">'LOCAL_FILE_PATH'</span>]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>db_name <span class="op">=</span> <span class="st">'cryoet'</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Variable to prevent accidental deletion of the database or any records</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>OK_TO_DELETE <span class="op">=</span> <span class="va">False</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="setup-utils-agents-and-tools" class="level3">
 <h3 class="anchored" data-anchor-id="setup-utils-agents-and-tools">Setup utils, agents, and tools</h3>
 <p>This cell sets up a database engine (<code>ldb</code>) and lists the available large-language models you can use.</p>
-<div id="cell-9" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ldb <span class="op">=</span> Ceifns_LiteratureDb(loc<span class="op">=</span>loc, name<span class="op">=</span>db_name)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>llms_lookup <span class="op">=</span> lookup_chat_models()</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(llms_lookup.keys())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>dict_keys(['ollama_llama3', 'ollama_mixtral', 'databricks_dbrx', 'databricks_mixtral', 'databricks_llama3', 'groq_mixtral', 'groq_llama3', 'gpt4_1106', 'gpt35'])</code></pre>
+<div id="cell-11" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ldb <span class="op">=</span> Ceifns_LiteratureDb(loc<span class="op">=</span>loc, name<span class="op">=</span>db_name)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>llms_lookup <span class="op">=</span> lookup_chat_models()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(llms_lookup.keys())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/opt/conda/lib/python3.11/site-packages/langchain_groq/chat_models.py:147: UserWarning: WARNING! stop is not default parameter.
-                    stop was transferred to model_kwargs.
-                    Please confirm that stop is what you intended.
-  warnings.warn(</code></pre>
-</div>
-</div>
-<div id="cell-10" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.chat_models.openai <span class="im">import</span> ChatOpenAI</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>llm_gpt4_1106 <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">'gpt-4-1106-preview'</span>) </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>llm_gpt35 <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">'gpt-3.5-turbo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-11" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#llm = llms_lookup.get('databricks_llama3')</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> llm_gpt35</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>cb <span class="op">=</span> AlhazenAgent(llm, llm, db_name<span class="op">=</span>db_name)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'AGENT TOOLS'</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools():</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'</span><span class="ch">\t</span><span class="st">'</span><span class="op">+</span><span class="bu">type</span>(t).<span class="va">__name__</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>AGENT TOOLS
-    AddCollectionFromEPMCTool
-    AddAuthorsToCollectionTool
-    DescribeCollectionCompositionTool
-    DeleteCollectionTool
-    RetrieveFullTextTool
-    RetrieveFullTextToolForACollection
-    MetadataExtraction_EverythingEverywhere_Tool
-    MetadataExtraction_MethodsSectionOnly_Tool
-    SimpleExtractionWithRAGTool
-    PaperQAEmulationTool
-    ProcotolEntitiesExtractionTool
-    CheckExpressionTool
-    TitleAbstractClassifier_OneDocAtATime_Tool
-    TitleAbstractDiscourseMappingTool
-    TitleAbstractExtraction_OneDocAtATime_Tool</code></pre>
-</div>
+<p>This cell initiates an <a href="https://chanzuckerberg.github.io/agents/agent.html#alhazenagent"><code>AlhazenAgent</code></a> that you can use to run tools or execute commands over.</p>
+<div id="cell-13" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> llms_lookup.get(<span class="st">'databricks_llama3'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>cb <span class="op">=</span> AlhazenAgent(llm, llm, db_name<span class="op">=</span>db_name)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'AGENT TOOLS'</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools():</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'</span><span class="ch">\t</span><span class="st">'</span><span class="op">+</span><span class="bu">type</span>(t).<span class="va">__name__</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -687,21 +661,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>$ createdb em_tech
 $ psql -d em_tech -f /local/file/path/em_tech/backup&lt;date_time&gt;.sql</code></pre>
 <p>This command will delete your existing database (but will also store a copy).</p>
-<div id="cell-15" class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> OK_TO_DELETE:</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    drop_ceifns_database(db_name, backupFirst<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-17" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> OK_TO_DELETE:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    drop_ceifns_database(db_name, backupFirst<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This command will backup your current database</p>
-<div id="cell-17" class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> OK_TO_DELETE:</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    current_date_time <span class="op">=</span> datetime.now()</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    formatted_date_time <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>current_date_time<span class="sc">:</span><span class="op">%</span>Y<span class="op">-%</span>m<span class="op">-%</span>d<span class="op">-%</span>H<span class="op">-%</span>M<span class="op">-%</span>S<span class="sc">}</span><span class="ss">'</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    backup_path <span class="op">=</span> loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/backup'</span><span class="op">+</span>formatted_date_time<span class="op">+</span><span class="st">'.sql'</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    backup_ceifns_database(db_name, backup_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-19" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> OK_TO_DELETE:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    current_date_time <span class="op">=</span> datetime.now()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    formatted_date_time <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>current_date_time<span class="sc">:</span><span class="op">%</span>Y<span class="op">-%</span>m<span class="op">-%</span>d<span class="op">-%</span>H<span class="op">-%</span>M<span class="op">-%</span>S<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    backup_path <span class="op">=</span> loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/backup'</span><span class="op">+</span>formatted_date_time<span class="op">+</span><span class="st">'.sql'</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    backup_ceifns_database(db_name, backup_path)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This command will create a new, fresh, empty copy of your database.</p>
-<div id="cell-19" class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>create_ceifns_database(db_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-21" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>create_ceifns_database(db_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>os.environ[<span class="st">'POSTGRES_HOST'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-23" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>list_databases()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="build-ceifns-database-from-queries" class="level3">
@@ -709,49 +689,46 @@ $ psql -d em_tech -f /local/file/path/em_tech/backup&lt;date_time&gt;.sql</code>
 <section id="add-a-collection-of-all-cryoet-papers-based-on-a-query" class="level4">
 <h4 class="anchored" data-anchor-id="add-a-collection-of-all-cryoet-papers-based-on-a-query">Add a collection of all CryoET papers based on a query</h4>
 <p>This runs a query on European PMC for terms + synonyms related to Cryo Electron Tomography</p>
-<div id="cell-22" class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>cryoet_query <span class="op">=</span> <span class="st">'''</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="st">("Cryoelectron Tomography" OR "Cryo Electron Tomography" OR "Cryo-Electron Tomography" OR</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="st">    "Cryo-ET" OR "CryoET" OR "Cryoelectron Tomography" OR "cryo electron tomography" or </span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "cryo-electron tomography" OR "cryo-et" OR cryoet)</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool.run(tool_input<span class="op">=</span>{<span class="st">'id'</span>: <span class="st">'1'</span>, </span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'name'</span>: <span class="st">'CryoET Papers'</span>, </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'query'</span>: cryoet_query})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-26" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cryoet_query <span class="op">=</span> <span class="st">'''</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">("Cryoelectron Tomography" OR "Cryo Electron Tomography" OR "Cryo-Electron Tomography" OR</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">    "Cryo-ET" OR "CryoET" OR "Cryoelectron Tomography" OR "cryo electron tomography" or </span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "cryo-electron tomography" OR "cryo-et" OR cryoet)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool.run(tool_input<span class="op">=</span>{<span class="st">'id'</span>: <span class="st">'1'</span>, </span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'name'</span>: <span class="st">'CryoET Papers'</span>, </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'query'</span>: cryoet_query})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-23" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE) </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> []        </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ske <span class="kw">in</span> q.<span class="bu">all</span>():</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    l.append(ske)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(l))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>6228</code></pre>
-</div>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE) </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> []        </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ske <span class="kw">in</span> q.<span class="bu">all</span>():</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    l.append(ske)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(l))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="adding-machine-learning-also-from-a-query" class="level4">
 <h4 class="anchored" data-anchor-id="adding-machine-learning-also-from-a-query">Adding Machine Learning also from a query</h4>
-<div id="cell-25" class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ml_query <span class="op">=</span> <span class="st">'''</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="st">("Cryoelectron Tomography" OR "Cryo Electron Tomography" OR "Cryo-Electron Tomography" OR</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="st">    "Cryo-ET" OR "CryoET" OR "Cryoelectron Tomography" OR "cryo electron tomography" or </span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "cryo-electron tomography" OR "cryo-et" OR cryoet ) AND </span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="st">("Machine Learning" OR "Artificial Intelligence" OR "Deep Learning" OR "Neural Networks")</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool.run(tool_input<span class="op">=</span>{<span class="st">'id'</span>: <span class="st">'2'</span>, </span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'name'</span>: <span class="st">'Machine Learning in CryoET'</span>, </span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'query'</span>: ml_query, </span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'full_text'</span>: <span class="va">False</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-29" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ml_query <span class="op">=</span> <span class="st">'''</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="st">("Cryoelectron Tomography" OR "Cryo Electron Tomography" OR "Cryo-Electron Tomography" OR</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="st">    "Cryo-ET" OR "CryoET" OR "Cryoelectron Tomography" OR "cryo electron tomography" or </span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "cryo-electron tomography" OR "cryo-et" OR cryoet ) AND </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="st">("Machine Learning" OR "Artificial Intelligence" OR "Deep Learning" OR "Neural Networks")</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool.run(tool_input<span class="op">=</span>{<span class="st">'id'</span>: <span class="st">'2'</span>, </span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'name'</span>: <span class="st">'Machine Learning in CryoET'</span>, </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'query'</span>: ml_query, </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'full_text'</span>: <span class="va">False</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="creates-a-new-collection-of-randomly-sampled-papers-to-showcase-full-text-download-capability" class="level4">
 <h4 class="anchored" data-anchor-id="creates-a-new-collection-of-randomly-sampled-papers-to-showcase-full-text-download-capability">Creates a new collection of randomly sampled papers to showcase full-text download capability</h4>
-<div id="cell-27" class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>ldb.create_new_collection_from_sample(<span class="st">'3'</span>, <span class="st">'CryoET Papers Tests'</span>, <span class="st">'1'</span>, <span class="dv">20</span>, [<span class="st">'ScientificPrimaryResearchArticle'</span>, <span class="st">'ScientificPrimaryResearchPreprint'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-31" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ldb.create_new_collection_from_sample(<span class="st">'3'</span>, <span class="st">'CryoET Papers Tests'</span>, <span class="st">'1'</span>, <span class="dv">20</span>, [<span class="st">'ScientificPrimaryResearchArticle'</span>, <span class="st">'ScientificPrimaryResearchPreprint'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -776,47 +753,47 @@ $ psql -d em_tech -f /local/file/path/em_tech/backup&lt;date_time&gt;.sql</code>
 <li>K - Development of new CryoET imaging methods (including grid preparation techniques, such as lift-out).</li>
 <li>L - Development of new data analysis methods (including machine learning, segmentation, point-picking, object recognition, or reconstruction).</li>
 </ul>
-<div id="cell-30" class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractClassifier_OneDocAtATime_Tool)][<span class="dv">0</span>]</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#t.run({'collection_id': '3', 'classification_type':'cryoet_study_types', 'repeat_run':True})</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-34" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractClassifier_OneDocAtATime_Tool)][<span class="dv">0</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>t.run({<span class="st">'collection_id'</span>: <span class="st">'3'</span>, <span class="st">'classification_type'</span>:<span class="st">'cryoet_study_types'</span>, <span class="st">'repeat_run'</span>:<span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div id="cell-31" class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># USE WITH </span><span class="al">CAUTION</span><span class="co"> - this will delete all extracted metadata notes in the database</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># clear all notes across papers listed in `dois` list</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> OK_TO_DELETE:        </span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> []</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> ldb.session.query(N, SKE) <span class="op">\</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>            .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>            .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>            .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'TiAbClassificationNote__cryoet_study_types'</span>) <span class="op">\</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> []        </span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">len</span>(q.<span class="bu">all</span>()))</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n, ske <span class="kw">in</span> q.<span class="bu">all</span>():</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>        ldb.delete_note(n.<span class="bu">id</span>)    </span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">len</span>(q.<span class="bu">all</span>()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-35" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># USE WITH </span><span class="al">CAUTION</span><span class="co"> - this will delete all extracted metadata notes in the database</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># clear all notes across papers listed in `dois` list</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> OK_TO_DELETE:        </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> []</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> ldb.session.query(N, SKE) <span class="op">\</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>            .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>            .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>            .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'TiAbClassificationNote__cryoet_study_types'</span>) <span class="op">\</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    output <span class="op">=</span> []        </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">len</span>(q.<span class="bu">all</span>()))</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n, ske <span class="kw">in</span> q.<span class="bu">all</span>():</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        ldb.delete_note(n.<span class="bu">id</span>)    </span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="bu">len</span>(q.<span class="bu">all</span>()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Runs a query over the notes extracted and saved to the database to show the zero-shot document classifications based on the titles + abstracts</p>
-<div id="cell-33" class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(N, SKE) <span class="op">\</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'TiAbClassificationNote__cryoet_study_types'</span>) <span class="op">\</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>        .order_by(SKE.<span class="bu">id</span>)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> []        </span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n, ske <span class="kw">in</span> q.<span class="bu">all</span>():</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>        tup <span class="op">=</span> json.loads(n.content)</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'prov'</span>] <span class="op">=</span> n.name</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'doi'</span>] <span class="op">=</span> <span class="st">'http://doi.org/'</span><span class="op">+</span>re.sub(<span class="st">'doi:'</span>, <span class="st">''</span>, ske.<span class="bu">id</span>)</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'year'</span>] <span class="op">=</span> ske.publication_date.year</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'month'</span>] <span class="op">=</span> ske.publication_date.month</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'ref'</span>] <span class="op">=</span> ske.content</span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        output.append(tup)</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(output).sort_values([<span class="st">'year'</span>, <span class="st">'month'</span>], ascending<span class="op">=</span>[<span class="va">False</span>, <span class="va">False</span>])</span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>df.to_csv(loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/cryoet_study_types.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-37" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(N, SKE) <span class="op">\</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'TiAbClassificationNote__cryoet_study_types'</span>) <span class="op">\</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        .order_by(SKE.<span class="bu">id</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> []        </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n, ske <span class="kw">in</span> q.<span class="bu">all</span>():</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>        tup <span class="op">=</span> json.loads(n.content)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'prov'</span>] <span class="op">=</span> n.name</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'doi'</span>] <span class="op">=</span> <span class="st">'http://doi.org/'</span><span class="op">+</span>re.sub(<span class="st">'doi:'</span>, <span class="st">''</span>, ske.<span class="bu">id</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'year'</span>] <span class="op">=</span> ske.publication_date.year</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'month'</span>] <span class="op">=</span> ske.publication_date.month</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'ref'</span>] <span class="op">=</span> ske.content</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        output.append(tup)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(output).sort_values([<span class="st">'year'</span>, <span class="st">'month'</span>], ascending<span class="op">=</span>[<span class="va">False</span>, <span class="va">False</span>])</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>df.to_csv(loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/cryoet_study_types.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
@@ -825,108 +802,86 @@ $ psql -d em_tech -f /local/file/path/em_tech/backup&lt;date_time&gt;.sql</code>
 <p>Here, we run various versions of the metadata extraction tool to examine performance over the cryoet dataset.</p>
 <section id="get-full-text-copies-of-all-the-papers-about-cryoet" class="level4">
 <h4 class="anchored" data-anchor-id="get-full-text-copies-of-all-the-papers-about-cryoet">Get full text copies of all the papers about CryoET</h4>
-<div id="cell-36" class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>cb.agent_executor.invoke({<span class="st">'input'</span>:<span class="st">'Get full text copies of all papers in the collection with id="3".'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-37" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(os.environ[<span class="st">'HURIDOCS_NETWORK'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>pdf_paragraphs_extraction_api</code></pre>
-</div>
-</div>
-<div id="cell-38" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.pdf_research_article_text_extractor <span class="im">import</span> HuridocsPDFLoader</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>pdf_file_path <span class="op">=</span> <span class="st">'/home/jovyan/files/em_tech/ft/10.1002/1873-3468.12757.pdf'</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>loader <span class="op">=</span> HuridocsPDFLoader(pdf_file_path, host<span class="op">=</span>os.environ[<span class="st">'HURIDOCS_NETWORK'</span>])</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> loader.load(curi_id<span class="op">=</span><span class="st">'doi:'</span><span class="op">+</span>doi)</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co">#url = 'http://172.19.0.5:5051/info'</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>url <span class="op">=</span> <span class="st">'http://pdf_paragraphs_extraction_api:5051/info'</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> requests.get(url)</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<pre><code>NameError: name 'doi' is not defined</code></pre>
-</div>
+<div id="cell-40" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cb.agent_executor.invoke({<span class="st">'input'</span>:<span class="st">'Get full text copies of all papers in the collection with id="3".'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Identify which papers are in the sampled collection through their dois.</p>
-<div id="cell-40" class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span><span class="st">'2'</span>)  </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>dois <span class="op">=</span> [e.<span class="bu">id</span> <span class="cf">for</span> e <span class="kw">in</span> q.<span class="bu">all</span>()]</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>dois</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-42" class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span><span class="st">'2'</span>)  </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>dois <span class="op">=</span> [e.<span class="bu">id</span> <span class="cf">for</span> e <span class="kw">in</span> q.<span class="bu">all</span>()]</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>dois</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Iterate over those dois and extract 15 metadata variables based on the questions shown in <code>./local_resources/prompt_elements/metadata_extraction.yaml</code></p>
-<div id="cell-42" class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the metadata extraction tool</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, MetadataExtraction_MethodsSectionOnly_Tool)][<span class="dv">0</span>]</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe to store previously extracted metadata</span></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="co">#for d in [d for d_id in dois_to_include for d in dois_to_include[d_id]]:</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame()</span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [d <span class="cf">for</span> d <span class="kw">in</span> dois]:</span>
-<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>    item_types <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test'</span>)</span>
-<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.concat([df, pd.DataFrame(l)]) </span>
-<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>     </span>
-<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate over papers to run the metadata extraction tool</span></span>
-<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="co">#for d in [d for d_id in dois_to_include for d in dois_to_include[d_id]]:</span></span>
-<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [d <span class="cf">for</span> d <span class="kw">in</span> dois]:</span>
-<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>    item_types <span class="op">=</span> <span class="bu">set</span>()</span>
-<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Skip if the doi is already in the database</span></span>
-<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(df)<span class="op">&gt;</span><span class="dv">0</span> <span class="kw">and</span> d <span class="kw">in</span> df.doi.unique():</span>
-<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run the metadata extraction tool on the doi</span></span>
-<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>    t2.run(tool_input<span class="op">=</span>{<span class="st">'paper_id'</span>: d, <span class="st">'extraction_type'</span>: <span class="st">'cryoet'</span>, <span class="st">'run_label'</span>: <span class="st">'test'</span>})</span>
-<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add the results to the dataframe    </span></span>
-<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>    l2 <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test'</span>)</span>
-<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.concat([df, pd.DataFrame(l2)]) </span>
-<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div id="cell-43" class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>ldb.create_zip_archive_of_full_text_files(<span class="st">'2'</span>, loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/full_text_files.zip'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
 <div id="cell-44" class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>q3 <span class="op">=</span> ldb.session.query(SKE.<span class="bu">id</span>, N.name, N.provenance, N.content) <span class="op">\</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'MetadataExtractionNote'</span>) </span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> q3.<span class="bu">all</span>():</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>    paper <span class="op">=</span> row[<span class="dv">0</span>]</span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> row[<span class="dv">1</span>]</span>
-<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co">#    provenance = json.loads(row[2])</span></span>
-<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> json.loads(row[<span class="dv">3</span>])</span>
-<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>    kv <span class="op">=</span> {k:result[k] <span class="cf">for</span> k <span class="kw">in</span> result}</span>
-<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a>    kv[<span class="st">'DOI'</span>] <span class="op">=</span> paper</span>
-<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a>    kv[<span class="st">'run'</span>] <span class="op">=</span> name</span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>    l.append(kv)</span>
-<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataframe from the list of dictionaries with DOI as the index column</span></span>
-<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(l)<span class="op">&gt;</span><span class="dv">0</span>:</span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(l).set_index([<span class="st">'DOI'</span>, <span class="st">'run'</span>])</span>
-<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>: </span>
-<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame()</span>
-<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the metadata extraction tool</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, MetadataExtraction_MethodsSectionOnly_Tool)][<span class="dv">0</span>]</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe to store previously extracted metadata</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co">#for d in [d for d_id in dois_to_include for d in dois_to_include[d_id]]:</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [d <span class="cf">for</span> d <span class="kw">in</span> dois]:</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    item_types <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test'</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.concat([df, pd.DataFrame(l)]) </span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate over papers to run the metadata extraction tool</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="co">#for d in [d for d_id in dois_to_include for d in dois_to_include[d_id]]:</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [d <span class="cf">for</span> d <span class="kw">in</span> dois]:</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    item_types <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Skip if the doi is already in the database</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(df)<span class="op">&gt;</span><span class="dv">0</span> <span class="kw">and</span> d <span class="kw">in</span> df.doi.unique():</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run the metadata extraction tool on the doi</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    t2.run(tool_input<span class="op">=</span>{<span class="st">'paper_id'</span>: d, <span class="st">'extraction_type'</span>: <span class="st">'cryoet'</span>, <span class="st">'run_label'</span>: <span class="st">'test'</span>})</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add the results to the dataframe    </span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    l2 <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test'</span>)</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.concat([df, pd.DataFrame(l2)]) </span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div id="cell-45" class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># USE WITH </span><span class="al">CAUTION</span><span class="co"> - this will delete all extracted metadata notes in the database</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co"># clear all notes across papers listed in `dois` list</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> OK_TO_DELETE:</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> q3.<span class="bu">all</span>():</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        d_id <span class="op">=</span> row[<span class="dv">0</span>]</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        e <span class="op">=</span> ldb.session.query(SKE).<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span>d_id).first()</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        notes_to_delete <span class="op">=</span> []</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n <span class="kw">in</span> ldb.read_notes_about_x(e):</span>
-<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>            notes_to_delete.append(n.<span class="bu">id</span>)</span>
-<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n <span class="kw">in</span> notes_to_delete:</span>
-<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>            ldb.delete_note(n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ldb.create_zip_archive_of_full_text_files(<span class="st">'2'</span>, loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/full_text_files.zip'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-46" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>q3 <span class="op">=</span> ldb.session.query(SKE.<span class="bu">id</span>, N.name, N.provenance, N.content) <span class="op">\</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'MetadataExtractionNote'</span>) </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> q3.<span class="bu">all</span>():</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    paper <span class="op">=</span> row[<span class="dv">0</span>]</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> row[<span class="dv">1</span>]</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a><span class="co">#    provenance = json.loads(row[2])</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> json.loads(row[<span class="dv">3</span>])</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>    kv <span class="op">=</span> {k:result[k] <span class="cf">for</span> k <span class="kw">in</span> result}</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    kv[<span class="st">'DOI'</span>] <span class="op">=</span> paper</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>    kv[<span class="st">'run'</span>] <span class="op">=</span> name</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    l.append(kv)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataframe from the list of dictionaries with DOI as the index column</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(l)<span class="op">&gt;</span><span class="dv">0</span>:</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(l).set_index([<span class="st">'DOI'</span>, <span class="st">'run'</span>])</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>: </span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-47" class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># USE WITH </span><span class="al">CAUTION</span><span class="co"> - this will delete all extracted metadata notes in the database</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># clear all notes across papers listed in `dois` list</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> OK_TO_DELETE:</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> q3.<span class="bu">all</span>():</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>        d_id <span class="op">=</span> row[<span class="dv">0</span>]</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        e <span class="op">=</span> ldb.session.query(SKE).<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span>d_id).first()</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>        notes_to_delete <span class="op">=</span> []</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n <span class="kw">in</span> ldb.read_notes_about_x(e):</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>            notes_to_delete.append(n.<span class="bu">id</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> n <span class="kw">in</span> notes_to_delete:</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>            ldb.delete_note(n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
