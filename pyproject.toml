@@ -38,7 +38,7 @@ dependencies = [
     "langchain-google-vertexai==0.0.5",
     "langchain-openai==0.0.8",
     "langchain-groq==0.1.4",
-    "langchain==0.1.16",
+    "langchain==0.2.10",
     "langserve==0.0.34",
     "linkml==1.6.1",
     "lxml==4.9.4",
