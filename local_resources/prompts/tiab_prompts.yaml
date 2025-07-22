@@ -1,0 +1,285 @@
+technology_type method extraction 1: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    First attempt to develop a prompt for technology type extraction from full text. 
+  system: 
+    You are an expert biological scientist trained in imaging and microscopy. 
+    Your knowledge is deep and wide. You are terse and precise in your language.
+  instruction: 
+    Your job is to read the title and abstract of a scientific paper delimited with triple backticks below. 
+    First, break down the text of the title and abstract into separate sentences.
+    Second, identify which sentences describe 
+      - background information about the work, 
+      - the goals of the paper,
+      - the methods used by the scientists,
+      - the results of the work, and
+      - the conclusions of the work. 
+    Third, using only the goal, method, or results sentences write a description of what the authors did as the main contribution of the paper by 
+    saying 'The authors ...' and then describing what they did in a complete sentence. 
+    Fourth, decide if the contribution of the paper is concerned with developing one of three possible types of biomedical imaging technology:- probes, acquisition hardware, or data analysis.     
+    Be careful about this decision and only include the paper in one of the subtypes if you are confident that the contribution of the paper focuses 
+    on one of the specified types of biomedical imaging methods. 
+    If the main contribution is the development of molecular probes, stains, antibodies, or any other way of generating a visual signal from a biomedical sample, record a value of 'probe' in the 'technology_type' field of the output.
+    If the main contribution is the development of methods to acquire biomedical images from biomedical samples in new ways (such as methods in microscopy, optics, spectroscopy, etc.), record a value of 'acquisition hardware' in the 'technology_type' field of the output.
+    If the main contribution is the development of data analysis methods for imaging data, record a value of 'data analysis' in the 'technology_type' field of the output.
+    If the main contribution is the development of technology but is not any of these types, record a value of 'other' in the 'technology_type' field of the output.
+    If the main contribution is not the development of imaging technology (such as an experiment describing other phenomenon), record a value of 'none' in the 'technology_type' field of the output.
+    Format your response as a JSON object with "main_contribution" and "technology_type" as the keys. Do not include any other response other than the JSON object. 
+    Remember, stop generating text after you finish the JSON object. Do not provide additional explanations of your answer.
+    Article
+    title:- '''{title}'''
+    abstract:- '''{abstract}'''
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - technology_type
+    - main_contribution
+
+
+technology_type method extraction 2: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Second attempt to develop a prompt for technology type extraction from full text.
+  system: 
+    You are an expert biological scientist. 
+    Your knowledge is deep and wide. 
+    You are terse and precise in your language.
+  instruction: 
+    Your job is to read the title and abstract of a scientific paper delimited with triple backticks below. 
+    The paper's main goal should be to develop new technology or methods.    
+
+    Article
+    title:- '''{title}'''
+    abstract:- '''{abstract}'''
+
+    You will generate output as a JSON object with "text", "name", and "technology_type" as the keys. 
+
+    First, based on the text describing the new methods, determine if the authors gave a name to the new method being developed.
+    Names tend to be short. They may be an acronym or a short phrase of a few words. 
+    If the new method has a name, record it in the name field of the output.
+    If not, record a value of 'none' in the name field of the output.
+    Second, extract the whole sentence containing the methods' name and record it in the 'text' field of the output.
+    Third,  decide if the contribution of the paper is concerned with developing one of three possible types of biomedical imaging technology:- probes, acquisition hardware, or data analysis.     
+    Be careful about this decision and only include the paper in one of the subtypes if you are confident that the contribution of the paper focuses 
+    on one of the specified types of biomedical imaging methods. 
+    If the new method involves the development of molecular probes, stains, antibodies, or any other way of generating a visual signal from a biomedical sample, record a value of 'probe' in the 'technology_type' field of the output.
+    If the new method involves ways to acquire biomedical images from biomedical samples (such as methods in microscopy, optics, spectroscopy, etc.), record a value of 'acquisition hardware' in the 'technology_type' field of the output.
+    If the new method involves ways to analyze data, record a value of 'data analysis' in the 'technology_type' field of the output.
+    If the new method is the development of technology but is not any of these types, record a value of 'other' in the 'technology_type' field of the output.
+    If this paper is not concerned with the development of new methods or technology (such as an experiment describing biological phenomenon), record a value of 'none' in the 'technology_type' field of the output.
+
+    Format your response as a JSON object with "text", "name", and "technology_type" as the keys. 
+    Do not include any other response other than the JSON object. 
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - text
+    - name 
+    - technology_type
+
+is_method_paper:
+  description: Classifier to determine if a paper is a methods paper or not.
+  system: Your job is to read the title and abstract of a scientific paper and perform the task described below.
+  instruction: 
+    The text of the title and the text of the abstract will be delimited with triple backticks.
+
+    Article 
+    title:- '''{title}''' 
+    abstract:- '''{abstract}'''
+
+    First, split the text of the title and abstract into separate sentences.
+    Second, classify each sentence as describing
+      - background information about the work,
+      - the goals of the paper,
+      - the methods used by the scientists,
+      - the results of the work, and
+      - the conclusions of the work.
+    Third, using only sentences that describe the papers' goals and conclusions , decide if the work is concerned with
+    (A) developing new technology or methods or
+    (B) investigating how biological systems work.
+    If paper describes the development of a new method, technique or approach, record a true value in a variable called is_method_paper in the output. 
+    If the goal of the work is understanding biological phenomena, record a false value in a variable called is_method_paper in the output. 
+    Be careful about this decision and only answer 'true' if you are confident that the main goal of the published work was to create or test a new technique or method.  
+    Format your response as a JSON object with "is_method_paper" as the key.  
+    Briefly explain your reasoning for your decision in one or two sentences and include it in the JSON object with 'explanation' as the key.
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - is_method_paper
+    - explanation
+        
+top_level_imaging_categories:
+  description: Classifier to determine what high level type of technology is being used, from a list of 16 candidates
+  system: Your job is to read the title and abstract of a scientific paper and perform the task described below.
+  instruction: >
+    The text of the title and the text of the abstract will be delimited with triple backticks.
+
+    Article 
+    title: '''{title}''' 
+    abstract: '''{abstract}'''
+
+    First, split the text of the title and abstract into separate sentences.
+    Second, classify each sentence as describing
+      - background information about the work,
+      - the goals of the paper,
+      - the methods used by the scientists,
+      - the results of the work, and
+      - the conclusions of the work.
+    Third, using only sentences that describe the context of the work, decide which broad category of imaging technology is primarily being used by the paper. 
+    Only pick one category from the following list of 16 candidates:
+    (A) Hierarchical phase-contrast tomography (also known as "HiP-CT" or "X-ray phase contrast tomography")
+    (B) Photoacoustic imaging (also known as "Photoacoustic microscopy", "Photoacoustic tomography", "Optoacoustic imaging")
+    (C) Near infrared imaging (also known as "Shortwave infrared", "NIR", "NIR-II", "SWIR", "IR imaging", “Mid-IR imaging”)
+    (D) Ultrasound
+    (E) Nonlinear microscopy (also known as Multiphoton microscopy, "Second harmonic generation", "SHG", "Two-photon excitation fluorescence", "TPEF")
+    (F) Super-resolution (also known as "Superresolution", "Localization microscopy", "STED", "SIM", "Structured illumination")
+    (G) Other fluorescence microscopy (also known as “one-photon fluorescence microscopy”, “light-sheet fluorescence microscopy”, “fluorescence lifetime”, “FLIM”)
+    (H) Cryo-electron tomography (also known as "Cryo-ET", “Cryo-EM”, “Cryo-electron microscopy”, “Cryo-CLEM”)
+    (I) Volume electron microscopy (also known as "VolumeEM", "Array tomography", or "Serial block face EM")
+    (J) Other electron microscopy (also known as "Transmission EM", "Scanning EM", "SEM", "TEM", “CLEM”)
+    (K) Magnetic resonance imaging (also known as “MRI”, “MR microscopy”)
+    (L) Mass-Spectrometry 
+    (M) Other imaging hardware technology (if the paper describes optical hardware for generating image data that does not fit into any of the above categories)
+    (N) Computational analysis systems (methods where there is very tight integration of the sensing system with computation. Examples include adaptive optics, wavefront shaping, solving inverse problems, or compressed sensing.)
+    (O) Molecular imaging probes, stains, antibodies (or any other way of manipulating biomedical samples to generate a visual signal).
+    (P) Other computational analysis (or any other computational methodology to analyze image data)
+    Record the letter of the category in the output variable called "imaging_technology_code".
+    Record the name of the category in the output variable called "imaging_technology_name".
+    Be careful about this decision and only include the paper in one of the subtypes if you are confident that the paper primarily uses that technology. 
+    Briefly explain your reasoning for your decision in one or two sentences and include it in the JSON object with 'explanation' as the key.
+    Use the following format for the output JSON object: 
+    ```json
+    {{
+      "imaging_technology_code":  A single classification code from this list: A, B, C, D, E, F, G, H, I, J, K, L, M, N, O, P
+      "imaging_technology_name": the name of the technology selected from the list above,
+      "explanation": "A brief explanation of your reasoning for your classification decision.
+    }}
+    ``` 
+    Remember, format your response as a JSON object and do not include any other response other than the JSON object.
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - imaging_technology_type
+    - imaging_technology_name 
+    - explanation
+
+split_by_discourse:
+  description: Splits the text of title + abstract into background / objectives + methods / results + conclusions.
+  system: Your job is to read the title and abstract of a scientific paper and perform the task described below.
+  instruction: >
+    The text of the title and the text of the abstract will be delimited with triple backticks.
+
+    Article 
+    title:- '''{title}''' 
+    abstract:- '''{abstract}'''
+
+    First, split the text of the title and abstract into separate sentences.
+    Second, classify each sentence as describing
+      (A) background information about the work,
+      (B) the goals of the paper,
+      (C) the methods used by the scientists,
+      (D) the results of the work, and
+      (E) the conclusions of the work.
+    
+    Generate your response as a JSON object with three fields: 'Background', 'ObjectivesMethods', 'ResultsConclusions'
+    * Copy all sentences classified as '(A) background' in order as a string on a single line into the Background attribute.  
+    * Copy all sentences classified as '(B) goals' or '(C) methods' in order as a string on a single line into the ObjectivesMethods attribute.  
+    * Copy all sentences classified as '(D) results' or '(E) conclusions' in order as a string on a single line into the ResultsConclusions attribute.  
+    
+    Do NOT use single backslash characters to code the text in the JSON response. If a backslash is required, use double backslashes: '\\'. 
+    Format your response as a JSON object. Do not include any other text in your response. 
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - Background
+    - Objectives_Methods
+    - Results_Conclusions
+ 
+cryoet_study_types:
+  description: Classifier to determine what types of research are being performed using CryoET
+  system: Your job is to read the title and abstract of a scientific paper and perform the task described below.
+  instruction: >
+    The text of the title and the text of the abstract will be delimited with triple backticks.
+
+    Article 
+    title: '''{title}''' 
+    abstract: '''{abstract}'''
+
+    First, split the text of the title and abstract into separate sentences.
+    Second, classify each sentence as describing
+      - background information about the work,
+      - the goals of the paper,
+      - the methods used by the scientists,
+      - the results of the work, and
+      - the conclusions of the work.
+    Third, using only sentences that describe the context of the work, decide which broad category of study are the primary concerns of this paper. 
+    Only pick one category from the following list of 16 candidates:
+    (A) Structural descriptions of Viral Pathogens (such as HIV, Influenza, SARS-CoV-2, etc.)
+    (B) Studies of mutated protein structures associated with disease (such as Alzheimer's, Parkinson's, etc.) 
+    (C) Structural studies of bacterial pathogens (such as E. coli, Salmonella, etc.)
+    (D) Structural studies of plant cells
+    (E) Structural studies of material science of non-biological samples
+    (F) Structural studies of transporters or transport mechanisms within cells, studies involving the cytoskeleton or active transport processes. 
+    (G) Structural studies of synapses or other mechansism of releasing vesicles over the plasma membrane
+    (H) Structural studies of any other organelle or structured component of a cell. 
+    (I) Studies of dynamic biological processes at a cellular level (such as cell division, cell migration, etc.)
+    (J) Studies of dynamics of molecular interactions within a cell.    
+    (K) Development of new CryoET imaging methods (including grid preparation techniques, such as lift-out). 
+    (L) Development of new data analysis methods (including machine learning, segmentation, point-picking, object recognition, or reconstruction). 
+    Record the letter of the category in the output variable called "cryoet_study_type_code".
+    Record the name of the category in the output variable called "cryoet_study_type_name".
+    Be careful about this decision and only include the paper in one of the subtypes if you are confident that the paper is primarily about that subject. 
+    Briefly explain your reasoning for your decision in one or two sentences and include it in the JSON object with 'explanation' as the key.
+    Use the following format for the output JSON object: 
+    ```json
+    {{
+      "cryoet_study_type_code":  A single classification code from this list: "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L" 
+      "cryoet_study_type_name": the name of the technology selected from the list above,
+      "explanation": "A brief explanation of your reasoning for your classification decision.
+    }}
+    ``` 
+    Remember, format your response as a JSON object and do not include any other response other than the JSON object.
+  input_variables: 
+    - title
+    - abstract
+  output_variables:
+    - cryoet_study_type_code
+    - cryoet_study_type_name 
+    - explanation
+
+multiquestion tiab extraction: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    First attempt to develop a prompt for extraction from abstracts (one at a time).
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: 
+    Read the text of the title and abstract of a research paper shown below 
+    (delimited with triple backticks).
+
+    Title:- '''{title}'''
+    Abstract:- '''{title}'''
+
+    Extract details from the title and abstract text based on the following list of questions. 
+    Record answers as the specified fields of the output. Do not extract any other metadata. 
+    
+    {questions_output_specification}
+
+    Do not provide additional explanation or context for the answer.
+   
+    If you cannot answer a listed question, record a value of 'not present' in appropriate fields of the output.  
+    Do not include any other response other than a JSON object.
+            
+  input_variables: 
+    - title
+    - abstract
+    - questions_output_specification
+  output_variables:
+    - metadata_name
+    - metadata_value
+    - original_text

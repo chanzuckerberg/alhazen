@@ -1,0 +1,388 @@
+id: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
+name: ScientificKnowledgeExpressionModel
+description: >-
+  LinkML Schema for scientific knowledge collections, expressions, items, and fragments.
+prefixes:     
+  skem: https://chanzuckerberg.github.io/alhazen/linkml/sciknow
+  dct: 'http://purl.org/dc/terms/'
+  linkml: https://w3id.org/linkml/
+  schema: http://schema.org/
+  biolink: 'https://w3id.org/biolink/vocab/'
+  fabio: 'http://purl.org/spar/fabio/'
+  MESH: 'http://id.nlm.nih.gov/mesh/'
+  iao: 'http://purl.obolibrary.org/obo/IAO_'
+  WIKIDATA: 'https://www.wikidata.org/entity/'            
+  WIKIDATA_PROPERTY: 'https://www.wikidata.org/prop/'
+  pmid: 'https://www.ncbi.nlm.nih.gov/pubmed/'
+  epmcid: 'https://europepmc.org/articles/'
+  pmcid: 'https://www.ncbi.nlm.nih.gov/pmc/articles/'
+  doi: 'https://doi.org/'
+  orcid: 'https://orcid.org/'
+  umls: 'http://purl.bioontology.org/ontology/UMLS/'
+  
+imports:
+  - linkml:types
+default_curi_maps:
+  - semweb_context
+default_prefix: skem
+default_range: string
+  
+slots:
+  abstract:
+    description: >-
+      The written abstract of a ScientificKnowledgeExpression. 
+      This is typically a paragraph of text providing 
+      a summary of the expression.
+    domain: ScientificKnowledgeExpression
+    range: string
+
+  affiliations:
+    description: >-
+      The affiliations of an author. 
+    domain: Author
+    range: Organization
+    multivalued: true
+
+  cites:
+    description: >-
+      The ScientificKnowledgeExpression that are cited by this ScientificKnowledgeExpression. 
+    domain: ScientificKnowledgeExpression
+    range: ScientificKnowledgeExpression
+    multivalued: true
+ 
+  content:
+    description: >-
+      The content of an InformationContentEntity expressed as a string.
+    domain: InformationContentEntity
+    range: string
+
+  creation date:
+    range: date
+    description: >-
+      date on which an entity was created. This can be applied to nodes or edges
+    exact_mappings:
+      - dct:createdOn
+      - WIKIDATA_PROPERTY:P577
+
+  format:
+    description: >-
+      The format (JSON, XML, BINARY) of the content of an InformationContentEntity.
+    domain: InformationContentEntity
+    exact_mappings:
+      - dct:format
+
+  has authors:
+    inverse: is author of
+    description: >-
+      The named entity that authored an ScientificKnowledgeExpression. 
+    domain: ScientificKnowledgeExpression
+    range: Author
+    multivalued: true
+    exact_mappings:
+      - schema:author
+
+  has members:
+    description: >-
+      holds between collections and their members
+    inverse: member of
+    multivalued: true
+    domain: ScientificKnowledgeCollection
+    range: ScientificKnowledgeExpression
+  
+  has notes:
+    inverse: is about
+    multivalued: true
+    domain: InformationContentEntity
+    range: Note
+    description: >-
+      Points to notes that are about a given entity.
+
+  has part:
+    inverse: part of
+    domain: ScientificKnowledgeItem
+    range: ScientificKnowledgeFragment
+    multivalued: true
+    description: >-
+      holds between wholes and their parts (material entities or processes)
+
+  has representation:
+    inverse: representation of
+    domain: ScientificKnowledgeExpression
+    range: ScientificKnowledgeItem
+    multivalued: true
+    description: >-
+      holds between wholes and their parts (material entities or processes)
+
+  iri:
+    description: >-
+      An IRI for an entity. 
+    domain: Entity
+    multivalued: true
+    range: uriorcurie
+
+  is about: 
+    description: >-
+       A (currently) primitive relation that relates an information artifact to an entity. 
+    domain: Note
+    range: InformationContentEntity
+    multivalued: true
+    exact_mappings:
+      - iao:0000136
+
+  is author of:
+    inverse: has authors
+    description: >-
+      The ScientificKnowledgeExpression that an Author is the author of. 
+    domain: Author
+    range: ScientificKnowledgeExpression
+    multivalued: true
+
+  license:
+    domain: InformationContentEntity
+    description: >-
+      A license under which an information content entity is provided.
+    exact_mappings:
+      - dct:license
+
+  logical query:
+    description: >-
+      A logical query that can be used to retrieve a set of entities from a 
+      knowledgebase. Typically expressed as a boolean logic expression over 
+      terms to be searched for.
+    domain: ScientificKnowledgeCollection
+    range: string
+
+  member of:
+    description: >-
+      holds between individuals and collections that they are members of
+    multivalued: true
+    inverse: has members
+    domain: ScientificKnowledgeExpression
+    range: ScientificKnowledgeCollection
+
+  name:
+    aliases: ['label', 'display name', 'title']
+    description: >-
+      A human-readable name for an attribute or entity.
+    domain: Entity
+    slot_uri: rdfs:label
+
+  offset:
+    description: >-
+      The offset of the start of the fragment from the start of the text.
+    domain: ScientificKnowledgeFragment
+    range: integer
+  
+  length:
+    description: >-
+      The length of the fragment.
+    domain: ScientificKnowledgeFragment
+    range: integer
+      
+  part of:
+    description: >-
+      holds between parts and wholes (material entities or processes)
+    inverse: has part
+    multivalued: false
+    domain: ScientificKnowledgeFragment
+    range: ScientificKnowledgeItem
+    
+  provenance:
+    domain: InformationContentEntity
+    range: string
+    description: >-
+      A description of the provenance of an information content entity.
+      Expressed as a list of commands describing how the collection was built.
+      This should involve describing the operation to generate the collection in 
+      sufficient detail that that could be replicated by an LLM agent with 
+      the appropriate tooling.  
+    
+  publication date:
+    range: date
+    description: >-
+      date on which an entity was published (i.e., made available to the public).
+    exact_mappings:
+      - dct:createdOn
+      - WIKIDATA_PROPERTY:P577
+
+  representation of:
+    description: >-
+      The ScientificKnowledgeExpression that this ScientificKnowledgeItem 
+      is a representation of.
+    inverse: has representation
+    multivalued: false
+    domain: ScientificKnowledgeItem
+    range: ScientificKnowledgeExpression
+
+  rights:
+    domain: InformationContentEntity
+    exact_mappings:
+      - dct:rights
+
+  token count:
+    description: >-
+      The number of tokens in the content of an InformationContentEntity.
+    domain: InformationContentEntity
+    range: integer
+
+  type:
+    description: >-
+      The type of an Entity expressed as curi.
+    domain: Entity
+    range: string
+    required: true
+  
+  id:
+    identifier: true
+    description: >-
+      A simple, locally-generated unique identifier specific with different heuristic formatting for each application.
+    required: true
+
+  xref:
+    aliases: ['dbxref', 'Dbxref', 'DbXref', 'record_url', 'source_record_urls']
+    domain: InformationContentEntity
+    range: uriorcurie
+    description: >-
+      A database cross reference or alternative identifier for a NamedThing or edge between two NamedThings.  
+      This property should point to a database record or webpage that 
+      defines the definition of the NamedThing. 
+    multivalued: true
+
+classes:
+  Entity:
+    description: >-
+      Root Model class for all things and informational relationships, real or imagined.
+    abstract: true
+    slots:
+      - id
+      - iri
+      - type    # rdf:type
+    exact_mappings:
+      - biolink:entity
+
+  NamedThing:
+    is_a: Entity
+    abstract: true
+    description: "an entity or concept/class described by a name"
+    slots:
+      - name
+    
+  InformationContentEntity:
+    aliases: ['information', 'information artefact', 'information entity']
+    abstract: true
+    is_a: NamedThing
+    description: >
+      A piece of information that is represented in the typically describes some topic of discourse or is used as support.
+    slots:
+      - creation date
+      - content
+      - token count
+      - format
+      - provenance
+      - xref
+      - license
+      - has notes
+
+  UserQuestion:
+    is_a: InformationContentEntity
+    description: >
+      A question, inquiry, or instruction from an user of the Alhazen system.
+
+  InformationResource:
+    is_a: InformationContentEntity
+    aliases: ['knowledgebase']
+    description: 
+      A database or knowledgebase and its supporting ecosystem of interfaces 
+      and services that deliver content to consumers (e.g. web portals, APIs, 
+      query endpoints, streaming services, data downloads, etc.).
+      A single Information Resource by this definition may span many different datasets or
+      databases, and include many access endpoints and user
+      interfaces. Information Resources include project-specific resources
+      such as a Translator Knowledge Provider, and community knowledgebases like ChemBL, OMIM, or DGIdb.
+
+  ScientificKnowledgeCollection:
+    description:
+      A collection of expressions of scientific knowledge. 
+    is_a: InformationContentEntity 
+    slots:
+      - has members
+
+  ScientificKnowledgeExpression:
+    description: >-
+      Any expression of scientific knowledge.   
+    is_a: InformationContentEntity
+    slots:
+      - has representation
+      - member of 
+      - has authors
+      - publication date
+      - type
+    exact_mappings:
+      - fabio:expression
+    slot_usage:
+      type:
+        range: string
+
+  ScientificKnowledgeItem:
+    description:
+      A specific instance of a ScientificKnowledgeExpression:- our internal representation
+      of an EPMC citation record, a local copy of a full-text article. This is the 
+      substrate that forms the basis for a ScientificKnowledgeFragment. 
+    is_a: InformationContentEntity 
+    slots:
+      - representation of
+      - has part
+
+  ScientificKnowledgeFragment:
+    description:
+      A selected subportion of the contents of a ScientificKnowledgeExpression,
+      described by an selector. 
+    is_a: InformationContentEntity 
+    slots:
+      - part of
+      - offset
+      - length
+
+  Note:
+    aliases: ['annotation']
+    description:
+      A structured piece of information with an author that is about another InformationContentEntity.
+    is_a: InformationContentEntity 
+    slots:
+      - is about
+      - format
+      - type
+    #slot_usage:
+    #  type:
+    #    range: NoteType
+    
+  Author:
+    is_a: InformationContentEntity
+    slots:
+      - affiliations
+      - is author of
+
+  Organization:
+    is_a: InformationContentEntity
+    attributes:  
+      city:
+        multivalued: true
+        range: City
+      country:
+        multivalued: true
+        range: Country
+
+  City: 
+    is_a: NamedThing
+
+  Country: 
+    is_a: NamedThing
+    attributes:  
+      code2:
+        range: string
+      code3:
+        range: string
+      region:
+        range: string
+      income:
+        range: string

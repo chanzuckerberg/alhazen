@@ -1,0 +1,185 @@
+erDiagram
+Entity {
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+NamedThing {
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+InformationContentEntity {
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+UserQuestion {
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+InformationResource {
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+ScientificKnowledgeCollection {
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+ScientificKnowledgeExpression {
+    date publication_date  
+    string type  
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+}
+ScientificKnowledgeItem {
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+ScientificKnowledgeFragment {
+    integer offset  
+    integer length  
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+Note {
+    string format  
+    string type  
+    date creation_date  
+    string content  
+    integer token_count  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+}
+Author {
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+Organization {
+    date creation_date  
+    string content  
+    integer token_count  
+    string format  
+    string provenance  
+    uriorcurieList xref  
+    string license  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+City {
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+Country {
+    string code2  
+    string code3  
+    string region  
+    string income  
+    string name  
+    string id  
+    uriorcurieList iri  
+    string type  
+}
+
+InformationContentEntity ||--}o Note : "has notes"
+UserQuestion ||--}o Note : "has notes"
+InformationResource ||--}o Note : "has notes"
+ScientificKnowledgeCollection ||--}o ScientificKnowledgeExpression : "has members"
+ScientificKnowledgeCollection ||--}o Note : "has notes"
+ScientificKnowledgeExpression ||--}o ScientificKnowledgeItem : "has representation"
+ScientificKnowledgeExpression ||--}o ScientificKnowledgeCollection : "member of"
+ScientificKnowledgeExpression ||--}o Author : "has authors"
+ScientificKnowledgeExpression ||--}o Note : "has notes"
+ScientificKnowledgeItem ||--|o ScientificKnowledgeExpression : "representation of"
+ScientificKnowledgeItem ||--}o ScientificKnowledgeFragment : "has part"
+ScientificKnowledgeItem ||--}o Note : "has notes"
+ScientificKnowledgeFragment ||--|o ScientificKnowledgeItem : "part of"
+ScientificKnowledgeFragment ||--}o Note : "has notes"
+Note ||--}o InformationContentEntity : "is about"
+Note ||--}o Note : "has notes"
+Author ||--}o Organization : "affiliations"
+Author ||--}o ScientificKnowledgeExpression : "is author of"
+Author ||--}o Note : "has notes"
+Organization ||--}o City : "city"
+Organization ||--}o Country : "country"
+Organization ||--}o Note : "has notes"
+

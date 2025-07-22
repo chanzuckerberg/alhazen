@@ -1,0 +1,11 @@
+---
+order: 1
+title: Agents
+listing:
+  fields: [title, description]
+  type: table
+  sort-ui: false
+  filter-ui: false
+---
+
+Alhazen is an agent based system. We here experiment with different types of agent to perform different classes of task.

@@ -1,0 +1,161 @@
+metadata extraction (RAG over full text snippets): 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Prompt for metadata extraction over indexed full text papers using sentence-level RAG extraction
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: >
+    Read excerpts from a scientific the text of a section from the methods section of a research paper shown below 
+    (delimited with triple backticks).
+
+    Context: '''{context}'''
+
+    The text is taken from a scientific paper that uses {methodology} to {method_goal}.
+
+    Extract metadata from the section text based on the following question. 
+    Record answers as the specified fields of the output. Do not extract any other metadata. 
+    
+    Question: {question}
+
+    {answer_specification}
+
+    Do not provide additional explanation for the answer.
+   
+    If you cannot answer the question, record a value of 'not present' in appropriate fields of the output.  
+    Do not include any other response other than a JSON object.
+            
+  input_variables: 
+    - context
+    - question
+    - methodology
+    - method_goal
+    - answer_specification
+  output_variables:
+    - metadata_name
+    - metadata_value
+    - original_text
+
+metadata extraction (all questions, whole paper): 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    First attempt to develop a prompt for metadata extraction from full text.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: 
+    Read the text of a section from the methods section of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+    The text is taken from a scientific paper that uses {methodology} to {method_goal}.
+
+    Extract metadata from the section text based on the following list of questions. 
+    Record answers as the specified fields of the output. Do not extract any other metadata. 
+    
+    {questions_output_specification}
+
+    Do not provide additional explanation or context for the answer.
+   
+    If you cannot answer a listed question, record a value of 'not present' in appropriate fields of the output.  
+    Do not include any other response other than a JSON object.
+            
+  input_variables: 
+    - section_text
+    - methodology
+    - method_goal
+    - questions_output_specification
+  output_variables:
+    - metadata_name
+    - metadata_value
+    - original_text
+
+metadata extraction (full cryoet example): 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Asking multiple questions at once 
+    First attempt to develop a prompt for metadata extraction from full text.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: >
+    Read the text of a section from the methods section of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- ```{section_text}```
+
+    The text is taken from a scientific paper that uses Cryo-Electron Tomography (CryoET) to study the microscopic structure of a biological sample.
+
+    Extract metadata from the section text based on the following list of questions. Record answers as the specified fields of the output. Do not extract any other metadata. 
+
+    1. What is the type of biological sample being used? Select from the following list:- cell culture, tissue, organoid, organ, whole organism, virus, micro-organism, other. Record this value in the 'biological_sample_type' field of the output. Record any supporting sentences from the section text in the 'biological_sample_type_original_text' field of the output.
+    2. If the biological sample was taken from an organism, provide the scientific name of the organism. If the biological sample is not from an organism, record the value 'none'.' Record this value in the 'organism_name' field of the output. Record any supporting sentences from the section text in the 'organism_name_original_text' field of the output.
+    3. If the biological sample described in the text is a cell or cell culture, what was the strain? Record this value in the 'cell_strain' field of the output. Record any supporting sentences from the section text in the 'cell_strain_original_text' field of the output.
+    4. Provide a one sentence summary of any actions performed on the biological sample. Record this value in the 'sample_preparation' field of the output. Record any supporting sentences from the section text in the 'sample_preparation_original_text' field of the output.
+    5. Provide a one sentence summary of how grids were prepared for electron microscopy. Record this value in the 'grid_preparation' field of the output. Record any supporting sentences from the section text in the 'grid_preparation_original_text' field of the output.
+    6. What was the pixel spacing the CryoET step? Record this value in the 'cryoet_pixel_spacing' field of the output. Record any supporting sentences from the section text in the 'cryoet_pixel_spacing_original_text' field of the output.
+    7. What was the acceleration voltage? Record this value in the 'cryoet_acceleration_voltage' field of the output. Record any supporting sentences from the section text in the 'cryoet_acceleration_voltage_original_text' field of the output.
+    8. What was the name of the type of electron microscope being used? Record this value in the 'microscope_name' field of the output. Record any supporting sentences from the section text in the 'microscope_name_original_text' field of the output.
+    9. Which, if any, of the following electron microscopy methods were used: (A) an energy filter, (B) a phase plate, or (C) an image corrector? Record this value in the 'microscope_setup' field of the output. Record any supporting sentences from the section text in the 'microscope_setup_original_text' field of the output.
+    10. Which company made the camera used to capture tilt images? Record this value in the 'camera_manufacturer' field of the output. Record any supporting sentences from the section text in the 'camera_manufacturer_original_text' field of the output.
+    11. What model of camera was used to capture tilt images? Record this value in the 'camera_model' field of the output. Record any supporting sentences from the section text in the 'camera_model_original_text' field of the output.
+    12. What was the minimum angle used in the tilt-series? Record this value in the 'tilt_minimum' field of the output. Record any supporting sentences from the section text in the 'tilt_minimum_original_text' field of the output.
+    13. What was the maximum angle used in the tilt-series? Record this value in the 'tilt_maximum' field of the output. Record any supporting sentences from the section text in the 'tilt_maximum_original_text' field of the output.
+    14. What was the total flux or total exposure dose? Record this value in the 'total_flux' field of the output. Record any supporting sentences from the section text in the 'total_flux_original_text' field of the output.
+    15. What software or computational methods were used to perform the tomogram reconstruction? Record this value in the 'reconstruction_software' field of the output. Record any supporting sentences from the section text in the 'reconstruction_software_original_text' field of the output.
+    16. What are the dimensions of the tomogram dataset (measured in numbers of pixels)? Record this value in the 'tomogram_size' field of the output. Record any supporting sentences from the section text in the 'tomogram_size_original_text' field of the output.
+    17. What computational methods / algorithms were used to perform the tomogram reconstruction calculation (e.g., weighted back propagation, etc)? Record this value in the 'reconstruction_method' field of the output. Record any supporting sentences from the section text in the 'reconstruction_method_original_text' field of the output.
+    18. What organelles or subcellular components were annotated in the images? Record this value in the 'annotated_entities' field of the output. Record any supporting sentences from the section text in the 'annotated_entities_original_text' field of the output.
+    19. List all the methods describing how annotations were generated (manually, computational analysis, machine learning, etc)? Record this value in the 'annotation_methods' field of the output. Record any supporting sentences from the section text in the 'annotation_methods_original_text' field of the output.
+    20. What software was used to generate the annotations? Record this value in the 'annotated_software' field of the output. Record any supporting sentences from the section text in the 'annotated_software_original_text' field of the output.
+
+    Generate only JSON formatted output with 40 fields:
+    'biological_sample_type', 'biological_sample_type_original_text',  'organism_name', 'organism_name_original_text', 
+    'cell_strain', 'cell_strain_original_text', 'sample_preparation', 'sample_preparation_original_text', 
+    'grid_preparation', 'grid_preparation_original_text', 'cryoet_pixel_spacing', 'cryoet_pixel_spacing_original_text', 
+    'cryoet_acceleration_voltage', 'cryoet_acceleration_voltage_original_text', 'microscope_name', 'microscope_name_original_text', 
+    'microscope_setup', 'microscope_setup_original_text', 'camera_manufacturer', 'camera_manufacturer_original_text', 
+    'camera_model', 'camera_model_original_text', 'tilt_minimum', 'tilt_minimum_original_text', 
+    'tilt_maximum', 'tilt_maximum_original_text', 'total_flux', 'total_flux_original_text', 
+    'reconstruction_software', 'reconstruction_software_original_text', 'tomogram_size', 'tomogram_size_original_text', 
+    'reconstruction_method', 'reconstruction_method_original_text', 'annotated_entities', 'annotated_entities_original_text',
+    'annotation_methods', 'annotation_methods_original_text', 'annotated_software', 'annotated_software_original_text'.
+
+    Do not provide additional explanation or context for the answer.
+   
+    If you cannot answer a listed question, record a value of 'not present' in appropriate fields of the output.  
+    Do not include any other response other than a JSON object.
+        
+    Remember, only generate JSON formatted output without any additional text or explanation.
+    
+  input_variables: 
+    - section_text
+
+simple extraction: 
+  programmer_notes: NOT COMPLETE STILL TESTING
+  description: 
+    Given a specific paper, read the most relevant sections, and answer the given question. 
+  system: 
+    Answer in a direct and concise tone. Your audience is an expert, so be highly specific. If there are ambiguous terms or acronyms, first define them.
+  instruction: >
+    Read through the following CONTEXT taken from a research paper: 
+
+    ```CONTEXT:{context}```
+
+    Answer the followng question:
+
+    Question: {question}
+
+    Do not include information that does not appear directly in the CONTEXT provided.
+    Focus on specific details, including numbers, equations, or specific quotes. 
+    Reply "Not applicable" if you cannot answer the question based on the text from the CONTEXT provided. 
+    Restrict each answer to a maximum of {answer_length} words. 
+
+    Write this answer as JSON formatted output. Provide a dict object with the following fields: ANSWER, SUMMARY, RELEVANCE SCORE. 
+
+    Do not provide additional explanation for the answer.
+    Do not include any other response other than a JSON object.
+  input_variables: 
+    - k
+    - question
+    - context
+  output_variables:
+    - summary

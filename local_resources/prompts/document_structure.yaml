@@ -1,0 +1,80 @@
+full text paper classification: 
+  description: 
+    Prompt to identify what kind of paper this is.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: >
+    Read the text of a whole scientific paper shown below 
+    (delimited with triple backticks).
+
+    Text:- '''{full_text}'''
+
+    What kind of paper is this?  
+
+    Select an answer from the following list:
+    - Research Article 
+    - Methods Paper 
+    - Review Article
+    - Case Report
+    - Clinical Trial
+    - Other
+    
+    Classify the paper as a 'Research Article' if the paper's main goal is to investigate biological or medical phenomena.
+    Classify the paper as a 'Methods Paper' if the paper's main goal is to develop new scientific methods (even if they and presents original research with a described methodology and results that investigate biological or medical phenomena.
+    Classify the paper as a 'Review Article' if the paper's main goal is to describe and summarize others' research without describing any novel work in this paper.
+    Classify the paper as a 'Case Report' if the paper describes the clinical experience of a small number of patients suffering from a medical condition.
+    Classify the paper as a 'Clinical Trial' if the paper describes a systematic investigation of a drug or therapeutic treatment in a population of human patients.
+    In all other cases, classify the paper as 'Other'.
+
+    Generate only JSON formatted output with a single field: 'paper_type' and the selected answer as the value.
+
+    Do not provide additional explanation or context for the answer.
+   
+    Do not include any other response other than a JSON object.
+        
+    Remember, only generate JSON formatted output without any additional text or explanation.
+            
+  input_variables: 
+    - full_text
+  output_variables:
+    - paper_type
+
+full text paper section classification: 
+  description: 
+    Simple prompt to identify if this section of the paper is concerned with BACKGROUND, METHODS, RESULTS, DISCUSSION, REFERENCES, or OTHER.
+  system: 
+    You are an expert biological scientist, skilled at reading scientific papers.
+  instruction: >
+    Read the text of a section of a research paper shown below 
+    (delimited with triple backticks).
+
+    Section Text:- '''{section_text}'''
+
+
+    Select an answer from the following list:
+    - BACKGROUND 
+    - METHODS 
+    - RESULTS
+    - DISCUSSION
+    - REFERENCES
+    - OTHER
+
+    Classify the section as 'BACKGROUND' if the text likely originates from the introduction of the paper or it describes work by other people across field of investigation. 
+    Classify the section as 'METHODS' if the text likely originates from the methods section of the paper, describing how a specific scientific protocol was followed. 
+    Classify the section as a 'RESULTS' if the text likely originates from the results section of the paper, describing a broad field of investigation and others' work. 
+    Classify the section as a 'DISCUSSION' if the text likely originates from the discussion or conclusion section of the paper. This will describe the findings of the paper in the context of others' work, providing new insight and undestanding of the phenomena under study.
+    Classify the section as a 'REFERENCES' if the text of the section lists cited references from the rest of the paper
+    Classify the section as a 'OTHER' in all other cases (such as references if the text likely originates from the introduction of the paper, describing a broad field of investigation and others' work. 
+    
+    Generate only JSON formatted output with a single field: 'section_type'.
+
+    Do not provide additional explanation or context for the answer.
+   
+    Do not include any other response other than a JSON object.
+        
+    Remember, only generate JSON formatted output without any additional text or explanation.
+            
+  input_variables: 
+    - section_text
+  output_variables:
+    - section_type

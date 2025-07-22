@@ -1,0 +1,12 @@
+---
+order: 1
+title: Trend Analysis
+listing:
+  fields: [title, description]
+  type: table
+  sort-ui: false
+  filter-ui: false
+---
+
+Notebooks that permit trend analyses over papers in terms of the evolution of subfields and subtypes of studies. 
+These analyses typically act on titles, abstracts, keywords, and study taxonomies (e.g., MeSH etc). 

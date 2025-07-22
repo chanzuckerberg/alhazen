@@ -1,0 +1,176 @@
+dataset:
+  dataset_identifier: 10004
+  dataset_title: C. Elegans from Serial Lift-Out – Sampling the Molecular Anatomy of Whole Organisms
+  dataset_description: 'Partial dataset used in the ribosome subtomogram reconstruction selected from tomograms from double-sided attachment Serial Lift-Out experiment.'
+  authors: &dataset_authors
+    - name: Oda Helene Schiøtz
+      ORCID: 0009-0008-3301-8270
+      corresponding_author_status: false
+      primary_author_status: true
+    - name: Christoph J.O. Kaiser
+      ORCID: 0000-0002-8481-6845
+      corresponding_author_status: false
+      primary_author_status: true
+    - name: Sven Klumpe
+      ORCID: 0000-0002-8350-6503
+      corresponding_author_status: false
+      primary_author_status: true
+    - name: Dustin R. Morado
+      ORCID: 0000-0003-4693-3220
+      corresponding_author_status: false
+      primary_author_status: false
+    - name: Matthias Poege
+      ORCID: 0000-0003-2331-4638
+      corresponding_author_status: false
+      primary_author_status: false
+    - name: Jonathan Schneider
+      ORCID: 0000-0002-5060-529X
+      corresponding_author_status: false
+      primary_author_status: false
+    - name: Florian Beck
+      ORCID: 0000-0002-1632-7820
+      corresponding_author_status: false
+      primary_author_status: false
+    - name: Christopher Thompson
+      ORCID: 0000-0003-2240-093X
+      corresponding_author_status: false
+      primary_author_status: false
+    - name: M. Jürgen Plitzko
+      ORCID: 0000-0002-6402-8315
+      corresponding_author_status: true
+      primary_author_status: false
+  organism:
+    name: Caenorhabditis elegans
+    taxonomy_id: 6239
+  sample_type: organism
+  dates: &repo-dates
+    deposition_date: 2023-05-01
+    release_date: 2023-06-01
+    last_modified_date: 2023-06-01
+  cell_strain:
+    name: NK2476
+    id: https://cgc.umn.edu/strain/NK2476
+  cross_references:
+    dataset_publications: doi:10.1101/2023.04.28.538734
+    related_database_entries: EMD-17241, EMD-17242, EMD-17243, EMD-17244, EMD-17245
+  cell_component:
+    name: ~
+    id: ~
+annotations:
+  - metadata:
+      annotation_object:
+        id: GO:0005835
+        name: Ribosome, 80 S
+      dates: *repo-dates
+      annotation_method: Template matching + 2D classification filtering
+      annotation_publications: "10.1101/2023.04.28.538734, EMD-17241, EMD-17242, EMD-17243, EMD-17244, EMD-17245"
+      ground_truth_status: false
+      authors:
+        - name: Florian Beck
+          ORCID: 0000-0002-1632-7820
+          corresponding_author_status: false
+          primary_annotator_status: true
+        - name: Oda Helene Schiøtz
+          ORCID: 0009-0008-3301-8270
+          corresponding_author_status: false
+          primary_annotator_status: false
+        - name: Christoph J.O. Kaiser
+          ORCID: 0000-0002-8481-6845
+          corresponding_author_status: false
+          primary_annotator_status: false
+        - name: Sven Klumpe
+          ORCID: 0000-0002-8350-6503
+          corresponding_author_status: false
+          primary_annotator_status: false
+        - name: Dustin R. Morado
+          ORCID: 0000-0003-4693-3220
+          corresponding_author_status: false
+          primary_annotator_status: false
+        - name: Matthias Poege
+          ORCID: 0000-0003-2331-4638
+          corresponding_author_status: false
+          primary_annotator_status: false
+        - name: Jonathan Schneider
+          ORCID: 0000-0002-5060-529X
+          corresponding_author_status: false
+          primary_annotator_status: false
+        - name: Christopher Thompson
+          ORCID: 0000-0003-2240-093X
+          corresponding_author_status: false
+          primary_annotator_status: false
+        - name: M. Jürgen Plitzko
+          ORCID: 0000-0002-6402-8315
+          corresponding_author_status: true
+          primary_annotator_status: false
+      version: "1.0"
+      annotation_confidence:
+        precision: 95
+        recall: 60
+        ground_truth_used: Author estimation
+      annotation_software: STOPGAP + RELION
+    sources:
+      - columns: zyx
+        file_format: csv_with_header
+        glob_string: '{run_name}/annoRibosome_bin4.txt'
+        shape: Point
+runs: {}
+tiltseries:
+  scales: []
+  microscope:
+    manufacturer: TFS
+    model: Krios
+  spherical_aberration_constant: 2.7
+  microscope_optical_setup:
+    energy_filter: TFS Selectris X
+    image_corrector: None
+    phase_plate: None
+  camera:
+    manufacturer: TFS
+    model: Falcon4i
+  acceleration_voltage: 300000
+  tilting_scheme: Dose symmetric from -10.0 degrees
+  tilt_axis: 84.2
+  tilt_step: 3
+  tilt_range:
+    min: -70
+    max: 50
+  total_flux: 130
+  data_acquisition_software: Tomo5
+  binning_from_frames: 1
+  tilt_series_quality: 5
+  pixel_spacing: 1.89
+  is_aligned: false
+  alignment_binning_factor: ~
+tomograms:
+  voxel_spacing: 7.56
+  fiducial_alignment_status: NON_FIDUCIAL
+  offset:
+    x: 0
+    y: 0
+    z: 0
+  affine_transformation_matrix: [[1, 0, 0, 0], [0, 1, 0, 0 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+  reconstruction_method: Weighted back projection
+  reconstruction_software: IMOD
+  ctf_corrected: true
+  processing: raw
+  authors: *dataset_authors
+  tomogram_version: 1
+standardization_config:
+  destination_prefix: '10004'
+  source_prefix: cElegans
+  run_to_tomo_map_csv: ~
+  frames_glob: '{run_name}/frames/*.eer'
+  gain_glob: gain/gain.mrc
+  rawtlt_files:
+    - '{run_name}/{run_name}.mdoc-dose_filt.tlt'
+    - '{run_name}/{run_name}.mdoc-dose_filt.xf'
+    - '{run_name}/{run_name}.mdoc'
+  tiltseries_glob: '{run_name}/*.st'
+  rawtlt_files: ~
+  tomo_format: mrc
+  tomo_glob: '*/*.rec'
+  tomo_regex: .*\.rec
+  tomo_voxel_size: '7.56'
+  run_glob: 'Position*'
+  run_regex: '.*'
+  run_name_regex: '(.*)'

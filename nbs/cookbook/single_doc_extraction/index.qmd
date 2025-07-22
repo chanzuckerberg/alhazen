@@ -1,0 +1,13 @@
+---
+order: 1
+title: Metadata Extraction
+listing:
+  fields: [title, description]
+  type: table
+  sort-ui: false
+  filter-ui: false
+---
+
+Click through to any of these notebooks to run tools over digital libraries that extract information from papers one at a time. 
+
+These use cases are typically focussed on extracting experimental metadata from papers to accurately identify how general parameters are set in an experimental protocol.    

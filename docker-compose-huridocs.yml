@@ -1,0 +1,48 @@
+services:
+  alhazen: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8888:8888"
+    volumes:
+      - .:/home/jovyan/alhazen
+      - ./nbs/cookbook:/home/jovyan/work
+      - ~/.cache/huggingface:/home/jovyan/.cache/huggingface
+      - $LOCAL_FILE_PATH:/home/jovyan/files
+    environment:
+      - HURIDOCS_NETWORK=pdf_paragraphs_extraction_api
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_HOST=db
+      - LOCAL_FILE_PATH=/home/jovyan/files
+      - DATABRICKS_API_KEY=$DATABRICKS_API_KEY
+      - GROQ_API_KEY=$GROQ_API_KEY
+      - OPENAI_API_KEY=$OPENAI_API_KEY
+    networks:
+      - pdf_paragraphs_extraction_pdf_paragraphs_extraction_network
+    depends_on:
+      db:
+        condition: service_healthy
+  db:
+    image: pgvector/pgvector:pg14
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=example
+      - POSTGRES_HOST=localhost
+    healthcheck:
+      test: "pg_isready -q -U postgres" 
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    command: ["php", "-d", "post_max_size=1G", "-d", "upload_max_filesize=1G", "-S", "0.0.0.0:8080", "-t", "/var/www/html"]
+volumes:
+  pgdata:
+  work:
+networks:
+  pdf_paragraphs_extraction_pdf_paragraphs_extraction_network:
+    name: pdf_paragraphs_extraction_pdf_paragraphs_extraction_network
+    external: true

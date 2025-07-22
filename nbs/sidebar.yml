@@ -1,0 +1,28 @@
+website:
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - index.ipynb
+      - docnb1_use_cases.ipynb
+      - docnb2_architecture.ipynb
+      - section: "Tech Elements"
+        contents:
+          - section: "Agents"
+            contents: agents/*
+          - section: "Tools"
+            contents: tools/*
+          - section: "Utilities"
+            contents: utils/*
+      - section: "Tutorial Notebooks"
+        contents: tutorials/*
+      - section: "Example Notebooks"
+        contents:
+          - section: "Metadata Extraction"
+            contents: cookbook/single_doc_extraction/*
+          - section: "Trend Analysis"
+            contents: cookbook/trend_analysis/*
+          - section: "Key Opinion Leaders"
+            contents: cookbook/key_opinion_leaders/*
+          - section: "Question Answering"
+            contents: cookbook/question_answering/*

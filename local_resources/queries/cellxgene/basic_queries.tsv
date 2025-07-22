@@ -1,0 +1,8 @@
+ID CORPUS_NAME QUERY
+1   Simple broad search Single cell | scRNA-seq | snRNA-seq | (any method here with a Y in column B) AND human (homo sapien) OR mouse (mus musculus) NOT (any method with a N in column B) AND publication data in last 30 days
+2   More complex search Single cell OR scRNA-seq OR snRNA-seq OR (any method here with a Y in column B) AND human (homo sapien) OR mouse (mus musculus) NOT (any method with a N in column B) AND publication data in last 30 days NOT DOIs listed here
+3   Adjusted narrow search  Single cell OR scRNA-seq OR snRNA-seq OR (any method here with a Y in column B) AND human (homo sapien) OR mouse (mus musculus) NOT (any method with a N in column B) AND X,Y,Z,Q tissue term (based on on which tissues are underrepresented in CxG) OR ancestry/nationality/ethnicity/race term (for now all non-white/European populations) OR pediatric
+4   Accepted Assays
+5   Unaccepted Assays 
+6   ancestry/nationality/ethnicity/race term (for now all non-white/European populations)
+7   Underrepresented tissues in CxG

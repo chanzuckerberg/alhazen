@@ -1,0 +1,157 @@
+dataset:
+  dataset_identifier: 10005
+  dataset_title: Microtubule doublet from mouse sperm
+  dataset_description: Cryo-electron tomograms of mouse sperm flagella from FIB-SEM lamella.
+  authors: &dataset_authors
+    - name: Chen Z
+    - name: Greenan GA
+    - name: Shiozaki M
+    - name: Liu Y
+    - name: Will M. Skinner
+      ORCID: 0000-0002-2383-4003
+    - name: Zhao X
+    - name: Zhao S
+    - name: Yan R
+    - name: Zhiheng Yu
+      ORCID: 0000-0002-7114-2570
+    - name: Polina V. Lishko
+      ORCID: 0000-0003-3140-2769
+    - name: David A. Agard
+      ORCID: 0000-0003-3512-695X
+    - name: Ron Vale
+      ORCID: 0000-0003-3460-2758
+  funding:
+    - funding_agency_name: Howard Hughes Medical Institute (HHMI)
+      grant_id: null
+    - funding_agency_name: National Institutes of Health/National Institute of General Medical Sciences (NIH/NIGMS)
+      grant_id: GM118106
+    - funding_agency_name: National Institutes of Health/National Institute of General Medical Sciences (NIH/NIGMS)
+      grant_id: GM118099
+    - funding_agency_name: The Pew Charitable Trusts
+      grant_id: Pew Biomedical Scholar Award
+  sample_preparation: 'buffer_ph: 7.4, vitrification_cryogen_name: ETHANE, instance_type: subtomogram_averaging_preparation'
+  grid_preparation: ''
+  sample_type: cell
+  dates: &repo-dates
+    deposition_date: 2023-09-01
+    release_date: 2023-12-10
+    last_modified_date: 2023-11-20
+  cell_strain:
+    name: C57BI/6J
+  cell_type:
+    id: CL:0000019
+    name: Sperm
+  cross_references:
+    dataset_publications: doi:10.1038/s41594-022-00861-0
+    related_database_entries: EMPIAR-11221
+  cell_component:
+    name: sperm flagellum
+    id: GO:0036126
+  organism:
+    name: Mus musculus
+  key_photos:
+    snapshot: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/11221-l.gif
+    thumbnail: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/11221.gif
+annotations:
+  - metadata:
+      annotation_object:
+        id: GO:0097545
+        name: microtubule doublet 48 nm repeat
+        state: 48 nm repeat
+      dates: *repo-dates
+      annotation_method: Template matching + manual filtering + 3D classification filtering
+      annotation_publications: null
+      ground_truth_status: true
+      authors: &annotation_authors
+        - name: Zhen Chen
+          ORCID: null
+          primary_annotator_status: true
+          corresponding_author_status: false
+      annotation_software: ~
+      version: '1.0'
+    sources:
+      - columns: zyx
+        file_format: csv
+        glob_string: coorinates_dmt48/s{run_name}_dmt48_coordinates_bin2.txt
+        shape: Point
+        delimiter: ' '
+  - metadata:
+      annotation_object:
+        id: GO:0097545
+        name: microtubule doublet 96 nm repeat
+        state: 96 nm repeat
+      dates: *repo-dates
+      annotation_method: Template matching + manual filtering + 3D classification filtering
+      annotation_publications: null
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: ~
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - columns: zyx
+        file_format: csv
+        glob_string: coordinates_dmt96/s{run_name}_dmt96_coordinates_bin2.txt
+        shape: Point
+        delimiter: ' '
+runs: {}
+tiltseries:
+  scales: []
+  microscope:
+    manufacturer: FEI
+    model: TITAN KRIOS
+  spherical_aberration_constant: 2.7
+  microscope_optical_setup:
+    energy_filter: GIF Bioquantum
+    phase_plate: null
+    image_corrector: null
+  camera:
+    manufacturer: GATAN
+    model: K3 BIOQUANTUM
+  acceleration_voltage: 300000
+  tilting_scheme: Dose symmetric from lamella pre-tilt
+  tilt_axis: 6.4
+  tilt_step: 3
+  tilt_range:
+    min: -60
+    max: 40
+  total_flux: 100
+  data_acquisition_software: SerialEM
+  binning_from_frames: null
+  tilt_series_quality: 5
+  pixel_spacing: 2.612
+  is_aligned: true
+  aligned_tiltseries_binning: 1
+tomograms:
+  voxel_spacing: 5.224
+  fiducial_alignment_status: NON_FIDUCIAL
+  offset:
+    x: 0
+    y: 0
+    z: 0
+  affine_transformation_matrix: [[1, 0, 0, 0], [0, 1, 0, 0 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+  reconstruction_method: ''
+  reconstruction_software: Tomo3D
+  ctf_corrected: true
+  processing: raw
+  authors: *dataset_authors
+  tomogram_version: 1
+standardization_config:
+  raw_bucket_base_dir: zhen_flagella
+  destination_prefix: '10005'
+  frames_glob: ''
+  gain_glob: ''
+  rawtlt_files:
+  source_prefix: zhen_flagella
+  tiltseries_glob: aligned_tilt_series/si20220214_{run_name}.mrc
+  tomo_format: mrc
+  tomo_glob: tomograms_bin2/*.xyzw
+  tomo_regex: .*\.xyzw
+  run_glob: tomograms_bin2/*.xyzw
+  run_regex: .*\.xyzw
+  run_name_regex: si20220214_(.*)_ctf_bin2\.xyzw
+  tomo_voxel_size: '5.224'
+  ts_name_regex: (.*)_ctf_bin2\.xyzw

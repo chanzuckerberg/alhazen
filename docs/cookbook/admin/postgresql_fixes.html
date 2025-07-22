@@ -1,0 +1,1695 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.555">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Like any DBMS, PostgreSQL requires careful administration. Our implementation is a little quick-and-dirty, so here, we include functions to fix errors as they arise.">
+
+<title>alhazen - PostgreSQL Fixes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="alhazen - PostgreSQL Fixes">
+<meta property="og:description" content="Like any DBMS, PostgreSQL requires careful administration. Our implementation is a little quick-and-dirty, so here, we include functions to fix errors as they arise.">
+<meta property="og:site_name" content="alhazen">
+<meta name="twitter:title" content="alhazen - PostgreSQL Fixes">
+<meta name="twitter:description" content="Like any DBMS, PostgreSQL requires careful administration. Our implementation is a little quick-and-dirty, so here, we include functions to fix errors as they arise.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">alhazen</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html#install-dependencies"> 
+<span class="menu-text">Get Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../docnb1_use_cases.html" aria-current="page"> 
+<span class="menu-text">Use Cases</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../docnb2_architecture.html"> 
+<span class="menu-text">Platform Architecture</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-help" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Help</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-help">    
+        <li>
+    <a class="dropdown-item" href="https://github.com/chanzuckerberg/alhazen/issues"><i class="bi bi-bug" role="img">
+</i> 
+ <span class="dropdown-text">Report an Issue</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/chanzuckerberg/alhazen"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">PostgreSQL Fixes</li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home - Alhazen</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../docnb1_use_cases.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Use Cases</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../docnb2_architecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Platform Architecture</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Tech Elements</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../agents/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Agents</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../agents/agent.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Basic Alhazen Agent / Chatbot.</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../tools/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tools</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/toolkit.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Alhazen Toolkit</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/basic_tools.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Basic Tools for Alhazen</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/metadata_extraction_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Methods Metadata Extraction Tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/protocol_extraction_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protocol Workflow Extraction Tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/paperqa_emulation_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Paper QA Emulation Tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/tiab_clasifier_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Title / Abstract Classifier Tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/tiab_mapping_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Title / Abstract Mapping Tool</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tools/tiab_extraction_tool.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Title / Abstract Extraction Tool</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../utils/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Utilities</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../utils/ceifns_db.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Database for Scientific Knowledge</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../utils/search_engine_eutils.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Search Engine Tools</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../utils/web_robot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Web Robots</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../utils/html_text_extractor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">HTML Text Extractor Utility</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../utils/jats_text_extractor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">JATS Text Extractor Utility</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../utils/pdf_text_extractor.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">PDF Text Extractor Utility</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../tutorials/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tutorial Notebooks</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../tutorials/cryoet_tutorial.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CryoET Tutorial</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Example Notebooks</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../cookbook/single_doc_extraction/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Metadata Extraction</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/single_doc_extraction/cellxgene_datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CellXGene Datasets</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/single_doc_extraction/cryoet.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">CryoET</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/single_doc_extraction/ncats_natural_history_studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">NCATS Natural History Studies</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/single_doc_extraction/rnaquarium.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RNAquarium</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../cookbook/trend_analysis/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Trend Analysis</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/trend_analysis/capacity_building.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Capacity Building</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/trend_analysis/imaging_technology_evolution.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Image Tech Evolution</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/trend_analysis/pathogen_landscaping.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pathogen_Landscaping</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/trend_analysis/rare_disease_literature.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rare Disease Literature.</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../cookbook/key_opinion_leaders/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Key Opinion Leaders</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/key_opinion_leaders/african_microscopy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">African Microscopy</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../cookbook/question_answering/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Question Answering</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/question_answering/virtualcell_corepapers.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Virtual Cell Landscaping Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cookbook/question_answering/cellbiology.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Cell Biology Database.</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#basics" id="toc-basics" class="nav-link active" data-scroll-target="#basics">Basics</a>
+  <ul class="collapse">
+  <li><a href="#python-imports" id="toc-python-imports" class="nav-link" data-scroll-target="#python-imports">Python Imports</a></li>
+  <li><a href="#environment-variables" id="toc-environment-variables" class="nav-link" data-scroll-target="#environment-variables">Environment Variables</a></li>
+  </ul></li>
+  <li><a href="#backup-all-databases" id="toc-backup-all-databases" class="nav-link" data-scroll-target="#backup-all-databases">Backup all databases</a>
+  <ul class="collapse">
+  <li><a href="#try-some-queries" id="toc-try-some-queries" class="nav-link" data-scroll-target="#try-some-queries">Try some queries</a></li>
+  </ul></li>
+  <li><a href="#analyze-collections" id="toc-analyze-collections" class="nav-link" data-scroll-target="#analyze-collections">Analyze Collections</a>
+  <ul class="collapse">
+  <li><a href="#survey-run-classifications-over-papers" id="toc-survey-run-classifications-over-papers" class="nav-link" data-scroll-target="#survey-run-classifications-over-papers">Survey + Run Classifications over Papers</a></li>
+  <li><a href="#survey-run-extractions-over-papers" id="toc-survey-run-extractions-over-papers" class="nav-link" data-scroll-target="#survey-run-extractions-over-papers">Survey + Run Extractions over Papers</a></li>
+  </ul></li>
+  <li><a href="#tests-checks" id="toc-tests-checks" class="nav-link" data-scroll-target="#tests-checks">Tests + Checks</a>
+  <ul class="collapse">
+  <li><a href="#agent-tool-selection-execution-interpretation" id="toc-agent-tool-selection-execution-interpretation" class="nav-link" data-scroll-target="#agent-tool-selection-execution-interpretation">Agent tool selection + execution + interpretation</a></li>
+  </ul></li>
+  <li><a href="#run-metadata-extraction-chain-over-listed-papers" id="toc-run-metadata-extraction-chain-over-listed-papers" class="nav-link" data-scroll-target="#run-metadata-extraction-chain-over-listed-papers">Run MetaData Extraction Chain over listed papers</a></li>
+  <li><a href="#protocol-modeling-extraction" id="toc-protocol-modeling-extraction" class="nav-link" data-scroll-target="#protocol-modeling-extraction">Protocol Modeling + Extraction</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">PostgreSQL Fixes</h1>
+</div>
+
+<div>
+  <div class="description">
+    Like any DBMS, PostgreSQL requires careful administration. Our implementation is a little quick-and-dirty, so here, we include functions to fix errors as they arise.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<section id="basics" class="level2">
+<h2 class="anchored" data-anchor-id="basics">Basics</h2>
+<section id="python-imports" class="level3">
+<h3 class="anchored" data-anchor-id="python-imports">Python Imports</h3>
+<p>Setting python imports, environment variables, and other crucial set up parameters here.</p>
+<div id="cell-4" class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.aliases <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.core <span class="im">import</span> lookup_chat_models</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.agent <span class="im">import</span> AlhazenAgent</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.schema_sqla <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.core <span class="im">import</span> lookup_chat_models</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.tools.basic <span class="im">import</span> AddCollectionFromEPMCTool, DeleteCollectionTool</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.tools.paperqa_emulation_tool <span class="im">import</span> PaperQAEmulationTool</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.tools.metadata_extraction_tool <span class="im">import</span> <span class="op">*</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.tools.protocol_extraction_tool <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.tools.tiab_classifier_tool <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.tools.tiab_extraction_tool <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.tools.tiab_mapping_tool <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.toolkit <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.ceifns_db <span class="im">import</span> Ceifns_LiteratureDb, create_ceifns_database, drop_ceifns_database, backup_ceifns_database, list_databases</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.searchEngineUtils <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.callbacks.tracers <span class="im">import</span> ConsoleCallbackHandler</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.docstore.document <span class="im">import</span> Document</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.text_splitter <span class="im">import</span> CharacterTextSplitter</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain.vectorstores.pgvector <span class="im">import</span> PGVector</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_community.chat_models.ollama <span class="im">import</span> ChatOllama</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_google_vertexai <span class="im">import</span> ChatVertexAI</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> langchain_openai <span class="im">import</span> ChatOpenAI</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bs4 <span class="im">import</span> BeautifulSoup,Tag,Comment,NavigableString</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> databricks <span class="im">import</span> sql</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> datetime</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> importlib_resources <span class="im">import</span> files</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> re</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy <span class="im">import</span> text, create_engine, exists, func, or_, and_, not_, desc, asc</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sqlalchemy.orm <span class="im">import</span> sessionmaker, aliased</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> time <span class="im">import</span> time,sleep</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.request <span class="im">import</span> urlopen</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.parse <span class="im">import</span> quote_plus, quote, unquote</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> urllib.error <span class="im">import</span> URLError, HTTPError</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> uuid</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> yaml</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> local_resources.data_files.cryoet_portal_metadata <span class="im">as</span> cryoet_portal_metadata</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> rapidfuzz <span class="im">import</span> fuzz</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> pipeline, AutoModel, AutoTokenizer</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> local_resources.queries.em_tech <span class="im">as</span> em_tech_queries</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> alhazen.utils.queryTranslator <span class="im">import</span> QueryTranslator, QueryType</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="environment-variables" class="level3">
+<h3 class="anchored" data-anchor-id="environment-variables">Environment Variables</h3>
+<p>Remember to set environmental variables for this code:</p>
+<ul>
+<li><code>ALHAZEN_DB_NAME</code> - the name of the PostGresQL database you are storing information into</li>
+<li><code>LOCAL_FILE_PATH</code> - the location on disk where you save temporary files, downloaded models or other data.</li>
+</ul>
+<div id="cell-6" class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.environ.get(<span class="st">'LOCAL_FILE_PATH'</span>) <span class="kw">is</span> <span class="va">None</span>: </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> <span class="pp">Exception</span>(<span class="st">'Where are you storing your local literature database?'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(os.environ[<span class="st">'LOCAL_FILE_PATH'</span>]) <span class="kw">is</span> <span class="va">False</span>:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    os.makedirs(os.environ[<span class="st">'LOCAL_FILE_PATH'</span>])  </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>loc <span class="op">=</span> os.environ.get(<span class="st">'LOCAL_FILE_PATH'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="backup-all-databases" class="level2">
+<h2 class="anchored" data-anchor-id="backup-all-databases">Backup all databases</h2>
+<div id="cell-8" class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>loc <span class="op">=</span> os.environ[<span class="st">'LOCAL_FILE_PATH'</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>current_date_time <span class="op">=</span> datetime.now()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>formatted_date_time <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>current_date_time<span class="sc">:</span><span class="op">%</span>Y<span class="op">-%</span>m<span class="op">-%</span>d<span class="op">-%</span>H<span class="op">-%</span>M<span class="op">-%</span>S<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>formatted_date <span class="op">=</span> <span class="ss">f'</span><span class="sc">{</span>current_date_time<span class="sc">:</span><span class="op">%</span>Y<span class="op">-%</span>m<span class="op">-%</span>d<span class="sc">}</span><span class="ss">'</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> os.path.exists(loc<span class="op">+</span><span class="st">'/backups'</span>) <span class="kw">is</span> <span class="va">False</span>:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    os.makedirs(loc<span class="op">+</span><span class="st">'/backups'</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> db <span class="kw">in</span> list_databases():</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Backing up database:'</span>,db)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    backup_path <span class="op">=</span> loc<span class="op">+</span><span class="st">'/backups/'</span><span class="op">+</span>db<span class="op">+</span><span class="st">'_backup_'</span><span class="op">+</span>formatted_date_time<span class="op">+</span><span class="st">'.sql'</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    backup_ceifns_database(db, backup_path)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'~~~~~~~~~~~~~~~~~~~~~~~~~'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="try-some-queries" class="level3">
+<h3 class="anchored" data-anchor-id="try-some-queries">Try some queries</h3>
+<div id="cell-10" class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>db_name <span class="op">=</span> <span class="st">'em_tech'</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ldb <span class="op">=</span> Ceifns_LiteratureDb(loc<span class="op">=</span>loc, name<span class="op">=</span>db_name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-11" class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># search for papers using embeddings</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        .distinct() <span class="op">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span>SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE_HR.has_representation_id<span class="op">==</span>SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span> <span class="op">==</span> <span class="st">'3'</span>) <span class="op">\</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(or_(SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'JATSFullText'</span>, SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'PDFFullText'</span>)) </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e_id <span class="kw">in</span> q.<span class="bu">all</span>():</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(e_id)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-12" class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>c_ids <span class="op">=</span> [<span class="st">'2'</span>]</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>collections_clause <span class="op">=</span> <span class="st">' OR '</span>.join([<span class="st">'skc_hm."ScientificKnowledgeCollection_id"=</span><span class="ch">\'</span><span class="sc">{}</span><span class="ch">\'</span><span class="st">'</span>.<span class="bu">format</span>(coll_id) <span class="cf">for</span> coll_id <span class="kw">in</span> c_ids])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>q2_all <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT DISTINCT ske.id, ske.content, ske.publication_date as pub_date, ske.type as pub_type, emb.embedding, skf.content </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM langchain_pg_embedding as emb, </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">        "ScientificKnowledgeExpression" as ske,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">        "ScientificKnowledgeCollection_has_members" as skc_hm, </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="st">        "ScientificKnowledgeFragment" as skf</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE skc_hm.has_members_id = ske.id AND </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="st">        emb.cmetadata-&gt;&gt;'i_type' = 'CitationRecord' AND</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">        emb.cmetadata-&gt;&gt;'e_id' = ske.id AND </span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">        emb.cmetadata-&gt;&gt;'f_id' = skf.id AND (</span><span class="sc">{}</span><span class="st">)</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">    ORDER BY pub_date DESC;</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">    """</span>.<span class="bu">format</span>(collections_clause)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>ldb.session.execute(text(q2_all)).fetchall()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="add-a-collection-based-on-empiar-papers" class="level4">
+<h4 class="anchored" data-anchor-id="add-a-collection-based-on-empiar-papers">Add a collection based on EMPIAR papers</h4>
+<div id="cell-14" class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>step <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> start_i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(empiar_dois), step):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    query <span class="op">=</span> <span class="st">' OR '</span>.join([<span class="st">'doi:"'</span><span class="op">+</span>empiar_dois[i]<span class="op">+</span><span class="st">'"'</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(start_i, start_i<span class="op">+</span>step)])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    addEMPCCollection_tool.run({<span class="st">'id'</span>: <span class="st">'3'</span>, <span class="st">'name'</span>:<span class="st">'EMPIAR Papers'</span>, <span class="st">'query'</span>:query, <span class="st">'full_text'</span>:<span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-15" class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> join_set(x):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    out <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>        out <span class="op">=</span> <span class="st">' '</span>.join(<span class="bu">set</span>(x))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">pass</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> out</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># identify papers that we have full text for in EMPIAR</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>        .distinct() <span class="op">\</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span>SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE_HR.has_representation_id<span class="op">==</span>SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span> <span class="op">==</span> <span class="st">'3'</span>) <span class="op">\</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(or_(SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'JATSFullText'</span>, SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'PDFFullText'</span>)) </span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>dois_to_include <span class="op">=</span> [d[<span class="dv">0</span>][<span class="dv">4</span>:] <span class="cf">for</span> d <span class="kw">in</span> q.<span class="bu">all</span>()]    </span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>empiar_gold_standard <span class="op">=</span> []</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, row <span class="kw">in</span> empiar_df.iterrows():</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> row.doi <span class="kw">in</span> dois_to_include:</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>        empiar_gold_standard.append( row.to_dict() )</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>empiar_gold_standard_df <span class="op">=</span> pd.DataFrame(empiar_gold_standard)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>empiar_gs_df <span class="op">=</span> empiar_gold_standard_df.groupby([<span class="st">'doi'</span>]).agg({<span class="st">'sample_preparation_type'</span>: join_set, <span class="st">'agg_state'</span>: join_set, <span class="st">'sample_preparation_buffer_ph'</span>: join_set, </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'grid_model'</span>: join_set, <span class="st">'grid_material'</span>: join_set, <span class="st">'grid_mesh'</span>: join_set, </span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'grid_support_topology'</span>: join_set, <span class="st">'grid_pretreatment'</span>: join_set, <span class="st">'grid_vitrification_cryogen'</span>: join_set, </span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>                                              <span class="st">'grid_vit_ctemp'</span>: join_set, <span class="st">'grid_vit_chumid'</span>: join_set}).reset_index()</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>empiar_gs_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="import-papers-from-dois-pertaining-to-cryoet-portal-records-10000-10010" class="level4">
+<h4 class="anchored" data-anchor-id="import-papers-from-dois-pertaining-to-cryoet-portal-records-10000-10010">Import papers from DOIs pertaining to CryoET-Portal records <code>10000-10010</code></h4>
+<p>The <a href="https://chanzuckerberg.github.io/cryoet-data-portal/python-api.html">CryoET Data portal</a> system is based on submitted data to our curation team, accompanied by papers referenced by DOIs. Each dataset is assigned an ID value associated with DOIs.</p>
+<div id="cell-17" class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use the EMPCSearchTool to run a query for the dois mentioned</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>query <span class="op">=</span> <span class="st">' OR '</span>.join([<span class="st">'doi:"'</span><span class="op">+</span>d<span class="op">+</span><span class="st">'"'</span> <span class="cf">for</span> d_id <span class="kw">in</span> dois <span class="cf">for</span> d <span class="kw">in</span> dois[d_id] ])</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool.run(tool_input<span class="op">=</span>{<span class="st">'id'</span>: <span class="st">'0'</span>, <span class="st">'name'</span>:<span class="st">'CryoET Portal (10000-10010)'</span>, <span class="st">'query'</span>:query, <span class="st">'full_text'</span>:<span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="extend-database-to-include-all-cryoet-papers" class="level4">
+<h4 class="anchored" data-anchor-id="extend-database-to-include-all-cryoet-papers">Extend Database to include all CryoET papers</h4>
+<div id="cell-19" class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cols_to_include <span class="op">=</span> [<span class="st">'ID'</span>, <span class="st">'CORPUS_NAME'</span>, <span class="st">'QUERY'</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(files(em_tech_queries).joinpath(<span class="st">'EM_Methods.tsv'</span>), sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>[c <span class="cf">for</span> c <span class="kw">in</span> df.columns <span class="cf">if</span> c <span class="kw">not</span> <span class="kw">in</span> cols_to_include])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-20" class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>qt <span class="op">=</span> QueryTranslator(df.sort_values(<span class="st">'ID'</span>), <span class="st">'ID'</span>, <span class="st">'QUERY'</span>, <span class="st">'CORPUS_NAME'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(corpus_ids, epmc_queries) <span class="op">=</span> qt.generate_queries(QueryType.epmc, sections<span class="op">=</span>[<span class="st">'TITLE_ABS'</span>, <span class="st">'METHODS'</span>])</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>corpus_names <span class="op">=</span> df[<span class="st">'CORPUS_NAME'</span>]</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (<span class="bu">id</span>, name, query) <span class="kw">in</span> <span class="bu">zip</span>(corpus_ids, corpus_names, epmc_queries):</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">id</span> <span class="op">!=</span> <span class="dv">2</span>:</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    addEMPCCollection_tool.run(tool_input<span class="op">=</span>{<span class="st">'id'</span>: <span class="bu">id</span>, <span class="st">'name'</span>:name, <span class="st">'query'</span>:query, <span class="st">'full_text'</span>:<span class="va">False</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="combine-sample-cryoet-empiar-collections-to-provide-a-test-set-of-papers." class="level4">
+<h4 class="anchored" data-anchor-id="combine-sample-cryoet-empiar-collections-to-provide-a-test-set-of-papers.">Combine + Sample CryoET + EMPIAR Collections to provide a test set of papers.</h4>
+<div id="cell-22" class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ldb.create_new_collection_from_intersection(<span class="st">'4'</span>, <span class="st">'EMPIAR CryoET Papers'</span>, <span class="st">'2'</span>, <span class="st">'3'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="adding-machine-learning" class="level4">
+<h4 class="anchored" data-anchor-id="adding-machine-learning">Adding Machine Learning</h4>
+<div id="cell-24" class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ml_query <span class="op">=</span> <span class="st">'''</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">("Cryoelectron Tomography" OR "Cryo Electron Tomography" OR "Cryo-Electron Tomography" OR</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">    "Cryo-ET" OR "CryoET" OR "Cryoelectron Tomography" OR "cryo electron tomography" or </span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "cryo-electron tomography" OR "cryo-et" OR cryoet ) AND </span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">("Machine Learning" OR "Artificial Intelligence" OR "Deep Learning" OR "Neural Networks")</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">'''</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, AddCollectionFromEPMCTool)][<span class="dv">0</span>]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>addEMPCCollection_tool.run(tool_input<span class="op">=</span>{<span class="st">'id'</span>: <span class="st">'6'</span>, </span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'name'</span>: <span class="st">'Machine Learning in CryoET'</span>, </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'query'</span>: ml_query, </span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">'full_text'</span>: <span class="va">False</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-25" class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>delCollection_tool <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, DeleteCollectionTool)][<span class="dv">0</span>]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>delCollection_tool.run(tool_input<span class="op">=</span>{<span class="st">'collection_id'</span>: <span class="st">'6'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="break-up-tiab-of-papers-into-sentences-classify-by-discourse" class="level4">
+<h4 class="anchored" data-anchor-id="break-up-tiab-of-papers-into-sentences-classify-by-discourse">Break up TIAB of papers into sentences + classify by discourse</h4>
+<p>NOTE - HUGGING FACE MODELS DO NOT WORK WELL ON THIS CORPUS. (NOT SURPRISINGLY - THEY WERE TRAINED ON MEDICAL PAPERS WHERE THE DIFFERENT SECTIONS OF THE PAPER WERE EXPLICITLY LABELED)</p>
+<p>USE LLMS TO DO THE EXTRACTION - GPT3.5?</p>
+<div id="cell-27" class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the metadata extraction tool</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractDiscourseMappingTool)][<span class="dv">0</span>]</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>t2.run(tool_input<span class="op">=</span>{<span class="st">'collection_id'</span>: <span class="st">'5'</span>, <span class="st">'run_label'</span>: <span class="st">'dev'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-28" class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>j <span class="op">=</span> <span class="st">'''{</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="st">"Background": "Eps15-homology domain containing proteins (EHDs) are eukaryotic, dynamin-related ATPases involved in cellular membrane trafficking. They oligomerize on membranes into filaments that induce membrane tubulation. While EHD crystal structures in open and closed conformations were previously reported, little structural information is available for the membrane-bound oligomeric form. Consequently, mechanistic insights into the membrane remodeling mechanism have remained sparse.",</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="st">"Objectives_Methods": "Here, by using cryo-electron tomography and subtomogram averaging, we determined structures of nucleotide-bound EHD4 filaments on membrane tubes of various diameters at an average resolution of 7.6 Å.",</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="st">"Results_Conclusions": "Assembly of EHD4 is mediated via interfaces in the G-domain and the helical domain. The oligomerized EHD4 structure resembles the closed conformation, where the tips of the helical domains protrude into the membrane. The variation in filament geometry and tube radius suggests a spontaneous filament curvature of approximately 1/70 nm&lt;sup&gt;-1&lt;/sup&gt;. Combining the available structural and functional data, we suggest a model for EHD-mediated membrane remodeling."</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="st">}'''</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>json.loads(j)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-29" class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the metadata extraction tool</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [<span class="st">'databricks_dbrx'</span>]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> m <span class="kw">in</span> models:</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    llm <span class="op">=</span> llms_lookup.get(m)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    cb <span class="op">=</span> AlhazenAgent(llm, llm, db_name<span class="op">=</span>db_name)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractDiscourseMappingTool)][<span class="dv">0</span>]</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    t2.run(tool_input<span class="op">=</span>{<span class="st">'collection_id'</span>: <span class="st">'2'</span>, <span class="st">'run_label'</span>: m, <span class="st">'repeat_run'</span>: <span class="va">False</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-30" class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>to_remove <span class="op">=</span> [<span class="st">"doi:10.1101/2024.03.04.583254"</span>, </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>             <span class="st">"doi:10.1101/2023.11.21.567712"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.3791/6515"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1101/2023.07.28.550950"</span>,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1093/micmic/ozad067.483"</span>,</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1007/978-1-0716-2639-9_20"</span>,</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1016/j.yjsbx.2022.100076"</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1016/j.xpro.2022.101658"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1016/j.cell.2022.06.034"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1093/plphys/kiab449"</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1073/pnas.2118020118"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.3791/62886"</span>,</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.20944/preprints202105.0098.v1"</span>,</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1016/bs.mcb.2020.12.009"</span>,</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1007/978-1-0716-0966-8_1"</span>,</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1007/978-1-0716-0966-8_2"</span>,</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.21769/bioprotoc.3768"</span>,</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1371/journal.ppat.1008883"</span>,</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1101/2020.05.19.104828"</span>,</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1073/pnas.1916331116"</span>,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1042/bst20170351_cor"</span>,</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1038/s41594-018-0043-7"</span>,</span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1007/978-1-4939-8585-2_4"</span>,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1007/s41048-017-0040-0"</span>,</span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1007/978-1-4939-6927-2_20"</span>,</span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1016/j.str.2015.03.008"</span>,</span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1007/978-1-62703-227-8_4"</span>,</span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1016/b978-0-12-397945-2.00017-2"</span>,</span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1016/j.jmb.2010.10.021"</span>,</span>
+<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1186/1757-5036-3-6"</span>,</span>
+<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1016/j.jmb.2008.03.014"</span>,</span>
+<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a><span class="st">"doi:10.1007/978-1-59745-294-6_20"</span>]</span>
+<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> to_remove:</span>
+<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a><span class="st">    SELECT DISTINCT n.id FROM langchain_pg_embedding as emb, "Note" as n</span></span>
+<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE emb.cmetadata-&gt;&gt;'n_type' = 'TiAbMappingNote__Discourse' AND</span></span>
+<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a><span class="st">        emb.cmetadata-&gt;&gt;'about_id' = '</span><span class="sc">{}</span><span class="st">' AND </span></span>
+<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a><span class="st">        emb.cmetadata-&gt;&gt;'discourse_type' = 'ResultsConclusions' AND </span></span>
+<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a><span class="st">        emb.cmetadata-&gt;&gt;'n_id' = n.id;"""</span>.<span class="bu">format</span>(d)</span>
+<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> row <span class="kw">in</span> ldb.session.execute(text(q)).<span class="bu">all</span>():</span>
+<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a>        ldb.delete_note(row[<span class="dv">0</span>], commit_this<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-31" class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>exp_q <span class="op">=</span> ldb.session.query(SKE) <span class="op">\</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.ScientificKnowledgeCollection_id <span class="op">==</span> <span class="bu">str</span>(<span class="st">'2'</span>)) <span class="op">\</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE.<span class="bu">id</span> <span class="op">==</span> SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE_HR.has_representation_id <span class="op">==</span> SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI.<span class="bu">type</span><span class="op">==</span><span class="st">'CitationRecord'</span>) <span class="op">\</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(or_(SKE.<span class="bu">type</span> <span class="op">==</span> <span class="st">'ScientificPrimaryResearchArticle'</span>, SKE.<span class="bu">type</span> <span class="op">==</span> <span class="st">'ScientificPrimaryResearchPreprint'</span>)) <span class="op">\</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>        .order_by(desc(SKE.publication_date))</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> tqdm(exp_q.<span class="bu">all</span>()):</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> ldb.session.query(N) <span class="op">\</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> e.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span><span class="st">'TiAbMappingNote__Discourse'</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> q.<span class="bu">all</span>():</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>        dmap <span class="op">=</span> json.loads(n.content) </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">'Objectives_Methods'</span> <span class="kw">in</span> dmap.keys():</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">'beep'</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>            <span class="co">#new_dmap = {'Background': dmap.get('Background'), 'ObjectivesMethods': dmap.get('Objectives_Methods'), 'ResultsConclusions': dmap.get('Results_Conclusions')}</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>            <span class="co">#n.content = json.dumps(new_dmap, indent=4)</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>            <span class="co">#ldb.session.flush()</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co">#ldb.session.commit()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-32" class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ldb.session.rollback()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>exp_q <span class="op">=</span> ldb.session.query(SKE) <span class="op">\</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.ScientificKnowledgeCollection_id <span class="op">==</span> <span class="bu">str</span>(<span class="st">'2'</span>)) <span class="op">\</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE.<span class="bu">id</span> <span class="op">==</span> SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE_HR.has_representation_id <span class="op">==</span> SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI.<span class="bu">type</span><span class="op">==</span><span class="st">'CitationRecord'</span>) <span class="op">\</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(or_(SKE.<span class="bu">type</span> <span class="op">==</span> <span class="st">'ScientificPrimaryResearchArticle'</span>, SKE.<span class="bu">type</span> <span class="op">==</span> <span class="st">'ScientificPrimaryResearchPreprint'</span>)) <span class="op">\</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>        .order_by(desc(SKE.publication_date))</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>texts <span class="op">=</span> []</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>metadatas <span class="op">=</span> []</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> tqdm(exp_q.<span class="bu">all</span>()):</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> ldb.session.query(N) <span class="op">\</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> e.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span><span class="st">'TiAbMappingNote__Discourse'</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> q.first()</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>    dmap <span class="op">=</span> json.loads(n.content)</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''Runs through the list of expressions, generates embeddings, and stores them in the database'''</span></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> dtype <span class="kw">in</span> [<span class="st">'Background'</span>, <span class="st">'ObjectivesMethods'</span>, <span class="st">'ResultsConclusions'</span>]:</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>        t <span class="op">=</span> dmap.get(dtype)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> t <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>        texts.append(t)</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>        metadatas.append({<span class="st">'about_id'</span>: e.<span class="bu">id</span>, <span class="op">\</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'about_type'</span>: <span class="st">'ScientificKnowledgeExpression'</span>, <span class="op">\</span></span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'n_id'</span>: n.<span class="bu">id</span>, <span class="op">\</span></span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'n_type'</span>: <span class="st">'TiAbMappingNote__Discourse'</span>, <span class="op">\</span></span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>                        <span class="st">'discourse_type'</span>: dtype})</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>docs <span class="op">=</span> []</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t,m <span class="kw">in</span> <span class="bu">zip</span>(texts, metadatas):</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>    docs.append(Document(page_content<span class="op">=</span>t, metadata<span class="op">=</span>m))</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> PGVector.from_documents(</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>    embedding<span class="op">=</span>ldb.embed_model,</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a>    documents<span class="op">=</span>docs,</span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>    collection_name<span class="op">=</span><span class="st">"Note"</span></span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-33" class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model_path <span class="op">=</span> <span class="st">'/Users/gully.burns/Documents/2024H1/models/discourse_tagger'</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>tokenizer <span class="op">=</span> AutoTokenizer.from_pretrained(<span class="st">"dmis-lab/biobert-v1.1"</span>, </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                          truncation<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                                          max_length<span class="op">=</span><span class="dv">512</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [<span class="st">'BACKGROUND'</span>, <span class="st">'OBJECTIVE'</span>, <span class="st">'METHODS'</span>, <span class="st">'RESULTS'</span>, <span class="st">'CONCLUSIONS'</span>]</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>lookup <span class="op">=</span> {<span class="st">'LABEL_</span><span class="sc">%d</span><span class="st">'</span><span class="op">%</span>(i):l <span class="cf">for</span> i, l <span class="kw">in</span> <span class="bu">enumerate</span>(labels)}</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> AutoModel.from_pretrained(model_path)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>classifier <span class="op">=</span> pipeline(<span class="st">"text-classification"</span>, </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>                      model <span class="op">=</span> model_path, </span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>                      tokenizer<span class="op">=</span>tokenizer, </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>                      truncation<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>                      batch_size<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>                      device<span class="op">=</span><span class="st">'mps'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-34" class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span> <span class="op">=</span> ldb</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> <span class="st">'2'</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>q1 <span class="op">=</span> <span class="va">self</span>.session.query(SKE, SKI) <span class="op">\</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.ScientificKnowledgeCollection_id <span class="op">==</span> collection_id) <span class="op">\</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE.<span class="bu">id</span> <span class="op">==</span> SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE_HR.has_representation_id <span class="op">==</span> SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI.<span class="bu">id</span> <span class="op">==</span> SKI_HP.ScientificKnowledgeItem_id) <span class="op">\</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI_HP.has_part_id <span class="op">==</span> SKF.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'CitationRecord'</span>) <span class="op">\</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(or_(SKE.<span class="bu">type</span> <span class="op">==</span> <span class="st">'ScientificPrimaryResearchArticle'</span>, SKE.<span class="bu">type</span> <span class="op">==</span> <span class="st">'ScientificPrimaryResearchPreprint'</span>)) </span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ske, ski <span class="kw">in</span> tqdm(q1.<span class="bu">all</span>()):</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    om <span class="op">=</span> <span class="st">''</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    rc <span class="op">=</span> <span class="st">''</span>  </span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    fragments <span class="op">=</span> []</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> f <span class="kw">in</span> ski.has_part:</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> f.<span class="bu">type</span> <span class="kw">in</span> [<span class="st">'title'</span>, <span class="st">'abstract'</span>]:</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>        fragments.append(f)</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># USE AN LLM HERE INSTEAD OF A DEEP LEARNING CLASSIFER</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> skf <span class="kw">in</span> <span class="bu">sorted</span>(fragments, key<span class="op">=</span><span class="kw">lambda</span> f: f.offset):</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> s <span class="kw">in</span> <span class="va">self</span>.sent_detector.tokenize(skf.content):</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>            m <span class="op">=</span> classifier(skf.content)</span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>            l <span class="op">=</span> lookup.get(m[<span class="dv">0</span>].get(<span class="st">'label'</span>))</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> l <span class="op">==</span> <span class="st">'BACKGROUND'</span>:</span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">len</span>(b) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>                    b <span class="op">+=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>                b <span class="op">+=</span> s</span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>            <span class="cf">elif</span> l <span class="op">==</span> <span class="st">'OBJECTIVE'</span> <span class="kw">or</span> l <span class="op">==</span> <span class="st">'METHODS'</span>:</span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">len</span>(om) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>                    om <span class="op">+=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>                om <span class="op">+=</span> s</span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>            <span class="cf">else</span>: </span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>                <span class="cf">if</span> <span class="bu">len</span>(rc) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a>                    rc <span class="op">+=</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span></span>
+<span id="cb22-42"><a href="#cb22-42" aria-hidden="true" tabindex="-1"></a>                rc <span class="op">+=</span> s</span>
+<span id="cb22-43"><a href="#cb22-43" aria-hidden="true" tabindex="-1"></a>    skf_stem <span class="op">=</span> ske.<span class="bu">id</span><span class="op">+</span><span class="st">'.'</span><span class="op">+</span>ski.<span class="bu">type</span><span class="op">+</span><span class="st">'.'</span></span>
+<span id="cb22-44"><a href="#cb22-44" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(b) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb22-45"><a href="#cb22-45" aria-hidden="true" tabindex="-1"></a>        f_b <span class="op">=</span> ScientificKnowledgeFragment(<span class="bu">id</span><span class="op">=</span><span class="bu">str</span>(uuid.uuid4().<span class="bu">hex</span>)[:<span class="dv">10</span>], </span>
+<span id="cb22-46"><a href="#cb22-46" aria-hidden="true" tabindex="-1"></a>                <span class="bu">type</span><span class="op">=</span><span class="st">'background_sentences'</span>, offset<span class="op">=-</span><span class="dv">1</span>, length<span class="op">=</span><span class="bu">len</span>(b),</span>
+<span id="cb22-47"><a href="#cb22-47" aria-hidden="true" tabindex="-1"></a>                name<span class="op">=</span>skf_stem<span class="op">+</span><span class="st">'background'</span>, content<span class="op">=</span>b)</span>
+<span id="cb22-48"><a href="#cb22-48" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.session.add(f_b)</span>
+<span id="cb22-49"><a href="#cb22-49" aria-hidden="true" tabindex="-1"></a>        ski.has_part.append(f_b)</span>
+<span id="cb22-50"><a href="#cb22-50" aria-hidden="true" tabindex="-1"></a>        f_b.part_of <span class="op">=</span> ski.<span class="bu">id</span>    </span>
+<span id="cb22-51"><a href="#cb22-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(om) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb22-52"><a href="#cb22-52" aria-hidden="true" tabindex="-1"></a>        f_om <span class="op">=</span> ScientificKnowledgeFragment(<span class="bu">id</span><span class="op">=</span><span class="bu">str</span>(uuid.uuid4().<span class="bu">hex</span>)[:<span class="dv">10</span>], </span>
+<span id="cb22-53"><a href="#cb22-53" aria-hidden="true" tabindex="-1"></a>                <span class="bu">type</span><span class="op">=</span><span class="st">'objective_methods_sentences'</span>, offset<span class="op">=-</span><span class="dv">1</span>, length<span class="op">=</span><span class="bu">len</span>(om),</span>
+<span id="cb22-54"><a href="#cb22-54" aria-hidden="true" tabindex="-1"></a>                name<span class="op">=</span>skf_stem<span class="op">+</span><span class="st">'objective_methods'</span>, content<span class="op">=</span>om)</span>
+<span id="cb22-55"><a href="#cb22-55" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.session.add(f_om)</span>
+<span id="cb22-56"><a href="#cb22-56" aria-hidden="true" tabindex="-1"></a>        ski.has_part.append(f_om)</span>
+<span id="cb22-57"><a href="#cb22-57" aria-hidden="true" tabindex="-1"></a>        f_om.part_of <span class="op">=</span> ski.<span class="bu">id</span></span>
+<span id="cb22-58"><a href="#cb22-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(rc) <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb22-59"><a href="#cb22-59" aria-hidden="true" tabindex="-1"></a>        f_rc <span class="op">=</span> ScientificKnowledgeFragment(<span class="bu">id</span><span class="op">=</span><span class="bu">str</span>(uuid.uuid4().<span class="bu">hex</span>)[:<span class="dv">10</span>], </span>
+<span id="cb22-60"><a href="#cb22-60" aria-hidden="true" tabindex="-1"></a>                <span class="bu">type</span><span class="op">=</span><span class="st">'results_conclusions_sentences'</span>, offset<span class="op">=-</span><span class="dv">1</span>, length<span class="op">=</span><span class="bu">len</span>(rc),</span>
+<span id="cb22-61"><a href="#cb22-61" aria-hidden="true" tabindex="-1"></a>                name<span class="op">=</span>skf_stem<span class="op">+</span><span class="st">'results_conclusions'</span>, content<span class="op">=</span>rc)</span>
+<span id="cb22-62"><a href="#cb22-62" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.session.add(f_rc)</span>
+<span id="cb22-63"><a href="#cb22-63" aria-hidden="true" tabindex="-1"></a>        ski.has_part.append(f_rc)</span>
+<span id="cb22-64"><a href="#cb22-64" aria-hidden="true" tabindex="-1"></a>        f_rc.part_of <span class="op">=</span> ski.<span class="bu">id</span></span>
+<span id="cb22-65"><a href="#cb22-65" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.session.flush()</span>
+<span id="cb22-66"><a href="#cb22-66" aria-hidden="true" tabindex="-1"></a><span class="va">self</span>.session.commit()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-35" class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span> <span class="op">=</span> ldb</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> <span class="st">'2'</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#self.session.rollback()</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>q2 <span class="op">=</span> <span class="va">self</span>.session.query(SKF) <span class="op">\</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.ScientificKnowledgeCollection_id <span class="op">==</span> collection_id) <span class="op">\</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE.<span class="bu">id</span> <span class="op">==</span> SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE_HR.has_representation_id <span class="op">==</span> SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI.<span class="bu">id</span> <span class="op">==</span> SKI_HP.ScientificKnowledgeItem_id) <span class="op">\</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI_HP.has_part_id <span class="op">==</span> SKF.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'CitationRecord'</span>) <span class="op">\</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(or_(SKF.<span class="bu">type</span> <span class="op">==</span> <span class="st">'results_conclusions_sentences'</span>, <span class="op">\</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>                SKF.<span class="bu">type</span> <span class="op">==</span> <span class="st">'objective_methods_sentences'</span>, <span class="op">\</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>                SKF.<span class="bu">type</span> <span class="op">==</span> <span class="st">'background_sentences'</span>))</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> skf <span class="kw">in</span> tqdm(q2.<span class="bu">all</span>()):</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.delete_fragment(skf.<span class="bu">id</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-36" class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="va">self</span> <span class="op">=</span> ldb</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>collection_id <span class="op">=</span> <span class="st">'2'</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co">#self.session.rollback()</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>q2 <span class="op">=</span> <span class="va">self</span>.session.query(SKE, SKF) <span class="op">\</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.ScientificKnowledgeCollection_id <span class="op">==</span> collection_id) <span class="op">\</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE.<span class="bu">id</span> <span class="op">==</span> SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE_HR.has_representation_id <span class="op">==</span> SKI.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI.<span class="bu">id</span> <span class="op">==</span> SKI_HP.ScientificKnowledgeItem_id) <span class="op">\</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI_HP.has_part_id <span class="op">==</span> SKF.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKI.<span class="bu">type</span> <span class="op">==</span> <span class="st">'CitationRecord'</span>) <span class="op">\</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKF.<span class="bu">type</span> <span class="op">==</span> <span class="st">'objective_methods_sentences'</span>) <span class="op">\</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>        .order_by(desc(SKE.publication_date)) <span class="op">\</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>        .order_by(SKF.name)</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ske, skf <span class="kw">in</span> tqdm(q2.<span class="bu">all</span>()):</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(skf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="get-full-text-copies-of-all-the-papers-about-cryoet" class="level4">
+<h4 class="anchored" data-anchor-id="get-full-text-copies-of-all-the-papers-about-cryoet">Get full text copies of all the papers about CryoET</h4>
+<div id="cell-38" class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cb.agent_executor.invoke({<span class="st">'input'</span>:<span class="st">'Get full text copies of all papers in the collection with id="2".'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-39" class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ldb.create_new_collection_from_sample(<span class="st">'5'</span>, <span class="st">'EMPIAR CryoET Papers Tests'</span>, <span class="st">'4'</span>, <span class="dv">20</span>, [<span class="st">'ScientificPrimaryResearchArticle'</span>, <span class="st">'ScientificPrimaryResearchPreprint'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="analyze-collections" class="level2">
+<h2 class="anchored" data-anchor-id="analyze-collections">Analyze Collections</h2>
+<div id="cell-41" class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKC.<span class="bu">id</span>, SKC.name, SKE.<span class="bu">id</span>, SKI.<span class="bu">type</span>) <span class="op">\</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span>SKE_HR.ScientificKnowledgeExpression_id) <span class="op">\</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKE_HR.has_representation_id<span class="op">==</span>SKI.<span class="bu">id</span>) </span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(q.<span class="bu">all</span>(), columns<span class="op">=</span>[<span class="st">'id'</span>, <span class="st">'collection name'</span>, <span class="st">'doi'</span>, <span class="st">'item type'</span>])</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>df.pivot_table(index<span class="op">=</span>[<span class="st">'id'</span>, <span class="st">'collection name'</span>], columns<span class="op">=</span><span class="st">'item type'</span>, values<span class="op">=</span><span class="st">'doi'</span>, aggfunc<span class="op">=</span><span class="kw">lambda</span> x: <span class="bu">len</span>(x.unique())).fillna(<span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="survey-run-classifications-over-papers" class="level3">
+<h3 class="anchored" data-anchor-id="survey-run-classifications-over-papers">Survey + Run Classifications over Papers</h3>
+<div id="cell-43" class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># USE WITH </span><span class="al">CAUTION</span><span class="co"> - this will delete all extracted metadata notes in the database</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># clear all notes across papers listed in `dois` list</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(N, SKE) <span class="op">\</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'TiAbClassificationNote__cryoet_study_types'</span>) <span class="op">\</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> []        </span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(q.<span class="bu">all</span>()))</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n, ske <span class="kw">in</span> q.<span class="bu">all</span>():</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>    ldb.delete_note(n.<span class="bu">id</span>)    </span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(q.<span class="bu">all</span>()))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-44" class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractClassifier_OneDocAtATime_Tool)][<span class="dv">0</span>]</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>t.run({<span class="st">'collection_id'</span>: <span class="st">'5'</span>, <span class="st">'classification_type'</span>:<span class="st">'cryoet_study_types'</span>, <span class="st">'repeat_run'</span>:<span class="va">True</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-45" class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractClassifier_OneDocAtATime_Tool)][<span class="dv">0</span>]</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>t.run({<span class="st">'collection_id'</span>: <span class="st">'2'</span>, <span class="st">'classification_type'</span>:<span class="st">'cryoet_study_types'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-46" class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(N, SKE) <span class="op">\</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'TiAbClassificationNote__cryoet_study_types'</span>) <span class="op">\</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>output <span class="op">=</span> []        </span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n, ske <span class="kw">in</span> q.<span class="bu">all</span>():</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>        tup <span class="op">=</span> json.loads(n.content)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'doi'</span>] <span class="op">=</span> <span class="st">'http://doi.org/'</span><span class="op">+</span>re.sub(<span class="st">'doi:'</span>, <span class="st">''</span>, ske.<span class="bu">id</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'year'</span>] <span class="op">=</span> ske.publication_date.year</span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'month'</span>] <span class="op">=</span> ske.publication_date.month</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>        tup[<span class="st">'ref'</span>] <span class="op">=</span> ske.content</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>        output.append(tup)</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame(output).sort_values([<span class="st">'year'</span>, <span class="st">'month'</span>], ascending<span class="op">=</span>[<span class="va">False</span>, <span class="va">False</span>])</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>df.to_csv(loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/cryoet_study_types.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="survey-run-extractions-over-papers" class="level3">
+<h3 class="anchored" data-anchor-id="survey-run-extractions-over-papers">Survey + Run Extractions over Papers</h3>
+<div id="cell-48" class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> cb.tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, TitleAbstractExtraction_OneDocAtATime_Tool)][<span class="dv">0</span>]</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>t.run({<span class="st">'collection_id'</span>: <span class="st">'5'</span>, <span class="st">'extraction_type'</span>:<span class="st">'cryoet'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="tests-checks" class="level2">
+<h2 class="anchored" data-anchor-id="tests-checks">Tests + Checks</h2>
+<section id="agent-tool-selection-execution-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="agent-tool-selection-execution-interpretation">Agent tool selection + execution + interpretation</h3>
+<div id="cell-51" class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>cb.agent_executor.invoke({<span class="st">'input'</span>:<span class="st">'Hi who are you and what can you do?'</span>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="run-metadata-extraction-chain-over-listed-papers" class="level2">
+<h2 class="anchored" data-anchor-id="run-metadata-extraction-chain-over-listed-papers">Run MetaData Extraction Chain over listed papers</h2>
+<p>Here, we run various versions of the metadata extraction tool to examine performance over the cryoet dataset.</p>
+<div id="cell-53" class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> ldb.session.query(SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span>SKC_HM.ScientificKnowledgeCollection_id) <span class="op">\</span></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC_HM.has_members_id<span class="op">==</span>SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(SKC.<span class="bu">id</span><span class="op">==</span><span class="st">'2'</span>)  </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>dois <span class="op">=</span> [e.<span class="bu">id</span> <span class="cf">for</span> e <span class="kw">in</span> q.<span class="bu">all</span>()]</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>dois</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-54" class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> test_tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, MetadataExtraction_MethodsSectionOnly_Tool)][<span class="dv">0</span>]</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>metadata_dir <span class="op">=</span> <span class="st">'/Users/gully.burns/alhazen/em_tech/empiar/'</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>t2.compile_answers(<span class="st">'cryoet'</span>, metadata_dir)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>t2.write_answers_as_notes(<span class="st">'cryoet'</span>, metadata_dir)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="co">#sorted(list(set([doi for q in t2.examples for doi in t2.examples[q]])))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-55" class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the metadata extraction tool</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> test_tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, MetadataExtraction_MethodsSectionOnly_Tool)][<span class="dv">0</span>]</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Hack to get the path to the metadata directory as a string</span></span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="co">#metadata_dir = str(files(cryoet_portal_metadata).joinpath('temp'))[0:-4]</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>metadata_dir <span class="op">=</span> <span class="st">'/Users/gully.burns/alhazen/em_tech/empiar/'</span></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Compile the answers from the metadata directory</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>t2.compile_answers(<span class="st">'cryoet'</span>, metadata_dir)</span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe to store previously extracted metadata</span></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a><span class="co">#for d in [d for d_id in dois_to_include for d in dois_to_include[d_id]]:</span></span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [d <span class="cf">for</span> d <span class="kw">in</span> dois]:</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a>    item_types <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test'</span>)</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.concat([df, pd.DataFrame(l)]) </span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>     </span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterate over papers to run the metadata extraction tool</span></span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a><span class="co">#for d in [d for d_id in dois_to_include for d in dois_to_include[d_id]]:</span></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [d <span class="cf">for</span> d <span class="kw">in</span> dois]:</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    item_types <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Skip if the doi is already in the database</span></span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(df)<span class="op">&gt;</span><span class="dv">0</span> <span class="kw">and</span> d <span class="kw">in</span> df.doi.unique():</span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Run the metadata extraction tool on the doi</span></span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>    t2.run(tool_input<span class="op">=</span>{<span class="st">'paper_id'</span>: d, <span class="st">'extraction_type'</span>: <span class="st">'cryoet'</span>, <span class="st">'run_label'</span>: <span class="st">'test'</span>})</span>
+<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add the results to the dataframe    </span></span>
+<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>    l2 <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test'</span>)</span>
+<span id="cb36-33"><a href="#cb36-33" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.concat([df, pd.DataFrame(l2)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-56" class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe to store previously extracted metadata</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="co">#for d in [d for d_id in dois_to_include for d in dois_to_include[d_id]]:</span></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> test_tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, MetadataExtraction_MethodsSectionOnly_Tool)][<span class="dv">0</span>]</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>df_final <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [d <span class="cf">for</span> d <span class="kw">in</span> dois]:</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    item_types <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test'</span>)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    df_final <span class="op">=</span> pd.concat([df_final, pd.DataFrame(l)]) </span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>df_final</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-57" class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the metadata extraction tool</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> test_tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, MetadataExtraction_MethodsSectionOnly_Tool)][<span class="dv">0</span>]</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co">#for d in [d for d_id in dois_to_include for d in dois_to_include[d_id]]:</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> d <span class="kw">in</span> [d <span class="cf">for</span> d <span class="kw">in</span> dois]:</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    item_types <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>    pred1 <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test'</span>)</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    pred2 <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'test_dbrx'</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    gold <span class="op">=</span> t2.read_metadata_extraction_notes(d, <span class="st">'cryoet'</span>, <span class="st">'gold'</span>) </span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> pred1 <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> pred2 <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> gold <span class="kw">is</span> <span class="va">None</span> <span class="kw">or</span> <span class="op">\</span></span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>            <span class="bu">len</span>(pred1)<span class="op">==</span><span class="dv">0</span> <span class="kw">or</span> <span class="bu">len</span>(pred2)<span class="op">==</span><span class="dv">0</span> <span class="kw">or</span> <span class="bu">len</span>(gold)<span class="op">!=</span><span class="dv">1</span>:</span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> k <span class="kw">in</span> gold[<span class="dv">0</span>]:</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a>        g_case <span class="op">=</span> gold[<span class="dv">0</span>][k]</span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> g_case<span class="op">==</span><span class="st">''</span> <span class="kw">or</span> g_case <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span>    </span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> j, p_case <span class="kw">in</span> <span class="bu">enumerate</span>(pred1):</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a>            sim <span class="op">=</span> fuzz.ratio(<span class="bu">str</span>(g_case), <span class="bu">str</span>(p_case.get(k,<span class="st">''</span>))) <span class="op">/</span> <span class="fl">100.0</span></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(k, <span class="bu">str</span>(g_case), <span class="bu">str</span>(p_case.get(k,<span class="st">''</span>)), sim)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-58" class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the metadata extraction tool</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> [t <span class="cf">for</span> t <span class="kw">in</span> test_tk.get_tools() <span class="cf">if</span> <span class="bu">isinstance</span>(t, MetadataExtraction_MethodsSectionOnly_Tool)][<span class="dv">0</span>]</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> t2.report_metadata_extraction_for_collection(<span class="st">'5'</span>, <span class="st">'cryoet'</span>, <span class="st">'test'</span>).set_index(<span class="st">'doi'</span>)</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>df.to_csv(loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/reports/cryoet_metadata_gpt4.tsv'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-59" class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>ldb.create_zip_archive_of_full_text_files(<span class="st">'5'</span>, loc<span class="op">+</span><span class="st">'/'</span><span class="op">+</span>db_name<span class="op">+</span><span class="st">'/full_text_files.zip'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-60" class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>q3 <span class="op">=</span> ldb.session.query(SKE.<span class="bu">id</span>, N.name, N.provenance, N.content) <span class="op">\</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">id</span> <span class="op">==</span> NIA.Note_id) <span class="op">\</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(NIA.is_about_id <span class="op">==</span> SKE.<span class="bu">id</span>) <span class="op">\</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>        .<span class="bu">filter</span>(N.<span class="bu">type</span> <span class="op">==</span> <span class="st">'MetadataExtractionNote'</span>) </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> []</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> q3.<span class="bu">all</span>():</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>    paper <span class="op">=</span> row[<span class="dv">0</span>]</span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    name <span class="op">=</span> row[<span class="dv">1</span>]</span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a><span class="co">#    provenance = json.loads(row[2])</span></span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> json.loads(row[<span class="dv">3</span>])</span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>    kv <span class="op">=</span> {k:result[k] <span class="cf">for</span> k <span class="kw">in</span> result}</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>    kv[<span class="st">'DOI'</span>] <span class="op">=</span> paper</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>    kv[<span class="st">'run'</span>] <span class="op">=</span> name</span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>    l.append(kv)</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a><span class="co"># create a dataframe from the list of dictionaries with DOI as the index column</span></span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="bu">len</span>(l)<span class="op">&gt;</span><span class="dv">0</span>:</span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(l).set_index([<span class="st">'DOI'</span>, <span class="st">'run'</span>])</span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>: </span>
+<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-61" class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># USE WITH </span><span class="al">CAUTION</span><span class="co"> - this will delete all extracted metadata notes in the database</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="co"># clear all notes across papers listed in `dois` list</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> row <span class="kw">in</span> q3.<span class="bu">all</span>():</span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    d_id <span class="op">=</span> row[<span class="dv">0</span>]</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> ldb.session.query(SKE).<span class="bu">filter</span>(SKE.<span class="bu">id</span><span class="op">==</span>d_id).first()</span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    notes_to_delete <span class="op">=</span> []</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> ldb.read_notes_about_x(e):</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a>        notes_to_delete.append(n.<span class="bu">id</span>)</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> n <span class="kw">in</span> notes_to_delete:</span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>        ldb.delete_note(n)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="protocol-modeling-extraction" class="level2">
+<h2 class="anchored" data-anchor-id="protocol-modeling-extraction">Protocol Modeling + Extraction</h2>
+<div id="cell-63" class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>ldb <span class="op">=</span> Ceifns_LiteratureDb(loc<span class="op">=</span>loc, name<span class="op">=</span>db_name)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>slm <span class="op">=</span> ChatOllama(model<span class="op">=</span><span class="st">'stablelm-zephyr'</span>) </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>llm <span class="op">=</span> ChatOllama(model<span class="op">=</span><span class="st">'mixtral:instruct'</span>) </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>llm2 <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">'gpt-4-1106-preview'</span>) </span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>llm3 <span class="op">=</span> ChatOpenAI(model<span class="op">=</span><span class="st">'gpt-3.5-turbo'</span>) </span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> (<span class="st">"This tool attempts to draw a protocol design from the description of a scientific paper."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-64" class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>t1 <span class="op">=</span> ProcotolEntitiesExtractionTool(db<span class="op">=</span>ldb, llm<span class="op">=</span>llm3, description<span class="op">=</span>d)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>entities <span class="op">=</span> t1.run(tool_input<span class="op">=</span>{<span class="st">'paper_id'</span>: <span class="st">'doi:10.1101/2022.04.12.488077'</span>})</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>entities</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="cell-65" class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>t2 <span class="op">=</span> ProcotolProcessesExtractionTool(db<span class="op">=</span>ldb, llm<span class="op">=</span>llm3, description<span class="op">=</span>d)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>processes <span class="op">=</span> t2.run(tool_input<span class="op">=</span>{<span class="st">'paper_id'</span>: <span class="st">'doi:10.1101/2022.04.12.488077'</span>})</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>processes.get(<span class="st">'data'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/chanzuckerberg\.github\.io\/alhazen\/");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/chanzuckerberg/alhazen/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

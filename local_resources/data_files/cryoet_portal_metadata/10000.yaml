@@ -1,0 +1,463 @@
+dataset:
+  dataset_identifier: 10000
+  dataset_title: S. pombe cells with defocus
+  dataset_description: 'Defocus cryo-electron tomography of S. pombe cryo-FIB lamellae with comprehensive annotations of structures and macromolecules'
+  authors: &dataset_authors
+    - name: Irene de Teresa
+      corresponding_author_status: false
+      primary_author_status: true
+    - name: Sara Goetz
+      ORCID: 0000-0002-9903-3667
+      corresponding_author_status: false
+      primary_author_status: true
+    - name: Julia Mahamid
+      ORCID: 0000-0001-6968-041X
+      corresponding_author_status: true
+      primary_author_status: false
+    - name: Judith Zaugg
+      ORCID: 0000-0001-8324-4040
+      corresponding_author_status: true
+      primary_author_status: false
+  organism:
+    name: Schizosaccharomyces pombe
+    taxonomy_id: 4896
+  funding:
+    - funding_agency_name: European Research Council (ERC)
+      grant_id: '760067'
+  sample_preparation: 'buffer_ph: 7.0, vitrification_cryogen_name: ETHANE, instance_type: subtomogram_averaging_preparation'
+  grid_preparation: 'model: Quantifoil R2/1, material: COPPER, mesh: 200, support_film_film_type_id: 1, support_film_film_material: CARBON, support_film_film_topology: HOLEY, support_film_instance_type: support_film, pretreatment_type_: GLOW DISCHARGE'
+  sample_type: organism
+  dates: &repo-dates
+    deposition_date: 2023-04-01
+    release_date: 2023-06-01
+    last_modified_date: 2023-06-01
+  cell_strain:
+    name: K972 Sp h-wild type
+    id: https://www.ncbi.nlm.nih.gov/Taxonomy/Browser/wwwtax.cgi?id=284812
+  cross_references:
+    dataset_publications: doi:10.1101/2022.04.12.488077
+    related_database_entries: EMPIAR-10988, EMD-14412, EMD-14413, EMD-14415, EMD-14417, EMD-14418, EMD-14419, EMD-14420
+  cell_component:
+    name: ~
+    id: ~
+  key_photos:
+    snapshot: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/10988-l.gif
+    thumbnail: https://www.ebi.ac.uk/pdbe/emdb-empiar/entryIcons/10988.gif
+annotations:
+  - metadata:
+      annotation_object:
+        id: GO_0005835
+        name: Fatty Acid Synthase
+      dates: *repo-dates
+      annotation_method: Cumulative template-matching trained 2D CNN predictions + visual filtering + distance constraints + manual addition
+      annotation_publications: &annotation_publication "EMPIAR-10988, EMD-14412, EMD-14413, EMD-14415, EMD-14417, EMD-14418, EMD-14419, EMD-14420, 10.1101/2022.04.12.488077"
+      ground_truth_status: true
+      authors: &annotation_authors
+        - name: Sara Goetz
+          ORCID: 0000-0002-9903-3667
+          primary_annotator_status: true
+          corresponding_author_status: false
+        - name: Irene de Teresa
+          primary_annotator_status: false
+          corresponding_author_status: false
+        - name: Julia Mahamid
+          ORCID: 0000-0001-6968-041X
+          primary_annotator_status: false
+          corresponding_author_status: false
+        - name: Judith Zaugg
+          ORCID: 0000-0001-8324-4040
+          primary_annotator_status: false
+          corresponding_author_status: false
+      annotation_software: pyTOM + Keras
+      version: "1.0"
+    sources:
+      - columns: zyx
+        file_format: csv
+        glob_string: particle_lists/{run_name}_fas.csv
+        shape: Point
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: 'labels/180426_{mapped_segmask_name}_fas.mrc'
+        mask_label: 1
+  - metadata:
+      annotation_object:
+        id: GO_0022626
+        name: 'cytosolic ribosome'
+      dates: *repo-dates
+      annotation_method: Cumulative template-matching trained 2D CNN predictions + visual filtering + distance constraints + manual addition
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: pyTOM + Keras
+      version: "1.0"
+    sources:
+      - shape: Point
+        columns: zyx
+        file_format: csv
+        glob_string: particle_lists/{run_name}_cyto_ribosomes.csv
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: 'labels/180426_{mapped_segmask_name}_cyto_ribosomes.mrc'
+        mask_label: 1
+  # Label 1 - cytoplasm
+  - metadata:
+      annotation_object:
+        id: GO_0005737
+        name: cytoplasm
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: &organelle_segmask_annotation_method spectrum equalization filter + 2D CNN prediction + manual correction
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: &organelle_segmask_annotation_software Keras + AMIRA
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: &segmask1_glob 'labels/180426_{mapped_segmask_name}.labels.mrc'
+        mask_label: 1
+  # Label 2 - Mitochondria
+  - metadata:
+      annotation_object:
+        id: GO_0005739
+        name: mitochondrion
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 2
+  # Label 3 - Vesicle
+  - metadata:
+      annotation_object:
+        id: GO_0031982
+        name: vesicle
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 3
+  # Label 4 - Microtubule
+  - metadata:
+      annotation_object:
+        id: GO_0005874
+        name: microtubule
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 4
+  # Label 5 - ER
+  - metadata:
+      annotation_object:
+        id: GO_0005783
+        name: 'endoplasmic reticulum'
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 5
+  # Label 6 - Nuclear envelope
+  - metadata:
+      annotation_object:
+        id: GO_0005635
+        name: 'nuclear envelope'
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 6
+  # Label 7 - Nucleus
+  - metadata:
+      annotation_object:
+        id: GO_0005634
+        name: nucleus
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 7
+  # Label 8 - Vacuole
+  - metadata:
+      annotation_object:
+        id: GO_0005773
+        name: vacuole
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 8
+  # Label 9 - Lipid droplet
+  - metadata:
+      annotation_object:
+        id: GO_0005811
+        name: lipid droplet
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 9
+  # Label 10 - Golgi apparatus
+  - metadata:
+      annotation_object:
+        id: GO_0005794
+        name: 'Golgi apparatus'
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 10
+  # Label 11 - Vesicular body
+  - metadata:
+      annotation_object:
+        id: GO_0005771
+        name: 'multivesicular body'
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 11
+  # Label 13 - Non-specified compartment
+  - metadata:
+      annotation_object:
+        id: GO_0031974
+        name: 'membrane-enclosed lumen'
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: *organelle_segmask_annotation_method
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: *organelle_segmask_annotation_software
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: *segmask1_glob
+        mask_label: 13
+  # Membranes
+  - metadata:
+      annotation_object:
+        id: GO_0016020
+        name: 'membrane'
+        description: ~
+        state: ~
+      dates: *repo-dates
+      annotation_method: 3D CNN prediction + manual correction
+      annotation_publications: *annotation_publication
+      ground_truth_status: true
+      authors: *annotation_authors
+      annotation_software: Keras + AMIRA
+      version: '1.0'
+      confidence:
+        precision: ~
+        recall: ~
+        ground_truth_used: ~
+    sources:
+      - shape: SemanticSegmentationMask
+        file_format: mrc
+        glob_string: 'labels/{run_name}_membranes.mrc'
+        mask_label: 1
+runs: {}
+tiltseries:
+  scales: []
+  microscope:
+    manufacturer: TFS
+    model: Krios
+  spherical_aberration_constant: 2.7
+  microscope_optical_setup:
+    energy_filter: GIF Quantum LS
+    phase_plate: None
+    image_corrector: None
+  camera:
+    manufacturer: Gatan
+    model: K2 Summit
+  acceleration_voltage: 300000
+  tilting_scheme: Dose symmetric from 0.0 degrees
+  tilt_axis: 84.7
+  tilt_step: 2
+  tilt_range:
+    min: -40
+    max: 58
+  total_flux: 122
+  data_acquisition_software: SerialEM
+  binning_from_frames: 1
+  tilt_series_quality: 5
+  related_empiar_entry: EMPIAR-10988
+  pixel_spacing: 3.3702
+  is_aligned: false
+  alignment_binning_factor: ~
+tomograms:
+  voxel_spacing: 13.48
+  fiducial_alignment_status: NON_FIDUCIAL
+  offset:
+    x: 0
+    y: 0
+    z: 0
+  affine_transformation_matrix: [[1, 0, 0, 0], [0, 1, 0, 0 0], [0, 0, 1, 0], [0, 0, 0, 1]]
+  reconstruction_method: Weighted back projection
+  reconstruction_software: IMOD
+  ctf_corrected: false
+  processing: raw
+  tomogram_version: 1
+  authors: *dataset_authors
+standardization_config:
+  destination_prefix: '10000'
+  frames_glob: frames/{run_name}_*.tif
+  gain_glob: frames/CountRef.dm4
+  rawtlt_files:
+    - metadata/{run_name}.rawtlt
+    - metadata/{run_name}.xf
+    - metadata/mdocs_modified/{run_name}.mdoc
+  source_prefix: julia/DEF
+  tiltseries_glob: metadata/{run_name}.st
+  tomo_format: mrc
+  tomo_glob: tomograms/{run_name}.rec
+  tomo_regex: .*\.rec
+  tomo_voxel_size: '13.48'
+  ts_name_regex: (.*)\.rec
+  run_glob: tomograms/TS_*.rec
+  run_regex: .*
+  run_name_regex: (.*).rec
+  run_data_map_file: run_data_map.tsv
+
