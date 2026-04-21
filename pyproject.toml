@@ -41,7 +41,7 @@ dependencies = [
     "langchain==0.1.16",
     "langserve==0.0.34",
     "linkml==1.6.1",
-    "lxml==4.9.4",
+    "lxml==6.1.0",
     "marimo==0.6.26",
     "nbdev==2.3.12",
     "numpy==1.26.0",
