@@ -62,7 +62,7 @@ dependencies = [
     "sse_starlette==1.8.2",
     "torch==2.1.2",
     "trafilatura==1.9.0",
-    "transformers==4.39.3",
+    "transformers==5.3.0",
 ]
 
 [project.optional-dependencies]
